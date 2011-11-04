@@ -1,0 +1,14 @@
+rebol [
+	title: "MX-GUI-MainFonts"
+	type: 'swf5
+	file: %gui-mainfonts.swf
+	background: 153.165.139
+	rate: 12
+	size: 1x1
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 10-6-2003
+	purpose: {To include main fonts used in GUIs}
+]
+importAssets [fnt_gui_arial "N" fnt_gui_arial_b "B"] from %includes/fnt_arialce.swf
+

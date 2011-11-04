@@ -1,0 +1,55 @@
+rebol [
+	title: "SWF5-Math object"
+	type: 'swf5
+	file: %mathobj.swf
+	background: 152.174.149
+	rate: 12
+	size: 320x380
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 12-1-2002
+	history: [5-2-02 "Now using 'with action to set context"]
+	purpose: {To show how to use the "math" object and it's methods (and 'with' action)}
+	comment: {If you need to use more operations in some context (as in this example with the 'math object) you can use the 'with action.
+ The principal difference between the with and tellTarget actions is that with takes a reference to a movie clip or other object as its argument, while tellTarget takes a target path string identifying a movie clip, and cannot be used to target objects.}
+]
+background 152.174.149
+fnt_arial: defineFont2 [name "Courier New" bold]
+txt_test: EditText 'x 320x380 [
+	ReadOnly
+	Color 0.0.0
+	Font [fnt_arial 12]
+	Layout [align: 'left Leading: -2]
+]
+place txt_test
+DoAction [
+	with math [
+		x: {math.abs(-10) = } + abs(-10) + {
+math.acos(0.2) = } + acos(0.2) + {
+math.asin(0.2) = } + asin(0.2) + {
+math.atan(0.2) = } + atan(0.2) + {
+math.atan2(0.2 0.6) = } + atan2(0.2 0.6) + {
+math.ceil(1.6) = } + ceil(1.6) + {
+math.cos(0.2) = } + cos(0.2) + {
+math.E = } + E + {
+math.exp(0.2) = } + exp(0.2) + {
+math.floor(1.6) = } + floor(1.6) + {
+math.LN10 = } + LN10 + {
+math.LN2 = } + LN2 + {
+math.log(2) = } + log(2) + {
+math.LOG10E = } + LOG10E + {
+math.LOG2E = } + LOG2E + {
+math.max(10 20) = } + max(10 20) + {
+math.min(10 20) = } + min(10 20) + {
+math.PI = } + PI + {
+math.pow(2 3) = } + pow(2 3) + {
+math.round(1.6) = } + round(1.6) + {
+math.sin(0.2) = } + sin(0.2) + {
+math.sqrt(2) = } + sqrt(2) + {
+math.SQRT1_2 = } + SQRT1_2 + {
+math.SQRT2 = } + SQRT2 + {
+math.tan(0.2) = } + tan(0.2)
+	]
+]
+showFrame
+end

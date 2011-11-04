@@ -1,0 +1,24 @@
+rebol [purpose: {Just an TextField for debugging output}]
+fnt_Arial: Font [name "_sans" bold]
+txt_info: EditText 'info 400x50 [
+	Color #0066CC	Font [fnt_Arial 12]
+	;ReadOnly NoSelect
+	text ""
+]
+rebol [tmp: rswf/last-depth]
+tf_info: place txt_info [at 0x0 depth 9000]
+rebol [rswf/last-depth: tmp]
+
+
+doAction [
+	_global.cmsg: func[m][info: m add "^/" add info]
+	debugKeyListener: make object! []
+    debugKeyListener.onKeyUp: func[][
+    	;cmsg((reform[(Key.getCode()) 'F1]))
+		if 'F1 = (Key.getCode()) [
+       		_root.tf_info._visible: not _root.tf_info._visible
+   		]
+    ]
+    Key.addListener(debugKeyListener)
+    tf_info._visible: false
+]

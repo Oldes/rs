@@ -1,0 +1,53 @@
+rebol [
+	title: "SWF5-XML object"
+	type: 'swf5
+	file: %xmlobj.swf
+	background: 152.174.149
+	rate: 12
+	size: 400x380
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 6-6-2002
+	purpose: {To test some of the XML object methods}
+]
+background 152.174.149
+fnt_arial: defineFont2 [name "Courier New" bold]
+txt_test: EditText 'x 400x380 [
+	WordWrap ReadOnly Font [fnt_arial 11]
+	Layout [align: 'left Leading: -2]
+]
+place txt_test
+DoAction [
+	constantPool [
+		doc1 doc2 toString firstChild lastChild
+		hasChildNodes appendChild nodeName nodeType nodeValue
+	]
+	doc1: make xml {<a name="test">hello</a>}
+	doc2: make xml {<h2>another example</h2>}
+	x: ">>DOC1^/==" + doc1.toString() +
+	   "^/>>DOC2^/== " + doc2.toString()
+	doc1.appendChild(doc2)
+	x: x + "^/>>DOC1.appendChild(DOC2)^/== " + doc1.toString()
+	doc1.lastChild.removeNode()
+	x: x + {^/>>DOC1.lastChild.removeNode()^/== } + doc1.toString() +
+	   "^/>>DOC2.hasChildNodes()^/== " + DOC2.hasChildNodes()
+	
+	y: doc1.firstChild.attributes.name
+	x: x + "^/>>DOC1.firstChild.attributes.name^/== " + y
+
+	tx: doc2.createTextNode("text")
+	doc2.appendChild(tx)
+	x: x + {^/>>tx: doc2.createTextNode("text")^/>>DOC2.appendChild(tx)^/== } + doc2.toString()
+	el: doc2.createElement("i")
+	doc2.insertBefore(el tx)
+	x: x + {^/>>el: doc2.createElement("i")^/>>DOC2.insertBefore(el tx)^/== } +
+		 doc2.toString() +
+	   {^/>>DOC2.lastChild.hasChildNodes()^/== } + DOC2.lastChild.hasChildNodes() +
+	   {^/>>DOC2.firstChild.nodeName^/== } + DOC2.firstChild.nodeName +
+	   {^/>>DOC2.firstChild.nodeType^/== } + DOC2.firstChild.nodeType +
+	   {^/>>DOC2.firstChild.nodeValue^/== } + DOC2.firstChild.nodeValue +
+	   {^/>>DOC2.lastChild.nodeType^/== } + DOC2.lastChild.nodeType +
+	   {^/>>DOC2.lastChild.nodeValue^/== } + DOC2.lastChild.nodeValue
+]
+showFrame
+end

@@ -1,0 +1,20 @@
+rebol [
+	title: "FSCommand Exec"
+	type: 'swf
+	file: %exec.swf
+	background: 153.165.139
+	rate: 1
+	size: 100x100
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {To show how to run programm from the SWF (only from FlashPlayer).}
+	comment: {
+Since swf cersaion > 4 the exec command can contain only the characters A–Z, a–z, 0–9, period (.), and underscore (_). The exec command runs in the subdirectory fscommand only. In other words, if you use the fscommand exec command to call an application, the application must reside in a subdirectory named fscommand.}
+	fponly?: true
+]
+
+DoAction [
+	FSCommand [	exec "rebol.exe" ]
+]
+showFrame
+end

@@ -1,0 +1,69 @@
+rebol [
+	title: "SWF5-Screen Scroller"
+	type: 'swf5
+	file: %scrollscreen.swf
+	background: 152.174.149
+	rate: 30
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 29-7-2003
+	purpose: {How to smoothly scroll sprites to given position.}
+	comment: {
+		Move the cursor and the sprite will follow you:)}
+]
+background 152.174.149
+shp_circle: Shape [
+	Bounds -15x-15 15x15
+	edge [width 3] fill color 255.200.100
+	circle 10
+]
+spr_circle: Sprite shp_circle
+circle: place spr_circle [
+	at 0x0
+	actions [
+		load [
+			destx: desty: 160
+			vx: vy: 0
+			ac: 50  ;lower number means faster movement
+			sl: 0.8 ;lower number means bigger slowdown
+		]
+		enterFrame [
+			constantPool [vx vy destx desty _x _y ac]
+			vx: vx + ((destx - _x) / ac)
+			vy: vy + ((desty - _y) / ac)
+			_x: _x + vx
+			_y: _y + vy
+			vx: vx * sl 
+			vy: vy * sl
+		]
+		mouseMove [
+			destx: _root._xmouse
+			desty: _root._ymouse
+		]
+	]
+]
+showFrame
+ImportAssets [obj_slider "slider"] from %slider.swf
+sl_sl: place obj_slider [at 160x0 scale [0.6 .8]]
+sl_ac: place obj_slider [at 20x0  scale [0.6 .8]]
+
+DoAction [
+	tellTarget sl_ac [
+        onChange: func[][
+            _parent.circle.ac: to-integer (100 * value)
+            _parent.transform()
+        ]
+        init(.5 "AC:")
+    ]
+	tellTarget sl_sl [
+        onChange: func[][
+            _parent.circle.sl: value
+            _parent.transform()
+        ]
+        init(.8 "SL:")
+    ]
+	stop
+]
+showFrame
+end

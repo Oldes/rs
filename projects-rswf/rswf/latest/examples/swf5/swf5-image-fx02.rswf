@@ -1,0 +1,39 @@
+rebol [
+	title: "SWF5-Image-FX scaling"
+	type: 'swf5
+	file: %swf5-image-fx02.swf
+	background: 246.250.255
+	rate: 30
+	size: 276x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	purpose: {Simple scaling image FX}
+	date: 17-12-03
+	comment: {
+		This is another image FX variation. I must thanks to Cyphre for inspiration.
+	}
+]
+background 246.250.255
+bmp_picture: bitmap %hlava.jpg size 276x320
+
+rebol [
+	for i 0 319 1 [
+		rswf/compile load rejoin [{
+			shp_pictureLine} i {: Shape [
+				Bounds 0x0 276x1
+			    fill-style [bitmap bmp_picture at 0x} i * -1 {]
+			    box 0x0 276x1
+			]
+			spr_pictureLine} i {: Sprite shp_pictureLine} i {
+			l} i {: place spr_pictureLine} i { at 0x} i * 1 {
+			doAction [
+				l} i - 1 {._height: 1
+				l} i {._height: } 320 - i {
+			]
+			showFrame
+		}]
+	]
+]
+
+showFrame
+end

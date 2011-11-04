@@ -1,0 +1,105 @@
+rebol [
+	title: "FLASH8 - IconList"
+	type: 8
+	file: %swf8-iconlist.swf
+	background: 200.200.200
+	rate: 24
+	size: 401x400
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 16-Nov-2007/14:04:53+1:00
+	purpose: {To show how to create IconList in a layout.}
+	comment: {This will be improved yet as now it just loads external image files. I would like to use internal bitmaps as well.}
+	compressed: true
+]
+
+background 200.200.200
+require %tracer.rswf
+
+layout [
+	at 2x60  iconlist: IconList 400x300
+	at 2x380 Menu [
+		"auto arange icons"
+		"add external iconset" [type: "submit"]
+		"remove ALL icons!" [type: "warning"]
+	] init [
+		vertical?: false
+		defaultButton: context [width: 133 height: 18 align: "center" filters?: false]
+		onButtonRelease: func[button][
+			switch button.id [
+				0 [
+					iconlist.slide?: on
+					iconlist.updateObjects(iconlist.maxwidth)
+					iconlist.slide?: off
+				]
+				1 [
+					data_out: make LoadVars []
+					data_in:  make LoadVars []
+					data_out.command: "iconlist"
+					data_out.sendAndLoad( "http://box.lebeda.ws/~hmm/rswf/example-io" data_in "post" )	
+					data_in.onData: func[str][
+						var xml: make XML str
+						either xml.firstChild = none [
+							trace("Result is not a valid XML" str)
+						][
+							iconlist.addIconsFromXML(xml)
+						]
+						
+					]
+				]
+				2 [
+					iconlist.removeObjects()
+				]
+			]
+		]
+	]
+]
+doAction [
+	x: make XML {
+		<base path="bitmaps/kost/kost"/>
+		<i src="1.jpg" width="100" height="75"/>
+		<i src="2.jpg"/>
+		<i src="3.jpg"/>
+		<i src="4.jpg"/>
+		<i src="1.jpg"/>
+		<i src="2.jpg"/>
+		<i src="3.jpg"/>
+		<i src="4.jpg"/>
+		<base path="bitmaps/icons/ico_"/>
+		<i src="admin48.png" width="48" height="48"/>
+		<i src="client48.png"/>
+		<i src="editor48.png"/>
+		<i src="folder48.png"/>
+		<i src="folderimages48.png"/>
+		<i src="foldermusic48.png"/>
+		<i src="acrobat48.png"/>
+		<i src="movie48.png"/>
+		<i src="music48.png"/>
+		<i src="pictures48.png"/>
+		<i src="public48.png"/>
+		<i src="recycle48.png"/>
+		<i src="text48.png"/>
+		<i src="users48.png"/>
+		<i src="word48.png"/>
+		<i src="excel48.png"/>
+		
+		<i src="admin16.png" width="16" height="16"/>
+		<i src="client16.png"/>
+		<i src="editor16.png"/>
+		<i src="folder16.png"/>
+		<i src="folderimages16.png"/>
+		<i src="foldermusic16.png"/>
+		<i src="acrobat16.png"/>
+		<i src="movie16.png"/>
+		<i src="music16.png"/>
+		<i src="pictures16.png"/>
+		<i src="public16.png"/>
+		<i src="recycle16.png"/>
+		<i src="text16.png"/>
+		<i src="users16.png"/>
+	}
+	iconlist.addIconsFromXML(x)
+]
+
+stop
+showFrame end

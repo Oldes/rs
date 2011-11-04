@@ -1,0 +1,21 @@
+rebol [
+	title: "SWF5-MP3Stream example"
+	type: 'swf5
+	file: %mp3stream.swf
+	background: 153.165.139
+	rate: 12
+	size: 20x20
+	compressed: false
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 17-9-2003
+	purpose: {To show how to include MP3 stream in the swf file}
+	comment: {
+	<code>finish stream</code> will automaticaly add neccessery number of frames<br>
+	You should use uncompressed swf file form mp3 streams.
+	MP3 streaming is still in the testing!}
+
+]
+mp3Stream %sounds/fletna3.mp3
+finish stream
+end

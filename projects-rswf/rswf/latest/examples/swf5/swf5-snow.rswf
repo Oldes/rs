@@ -1,0 +1,60 @@
+rebol [
+	title: "SWF5-Snow"
+	type: 'swf5
+	file: %swf5-snow.swf
+	background: 153.204.255
+	rate: 30
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 28-12-2003
+	purpose: {Falling snowflakes example}
+]
+background 153.204.255
+shp_snowflake: shape [
+	fill color #FFFFFF circle 3
+]
+spr_snowflake: Sprite shp_snowflake
+exportAssets [spr_snowflake "snowflake"]
+
+es: EmptySprite
+spr_Snow: place es [
+	at 0x0
+	actions [
+		load [
+			no: 50 ;snow number
+			width: height: 320
+			for i 0 no 1 [
+				o: make object! [
+					dx: 0
+					_x: Math.random() * width
+					_y: Math.random() * height
+					am: Math.random() * 2
+					;set step variables:
+					stx: 0.02 + Math.random() / 10
+				  	sty: 0.7  + Math.random()
+				]
+				o._xscale: o._yscale: 30 + random 70
+				this.attachMovie("snowflake" ("snowflake" add i) i o)
+			]
+		]
+		enterFrame [
+			for i 0 no 1 [
+				snowFlake: eval(("snowflake" add i))
+				tellTarget snowFlake [
+					_y: _y + sty
+				    if _y > _parent.height [
+						 _x: Math.random() * _parent.width
+						 _y: 0
+						stx: 0.02 + Math.random() / 10
+						sty: 0.7  + Math.random()
+			      	]
+					dx: dx + stx
+					_x: _x + am * (Math.sin(dx))
+				]
+			]
+		]
+	]
+]
+showFrame
+end

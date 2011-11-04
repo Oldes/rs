@@ -1,0 +1,81 @@
+rebol [
+	title: "SWF5-ColorTransform"
+	type: 'swf5
+	file: %colortransform.swf
+	background: 0.0.0
+	rate: 30
+	size: 407x370
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	purpose: {How to modify color of some objects...}
+	history: [22-7-2003 "fixed bug: use <code>make Color ...</code> instead of <code>make Color!</code>"]
+]
+background 0.0.0
+shp_frame: shape [
+	bounds 0x0 407x370
+	fill color 10.10.10
+	box 0x0 407x370
+]
+place shp_frame
+
+es: EmptySprite
+obj_box: place es
+doAction [
+	rb: -255 + random 510
+	gb: -255 + random 510
+	bb: -255 + random 510
+	rbi: gbi: bbi: 20
+	obj_box.loadMovie(%demon.swf)
+]
+fnt_arial: defineFont2 [name "Arial" bold]
+txt_test: EditText 'x 160x18 [
+	ReadOnly NoSelect
+	Color 250.200.0
+	Font [fnt_arial 12]
+]
+place txt_test
+frm_loop: showFrame
+DoAction [
+	ConstantPool [
+		rb rbi gb gbi bb bbi clr_box obj_box x
+		tr ra ga ba aa ab setTransform
+	]
+	clr_box: make Color obj_box
+	rb: rb + rbi
+	either rb > 255 [
+		rb: 255 rbi: 0 - rbi
+	][
+		if rb < -255 [
+			rb: -255 rbi: 0 - rbi
+			gb: gb + gbi
+			either gb > 255 [
+				gb: 255 gbi: 0 - gbi
+			][
+				if gb < -255 [
+					gb: -255 gbi: 0 - gbi
+					bb: bb + bbi
+					either bb > 255 [
+						bb: 255 bbi: 0 - bbi
+					][
+						if bb < -255 [
+							bb: -255 bbi: 0 - bbi
+							bb: bb + bbi
+						]
+					]
+				]
+			]
+		]
+	]
+	x: "RB: " add rb add " GB: " add gb add " BB: " add bb
+	tr: make object! [
+		ra: 100 rb: rb
+		ga: 100 gb: gb
+		ba: 100 bb: bb
+		aa: 100 ab: 0
+	]
+	clr_box.setTransform(tr)
+] 
+showFrame
+doAction [goto frm_loop and play]
+showFrame
+end

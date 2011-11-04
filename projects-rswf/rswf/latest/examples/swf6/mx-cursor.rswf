@@ -1,0 +1,35 @@
+rebol [
+	title: "MX-cursor example"
+	type: 6
+	file: %mx-cursor.swf
+	background: 152.174.149
+	rate: 60
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 7-Sep-2007/15:34:18+2:00
+	purpose: {Simplest cursor for SWF version 6 and later}
+]
+
+background 152.174.149
+shp_cursor: Shape [
+	Bounds -20x-20 20x20
+	edge [width 1]
+	line -20x0 20x0
+	line 0x-20 0x20
+	Fill color 255.200.100
+	box -5x-5 5x5
+]
+spr_cursor: Sprite shp_cursor
+obj_cursor: Place  spr_cursor
+DoAction [
+	Mouse.hide()
+	obj_cursor.onMouseMove: func[][
+		this._x: _root._xmouse
+		this._y: _root._ymouse
+	]
+	Mouse.addListener(obj_cursor)
+	stop
+]
+showFrame
+end

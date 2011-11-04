@@ -1,0 +1,74 @@
+rebol [
+	title: "Color Pallet"
+	author: "oldes"
+	comment: "version for includes"
+]
+spr_cursor_dropper: sprite [
+	bitmaps images [key 255.0.255 %bitmaps/cursor_dropper.gif]
+	place img_cursor_dropper.gif at -3x-15
+	doAction [
+		Mouse.hide()
+		this.onMouseMove: func[][
+			updateAfterEvent()
+			this._x: _root._xmouse
+			this._y: _root._ymouse
+		]
+		this.onMouseMove()
+	]
+	showFrame end
+]
+ExportAssets [spr_cursor_dropper "cursor_dropper"]
+spr_pallet: sprite [
+    bitmaps images [alpha %bitmaps/pallet2.png]
+    ExportAssets [bmp_pallet2.png "bmpPallet2"]
+    spr_palletclrs: sprite img_pallet2.png
+    shp_paledge: shape [fill color #000000 box -1x-1 199x31 0x0 198x15]
+    shp_color: shape [fill color #FFFFFF box 0x0 198x15]
+    spr_color: sprite shp_color
+    fnt_typewriter: Font [name "_typewriter" bold]
+    txt_color: EditText 'txt 198x18 [
+        Color #FFFFFF  Font [fnt_typewriter 13]
+        ReadOnly NoBorder Layout [align: 'center]
+    ]
+
+    colors: place spr_palletclrs [
+        at 0x0
+        actions [
+            [RollOver DragOver] [_root.attachMovie("cursor_dropper" "cursor" 100000)]
+            [RollOut  DragOut ] [_root.cursor.removeMovieClip() Mouse.show()]
+            Press [
+                this.onMouseMove: func[][
+                    this._parent.getColor(this._xmouse this._ymouse)
+                ]
+                this.onMouseMove()
+            ]
+            [Release ReleaseOutside] [this.onMouseMove: none]
+        ]
+    ]
+    place shp_paledge
+    color: place spr_color at 0x15
+    tf: place txt_color at 0x13
+    doAction [
+        bmpPallet: flash.display.BitmapData.loadBitmap("bmpPallet2")
+        inBounds: func[val min max][return (Math.max(min (Math.min(max val))))]
+        clr_box: make Color [color]
+        formColor: func[c][
+            c: c.toString(16)
+            var d: 6 - c.length - 1
+            if d > 0 [for i 0 d 1 [c: "0" add c]]
+            return ("#" add (c.toUpperCase()))
+        ]
+        getColor: func[x y][
+            x: inBounds(x 0 198)
+            y: inBounds(y 0 15)
+            clr: bmpPallet.getPixel(x y)
+            clr_box.setRGB(clr)
+            txt: formColor(clr)
+            tf.textColor: 16777215 - clr
+            onGetColor(clr)
+            return clr
+        ]
+    ]
+    showFrame end
+]
+ExportAssets [spr_pallet "GUI_ColorPallet"]

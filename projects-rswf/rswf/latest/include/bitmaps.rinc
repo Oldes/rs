@@ -1,0 +1,166 @@
+rebol [
+	title: "Bitmap related tag functions"
+]
+
+ins-bitmaps: func[
+	spec    "Bitmaps minidialect code"
+		;- from [file! | url!] - specifies base dir for files
+		;- key  tuple!         - color which should be used as transparent
+		;- no key              - turns key color off
+		;- make sprites        - creates not only shapes but sprites as well
+		;- precise             - creates bitmaps with one pixel transparent edge
+		;- [smoothing | smoothing on]     - turns bitmap smoothing on
+		;- [no smoothing | smoothing off] - turns bitmap smoothing off
+		;- opt [word! | set-word! | none] [file! | url!] - optional bitmap id and source file 
+	shapes?	"If creates equivalent shapes as well"
+	/local id dir sw sh smoothing? kcolor sprites? precise? file size alpha? arg2 arg3
+][
+;probe spec
+
+	smoothing?: true
+	dir:        copy ""
+	sprites?:   false
+	precise?:   false
+	alpha?:     false
+	kcolor:     none
+	parse spec [
+		any [
+			'from set arg2 [file! | url!] (dir: dirize arg2	)
+			| 'key set kcolor tuple!
+			| 'no 'key       (kcolor:   none)
+			| 'make 'sprites (sprites?: true)
+			| 'precise       (precise?: true)
+			| ['no 'smoothing | 'smoothing 'off] (smoothing?: false)
+			| 'alpha (alpha?: true)
+			| ['smoothing | 'smoothing 'on] (smoothing?: true)
+			| copy id opt [word! | set-word! | none]
+			  set arg2 [file! | url!] (arg3: none) opt ['size set arg3 pair!] (
+				id: to word! either none? id [
+					rejoin ["bmp_" last parse arg2 "/"]
+				][	first id ]
+				insert arg2 dir
+				file: get-filepath arg2
+	;probe reduce [arg2 arg3 id]
+	;insert set-word-buff id
+				either precise? [
+					create-img/param to image! layout/origin reduce [
+						'backdrop kcolor 'at 1x1 'image file
+					] 1x1 id reduce ['key kcolor]
+				][
+					set-id/as id
+					either arg3 [
+						load-img/size file last-id arg3
+					][
+						either alpha? [
+							load-img/alpha file last-id 
+						][
+							either kcolor [
+								load-img/key file last-id kcolor
+							][	load-img file last-id ]
+						]
+					]
+				]
+				if shapes? [
+					size: select placed-images get-id id
+					sw: either "bmp_" = copy/part mold id 4 [
+						replace mold id "bmp_" "img_"
+					][	join "img_" mold id ]
+					parse/all load rejoin [
+							sw {: Shape [
+							Bounds 0x0 } size {
+							} either smoothing? [""]["smoothing off"] {
+	
+							image } id {]}
+					] tag-rules
+					
+					if sprites? [
+						sh: copy sw
+						parse/all load rejoin [{[
+							} replace sw "img_" "spr_" {: Sprite [
+								place } sh { at } either precise? [-1x-1][0x0] {
+							]]}
+						] tag-rules
+					]
+				]
+			)
+			| arg2: any-type! (make-warning! insert arg2 "BITMAPS:")
+		]
+	] ;end of parse spec
+]
+
+ins-bitmap-layout: func[
+	id  [integer! none!]    "The result bitmap ID"
+	lay [block!]            "Block with Rebol's layout code"
+	img-args [block! none!] "Create-img args [key tuple!]"
+	/local tmp
+][
+	lay: layout/origin lay 0x0
+	if block? img-args [
+		parse/all img-args [
+			some [
+				  'size  set tmp pair! (lay/size: tmp)
+				| 'color set tmp [tuple! | issue!] (
+					lay/color: either tuple? tmp [tmp][to-tuple issue-to-binary tmp]
+				)
+				| any-type!
+			]
+		]
+	]
+	create-img/param to image! lay id img-args
+]
+
+ins-bitmap-jpeg: func[
+	id [integer! none!] "The result bitmap ID"
+	file [file!] "Source image to insert"
+	/local w h ext loc-file
+][
+	print ["ins-bitmap-jpeg" file]
+	if #"/" <> first file: to-rebol-file file [insert file what-dir]
+	with ctx-imagick [
+		start
+			try MagickReadImage *wand loc-file: as-string utf8/encode to-local-file file
+			w:   MagickGetImageWidth  *wand
+			h:   MagickGetImageHeight *wand
+			ext: MagickGetImageFormat *wand
+			;print MagickIdentifyImage *wand ask ""
+			either find ["jpg" "jpeg"] ext [
+				
+			][
+				
+				;try MagickReadImage *wand loc-file
+				
+				alpha: make binary! w * h
+				insert/dup alpha #{00} (w * h)
+				
+				try MagickExportImagePixels *wand 0 0 w h "A" 1 address? alpha
+
+				try MagickSetImageCompression *wand ctJPEG
+				if default/CompressionQuality [
+					try MagickSetImageCompressionQuality *wand default/CompressionQuality
+				]
+	
+				if default/MergeBGColor [
+					*pixel: NewPixelWand
+					PixelSetColor *pixel "black"
+					MagickSetImageBackgroundColor *wand *pixel
+					DestroyPixelWand  *pixel
+				]
+				*wand2: MagickMergeImageLayers *wand ilm_FlattenLayer
+				try MagickWriteImage *wand2 to-local-file tmp-file: join what-dir ["~" checksum loc-file %.jpg]
+				DestroyMagickWand *wand2	
+				
+				
+				ImageData: read/binary tmp-file
+				;delete tmp-file
+				ins-def form-tag 35 rejoin [
+					either id [set-id/as id][set-id id]
+					int-to-ui32 length? ImageData
+					ImageData
+					head remove/part tail (compress alpha) -4 ;ZLIBBITMAPDATA
+				]
+				insert placed-images reduce [last-id as-pair w h]
+			]
+		end
+	]
+	
+]

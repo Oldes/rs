@@ -1,0 +1,32 @@
+	rebol [
+	title: "SWF-Arc example"
+	type: 'swf
+	file: %arc.swf
+	background: 152.174.149
+	rate: 1
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 9-12-2001
+	purpose: {To show how to make arcs in the Shape}
+]
+background 152.174.149
+shp_arcs: Shape [
+	Bounds -160x-160 160x160
+	Positions relative
+	line-style [width 2 color 5.5.5]
+	fill color 255.55.55
+	arc 100 0 90
+	fill color 55.255.55
+	arc 80 90 135
+	fill color 55.155.155
+	arc 90 135 180
+	fill color 255.55.55
+	arc 100 180 190 90 190 225
+	fill color 155.55.55
+	arc 110 225 360
+]
+PlaceObject2 shp_arcs [at 160x160 scale 1.1 multiply 255.255.255.100]
+PlaceObject2 shp_arcs at 160x160
+showFrame
+end

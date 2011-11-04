@@ -1,0 +1,51 @@
+rebol [
+	title: "Flash8 - GradientBevelFilter"
+	type: 'swf8
+	file: %swf8-filterbevelg.swf
+	background: 153.165.139
+	rate: 12
+	size: 320x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 5-10-2005
+	purpose: {To test and demonstrate the GradientBevelFilter}
+	comment: {}
+	compressed: true
+]
+background 153.165.139
+shp_box: shape [
+	fill color 255.0.0
+	box -70x-70 70x70
+	circle 30
+]
+spr_box: sprite shp_box
+box: place spr_box at 160x160
+doAction [
+	colors: [
+		#0000FF #00FF00 #9900FF #FFFF00 #FF0000
+		#FFFF00 #9900FF #00FF00 #000000
+	]
+	alphas: [1 1 1 1 1 1 1 1 1]
+	ratios: [16 32 64 96 128 160 192 224 235]
+	
+	myBevel: make flash.filters.GradientBevelFilter[
+		32        ;distance:Number
+		45       ;angle:Number
+		colors
+		alphas
+		ratios
+		16       ;blurX:Number
+		16       ;blurY:Number
+		1        ;strength:Number
+		2        ;quality:Number
+		"inner"  ;type:String ("inner", "outer", and "full") 
+		false    ;knockout:Boolean
+	]
+	setBevel: func[mc][
+		myBevel.distance: random 32
+		myBevel.angle: random 360
+		mc.filters: [myBevel]
+	]
+	int: setInterval(setBevel 100 box)
+]
+showFrame end

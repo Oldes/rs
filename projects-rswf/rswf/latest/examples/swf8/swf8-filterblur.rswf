@@ -1,0 +1,29 @@
+rebol [
+	title: "Flash8 - BlurFilter"
+	type: 'swf8
+	file: %swf8-filterblur.swf
+	background: 153.165.139
+	rate: 12
+	size: 320x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 4-10-2005
+	purpose: {To test the BlurFilter}
+	comment: {}
+	compressed: true
+]
+background 153.165.139
+shp_box: shape [fill color 0.0.0 box -50x-50 50x50]
+spr_box: sprite shp_box
+box: place spr_box at 160x160
+doAction [
+	myBlur: make flash.filters.BlurFilter [10 10 2]
+	setBlur: func[mc][
+		myBlur.blurX: random 100
+		myBlur.blurY: random 100
+		mc.filters: [myBlur]
+	]
+	setBlur(box)
+	int: setInterval(setBlur 100 box)
+]
+showFrame end

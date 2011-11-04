@@ -1,0 +1,37 @@
+rebol [
+	title: "SWF-Random dots"
+	type: 'swf5
+	file: %random-dots.swf
+	background: 246.250.255
+	rate: 60
+	size: 320x320
+	date: 10-4-2002
+	history: [
+		26-4-2002 "Replaced _root to _parent"
+	]
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	purpose: {No purpose here... just some dots on the screen:-)}
+]
+background 246.250.255
+shp_dot: Shape [
+	fill color 0.0.0
+	circle 10
+]
+spr_dot: sprite shp_dot
+exportAssets [spr_dot "dot"]
+es: emptySprite
+emiter: place es [
+	actions [
+		enterFrame [
+			either i < 100 [i++][i: 1]
+			nn: "m" add i
+			_parent.attachMovie("dot" nn i)
+			o: eval(eval("_parent." add nn))
+			o._x: random 320
+			o._y: random 320
+		]
+	]
+]
+showFrame
+end

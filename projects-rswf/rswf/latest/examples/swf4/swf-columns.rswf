@@ -1,0 +1,50 @@
+	rebol [
+	title: "SWF-Columns example"
+	type: 'swf
+	file: %columns.swf
+	background: 152.174.149
+	rate: 1
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 17-Dec-2001
+	purpose: {To show how to use fill gradients and columns}
+	comment: {The 'static word in the gradient means that all columns or other shapes will use the same gradient. Without this parameter all shape parts will have own gradient with different center and scale!}
+]
+background 152.174.149
+shp_h-cols: Shape [
+	Bounds 0x0 320x320
+	edge [width 1 color 5.5.5]
+	gradient [colors [255.0.0 255.255.0 0.255.0]]
+	columns [
+		from left
+		data [
+			10 30 70 160 200 140 300 230
+			60 30 0 80 100 170 300
+		]
+	]
+]
+PlaceObject2 shp_h-cols
+showFrame
+shp_v-cols: Shape [
+	Bounds 0x0 320x320
+	edge [width 1 color 5.5.5]
+	gradient [
+		static
+		colors [0.255.0 255.255.0 255.0.0]
+		rotate 90
+	]
+	columns [
+		from bottom at 60x320
+		width 6 space 3
+		data [
+			10 30 70 160 200 140 300 230 60
+			30 10 80 100 170 300 180 310 200
+			130 60 20
+		]
+	]
+]
+PlaceObject2 shp_v-cols
+DoAction [stop]
+showFrame
+end

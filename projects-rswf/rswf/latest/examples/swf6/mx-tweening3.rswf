@@ -1,0 +1,72 @@
+rebol [
+	title: "MX-tweening3 - brightOffsetTo"
+	type: 'mx
+	file: %mx-tweening3.swf
+	background: 255.255.255
+	rate: 25
+	size: 400x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 16-03-2006
+	purpose: {Simple demonstration of brightOffsetTo tweening}
+	comment: {using Ladislav Zigo's and Moses Gunesch's	precompiled	"Movieclip twening prototypes 1.2.0" which you can download as a actionscript from this page: <a href='http://laco.wz.cz/tween/'>http://laco.wz.cz/tween/</a>}
+
+]
+background 255.255.255
+;this is just a very simple progress bar:-)
+shp_prbox: shape [fill color 0.0.0 box -5x-10 5x10]
+spr_prbox: sprite [showFrame place shp_prbox show 2 Frames end]
+pr: place spr_prbox at 200x160
+showFrame
+;Include precompiled tweening prototype
+include %includes/lmc_tween_mx_1.2.0.rswf
+;Make sure you skip to another frame before you do some other actions
+;(it should be fixed in future)
+showFrame 
+bitmaps images [bmp_picture:  %bitmaps/holky.jpg]
+spr_picture: sprite img_picture
+pic: place spr_picture at 0x20
+include %includes/txt_info.rswf
+
+doAction [
+	pr.gotoAndStop(1) ;hide the blinking cursor
+	;You can use following strings as types of animation (easing equations by Robert Penner)
+	animationTypes: [
+		"linear"
+		"easeInQuad"    "easeOutQuad"    "easeInOutQuad"    "easeOutInQuad"
+		"easeInCubic"   "easeOutCubic"   "easeInOutCubic"   "easeOutInCubic"
+		"easeInQuart"   "easeOutQuart"   "easeInOutQuart"   "easeOutInQuart"
+		"easeInQuint"   "easeOutQuint"   "easeInOutQuint"   "easeOutInQuint"
+		"easeInSine"    "easeOutSine"    "easeInOutSine"    "easeOutInSine"
+		"easeInExpo"    "easeOutExpo"    "easeInOutExpo"    "easeOutInExpo"
+		"easeInCirc"    "easeOutCirc"    "easeInOutCirc"    "easeOutInCirc"
+		"easeInElastic" "easeOutElastic" "easeInOutElastic" "easeOutInElastic"
+		"easeInBack"    "easeOutBack"    "easeInOutBack"    "easeOutInBack"
+		"easeInBounce"  "easeOutBounce"  "easeInOutBounce"  "easeOutInBounce"
+	]
+	doSomething: func[][
+		percent: -100 + random 200
+		seconds:  4
+		animtype: pick animationTypes (random animationTypes.length)
+		
+		info: reform ["percent:" percent "seconds:" seconds "animtype:" animtype ]
+		pic.brightOffsetTo(
+			percent		;A number that represents the brightOffset of movieclip
+						;0 : no contrast
+						;100 : to white
+						;-100 : to black
+			seconds     ;Duration of tween (number).
+						;Defaults to 2 if null or ommitted. Pass 0 to apply the change with no tween. 
+			animtype	;one of the animation types from above
+			0			;Delay in seconds to start animation (number) defaults to 0
+			doSomething	;callback function to be called when finished
+						;(function, string, or object with scope, func, args params)
+		)
+	]
+
+	doSomething()
+]
+
+stop
+showFrame
+end

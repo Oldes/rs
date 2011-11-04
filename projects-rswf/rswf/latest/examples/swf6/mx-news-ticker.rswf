@@ -1,0 +1,59 @@
+rebol [
+	title: "MX - News-ticker"
+	type: 6
+	file: %mx-news-ticker.swf
+	background: 255.255.255
+	rate: 50
+	size: 400x80
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 5-May-2008/12:44:04+2:00
+	purpose: {Just a very simple scrolling text example}
+	comment: {Require Rebol/Flash dialect of version 2.16.0 and or higher (because it's using Text tag, which does not require to define font manually).
+Note that this is just an example, if you would like to use it in a real life, you should set the news text from outside instead of compiling the SWF for each text change.}
+	compressed: true
+]
+
+background 255.255.255
+
+txt_news: Text 3000x80 [
+	FontSize 64
+	NoSelect
+	Html
+]
+
+spr_news: Sprite [
+	textField: place txt_news
+]
+
+news: place spr_news [
+	actions [
+		load [
+			textField.htmlText:  rejoin [
+				"<b>The Anacondas</b> - "
+				"Hudba The Anacondas se pohybuje mezi lehkou psychedelií marihuanových polí "
+				"a motorkáøkých tìžkoodìncù v kožených bundách... "
+				"<b>Tahle zemì není pro starý</b> - film o tvrdých chlapech z amerického jihu. "
+				"Šarmantnì usmìvavého packala George Clooneyho nahradilo... "
+			]
+			textField._width: textField.textWidth
+			minX: 0 - textField._width
+			_x:   Stage.width
+			step: 1
+			
+			cacheAsBitmap: true
+			
+			onEnterFrame: does [
+				this._x: this._x - this.step
+				if this._x < this.minX [
+					this._x: Stage.width
+				]
+			]
+			onRollOver: does [this.step: 25]
+			onRollOut:  does [this.step: 1 ]
+		]
+	]
+]
+
+showFrame
+end

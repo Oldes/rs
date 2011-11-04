@@ -1,0 +1,34 @@
+rebol [
+	title: "Font Euromode test"
+	type: 'swf5
+	file: %fnt_euromode_b-test.swf
+	background: 0.0.0
+	rate: 12
+	size: 151x141
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 8-6-2002
+	purpose: {To use shared 'font with shapes' in movie}
+	comment: {
+	For more info how to export font look at <a href="http://127.0.0.1/swf/swf5-euromode_b.html">Font Euromode example</a>}
+]
+importAssets [fnt_EuromodeB "B"] from %includes/fnt_euromode_b.swf
+;importAssets [fnt_gcchanel "N"] from %includes/fnt_gcchanel.swf
+
+txt_test: EditText 'v 150x70 [
+	border
+	text {Uletìl mi nový míè,
+už ho nemám, už je pryè.
+Vletìl nìkam do kopøiv,
+našel jsem jej, to je div!
+Jak jsem rukou pro nìj sáh,
+oheò pálil v kopøivách.}
+	Color #ff0000
+	Font [fnt_EuromodeB 10]
+	;Font [fnt_gcchanel 8]
+	Layout [align: 'left Leading: -2]
+	UseOutlines
+]
+place txt_test [at 150x0 reflect [-1 1]]
+place txt_test [at 0x70]
+showFrame end

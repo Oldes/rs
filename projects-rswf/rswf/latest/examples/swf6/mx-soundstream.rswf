@@ -1,0 +1,39 @@
+rebol [
+	title: "MX-MP3Stream example"
+	type: 'mx
+	file: %mp3stream2.swf
+	background: 153.165.139
+	rate: 12
+	size: 320x20
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 18-9-2003
+	purpose: {To show how to load MP3 stream into the swf file}
+	comment: {
+	I recomend to use built in ActionScript functions to load/play mp3 files if you are making flash version > 5 because than you are sure that it will play correctly even if you load it into a movie with different frame rate.}
+
+]
+include %includes/txt_info.rswf
+doAction [
+	constantPool [
+		info url mySound onLoad success onSoundComplete v p 
+		setVolume setPan start loadSound duration
+	]
+	info: "loading sound"
+	url: "sounds/fletna3.mp3"
+	mySound: make Sound []
+	mySound.onLoad: func[success][
+	  info: url add " duration: " add mySound.duration add "ms"
+	]
+	mySound.onSoundComplete: func[][
+		var v: random 100
+		var p: random 200 - 100
+		mySound.setVolume(v)
+		mySound.setPan(p)
+		info: url add " volume: " add v add " pan: " add p
+		mySound.start()
+	]
+	mySound.loadSound(url true)
+]
+showFrame
+end

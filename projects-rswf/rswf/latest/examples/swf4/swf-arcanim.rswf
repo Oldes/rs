@@ -1,0 +1,29 @@
+	rebol [
+	title: "SWF-Arc animation"
+	type: 'swf
+	file: %arcanim.swf
+	background: 246.250.255
+	rate: 30
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 2-1-2004
+	purpose: {This simple example may be used as a part of slideshows or progress bars}
+]
+background 246.250.255
+rebol [
+	repeat i 36 [
+		rswf/compile load rejoin [{
+			shp_arc} i {: Shape [
+				Bounds -160x-160 160x160
+				fill color 255.55.55
+				arc 100 0 } i * 10 {
+			]
+			RemoveDepth 1
+			Place shp_arc} i { [at 160x160 depth 1]
+			showFrame
+		}]
+	]
+]
+
+end

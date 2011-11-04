@@ -1,0 +1,37 @@
+rebol [
+	title: "MX2004 - ScriptLimits"
+	type: 'mx2004
+	file: %mx2004-scriptlimits.swf
+	background: 255.255.255
+	rate: 24
+	size: 320x20
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 17-3-2005
+	purpose: {How to override the default settings for maximum recursion depth and ActionScript time-out: MaxRecursionDepth and ScriptTimeoutSeconds.}
+	comment: {The MaxRecursionDepth field sets the ActionScript maximum recursion limit. The default setting is 256 at the time of this writing.
+This default can be changed to any value greater than 0.
+	
+The ScriptTimeoutSeconds field sets the maximum number of seconds the player should process ActionScript before displaying a dialog box asking if the script should be stopped. The default value for ScriptTimeoutSeconds varies by platform and is between 15 to 20 seconds. This default value is subject to change.
+
+The maximum for both values is 65535}
+	compressed: true
+]
+
+ScriptLimits 1001 60 ;MaxRecursionDepth = 1001 ScriptTimeoutSeconds = 60
+
+include %includes/txt_info.rswf
+doAction [
+	r: 0
+	maxrecursions: 1000
+	recurse: func[][
+		r++
+		if r < maxrecursions [recurse()]
+	]
+	recurse()
+	info: reform ["done recursions:" r]
+
+]
+
+showFrame
+end

@@ -1,0 +1,86 @@
+rebol [
+	title: "SWF5-Distribute space"
+	type: 'swf5
+	file: %distribute_sp.swf
+	background: 152.174.149
+	rate: 24
+	size: 320x100
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	purpose: {Function for objects distribution using specified space size}
+]
+background 152.174.149
+es: emptySprite
+shp_testshape: Shape [
+	bounds 0x-20 40x20
+	fill color #000000 box 0x-20 40x20
+	fill color #FFAA00 box 2x-18 38x18
+]
+btn_testshape: defineButton2 [
+	shapes [
+		[hit up] [id shp_testshape]
+		over [id shp_testshape scale 1.2]
+		down [id shp_testshape scale 0.8]
+	]
+	actions [
+		press    [_parent.refresh()]
+		rollOver [_parent.refresh()]
+        rollOut  [_parent.refresh()]
+        release  [_parent.refresh()]
+        DragOut  [_parent.refresh()]
+        DragOver [_parent.refresh()]
+	]
+]
+spr_testshape: Sprite btn_testshape
+exportAssets [spr_testshape "testshape"]
+items: place es [
+	at 10x50
+	actions [
+		load [
+			;first I create some objects I want to use...
+			objects: []
+			for i 0 5 1 [
+				this.attachMovie("testshape" ("o" add i) i)
+				o: eval(eval("o" add i))
+				objects.push(o)
+				cmsg((reform [o]))
+			]
+			distribute_spacing: func[
+				objs  ;Array with objects for distribution
+				hsp   ;Horizontal spacing
+				vsp   ;Vertical spacing
+			][
+				var first: true
+				foreach o objs [
+					either first [
+						first: false
+					][
+						if hsp <> null [o._x: x]
+						if vsp <> null [o._y: y]
+					]
+					x: o._x + o._width  + hsp
+					y: o._y + o._height + vsp
+				]
+			]
+			refresh: func[][
+				distribute_spacing(objects sp)
+			]
+			refresh()
+		]
+	]
+]
+ImportAssets [obj_slider "slider"] from %slider.swf
+sl_1: place obj_slider [at 30x2]
+doAction [
+	tellTarget sl_1 [
+        onChange: func[][
+            _parent.items.sp: -2 + to-integer (20 * value)
+            _parent.items.refresh()
+        ]
+        init(0 "SP:")
+    ]
+]
+
+
+showFrame
+end

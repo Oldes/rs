@@ -1,0 +1,30 @@
+rebol [
+	title: "SWF-Transparent shapes"
+	type: 'swf
+	file: %swf-ashape.swf
+	background: 153.165.139
+	rate: 12
+	size: 200x200
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 13-11-2002
+	purpose: {To create shapes with transparent colors}
+	comment: {
+	The key word for making shapes with transparent colors is <code>with transparency</code> where the 'with' word is optimal. Then if you need some color to be transparent, set the forth (alpha) value, where 0 (#00) means 100% transparency and 255 (#FF) no transparency. If there is no alpha value, the alpha part is set as 255.
+	<b>The <code>transparency</code> key word MUST be set before you start to use other shape commands!</b>}
+
+]
+background 153.165.139
+shp_test: shape [
+	with transparency
+	bounds 0x0 200x200
+	fill color #000000FF
+	box 0x0 140x140
+	fill color 255.255.255.128
+	box 60x60 200x200
+	gradient [colors [0.255.0.255 0.0.0.0]] 
+    box 0x0 200x200
+]
+place shp_test
+showFrame
+end

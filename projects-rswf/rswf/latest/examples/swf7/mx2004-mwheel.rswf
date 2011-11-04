@@ -1,0 +1,26 @@
+rebol [
+	title: "MX2004-MouseWheel" 
+	type: 'mx2004
+	file: %mwheel.swf
+	background: 153.165.139
+	rate: 30
+	size: 320x40
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 10-12-2003
+	purpose: {How to use your mouse wheel}
+	comment: {Mouse wheel event listeners are available only on Windows versions of Flash Player!}
+]
+include %includes/txt_info.rswf
+doAction [
+	x: 0
+	mouseListener: make Object []
+	mouseListener.onMouseWheel: func[delta target] [
+		x: x + delta
+		info: rejoin ["x: " x " delta: " delta " target: " target]
+	]
+	info: "click here and use your mouse wheel"
+	Mouse.addListener(mouseListener)
+]
+ShowFrame
+end

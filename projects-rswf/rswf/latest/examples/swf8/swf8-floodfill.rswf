@@ -1,0 +1,61 @@
+rebol [
+	title: "FLASH8 - Flood fill"
+	type: 'swf8
+	file: %swf8-floodfill.swf
+	background: 255.255.255
+	rate: 12
+	size: 400x400
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 13-10-2005
+	purpose: {To test possibillity of use floodFill on bitmaps.}
+	comment: {I'm using to drawings - one with 1px edges and the second one with 3px edges to mask the unwanted effects on the edge after filling. Use the color picker to change the fill color. The used drawing is taken from logo of the NewMediaArt festival in Brno (<a href='http://www.bzoom.org'>BRNO ZOOM 2005</a>)}
+	compressed: true
+]
+background 255.255.255
+
+require %includes/gui-colorpallet.rswf
+
+spr_bzoom1: sprite [import-swf %includes/bzoom1.swf]
+spr_bzoom2: sprite [import-swf %includes/bzoom2.swf]
+
+spr_picture: sprite [
+	es: EmptySprite
+	bzoombmp: place es [at -50x-137 actions [
+		load [clr: #FF0000]
+		press  [
+			this._parent.bmpPicture.floodFill(this._xmouse this._ymouse clr)
+		]
+	]]
+	bzoom1: place spr_bzoom1  at -30x-117 
+	bzoom2: place spr_bzoom2 [at -31x-118 actions [press[]]]
+
+	doAction [
+		bmpPicture: make BitmapData! [
+			(bzoom1._width  + 40)
+			(bzoom1._height + 40)
+			false #FFFFFF
+		]
+	    bzoombmp.attachBitmap(bmpPicture 1)
+	    matrix: make Matrix! []
+	    matrix.translate(20 20)
+	    ctrans: make ColorTransform! [1 1 1 1 0 0 0 0]
+	    bmpPicture.draw(bzoom1 matrix ctrans "normal" bzoom1.drawrect false)
+	    bzoom1._visible: false
+	]
+	showFrame end
+]
+picture: place spr_picture
+pallet:  place spr_pallet at 0x360
+
+doAction [
+;	picture._x: (Stage.width - picture._width) / 2
+	pallet._x:  (Stage.width - pallet._width) / 2
+	pallet.onGetColor: func[clr][
+		this._parent.picture.bzoombmp.clr: clr
+	]
+    myShadow: make DropShadowFilter![3 45 #000000 0.5 4 4 2 2]
+    pallet.filters: [myShadow]
+]
+showFrame
+end

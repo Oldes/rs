@@ -1,0 +1,107 @@
+rebol [
+	title: "GUI_Field"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 24
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 8/10/2007
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+
+require [
+	%gui/defaults.rswf
+	%gui/GUI_Text.rswf
+]
+
+
+GUI_Field: Extends GUI_Text [
+	width:  100
+	height: 20
+	text: ""
+	oldText: ""
+	clr_fill: #FFFF00
+	type: "field"
+	;password?: false
+	focus?: false
+	colors: none
+	r: 1
+	
+	init: func[width height text][
+		this.createEmptyMovieClip("bg" 1)
+		this.createTextField("tf" 2 0 1 width height)
+		super(width height)
+		;trace(this.password?)
+		with this.tf [
+			multiline: false
+			wordWrap:  false
+			;embedFonts: true
+			;border: true
+			variable: "text"
+			gridFitType: "pixel"
+			;thickness: -150
+			;antiAliasType: "advanced"
+			;html:      true
+			type: "input"
+			password: this.password?
+			setTextFormat(defaultFont)
+			setNewTextFormat(defaultFont)
+			;filters: [defaultTextBevel]
+		]
+		tellTarget this.tf [
+			onSetFocus: func[oldFocus][
+				;trace(this.text)
+				if this.type = "input" [
+					tellTarget this._parent [
+						focus?: true
+						redraw()
+					]
+					this._parent.onSetFocus(oldFocus)
+				]
+			]
+			onKillFocus: func[newFocus][
+				tellTarget this._parent [
+					focus?: false
+					redraw()
+				]
+				this._parent.onKillFocus(newFocus)
+			]
+		]
+		this.tf.addListener(this)
+		this.filters: [defaultBevelField]
+		this.tff: this.tf.getTextFormat()
+		this.tff.leftMargin: 2
+		;this.createEmptyMovieClip("ma" 3)
+		if text <> undefined [
+			this.text: text
+		]
+		
+		;trace("init" this this.width this.height this._x this.color)
+		;trace(this.tf.textWidth this.tf.textHeight)
+		this.setType(this.type)
+		this.cacheAsBitmap: true
+	]
+
+	resize: func[width height][
+		super.resize(width height)
+	]
+	redraw: does [
+		either this.focus? [var bg: this.colors.focus][ var bg: this.colors.background]
+		with this.bg [
+			clear()
+			drawBox(0 0 this.width this.height this.r bg this.colors.edge)
+		]
+	]
+	onChanged: func[field][
+		;trace("onChanged" this field.text)
+	]
+	updateStyle: does [
+		this.tf.setTextFormat(defaultButtonFont)
+		super.updateStyle()
+	]
+]
+

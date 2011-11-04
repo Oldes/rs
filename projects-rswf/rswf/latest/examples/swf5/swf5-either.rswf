@@ -1,0 +1,45 @@
+rebol [
+	title: "SWF5-Control Flow" 
+	type: 'swf5
+	file: %either.swf
+	background: 153.165.139
+	rate: 60
+	size: 300x100
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {To show how to Control Flow and frames variables}
+	comment: {I've decided to use frame number variables because I think that it's faster then using labels (and the file is a little bit smaller then with labels - because the frame label is not stored in the binary SWF file).
+	So if I use <b>frm_init: show frame</b> the number of the NEXT frame is strored in the variable <b>frm_init</b>, that I can use in the gotoFrame2 tag.
+	For these who don't know Rebol yet, the <b>EITHER</b> word is used instead of:
+	IF (something) [do this] ELSE [do that].
+	<b>GOTO FRAME</b> is now equal to <b>GotoFrame2</b> (it's not same as GotoFrame see the <a href="swf-counter.html">counter example</a>!)}
+]
+background 153.165.139
+fnt_arial: defineFont2 [name "Courier New" bold]
+txt_test: EditText 'x 300x100 [
+	ReadOnly
+	Color 0.0.0
+	Font [fnt_arial 12]
+	Layout [align: 'left Leading: -2]
+]
+Place txt_test
+frm_init: show frame
+DoAction [
+	a: random 40
+	i: 0
+	x: rejoin ["a = " a newline]
+]
+frm_cycle: show frame
+DoAction [x: x add "x"]
+show 2 frames
+DoAction [
+	either a = i [
+		goto frame frm_init
+	][
+		i: i + 1
+		goto frame frm_cycle
+	]
+	play
+]
+show frame
+end

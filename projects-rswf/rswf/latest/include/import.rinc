@@ -1,0 +1,109 @@
+Rebol [
+	title: "Functions for importing SWFs into another SWFs"
+]
+
+ins-swf-file: func[
+	swf-file
+	no-end?
+	/local tmp fileCacheData fileCacheBin cacheData new-used-ids update? bbase bin
+][
+	update?: true
+	swf-file: get-filepath arg1 
+	bbase: system/options/binary-base
+	system/options/binary-base: 64
+	print ["^/Importing:" swf-file "end?" no-end?]
+;xt: now/time/precise
+
+	;# I'm not using ALL because I want to define both file names here
+	if (
+		(exists? fileCacheData: join swf-file %.txt) and
+		(exists? fileCacheBin:  join swf-file %.bin)
+	) [
+		cacheData: context load fileCacheData
+		update?: not all [
+			cacheData/source-modified = modified? swf-file
+			empty? difference cacheData/was-used-ids used-ids
+		]
+	]
+	;update?: true
+
+	either update? [
+		tmp: import-swf swf-file new-used-ids: copy used-ids last-depth
+		save fileCacheData cacheData: compose/only [
+			source:          (swf-file)
+			source-modified: (modified? swf-file)
+			was-used-ids:    (used-ids)
+			new-used-ids:    (new-used-ids)
+			last-depth:      (tmp/2)
+			new-ids-table:   (tmp/3)
+			new-labels:      (tmp/4)
+			frames:          (tmp/5)
+		]
+		cacheData: context cacheData
+		used-ids: new-used-ids
+		new-line/all tmp/1 true
+		save fileCacheBin tmp/1
+		;ins tmp/1
+		
+		bin: tmp/1
+		if tmp/2 [last-depth: tmp/2]
+		append names-ids-table tmp/3
+		print ["Imported frame labels:" mold tmp/4 #"^/"]
+	][
+		print "using cache^/"
+		bin: load fileCacheBin 
+
+		;ins read/binary fileCacheBin
+		used-ids: cacheData/new-used-ids
+		if cacheData/last-depth [last-depth: cacheData/last-depth]
+		append names-ids-table cacheData/new-ids-table
+		;print ["Imported frame labels:" mold cacheData/new-labels]
+	]
+	foreach [dict ctrl] bin [
+		ins-def dict
+		ins ctrl
+	]
+	
+	;probe cacheData
+	error? try [frames: frames + cacheData/frames]
+	;print now/time/precise - xt
+	system/options/binary-base: bbase
+	;probe no-end?
+	switch no-end? [
+		no [
+			;print ["????" frames mold body]
+			;frames: frames - 1
+			clear skip tail body -2
+		]
+		show [
+			frames: frames - 1
+			clear skip tail body -4
+		]
+	]
+	comment {
+	if cacheData [
+		clear cacheData/new-used-ids
+		clear cacheData/was-used-ids
+		clear cacheData/new-labels
+		cacheData: none
+	]
+	if bin [bin: none]}	
+	;recycle
+	print ["Stats:" stats]
+]
+
+ins-import-assets: func[
+	assets [block!] "Block with one or more id and name pairs to import"
+	from   [url! path! word! string! file!] "path to the exporting SWF"
+   /local bin
+][
+	bin:  make binary! 50
+	from: as-binary either any [word? from path? from] [mold from][to string! from]
+	append bin join from #{00}
+	if swf-version >= 8 [append bin #{0100}]
+	append bin int-to-ui16 (length? assets) / 2
+	foreach [id name] assets [
+		append bin rejoin [set-id/as id name #{00}]
+	]
+	ins form-tag either swf-version < 8 [57][71] bin
+]

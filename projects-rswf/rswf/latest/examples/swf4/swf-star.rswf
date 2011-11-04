@@ -1,0 +1,37 @@
+rebol [
+	title: "SWF-Star example"
+	type: 'swf
+	file: %star.swf
+	background: 0.0.0
+	rate: 12
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 7-2-2002
+	purpose: {Nice STAR shape example - using 'transform, 'n-star and 'ExportAssets}
+	comment: {Since 7-2-2002 it's not neccessary to use the BOUNDS settings because they are calculated automatically.
+	Now it's posible to do the transformations (rotate, scale, skew, reflect and move) as well.
+	(for other nice stars change the number of star's spikes from 7 to other value as 15...)
+	Check out the "<b>ExportAssets</b>" tag as well -> that makes the star shape available for importing to other movies.
+}
+]
+background 0.0.0
+shp_star: Shape [
+	fill color 255.255.255 
+	rebol [
+		use [s r][
+			s: 1
+			for r 0 360 60 [
+				parse compose/deep [
+					transform [rotate (r) scale (s)]
+					curved n-star 7 140 15
+				] rswf/shp-rules
+				s: s - 0.13
+			]
+		]
+	]
+]
+ExportAssets [shp_star "niceStar"]
+Place shp_star at 160x160
+showFrame
+end

@@ -1,0 +1,33 @@
+rebol [
+	title: "SWF5-GetTime" 
+	type: 'swf5
+	file: %gettime.swf
+	background: 153.165.139
+	rate: 60
+	size: 300x100
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {To show how to get time elapsed since the movie's start}
+]
+background 153.165.139
+fnt_arial: defineFont2 [name "Arial" ]
+txt_test: EditText 'x 300x100 [
+	ReadOnly
+	NoSelect
+	Color 0.0.0
+	Font [fnt_arial 82]
+	Layout [align: 'center]
+]
+spr_c1: Sprite [
+	Place txt_test
+	showFrame
+	DoAction [x: GetTime]
+	showFrame
+	DoAction [GotoFrame2 2 Play]
+	showFrame
+	end
+]
+obj_c1: Place spr_c1
+
+showFrame
+end

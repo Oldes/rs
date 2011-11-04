@@ -1,0 +1,33 @@
+rebol [
+	title: "MX-Load JPG as movie" 
+	type: 'mx
+	file: %mx-load-jpg.swf
+	background: 252.227.116
+	rate: 12
+	size: 489x317
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {Test of loading JPG photo into the movie}
+	comment: {
+	In the FlashMX it's possible to load JPG images directly into the movie. It's a shame, that it's not possible with other types of images (at least with PNGs) - Rebol/view is able to do that since version 1, FlashMX is version 6 of the Flash!
+	BTW: the JPG must be saved as BASIC - that means no progress JPGs allowed)}
+]
+background 252.227.116
+fnt_Courier: defineFont2 [name "Courier New" bold]
+txt_test: EditText 'x 489x60 [
+	text "Loading photo..."	Layout [Leading: -2]
+	ReadOnly Color 0.0.0 Font [fnt_Courier 12]
+]
+es: EmptySprite
+pic: place es [
+	actions [data [
+	_parent.x: {When will stop the stupid violence in the Middle East?
+When people find out that we are living on the same piece of rock?
+When will disappear these fences from the deserts, from our minds?}]]
+]
+place txt_test
+DoAction [
+	pic.loadMovie("images/bordel.jpg" 1)
+]
+showFrame
+end

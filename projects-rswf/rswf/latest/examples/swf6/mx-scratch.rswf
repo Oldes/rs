@@ -1,0 +1,58 @@
+rebol [
+	title: "MX-Scratch movies"
+	type: 'mx
+	file: %mx-scratch.swf
+	background: 0.0.0
+	rate: 15
+	size: 160x360
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 14-10-2003
+	purpose: {how to scratch multiple movies}
+	comment: {<center>Is this funny? Stupid soldiers!</center>}
+
+]
+background 0.0.0
+es: emptySprite
+spr_movies: sprite [
+	m1: place es
+	m2: place es at 0x120
+	m3: place es at 0x240
+	doAction [
+		m1.loadMovie(%includes/movie1.swf)
+		m2.loadMovie(%includes/movie2.swf)
+		m3.loadMovie(%includes/movie3.swf)
+	]
+	showFrame
+	end
+]
+scratch: place spr_movies [
+	actions [
+		load [
+			dest1: dest2: dest3: 1
+			move: func[movie][
+				cf: movie._currentframe
+				either dest < cf [
+					movie.prevFrame()		
+				][
+					either dest = cf [
+						var f: 10 + random 10
+						either 1 < random 4 [
+							dest: math.min((cf + f) movie._framesloaded)
+						][	dest: math.max((cf - f) 1) ]
+					][
+						movie.nextFrame()
+					]
+				]
+				
+			]
+		]
+		enterFrame [
+			dest: dest1	move(m1) dest1: dest
+			dest: dest2	move(m2) dest2: dest
+			dest: dest3	move(m3) dest3: dest
+		]
+	]
+]
+showFrame
+end

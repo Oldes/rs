@@ -1,0 +1,47 @@
+rebol [
+	title: "FLASH8 - layout buttons"
+	type: 8
+	file: %swf8-layout-buttons.swf
+	background: 200.200.200
+	rate: 24
+	size: 401x420
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 9-Oct-2007/21:14:43+2:00
+	purpose: {The new layout minidialect can be used to place different types of buttons. Note that this can change a little bit in a future as this is still under developement and this script is just a first public test file.}
+	comment: {}
+	compressed: true
+]
+
+background 200.200.200
+
+require %tracer.rswf
+
+layout [
+	at 10x100
+	b1: Button 160x22 [ trace("onRelease" this)	]
+	b2: Button "Disable / Enable" [b5.setEnabled((not b5.enabled?))]
+	b3: Button   
+	return
+	Button-important 220
+	b5: Button "Test" [ if this.enabled? [trace(this "type:" this.type)] ]
+	
+	at 10x180
+	across
+	
+	Button 79x18 "OK"  [b5.setType("ok")      b5.setText("OK type")]
+	Button "Default"  [b5.setType("default") b5.setText("Default type")]
+	
+	return
+	
+	Button "Warning"  [b5.setType("warning") b5.setText("WARNING type")]
+	Button "Yes"      [b5.setType("yes")     b5.setText("YES type")]
+	
+	return
+	pad 0x10
+	
+	Button-yes 79x79 [trace("YES")]
+	Button-no        [trace("NO" )]
+]
+
+showFrame end

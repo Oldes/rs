@@ -1,0 +1,83 @@
+rebol [
+	title: "GUI_Area"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 24
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 8/10/2007
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+
+require [
+	%gui/defaults.rswf
+	%gui/GUI_Field.rswf
+	%gui/GUI_Scroller.rswf
+]
+
+
+GUI_Area: Extends GUI_Field [
+	width:  100
+	height: 100
+	type: "area"
+	text: ""
+	init: func[width height text][
+		this.attachMovie("GUI_Scroller" "slider" 3)
+		super(width height text)
+		this.tf.multiline: true
+		this.tf.wordWrap:  true
+		this.slider.onChanged: does [
+			super.onChanged()
+			;trace("onChanged" this)
+			this._parent.tf.scroll: 1 + ((this._parent.tf.maxscroll - 1) * this.value)
+		]
+		this.resize(this.width this.height)
+		this.onScroller(this.tf)
+	]
+
+	appendText: func[text newline?][
+		if newline? [text: text add newline]
+		this.text: rejoin [this.text text]
+		this.slider.setValue(1)
+	]
+	onScroller: func[field][
+		trace("onScroller" field field.maxscroll field.lastMaxscroll field.scroll)
+        if field.lastMaxscroll <> field.maxscroll [
+            field.lastMaxscroll: field.maxscroll
+            var d: field.maxscroll - 1 
+            either field.maxscroll > 1 [
+                var r: 1 - (d * 0.01)
+                this.slider.setRatio(r)
+                this.slider.step: 1 / d
+                this.slider._visible: true
+                ;sc.redrag(((tf.scroll - 1) * sc.step))
+            ][
+                this.slider.setRatio(1)
+                this.slider._visible: false
+            ]
+        ]
+        this.slider.setValue((field.scroll / field.maxscroll))
+       ; this.slider.redrag()
+    ]
+    
+	resize: func[width height][
+		super.resize(width height)
+		this.slider.resize(15 height)
+		this.tf._width: this.slider._x: width - 15
+		;trace("resize" this this.tf this.tf._width)
+	]
+	
+	redraw: does [
+		either this.focus? [var bg: this.colors.focus][ var bg: this.colors.background]
+		with this.bg [
+			clear()
+			drawBox(0 0 this.width this.height this.r bg this.colors.edge)
+		]
+	]
+
+]
+

@@ -1,0 +1,128 @@
+rebol [
+	title: "SWF5-Distribute space 2"
+	type: 'swf5
+	file: %distribute_sp2.swf
+	background: 152.174.149
+	rate: 24
+	size: 360x100
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	purpose: {Function for objects distribution using specified space size - with centering}
+	comment: {
+		This is just a test. This functions is designed specially for distribution of objects with different sizes. That's why I use the button with resizing.}
+]
+background 152.174.149
+
+es: emptySprite
+shp_testshape: Shape [
+	bounds -20x-20 20x20
+	fill color #000000 box -20x-20 20x20
+	fill color #FFAA00 box -18x-18 18x18
+]
+btn_testshape: defineButton2 [
+	shapes [
+		[hit up] [id shp_testshape]
+		over [id shp_testshape scale 1.5]
+		down [id shp_testshape scale 0.8]
+	]
+	actions [
+		press    [_parent.refresh(this)]
+		rollOver [_parent.refresh(this)]
+        rollOut  [_parent.refresh(this)]
+        release  [_parent.refresh(this)]
+        DragOut  [_parent.refresh(this)]
+        DragOver [_parent.refresh(this)]
+	]
+]
+spr_testshape: Sprite btn_testshape
+exportAssets [spr_testshape "testshape"]
+items: place es [
+	at 0x50
+	actions [
+		load [
+			;first I create some objects I want to use...
+			objects: []
+			for i 0 4 1 [
+				this.attachMovie("testshape" ("o" add i) i)
+				o: eval(eval("o" add i))
+				objects.push(o)
+			]
+			distribute_spacing: func[
+				objs  ;Array with objects for distribution
+				hsp   ;Horizontal spacing
+				vsp   ;Vertical spacing
+				cobj  ;Center object
+			][
+				var objs_left:  []
+				var objs_right: []
+				var tmp: true ;searching for the center object
+				foreach o objs [
+					either tmp [
+						either o = cobj [
+							tmp: false
+						][
+							objs_left.push(o)
+						]
+					][
+						objs_right.push(o)
+					]
+				]
+				either tmp [
+					;the center was not found - using the first object as a center
+					var cobj: objs/1
+					objs_right: objs_left
+					objs_right.shift()
+					objs_left: []
+				][
+					objs_left.reverse()
+				]
+				var x: cobj._x - (cobj._width / 2) 
+				var y: cobj._y - (cobj._height / 2)
+				foreach o objs_left [
+					if hsp <> null [
+						o._x: x - hsp - (o._width / 2)
+						x: o._x - (o._width / 2)
+					]
+					if vsp <> null [
+						o._y: y - vsp - (o._height / 2)
+						y: o._y - (o._height / 2)
+					]
+				]
+				var x: cobj._x + (cobj._width / 2) 
+				var y: cobj._y + (cobj._height / 2)
+				foreach o objs_right [
+					if hsp <> null [
+						o._x: x + hsp + (o._width / 2)
+						x: o._x + (o._width / 2)
+					]
+					if vsp <> null [
+						o._y: y + vsp + (o._height / 2)
+						y: o._y + (o._height / 2)
+					]
+				]
+			]
+			refresh: func[c][
+				if c <> null [	center: c ]
+				distribute_spacing(objects sp null center)
+			]
+			
+			center: this.o2
+			center._x: 160 ;this item I want to use as a center
+			refresh(center)
+		]
+	]
+]
+;For testing I add one slider for modifying the space value
+ImportAssets [obj_slider "slider"] from %slider.swf
+sl_1: place obj_slider [at 30x80]
+doAction [
+	tellTarget sl_1 [
+        onChange: func[][
+            _parent.items.sp: -2 + to-integer (20 * value)
+            _parent.items.refresh()
+        ]
+        init(0 "SP:")
+    ]
+]
+showFrame
+end

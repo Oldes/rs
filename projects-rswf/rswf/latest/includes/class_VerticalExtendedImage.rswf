@@ -1,0 +1,20 @@
+rebol [title: "GUI_VerticalExtendedImageClass"]
+
+	_global.GUI_VerticalExtendedImageClass: func[][this.init()]
+	
+	GUI_VerticalExtendedImageClass.prototype: make MovieClip
+	GUI_VerticalExtendedImageClass.prototype.init: func[][
+		super.init()
+		;this.b._y: 20
+		this.minheight: this.t._height + this.m._height + this.b._height
+		if this.height = undefined [this.height: this.minheight]
+		;cmsg((reform [this "init" this.minheight this.height]))
+		this.setHeight(this.height)
+	]
+	GUI_VerticalExtendedImageClass.prototype.setHeight: func[h][
+		this.height: h
+		with this [
+			m._height: h - t._height - b._height
+			b._y: t._height + m._height - 1
+		]
+	]

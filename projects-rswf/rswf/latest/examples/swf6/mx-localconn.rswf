@@ -1,0 +1,42 @@
+rebol [
+	title: "MX-Local connection"
+	type: 'mx
+	file: %localconn.swf
+	background: 152.174.149
+	rate: 40
+	size: 320x80
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 4-6-2002
+	related: [%mx-localconn-s.rswf]
+	purpose: {local connection object demonstration}
+	comment: {
+	The local connection object is used to receive and send data between movies in one machine.
+	Write some text in the second movie and press ENTER -> the text should be send to the first movie.}
+]
+background 152.174.149
+fnt_Courier: Font [name "Courier New" bold]
+txt_test: EditText x 320x80 [
+	ReadOnly WordWrap Font [fnt_Courier 12]
+	layout [indent: 10 leading: -2]
+]
+doAction [
+	constantPool [receivingLC x msg]
+	receivingLC: make LocalConnection
+	receivingLC.allowDomain: func[][return true]
+	;any domain can invoke methods on this LocalConnection object
+	
+	;and here are my methods:
+	receivingLC.processMSG: func[msg][x: x + newline + msg]
+	receivingLC.tick: func[][gotoAndPlay(2)]
+	;text blinks as you press key in the second movie
+	
+	receivingLC.connect("lc_test")
+	x: "Current domain: " + receivingLC.domain()
+]
+showFrame
+place txt_test doAction [x.scroll: x.maxscroll] showFrame
+place txt_test [move at  2x2  add 200.0.0] showFrame
+place txt_test [move at -2x-2 add 0.0.200] showFrame
+doAction [goto frame 2] showFrame
+end

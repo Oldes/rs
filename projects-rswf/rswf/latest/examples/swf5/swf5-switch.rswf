@@ -1,0 +1,51 @@
+rebol [
+	title: "SWF5-Switch example"
+	type: 'swf5
+	file: %switch.swf
+	background: 152.174.149
+	rate: 30
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	purpose: {How to control flow with 'switch function}
+	comment: {The 'switch' works as in Rebol so no comment (may be used to create swf4 files as well but I use clip actions in this example so it's in the swf5 section)...
+	...check out the "lit-words" ('down, 'up ...) - I use them instead of Key.DOWN as it is in the ActionScript - the right values are stored in the local-variables block in the compiler and are translated during compilation (so for example 'down is equal to 40 etc.)
+!!! ATTENTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+In older versions it was possible to use SWITCH/DEFAULT
+Because of some changes in Rebol itself it's not possible now!
+Use SWITCH-DEFAULT or just: switch val [some rules][default rule]	
+}
+	JS: {document.getElementById('swf5_switch').focus();}
+]
+background 152.174.149
+fnt_arial: defineFont2 [name "Arial" bold]
+txt_test: EditText 'x 320x20 [
+	ReadOnly
+	Color 0.0.0
+	Font [fnt_arial 12]
+]
+place txt_test
+shp_box: shape [
+	fill color 0.0.0
+	box2 20x20
+]
+spr_box: sprite shp_box
+obj_box: place spr_box [
+	at 160x160
+	actions [
+		load [_root.x: "Use arrow keys to move the box"]
+		keyDown [
+			ConstantPool [k _root.x Key.getCode]
+			k: Key.getCode()
+			_root.x: "Box position: " . _x . "x" . _y
+			switch k [
+				'left  [_x: _x - 20]
+				'right [_x: _x + 20]
+				'down  [_y: _y + 20]
+				'up    [_y: _y - 20]
+			][ _root.x: "KeyCode = " add k ]
+		]
+	]
+]
+showFrame
+end

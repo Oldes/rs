@@ -1,0 +1,23 @@
+rebol [
+	title: "SWF import"
+	type: 'swf5
+	file: %swf5-importswf.swf
+	background: 255.255.255
+	rate: 12
+	size: 400x400
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 18-10-2005
+	purpose: {How to import a SWF file into other SWF during compilation of the dialect. One may say: why don't use the <code>import</code> or <code>loadMovie</code> function. The reason is that in some cases it's better to have all in one file (it speedups the load time)}
+	comment: {This may be buggy with more complex SWFs as I did only what I needed. Should be OK with simple shapes. You should import into sprite to handle depths correctly and not to stop after the import.}
+	compressed: false
+]
+background 255.255.255
+spr_bzoom: sprite [import-swf %includes/bzoom.swf]
+bzoom: place spr_bzoom
+doAction [
+	bzoom._x: (400 - bzoom._width ) / 2
+	bzoom._y: (400 - bzoom._height) / 2
+]
+showFrame
+end

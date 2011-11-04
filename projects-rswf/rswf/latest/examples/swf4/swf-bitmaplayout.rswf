@@ -1,0 +1,50 @@
+rebol [
+	title: "SWF-Bitmap layout"
+	type: 'swf
+	file: %bitmaplayout.swf
+	background: 246.250.255
+	rate: 12
+	size: 226x190
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 5-11-2002
+	purpose: {How to create bitmaps using the Rebol layout function and VID dialect}
+	comment: {
+	There is still limit in the %img-to-bll.r function up to 255 colors per image and convering image to BitsLossless format in pure Rebol is not so fast so this is more for special purposes.
+	The <code>[key 255.255.25]</code> is optimal and tells the interpreter to make the image color transparent.
+	The <code>bitmap-to-image</code> must be used to convert the bitmap into a shape (which may be placed into a scene)
+	Who doesn't know what is VID, visit this page: <a href="http://www.rebol.com/docs/easy-vid.html">www.rebol.com/docs/easy-vid.html</a> or <a href="http://www.rebol.com/docs/view-guide.html">www.rebol.com/docs/view-guide.html</a>}
+
+]
+background #f6faff
+shp_grad: Shape [
+	Bounds 0x0 226x190 
+	gradient [colors [255.0.0 255.255.0 0.255.0] rotate 90] 
+	box rounded 10 0x0 226x190 
+]
+
+bmp_test: bitmap layout [
+	backdrop 255.255.25
+	vh2 200 255.255.0 "Hello from Rebol"
+	lbl 200 "This image was created by Rebol"
+	text 200 255.0.0 (to-string now) center
+	h5 200 100.0.0 (reform ["by" system/user/name]) center
+	box 200x54 255.255.255 with [
+		edge: make edge [size: 2x2 effect: 'ibevel color: 255.200.0]
+		effect: [
+			draw [
+				pen 200.0.0 fill-pen 100.0.0
+				polygon 0x0 100x25 200x10 200x50 0x50 0x0
+				pen 200.0.200 fill-pen 100.0.100
+				polygon 0x0 50x40 140x20 200x25 200x50 0x50 0x0
+				
+			]
+		]
+	]
+][ key 255.255.25 ]
+
+img_test: bitmap-to-image bmp_test
+place shp_grad
+place img_test at 10x10
+showFrame
+end

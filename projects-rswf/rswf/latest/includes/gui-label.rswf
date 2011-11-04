@@ -1,0 +1,36 @@
+rebol [
+	title: "GUI-Label"
+	type: 'mx
+	file: none
+	background: 153.165.139
+	rate: 12
+	size: 1x1
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 28-5-2003
+	purpose: {To have label used with GUI objects}
+	build: 'no-page
+]
+require %includes/gui-mainfonts.rswf
+;fnt_gui_arial: defineFont2 [name "Arial"] 
+txt_gui_flabel: EditText 'label 1x15 [
+	Readonly NoSelect font [fnt_gui_arial 11]
+	UseOutlines
+]
+exportAssets [txt_gui_flabel "GUI_Label"]
+doAction [
+	ConstantPool [gui_TF_labelBold gui_TF_label bold TextFormat _global]
+	_global.gui_TF_labelBold: make TextFormat
+	gui_TF_labelBold.bold: true
+	gui_TF_labelBold.leftMargin: 2
+
+	_global.gui_TF_label: make TextFormat
+	gui_TF_label.bold: false
+	gui_TF_label.leftMargin: 2
+	
+	_global.gui_TF_labelCenter: make TextFormat
+	gui_TF_labelCenter.bold: false
+	gui_TF_labelCenter.leftMargin: 2
+	gui_TF_labelCenter.align: "center"
+	gui_TF_labelCenter.color: #FF0000
+]

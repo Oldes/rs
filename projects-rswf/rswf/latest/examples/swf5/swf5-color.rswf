@@ -1,0 +1,34 @@
+rebol [
+	title: "SWF5-Color object" 
+	type: 'swf5
+	file: %color.swf
+	background: 153.165.139
+	rate: 20
+	size: 320x100
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {To show how to work with a color object in SWF5}
+	comment: {
+	I've changed the dialect to use: <pre>
+make color movie_clip</pre>
+instead of:<pre>
+make color! movie_clip</pre>
+so it's more as in ActionScript.
+For more advanced example see: <a href="swf5-colortransform2.html">ColorTransform2</a>}
+]
+background 153.165.139
+shp_box: Shape [
+	bounds 0x0 100x100
+	fill color 0.0.0
+	box 0x0 100x100
+]
+obj_box: Place shp_box at 110x0
+DoAction [
+	clr_box: make color obj_box
+	;set color clr_box to 255.1.2 ;<-- used in older rswf versions, not supported anymore
+	clr_box.setRGB(255.1.2)
+]
+showFrame
+DoAction [clr_box.setRGB((random 255.255.255))]
+showFrame
+end

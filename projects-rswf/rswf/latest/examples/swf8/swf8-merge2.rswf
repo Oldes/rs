@@ -1,0 +1,52 @@
+rebol [
+	title: "FLASH8 - merger effect (v2)"
+	type: 'swf8
+	file: %swf8-merge2.swf
+	background: 255.255.255
+	rate: 24
+	size: 400x300
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 19-10-2005
+	purpose: {Example of function merge (per-channel blending from a source image to a destination image).}
+	comment: {Same like the previous merge example but with one bitmap over with the "lighten blend"}
+	compressed: true
+]
+background 255.255.255
+bitmaps images [bmp_picture:  %bitmaps/holky.jpg]
+spr_picture: sprite img_picture
+exportAssets [bmp_picture "picture"]
+es: EmptySprite
+picture: place es
+picture2: place spr_picture [at 0x0 blend "lighten"]
+
+doAction [
+    bmpSource: flash.display.BitmapData.loadBitmap("picture")
+    bmpTarget: make BitmapData! [400 300 false #FFFFFF]
+    picture.attachBitmap(bmpTarget 1)
+    
+	copyPicturePart: func[][
+		var rx: -50 + random 370
+		var ry: -50 + random 270
+		var w:  40 + random 100
+		var h:  40 + random 100
+		var srcRectangle: make Rectangle! [(rx) (ry) (rx + w) (ry + h)]
+		var destPoint: make Point! [
+			(rx + 30 - random 60)
+			(ry + 30 - random 60)
+		]
+		bmpTarget.merge(
+			bmpSource	 ;sourceBitmap:BitmapData
+			srcRectangle ;sourceRect:Rectangle
+			destPoint
+			(random 20)	;redMult:Number
+			(random 20)	;greenMult:Number
+			(random 20)	;blueMult:Number
+			100			;alphaMult:Number
+		)
+	]
+	copyPicturePart()
+	int: setInterval(copyPicturePart 5)
+]
+showFrame
+end

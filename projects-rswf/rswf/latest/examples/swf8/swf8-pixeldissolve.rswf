@@ -1,0 +1,66 @@
+rebol [
+	title: "Flash8 - pixelDissolve"
+	type: 'swf8
+	file: %swf8-pixeldissolve.swf
+	background: 255.255.255
+	rate: 24
+	size: 320x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 11-10-2005
+	purpose: {To test and demonstrate pixelDissolve and loadBitmap functions}
+	comment: {}
+	compressed: true
+]
+background 255.255.255
+es: EmptySprite
+mc: place es
+
+bmp_pic: bitmap %bitmaps/hlava.jpg
+ExportAssets [bmp_pic "bmpPic"]
+
+include %includes/txt_info.rswf
+
+doAction [
+	bmpWhite: make flash.display.BitmapData[320	320	false #FFFFFF]
+	mc.attachBitmap(bmpWhite 1)
+	
+	bmpPic: flash.display.BitmapData.loadBitmap("bmpPic")
+
+	randomNum: Math.floor((Math.random()) * 10)
+
+	totalDissolved: 0
+	totalPixels: 320 * 320
+	srcBitmap: bmpPic
+	destPoint: make flash.geom.Point[20 0]
+	pixels: 200
+	
+	dissolve: func[randomNum][
+		newNum: bmpWhite.pixelDissolve(
+			srcBitmap
+			srcBitmap.rectangle
+			destPoint
+			randomNum
+			pixels
+			#FFFFFF
+		)
+		if totalDissolved >= totalPixels [
+			;dissolve finished, change srcBitmap and start again
+			either srcBitmap = bmpPic [
+				srcBitmap: bmpWhite
+				pixels: 1000 + random 1000
+			][
+				pixels: 200 + random 2000
+				srcBitmap: bmpPic
+			]
+			totalDissolved: 0
+		]
+		totalDissolved: totalDissolved + pixels
+		info: reform ["pixels:" pixels "num:" newNum]
+		clearInterval(intervalId)
+		intervalId: setInterval(dissolve 10 newNum)
+	]
+	dissolve(randomNum)
+]
+showFrame
+end

@@ -1,0 +1,60 @@
+rebol [
+	title: "MX-Spiral"
+	type: 'mx
+	file: %mx-spiral.swf
+	background: 20.20.20
+	rate: 24
+	size: 320x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 31-10-2003
+	purpose: {Test spiral generation}
+]
+background 153.165.139
+
+;include %includes/txt_info.rswf
+
+es: EmptySprite
+shp_circle: shape [
+	fill color 255.255.255
+	;edge [color 0.0.0 width 3]
+	circle 5
+]
+
+spr_circle: Sprite shp_circle
+exportAssets [spr_circle "circ"]
+spr_spiral: sprite [
+	lines: place es
+	showFrame end
+]
+place spr_spiral [
+	at 160x160
+	actions [
+		load [
+			r: 20 i: 0 p: 0 c: 10
+			lx: ly: 0
+			lines.lineStyle(2 #661100 100)
+			lines.moveTo(0 r)
+			nextCircle: func[][
+				a: p + (i * (math.PI / c))
+				o: make object! [
+					_x: r * math.sin(a)
+					_y: r * math.cos(a)
+				]
+				;_root.info: rejoin [(math.sin(a)) " " o._x " " o._y]
+				lines.lineTo(o._x o._y)
+				attachMovie("circ" ("c" add i) (i + 10) o)
+				i++
+				;p: p + 0.5
+				c: c + 0.05
+				r: r + 1.1
+			]
+		]
+		enterFrame [
+			if i < 100 [nextCircle()]
+		]
+	]
+]
+stop
+showFrame
+end

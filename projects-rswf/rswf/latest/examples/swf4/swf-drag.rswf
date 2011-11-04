@@ -1,0 +1,45 @@
+rebol [
+	title: "SWF-drag example"
+	type: 'swf
+	file: %drag.swf
+	background: 152.174.149
+	rate: 60
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 11-12-2001
+	purpose: {To show how to create dragable objects}
+]
+background 152.174.149
+shp_grid: Shape [
+	bounds 0x0 320x320
+	line-style [width 2]
+	grid 0x0 320x320 40x40
+]
+shp_circle: Shape [
+	bounds -50x-50 50x50
+	line-style [width 5]
+	fill-style [color 100.200.150]
+	circle 35
+]
+dragable_button: DefineButton2 [
+	shapes [
+		[up hit] [id shp_circle ]
+		down [id shp_circle multiply 255.0.255.100]
+		over [id shp_circle add 60.10.200]
+	]
+	actions [
+		press [	StartDrag ]
+		[release releaseOutside] [StopDrag]
+	]
+]
+spr_circle: Sprite [
+	Place dragable_button
+	showFrame
+	end
+]
+Place shp_grid
+obj_c1: Place spr_circle at 100x160
+obj_c2: Place spr_circle at 220x160
+showFrame
+end

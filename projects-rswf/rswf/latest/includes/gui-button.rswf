@@ -1,0 +1,81 @@
+rebol [
+	title: "GUI-Button"
+	type: 'mx
+	file: none
+	background: 153.165.139
+	rate: 12
+	size: 1x1
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 28-5-2003
+	purpose: {To have button}
+	build: 'no-page
+]
+require %includes/gui-label.rswf
+
+gui_button: sprite [
+    tf_label: place txt_gui_flabel
+    showFrame
+    end
+]
+exportAssets [gui_button "GUI_Button"]
+doAction [
+	ConstantPool [
+		_global setTextFormat setValue GUI_CheckBox
+		GUI_CheckBoxClass prototype this attachMovie fcb-label
+		gotoAndStop checked executeCallBack checkedValue setCheckState
+		where name depth
+	]
+		_global.GUI_ButtonClass: func[][this.init()]
+		GUI_ButtonClass.prototype: make MovieClip
+		
+		GUI_ButtonClass.prototype.init: func[][
+			;_root.test: _root.test add "^-" add this._name add ".init()^/"
+			with this.tf_label [
+				;autoSize: "center"
+				background: border: true
+			]
+			this.setAutoSize(false)
+			this.label: this._name
+			this.state: none
+			this.setState(1)
+			
+			this.type: "button"
+			this.width: 60
+			super.setSize(this._width this._height)
+		]
+		GUI_ButtonClass.prototype.setState: func[in_iState][
+			;_root.test: _root.test add "^-" add this._name add ".setState(" add in_iState add ")^/"
+			this.state: in_iState
+			switch in_iState [
+				1 [	this.tf_label.setTextFormat(gui_TF_labelCenter)]
+				2 [ this.tf_label.setTextFormat(gui_TF_labelBold)]
+			]
+		]
+		GUI_ButtonClass.prototype.setAutoSize: func[in_iState][
+			;_root.test: _root.test add "^-" add this._name add ".setAutoSize(" add in_iState add ")^/"
+			either in_iState [this.tf_label.autoSize: "center"][
+				this.tf_label.autoSize: none
+				;_root.test: _root.test add "^-" add this._name add ".width = " add this.width add "^/"
+				this.tf_label._width: 60 ;this.width
+			]
+		]
+		GUI_ButtonClass.prototype.setLabel: func[in_strLabel][
+			this.label: in_strLabel
+			this.setState(this.state)
+		]
+		GUI_ButtonClass.prototype.onPress: func[][
+			this.setState(2)
+		]
+		GUI_ButtonClass.prototype.onRelease: func[][
+			this.setState(1)
+		]
+		GUI_ButtonClass.prototype.onReleaseOutside: func[][
+			this.setState(1)
+		]
+		Object.registerClass("GUI_Button" GUI_ButtonClass)
+		
+		_global.createButton: func[where name depth][
+			where.attachMovie("GUI_Button" name depth)
+		]
+]

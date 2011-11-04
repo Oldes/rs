@@ -1,0 +1,107 @@
+rebol [
+	title: "FLASH8 - Gradient displace (ripple)"
+	type: 'swf8
+	file: %swf8-graddisplace2.swf
+	background: 255.255.255
+	rate: 24
+	size: 400x300
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 19-10-2005
+	purpose: {How to use radial gradient as a displacementMap to make a ripple effect}
+	comment: {}
+	compressed: true
+]
+background 255.255.255
+bitmaps images [bmp_picture:  %bitmaps/holky.jpg]
+spr_picture: sprite img_picture
+exportAssets [bmp_picture "picture"]
+
+es: EmptySprite
+gradient: place es
+picture: place spr_picture
+
+doAction [
+	gradRatioCenter: 50
+	dir: 4
+	updateGradient: func[][
+		gradRatioCenter: gradRatioCenter + dir
+		if gradRatioCenter > 245 [
+			dir: -1 * dir
+			gradRatioCenter: gradRatioCenter + dir
+		] else if gradRatioCenter < 10 [
+			dir: -1 * dir
+			gradRatioCenter: gradRatioCenter + dir
+		]
+		
+		with gradient [
+			
+			var matrix: make Matrix! []
+			matrix.createGradientBox(
+				200 ;width:Number
+				200 ;height:Number
+				0	;[rotation:Number]
+				300	;[tx:Number]
+				200	;[ty:Number]
+			)
+			
+			clear() ;THIS IS VERY IMPORTANT!!!!!!!!
+			;If you do not clear, you are adding more and more gradient rectangles
+			;over each other so it will slow down everything very fast!
+			
+			beginGradientFill(
+				"radial" ;fillType:String (linear/radial)
+				([#000000 #BBBBBB #000000]) ;colors:Array
+				([100 100 100])				;alphas:Array
+				([0 gradRatioCenter 255])	;ratios:Array
+				matrix						;matrix:Object
+				"repeat"	;[spreadMethod:String] (pad,reflect,repeat)
+				"RGB"	;[interpolationMethod:String] (linearRGB,RGB)
+				0		;[focalPointRatio:Number] (-1 to 1)
+			)
+			moveTo(0 0)
+			lineTo(800 0) lineTo(800 600) lineTo(0 600) lineTo(0 0)
+			endFill()
+		]
+	]
+	updateGradient()
+	;int: setInterval(updateGradient 50)
+	
+    bmpDispMap: make BitmapData! [800 600 false #FFFFFF]
+
+    mapPoint: make Point! [0 0]
+    clrTrans: make ColorTransform! [1 1 1 1 0 0 0 0]
+    
+    picture.onMouseMove: func[][
+    	matrix: make Matrix! []
+    	matrix.translate((_xmouse - 400) (_ymouse - 300))
+	]
+    picture.onMouseMove()
+    
+	updateEffect: func[][
+		updateGradient()
+	    bmpDispMap.draw(
+	    	gradient
+	    	matrix
+	    	clrTrans
+	    	"normal" gradient.rectangle false
+	    )
+	    var disp: make DisplacementMapFilter! [
+	    	bmpDispMap	;mapBitmap:BitmapData
+	    	mapPoint	;mapPoint:Point
+	    	1			;componentX:Number 1 (red), 2(green), 4 (blue), and 8 (alpha)
+			1			;componentY:Number
+			10			;scaleX:Number
+			10			;scaleY:Number
+			"clamp"		;[mode:String] (wrap,clamp,ignore,color)
+			#000000		;[color:Number] (color to use for out-of-bounds displacements.)
+			100			;[alpha:Number] (alpha value to use for out-of-bounds displacements.)
+		]
+		picture.filters: [disp]
+	]
+	updateEffect()
+	int: setInterval(updateEffect 50)
+
+]
+showFrame
+end

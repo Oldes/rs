@@ -1,0 +1,56 @@
+rebol [
+	title: "GUI_Arrows"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 24
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 8/10/2007
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+
+bitmaps images [alpha %gui/img/arrows.png]
+multi-image bmp_arrows.png [
+	img_gui_arrowRight: 0x0   6x10
+	img_gui_arrowLeft:  5x0   6x10
+	img_gui_arrowUp:    10x0 10x6
+	img_gui_arrowDown:  10x5 10x6
+	
+	img_gui_arrowRight2: 0x11   7x11
+	img_gui_arrowLeft2:  6x11   7x11
+	img_gui_arrowUp2:    12x10 11x7
+	img_gui_arrowDown2:  12x16 11x7
+]
+gui_arrowRight: sprite [place img_gui_arrowRight at -1x-1 showFrame end]
+gui_arrowLeft:  sprite [place img_gui_arrowLeft  at -1x-1 showFrame end]
+gui_arrowUp:    sprite [place img_gui_arrowUp    at -1x-1 showFrame end]
+gui_arrowDown:  sprite [place img_gui_arrowDown  at -1x-1 showFrame end]
+
+gui_arrowRight2: sprite [place img_gui_arrowRight2 at -1x-1 showFrame end]
+gui_arrowLeft2:  sprite [place img_gui_arrowLeft2  at -1x-1 showFrame end]
+gui_arrowUp2:    sprite [place img_gui_arrowUp2    at -1x-1 showFrame end]
+gui_arrowDown2:  sprite [place img_gui_arrowDown2  at -1x-1 showFrame end]
+Export [
+	img_gui_arrowRight "img_gui_arrowRight"
+	img_gui_arrowLeft  "img_gui_arrowLeft"
+	img_gui_arrowUp    "img_gui_arrowUp"
+	img_gui_arrowDown  "img_gui_arrowDown"
+	gui_arrowRight "gui_arrowRight"
+	gui_arrowLeft  "gui_arrowLeft"
+	gui_arrowUp    "gui_arrowUp"
+	gui_arrowDown  "gui_arrowDown"
+	
+	gui_arrowRight2 "gui_arrowRight2"
+	gui_arrowLeft2  "gui_arrowLeft2"
+	gui_arrowUp2    "gui_arrowUp2"
+	gui_arrowDown2  "gui_arrowDown2"
+]
+
+
+
+
+

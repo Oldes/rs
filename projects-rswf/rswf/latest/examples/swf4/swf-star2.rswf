@@ -1,0 +1,29 @@
+rebol [
+	title: "SWF-Star2 example"
+	type: 'swf
+	file: %star2.swf
+	background: 0.0.0
+	rate: 1
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 7-2-2002
+	purpose: {Another STAR shape example - how to reset transformation}
+]
+background 0.0.0
+shp_star: Shape [
+	edge [width 4 color 5.115.5]
+	fill color 255.255.255
+	curved n-star 6 90 230
+	transform [rotate 30]
+	curved n-star 6 90 230
+	no transform
+	edge [color 25.115.205]
+	fill color 255.55.55
+	curved n-star 12 90 20
+	no edge
+	curved n-star 4 60 -60
+]
+Place shp_star at 160x160
+showFrame
+end

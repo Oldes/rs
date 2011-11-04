@@ -1,0 +1,41 @@
+rebol [
+	title: "SWF-Circle animation"
+	type: 'swf
+	file: %anim.swf
+	background: 152.174.149
+	rate: 25
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 28-Dec-2001
+	purpose: {To show how to include Rebol code to create a simple animation}
+]
+background 152.174.149
+shp_circle: Shape [
+	bounds -30x-30 30x30
+	edge [width 2]
+	fill color 255.0.0
+	circle 25
+]
+Rebol [
+	r: 110
+	c: 0
+	for i 0 360 10 [
+		rswf/compile compose/deep [
+			Place shp_circle [
+				at (
+					r + 50 + to-pair reduce [
+						to-integer r * sine i
+						to-integer r * cosine i
+					]
+				)
+				multiply (c: c + 7)
+			]
+			showFrame
+		]
+	]
+	repeat d 36 [
+		rswf/compile compose [RemoveObject shp_circle (d) showFrame]
+	]
+]
+end

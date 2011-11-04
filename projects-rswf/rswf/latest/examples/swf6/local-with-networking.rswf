@@ -1,0 +1,81 @@
+rebol [
+	title: "local-with-networking"
+	type: 8
+	file: %local-with-networking.swf
+	background: 255.255.255
+	rate: 25
+	size: 320x350
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 16-03-2006
+	purpose: {Just an example how to set local-with-networking flag in your file.}
+	comment: {The same thing you can do with <a href='http://www.macromedia.com/support/flashplayer/downloads.html#lcu'>The Local Content Updater</a> tool. More info about security (in Flash 8) is available <a href='http://www.macromedia.com/devnet/flash/articles/fplayer8_security.html'>here</a>.
+	
+	Bellow are some networking tests. The local-networking for socket will not be working anyway (on your local) because the connection is not allowed on the box.lebeda.ws domain.
+	}
+
+]
+
+;!!! it must be the first tag !!!
+
+UseNetwork on
+;or:
+;local-with-networking on
+;or:
+;network privileges on
+;or:
+;allow networking on
+;================================
+
+
+background 255.255.255
+es: EmptySprite
+m: place es
+fnt_arial: Font [name "_sans"]
+txt_data: EditText 'value 315x100 [
+    WordWrap html text "Loaded" ReadOnly 
+    Color #000000 Font [fnt_arial 12]
+]
+place txt_data
+doAction [
+	;HERE ARE SOME NETWORKING TESTS
+
+	;?? this should limit access to network only for domain "box.lebeda.ws"
+	System.exactSettings: true 
+	System.security.allowDomain("box.lebeda.ws")
+	
+	;will be the file from foreign domain loaded?
+	m.loadMovie("http://laco.wz.cz/elasticboy.swf")
+	
+	
+	value: "test"
+    data_out: make LoadVars []
+    data_in:  make LoadVars []
+    data_out.c: "hello"
+    data_out.sendAndLoad("http://box.lebeda.ws/~hmm/rswf/msg.php" data_in "get" )
+	;the data are not loaded if I'm running it from localhost,
+	;but the local-with-networking seems to have no effect:-(
+	
+    data_in.onLoad: func[][
+        value: rejoin [value "^/<br><b>" data_in.value "</b>"]
+    ]
+]
+
+show 14 frames
+doAction [
+	;socket shoud work only on domain box.lebeda.ws, which is allowed on the server side
+	_global.socket: make XMLSocket
+	myOnConnect: func[success][
+		value: reform [value "<br>^/socket connection:" success]
+		socket.send((rejoin ["hello {rswf}"]))
+	]
+	socket.onConnect: myOnConnect
+	socket.onData:  func[src /local data][
+		value: value add "#"
+	]
+	socket.connect("box.lebeda.ws" 9000)
+]
+stop
+
+showFrame
+end

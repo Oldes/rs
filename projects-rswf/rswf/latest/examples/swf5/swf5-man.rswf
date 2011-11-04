@@ -1,0 +1,147 @@
+rebol [
+	title: "SWF5-Walking man" 
+	type: 'swf5
+	file: %man.swf
+	background: 153.165.139
+	rate: 20
+	size: 300x300
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {How to include more images - simple avatar example}
+	date: 8-Apr-2002
+	history: [11-Apr-2002 "Simple shadow casting"]
+	comment: {
+I really don't like how Flash handle transparencies, because at least with my graphic card with Hi-color resolution I still can see the transparent areas:-(}
+	JS: {
+	document.getElementById('swf5-man').focus();
+	}
+]
+background 152.174.149
+shp_grid: shape [
+	edge [width 1 color 132.154.129]
+	grid 0x0 300x300 30x30
+]
+fnt_arial: defineFont2 [name "Arial" bold]
+txt_test: EditText 'x 320x20 [
+	text "Loading..."
+	ReadOnly Color 0.0.0 Font [fnt_arial 12]
+]
+place [shp_grid txt_test ]
+showFrame
+bitmaps images [
+	key 123.109.57
+	from %bitmaps/man/
+	%man-st.gif
+	%w01.gif %w02.gif %w03.gif %w04.gif %w05.gif
+	%w06.gif %w07.gif %w08.gif %w09.gif %w10.gif
+]
+spr_man-frames: sprite [
+	place img_man-st.gif at 0x0 stop showFrame
+	place img_w01.gif [move at 0x0] showFrame
+	place img_w02.gif [move at 0x0] showFrame
+	place img_w03.gif [move at 0x0] showFrame
+	place img_w04.gif [move at 0x0] showFrame
+	place img_w05.gif [move at 0x0] showFrame
+	place img_w06.gif [move at 0x0] showFrame
+	place img_w07.gif [move at 0x0] showFrame
+	place img_w08.gif [move at 0x0] showFrame
+	place img_w09.gif [move at 0x0] showFrame
+	place img_w10.gif [move at 0x0] showFrame
+]
+spr_man-shadow: sprite [
+	f: place spr_man-frames [at -15x-15 multiply [-256 -256 -256 125]]
+	doAction [ move: func[x y][_x: x + 3 _y: y + 3] ]
+	showFrame end
+]
+spr_man: sprite [
+	;for correct rotations I need to move the images at -15x-15
+	frames: place spr_man-frames at -15x-15
+	frm_stand: showFrame
+	doAction [
+		walkingto: -1
+		frames.gotoAndStop(1)
+		shadow.f.gotoAndStop(1)
+		i: 2 stop
+	]
+	frm_walk: show 2 frames
+	doAction [
+		frames.gotoAndStop(i)
+		shadow.f.gotoAndStop(i)
+		either i < 11 [	i: i + 1 ][	i: 2 ]
+		switch walkingto [
+			'left  [_x: _x - 3]
+			'right [_x: _x + 3]
+			'down  [_y: _y + 3]
+			'up    [_y: _y - 3]
+		]
+		shadow.move(_x _y)
+		_root.x: reform ["step" i "dir:" direction "will:" willgoto	"position:" _x "x" _y]
+		if i = 2 [
+			either willgoto > 0 [
+				rot(willgoto)
+				walkingto: willgoto
+				willgoto: -1
+			][
+				if direction < 0 [
+					goto frm_stand
+				]
+			]
+			
+		]
+		goto frm_walk and play			
+	]
+	showFrame
+]
+obj_man-sh: place spr_man-shadow at 168x168
+obj_man: place spr_man [
+	at 165x165
+	actions [
+		load [
+			_root.x: "Use arrow keys to walk."
+			shadow: _parent.obj_man-sh
+			direction: walkingto: willgoto: -1
+			go: func[dir][
+				_root.x: reform ["go:" dir]
+				if direction <> dir [
+					either walkingto > 0 [
+						;man is now walking...
+						;_root.x: "will be going to " add dir
+						willgoto: dir
+					][
+						;_root.x: "going to " add dir
+						rot(dir)
+						direction: walkingto: dir
+						goto frm_walk and play
+					]
+				]
+			]
+			rsh: func[dir][	shadow._rotation: dir]
+			rot: func[dir][
+				switch dir [
+					'left  [_rotation: 90 rsh(90)]
+					'right [_rotation: 270 rsh(270)]
+					'down  [_rotation: 0  rsh(0)]
+					'up    [_rotation: 180 rsh(180)]
+				]
+			]
+		]
+		keyDown [
+			k: Key.getCode()
+			_root.x: reform ["key:" k]
+			switch-default k [
+				'left  [go('left)]
+				'right [go('right)]
+				'down  [go('down)]
+				'up    [go('up)]
+			][ _root.x: "KeyCode = " add k ]
+			;!!! ATTENTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			;In older versions it was possible to use SWITCH/DEFAULT
+			;Because of some changes in Rebol itself it's not possible now!
+			;Use SWITCH-DEFAULT or just: switch val [some rules][default rule]
+		]
+		keyUp [	direction: -1 ]
+	]
+]
+stop
+showFrame
+end

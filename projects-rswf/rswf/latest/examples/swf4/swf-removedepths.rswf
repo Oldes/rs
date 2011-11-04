@@ -1,0 +1,24 @@
+rebol [
+	title: "SWF-Remove depths"
+	type: 'swf
+	file: %removedepths.swf
+	background: 152.174.149
+	rate: 4
+	size: 320x150
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date:  6-Aug-2002/1:24:43+2:00
+	purpose: {To show how to remove depths (layers)}
+]
+background 153.165.139
+shp_circle: Shape [
+    edge width 3 fill color 250.100.0 circle 10
+]
+Place shp_circle [at 160x30 depth 10]
+Place shp_circle [at 160x60 depth 20]
+Place shp_circle [at 160x90 depth 30]
+Place shp_circle [at 160x120 depth 40]
+showFrame
+RemoveDepths [20 30]
+showFrame
+end

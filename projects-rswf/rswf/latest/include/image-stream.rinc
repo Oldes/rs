@@ -1,0 +1,103 @@
+rebol [title: "ImageStream"]
+
+compile-imageStream: func[
+	id      [integer! none!]
+	images  [file!   block!]
+	size    [pair!    none!]
+	with    [block!   none!]
+	/local dir code i name namei onFrame onLastFrame sprID bmpID imgID lastsize place? firstFrameEmpty? asSprite? depth
+][
+	if all [file? images dir? images: to-rebol-file images] [images: read dir: images]
+	if none? id [id: get-new-id]
+	either block? with [
+		name:	      select with 'name
+		onFirstFrame: select with 'onFirstFrame
+		onFrame:      any [select with 'onEachFrame select with 'onFrame]
+		onLastFrame:  select with 'onLastFrame
+		place?: all [none? find with 'noPlace none? find with 'ExportOnly]
+		firstFrameEmpty?: find with 'firstFrameEmpty
+	][	onFirstFrame: onFrame: onLastFrame: none place?: true firstFrameEmpty?: false]
+	
+	asSprite?: not empty? set-word-buff 
+	
+	if none? name [
+		name: either asSprite? [first set-word-buff][join 'imageStream id]
+	]
+	
+	code: copy ""
+	i: 1
+	if pair? size [size: ajoin [" size " size]]
+	
+	if block? onFirstFrame [
+		append code ajoin [{^/doAction } mold compose [
+			set 'streamImageNumber   none
+			set 'streamImageName     none
+			set 'streamImageSpriteID none
+			set 'streamImageBitmapID none
+			(onFirstFrame)
+		]]
+	]
+	if place? [
+		depth: either asSprite? [1][last-depth]
+	]
+	if firstFrameEmpty? [append code {^/ShowFrame}]
+	while [not tail? images][
+		file: first images
+		images: next images
+		if file? dir [file: join dir to-rebol-file file]
+		case [
+			dir? file [
+				
+				foreach newfile read file [
+					append images file/:newfile
+				]
+			]
+			
+			find ["jpg" "jpeg" "png" "gif" "ico"] last parse file "." [
+				probe file
+				namei: ajoin [name "_" i]
+				sprID: join "spr_" namei
+				bmpID: join "bmp_" namei
+				imgID: join "img_" namei
+				append code ajoin [
+					{^/} bmpID {: bitmap } mold file any [size ""]
+					{^/} imgID {: image  } bmpID
+					{^/} sprID {: sprite } imgID
+					{^/export [} bmpID { "} bmpID {" } sprID { "} sprID {"]}
+				]
+				if place? [
+					append code ajoin either i > 1 [
+						[{^/removeDepth } depth { place } sprID { [depth } depth { ratio } i {]}]
+				 	][	[{^/place } sprID { [depth } depth { ]}]		]
+				]
+				if block? onFrame [
+					append code ajoin [{^/doAction } mold compose [
+						set 'streamImageNumber   (i)
+						set 'streamImageName     (namei)
+						set 'streamImageSpriteID (sprID)
+						set 'streamImageBitmapID (bmpID)
+						(onFrame)
+					]]
+				]
+				append code {^/showFrame}
+				i: i + 1
+			]
+		]
+	]
+	if block? onLastFrame [
+		onLastFrame: next head remove back tail mold onLastFrame
+		either block? onFrame [
+			insert find/last code "]"  onLastFrame
+		][
+			insert find/last code "^/showFrame" probe rejoin [{^/doAction [} (mold/only onLastFrame) "]"]
+		]
+	]
+	;probe code
+	either asSprite? [
+		append code " end"
+		compile-sprite id load code none
+	][
+		compile load code
+	]
+	;id: set-id id
+]

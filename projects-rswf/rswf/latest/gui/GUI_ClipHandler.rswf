@@ -1,0 +1,126 @@
+rebol [
+	title: "GUI_ClipHandler"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 24
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 8/10/2007
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+
+require [
+	%includes/zMovieclipTween_2.28.28_8.rswf
+	%gui/defaults.rswf
+	%gui/GUI_ProgressAnimEdge.rswf
+]
+
+GUI_ClipHandler: Extends GUI_ProgressAnimEdge [
+	int:  none
+	hideWhileLoading?: true
+	init: func[width height][
+		super(width height)
+		;trace("ClipHandler init:" this this.url)
+		this.content.createEmptyMovieClip("f" 1)
+		this.content.createEmptyMovieClip("m" 2)
+		this.mcl: make MovieClipLoader []
+    	this.mcl.addListener(this)
+		either this.url = undefined [
+			;just a frame
+			this.resize(this.width this.height)
+		][	this.loadClip(this.url this.width this.height) ]
+	]
+	loadClip: func[url width height][
+		
+		;trace(this._name "loadClip:"  url width height)
+		this.resize(width height)
+		clearInterval(this.int)
+		either this.tf_percent._visible [
+			this.mcl.unloadClip()
+		][
+			this.tf_percent._visible: true
+		]
+		;this.content.f.unloadMovie()
+		;this.content.createEmptyMovieClip("f" 1)
+		;this.content.f.loadMovie(url)
+		;this.mcl._lockroot: true
+		this.mcl.loadClip(url this.content.f)
+		this.bg._visible: true
+		this.bg._alpha: 100
+		this.edge._visible: true
+		this.edge._alpha:   100
+		this.percent:  0
+		this.tf_percent._visible: true
+
+		if this.hideWhileLoading? [
+			this.content._visible: false
+		]
+				
+		this.onTweenUpdate: does [ this.redraw() ]
+		this.onTweenComplete: func[type] [
+			if type = "percent" and this.percent = 100 [this.showClip()]
+		]
+		this.redraw()
+		this.txtpercent: "l"
+		this.int: setInterval(this "waiting" 20)
+	]
+	waiting: does [
+		var tx: this.txtpercent
+		either (tx = "l") [
+				;trace(this.txtpercent random 100 (this.txtpercent = "L1") )
+				this.txtpercent: "L"
+				;trace(this.txtpercent)
+			][
+				either tx = "L" [
+					this.txtpercent: "l"
+				][
+					clearInterval(this.int)
+				]
+				;trace("!!!" this.txtpercent)
+			]
+	]
+	showClip: does [
+		this.tf_percent._visible: false
+		
+		if this.hideWhileLoading? [
+			this.content._visible: true
+			this.mask._yscale: 0
+			this.mask.tween("_yscale" 100 0.5)
+		]
+		this.bg.alphaTo(0 0.5)
+		this.bg.onTweenComplete: func[][this._visible: false]
+		this.edge._visible: false
+	]
+	onLoadInit:  func[target][
+		;trace("loadInit" this target)
+	]
+    onLoadStart: func[target][
+    	;trace(target "LoadStart")
+    ]
+	onLoadError: func[target errorCode httpStatus][
+        trace(target "LoadError:" errorCode httpStatus)
+        this.txtpercent: "E"
+    ]
+	
+	onLoadComplete: func[target httpStatus][
+		;trace("load complete" httpStatus)
+	]
+	onLoadProgress: func[target loadedBytes totalBytes][
+        ;trace(target "LoadProgress:" loadedBytes totalBytes)
+		p: (loadedBytes / totalBytes) * 100
+
+		this.tween("percent" p 0.3)
+		this.tf_percent.text: (Math.round(p)) add "%"
+		this.redraw()
+
+		if p = 100 [
+			this.tf_percent._visible: false
+			clearInterval(this.int)
+			;this.onLoadComplete()
+		]
+    ]
+]

@@ -1,0 +1,52 @@
+rebol [
+	title: "MX-Mouth"
+	type: 'mx
+	file: %mx-mouth.swf
+	background: 0.0.0
+	rate: 12
+	size: 320x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 5-12-2003
+	purpose: {Simulate talking mouth}
+	comment: {}
+
+]
+background 0.0.0
+spr_mouth: Sprite [
+	doAction [
+		clear()
+		lineStyle( 0 #000000 50 )
+		beginFill( #FF2222 )
+		moveTo( -8 0 )
+		y: random 16
+		curveTo( 0 (0 - (y / 2))  8 0 )
+		curveTo( 0 (y ) -8 0 )
+		endFill()
+	]
+	show 2 frames
+	end
+]
+importAssets [spr_eye "eye"] %examples/compiled/swf5-eyeball2.swf
+spr_face: Sprite [
+	place spr_mouth at 0x0
+	place spr_eye  [at -9x-10 scale 0.29]
+	place spr_eye  [at  9x-10 scale 0.29]
+	showFrame
+	end
+]
+spr_body: Sprite [
+	shp_body: shape [fill color #909090	circle 15]
+	place shp_body
+	spr_head: Sprite [
+		shp_head: shape [fill color #AAAAAA	circle 20]
+		place shp_head at 0x-8
+		face: place spr_face at 0x0
+		showFrame end
+	]
+	place spr_head at 0x-10
+	showFrame end
+]
+place spr_body at 160x120
+showFrame
+end

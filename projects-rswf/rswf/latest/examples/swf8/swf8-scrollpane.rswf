@@ -1,0 +1,47 @@
+rebol [
+	title: "FLASH8 - layout ScrollPane"
+	type: 8
+	file: %test.swf
+	background: 200.200.200
+	rate: 24
+	size: 401x420
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 18-Oct-2007/0:59:22+2:00
+	purpose: {To show how can be used ScrollPane class in a layout}
+	comment: {May be changed in near future as it's just first test version}
+	compressed: true
+]
+
+background 200.200.200
+
+layout [
+	at 10x5
+	Text 380x20 "ScrollPane and ClipHandler example"
+	origin ;<- sets new origin at current position
+	across
+	ScrollPane  190x200 [
+		ClipHandler 400x300 %bitmaps/holky.jpg
+	]
+
+	ScrollPane  190x200 [
+		ClipHandler 400x300 %bitmaps/motyl.jpg
+	]
+	
+	return
+
+	ScrollPane 382x180 [
+		Button 200x20
+		Button
+		Button
+		Button
+		Button
+		Button
+		Button
+		Scroller 200x19
+		Scroller
+	]
+]
+
+stop
+showFrame end

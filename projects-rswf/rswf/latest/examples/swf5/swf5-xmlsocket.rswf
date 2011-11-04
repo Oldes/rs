@@ -1,0 +1,76 @@
+rebol [
+	title: "SWF5-XMLSocket example"
+	type: 'swf5
+	file: %xmlsocket.swf
+	background: 153.165.139
+	rate: 12
+	size: 320x200
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 24-6-2003
+	purpose: {To create TCP/IP connection}
+
+]
+fnt_Courier: Font [name "_typewriter" bold]
+txt_test: EditText test 319x179 [
+    ReadOnly WordWrap Font [fnt_Courier 12]
+    layout [indent: 10 leading: -2]
+	border
+]
+txt_input: EditText input 319x19 [
+    Font [fnt_Courier 12]
+    layout [indent: 10 leading: -2]
+	border
+]
+place txt_test
+place txt_input at 0x180
+
+es: emptySprite
+sensor: place es [
+    actions [
+        keyDown [
+            if Key.getCode() = 'enter [
+                with _parent [
+                	if input <> "" [
+                   	 socket.send(input)
+                   	 input: ""
+               		]
+                ]
+            ]
+        ]
+    ]
+]
+
+doAction [
+	myOnConnect: func[success][
+		either success [
+			test: "Connection succeeded!"
+			socket.send("hello")
+			socket.send("world")
+ 		][
+			test: test add "^/X-Connection failed!"
+		]
+	]
+	socket: make XMLSocket
+	socket.onConnect: myOnConnect
+	socket.onData:  func[src][
+		test:  "^/Received: " add src
+		;test.scroll: test.maxscroll
+
+	]
+	socket.onClose: func[][
+		test: test add "^/Connection closed!"
+	]
+	socket.connect("192.168.0.2" 5000)
+	id: random 1000
+	i: 0
+]
+showFrame
+frm_loop: show 5 frames
+doAction [
+	i++
+	str: id .": aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa". i
+	socket.send(str)
+	goto frm_loop and play 
+]
+showFrame end

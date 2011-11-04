@@ -1,0 +1,49 @@
+rebol [
+	title: "MX2004-ContextMenu2" 
+	type: 'mx2004
+	file: %contextmenu2.swf
+	background: 153.165.139
+	rate: 30
+	size: 320x40
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 16-9-2003
+	purpose: {How to control the Context menu}
+	comment: {
+	In this example, the specified event handler, menuHandler, enables or disables a custom menu item (using the ContextMenu.customItems array) based on the value of a Boolean variable named showItem. If false, the custom menu item is disabled; otherwise, it’s enabled.
+	
+	<code>make ContextMenuItem [caption callbackFunction separatorBefore enabled visible]</code>
+
+	}
+]
+include %includes/txt_info.rswf
+doAction [
+	info: "Use right mouse button to open the Context menu"
+	showItem: true
+	menuHandler: func[obj menuObj /local tmp][
+		info: "menuHandler"
+		tmp: menuObj.customItems/1
+		either showItem = false [
+			tmp.enabled: false
+		][	tmp.enabled: true ]
+	]
+	itemHandler: func[obj item][
+		info: "item " add item.caption add " from " add obj
+	]
+	my_cm: make ContextMenu [menuHandler]
+	with my_cm.builtInItems [
+		print: quality: false
+		;save: true
+		;zoom: true
+		;play: true
+		;loop: true
+		;rewind: true
+		;forward_back: true
+	]
+	my_cm.customItems.push((make ContextMenuItem ["Hello" itemHandler]))
+	my_cm.customItems.push((make ContextMenuItem ["World" itemHandler true]))
+	_root.menu: my_cm
+]
+
+ShowFrame
+end

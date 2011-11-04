@@ -1,0 +1,53 @@
+rebol [
+	title: "GUI_Core"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 24
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 8/10/2007
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+
+require %gui/defaults.rswf
+
+GUI_Core: Extends MovieClip [
+	width: 100
+	height: 20
+	
+	init: func[width height][
+		;trace("initCore:" this)
+		if width  <> undefined [this.width:   width]
+		if height <> undefined [this.height: height]
+		this.setType(this.type)
+		this.resize(this.width this.height)
+		GUI_StyleMaster.addListener(this)
+		;this.cacheAsBitmap: true
+	]
+	resize: func[width height][
+		if (this.width <> width) or (this.height <> height) [
+			this.width:  width
+			this.height: height
+			;trace("CoreResize:" this width height)
+			this.redraw()
+		]
+	]
+	
+	setType: func[type][
+		;trace("CORE:setType:" this.type this.colors)
+		this.type: type
+		this.colors: defaultColors/(type)
+		if this.colors = undefined [this.colors: defaultColors/("default")]
+		
+	]
+	
+	updateStyle: does[
+    	this.redraw()
+    	this.text: this.text
+    	;trace("updating")
+	]
+]

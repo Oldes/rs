@@ -1,0 +1,22 @@
+rebol [
+	title: "MX2004-setClipboard" 
+	type: 'mx2004
+	file: %setclipboard.swf
+	background: 153.165.139
+	rate: 30
+	size: 320x20
+	compressed: true
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 22-9-2003
+	purpose: {How to put values into the clipboard}
+	comment: none
+]
+include %includes/txt_info.rswf
+doAction [
+	info: "This should be in your clipboard"
+	System.setClipboard(info)
+]
+
+ShowFrame
+end

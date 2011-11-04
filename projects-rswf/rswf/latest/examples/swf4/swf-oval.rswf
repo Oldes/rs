@@ -1,0 +1,23 @@
+rebol [
+	title: "SWF-Oval example"
+	type: 'swf
+	file: %oval.swf
+	background: 152.174.149
+	rate: 12
+	size: 320x320
+	author: "Damien Tomezzoli"
+	email: dtom@club-internet.fr
+	purpose: {To show how to draw ovals}
+	comment: {Oldes: thanks to Damien's improvement in the %swf-tag-rules.rb now it's possible to draw ovals as well:-)}
+]
+background 152.174.149
+shp_oval: shape [
+	edge width 2 color 5.5.5
+	fill color 255.55.55
+	positions relative at 160x160
+	oval 10 10x20 40x20 40x80 160x80 160
+]
+place shp_oval
+showFrame
+end
+

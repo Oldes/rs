@@ -1,0 +1,309 @@
+rebol [
+	title: "GUI_Window"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 15
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 28/10/2007
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+
+require [
+	%gui/GUI_DepthManager.rswf
+	%gui/GUI_ScrollPane.rswf
+	%gui/GUI_ClipHandler.rswf
+	%gui/GUI_BBPositioner.rswf
+	%gui/GUI_Clickable.rswf
+]
+
+comment {
+bitmaps images [alpha %gui/img/winButtons.png]
+multi-image bmp_winButtons.png [
+	img_gui_winBtnClose: 0x0  12x12
+]
+gui_winBtnClose: sprite [place img_gui_winBtnClose at -1x-1 showFrame end]
+Export [gui_winBtnClose "gui_winBtnClose"]
+}
+
+bmp_app: alpha bitmap %gui/img/application-48x48.png
+Export [bmp_app "bmp_app"]
+
+GUI_WindowPanel: Extends GUI_BBPositioner [
+	init: func[maxwidth][
+		;trace("init" this)
+		super(maxwidth)
+		Stage.addListener(this)
+		this.slide?: on
+		this.slideDuration: 0.2
+	]
+	createWinIcon: func[win][
+		var w: win.area._width
+		var h: win.area._height
+		;trace("createWinIcon" win w h)
+		var bmpSrc: flash.display.BitmapData.loadBitmap("bmp_app")
+		var bmp: make BitmapData! [48 48 true #000000]
+		var mtrx: make Matrix! []
+		var p: w / h
+		either p > 1.37 [ ;1.37 = 37 / 27
+			var sc: 37 / w
+		][	var sc: 27 / h ]
+		
+		mtrx.scale(sc sc)
+		mtrx.translate(
+			(4  + ((37 - (w * sc)) / 2))
+			(11 + ((27 - (h * sc)) / 2))
+		)
+		bmp.draw(bmpSrc)
+		bmp.draw(win.area mtrx none none (make Rectangle! [0 0 41 38]))
+		
+		var icon: this.attachObject("GUI_Clickable" 48 48)
+		icon._x: this._xmouse
+		icon._y: this._ymouse
+		icon.attachBitmap(bmp 1)
+		icon.window: win
+		icon.onRelease: does [
+			super.onRelease()
+			this.window._visible: true
+			this._parent.removeObject(this)
+			;this._parent.onResize()
+		]
+		this.onResize()
+	]
+	onResize: does [
+		this.updateObjects(Stage.width)
+		this._y: Stage.height - this.maxY
+	]
+] with [
+	_root.attachMovie("GUI_WindowPanel" "WindowPanel" 44444)
+]
+
+GUI_Window: Extends GUI_Core [
+	width:    300
+	height:   240
+	clr_edge: #444444
+	clr_fill: #ccbbbb
+	closable?: true
+	text: none
+	init: func[width height][
+		;trace("INITWin" this)
+		this.createEmptyMovieClip("bg" 1)
+		this.attachMovie("GUI_ScrollPane" "area" 2 (context [_x: 0 _y: 15]))
+		;this.area.align: "TL"
+		this.createEmptyMovieClip("edge" 3)
+		this.createEmptyMovieClip("resizeBtn" 4)
+		this.createTextField("tf" 5 1 -1 this.width 17)
+		this.createEmptyMovieClip("disabler" 6)
+		this.attachMovie("GUI_Clickable" "btnClose" 7)
+		this.attachMovie("GUI_Clickable" "btnMinimize" 8)
+		;this.attachMovie("gui_winBtnClose" "btnClose" 7)
+		
+		var tf: this.tf
+		;with this.tf [
+			;tf.multiline: true
+			;wordWrap:  true
+			;embedFonts: true
+			;border: true
+			tf.variable: "text"
+			tf.gridFitType: "pixel"
+			;thickness: -150
+			;antiAliasType: "advanced"
+			;html:      true
+			tf.setTextFormat(defaultButtonFont)
+			tf.setNewTextFormat(defaultButtonFont)
+			tf.selectable: false
+		;]
+		this.tff: this.tf.getTextFormat()
+		this.tff.color: #dddddd
+		this.tff.bold: true
+		this.tff.leftMargin: 0
+		this.tff.align: "left"
+		if this.text = none [this.text: this._name]
+		
+		;this.area.content.setMask(this.area.mask)
+		if defaultWindowShadow = undefined [
+			_global.defaultWindowShadow: make DropShadowFilter! [
+		        3        ;distance:Number
+		        45       ;angle:Number
+		        #000000  ;color:Number
+		        0.5      ;alpha:Number
+		        7        ;blurX:Number
+		        7        ;blurY:Number
+		        2        ;strength:Number
+		        2        ;quality:Number
+		        false    ;inner:Boolean
+		        false    ;knockout:Boolean
+		        false    ;hideObject:Boolean
+		    ]
+		]
+		this.filters: [defaultWindowShadow]
+		
+		;if so_GUIWindows = undefined [
+		;	_global.so_GUIWindows: SharedObject.getLocal("GUIWindows")
+		;]
+		
+		var disabler: this.disabler
+		disabler.clear()
+		disabler._alpha: 80
+		disabler.onPress: does []
+		disabler.useHandCursor: false
+		disabler._visible: false
+		
+		
+		var resizeBtn: this.resizeBtn
+		resizeBtn.drawBox(-5 -5 10 10 0 #000000 none)
+		resizeBtn._rotation: 45
+		resizeBtn._alpha: 14
+		resizeBtn.onPress: does [
+			this._parent.swapToTop()
+			;trace(this._xmouse this._ymouse this._parent._xmouse this._parent._ymouse)
+			this.xmouse: 5 - this._xmouse
+			this.ymouse: -9 - this._ymouse
+			this.onMouseMove: does [
+				this._parent.resize(
+					( this._parent._xmouse + this.xmouse) 
+					( this._parent._ymouse + this.ymouse)
+				)
+				;updateAfterEvent()
+			]
+			;this._parent.fitContentSize()
+			resizeBtn.onMouseUp: does [
+				delete this.onMouseMove
+				delete this.onMouseUp
+				trace("newSize:" this._parent.width this._parent.height)
+			]
+		]
+		
+		this.bg.onPress:   does [
+			var tmp: this._parent._parent.getNextHighestDepth()
+			this._parent.swapToTop()
+			this.xmouse: this._xmouse
+			this.ymouse: this._ymouse
+			this.onMouseMove: does [
+				this._parent._x: _root._xmouse - this.xmouse
+				this._parent._y: _root._ymouse - this.ymouse
+				updateAfterEvent()
+			]
+			;this._parent.fitContentSize()
+		]
+		this.bg.onRelease: does [trace(this._parent._x this._parent._y) this.onMouseMove: none]
+		this.bg.onReleaseOutside: does [this.onMouseMove: none]
+
+		var btnClose: this.btnClose
+		btnClose._y: 8
+		btnClose._alpha: 80
+		btnClose.onRelease: does [super.onRelease() this._parent.close()]
+		btnClose.drawBox(-5 -5 10 10 3 #222222 none)
+		btnClose._rotation: 45
+		btnClose._visible: this.closable?
+		
+		var btnMinimize: this.btnMinimize
+		btnMinimize._y: 8
+		btnMinimize._alpha: 80
+		btnMinimize.onRelease: does [super.onRelease() this._parent.minimize()]
+		btnMinimize.drawBox(-5 -5 10 10 0 #888888 #222222)
+		btnMinimize.drawBox(-5  2 10  3 0 #222222 none)
+
+				
+		
+		super(width height)
+		;this.area.loadClip("mx-imagestream.swf")
+		;this.area.loadClip("uploadtemp.swf")
+		;this.area.clr_fill: 0.0.0
+		;var url: "danca.swf" ;"bitmaps/holky.jpg"
+		;this.area.loadClip(url)
+		;this.area.content.onPress: none
+		this.updateText()
+		this.updateSliders()
+		this.redraw()
+	]
+	disable: does [
+		this.enabled?: false
+		var disabler: this.disabler
+		disabler._visible: true
+		disabler.clear()
+		disabler.drawBox(0 15 this.width (this.height - 15) 1 this.clr_fill this.clr_edge)
+	]
+	enable: does [
+		this.enabled?: true
+		this.disabler._visible: false
+	]
+	close: does [
+		;trace("CLOSE:" this)
+		this.removeMovieClip()
+	]
+	minimize: does [
+		;trace("minimize" this)
+		_root.WindowPanel.createWinIcon(this)
+		this._visible: false
+	]
+	updateText: does [
+		this.tf.setTextFormat(this.tff)
+		this.tf.setNewTextFormat(this.tff)
+	]
+
+	setBackground: func[clr][
+		trace("setBackground" clr)
+		if integer? clr [
+			this.clr_fill: clr
+			this.redraw()
+		]
+	]
+	setClosable: func[closable?][
+		trace("setClosable" closable? this.btnMinimize)
+		this.closable?: this.btnClose._visible: closable?
+		either closable? [
+			this.btnMinimize._x: this.width - 22
+		][
+			this.btnMinimize._x: this.width - 8
+		]
+	]
+	loadClip: func[url][
+		this.area.loadClip(url)
+	]
+	fitContentSize: does [
+		;this.area.resize((to-integer this.area.content._width)(to-integer this.area.content._height))
+		trace("RESIZETOCONTENT:" (to-integer this.area.content.content._width)(to-integer this.area.content.content._height))
+		this.resize(((2 * this.area.originX) + to-integer this.area.content.content._width)((2 * this.area.originY) + to-integer this.area.content.content._height))
+	]
+	resize: func[width height][
+		width:  Math.max(60 (Math.round(width)))
+		height: Math.max(60 (Math.round(height)))
+		super.resize((width) (height + 14))
+		this.area.resize((width) (height))
+		this.resizeBtn._x: width
+		this.resizeBtn._y: height + 14
+		this.btnClose._x: width - 8
+		either this.btnClose._visible [
+			this.btnMinimize._x: width - 22
+		][
+			this.btnMinimize._x: width - 8
+		]
+		
+	]
+	redraw: does [
+		var w: this.width
+		var h: this.height
+	;	trace("winRedraw" w h this.area.content._width this.area.content._x)
+		this.tf._width: w - 30
+		this.bg.clear()
+		this.edge.clear()
+		this.bg.drawBox(0 0 w h  1 this.clr_fill this.clr_edge)
+		this.edge.drawBox(0 0 w h  1 none this.clr_edge)
+		this.edge.drawBox(0 0 w 16 1 this.clr_edge this.clr_edge)
+		this.bg._alpha: 60
+		this.edge._alpha: 60
+		
+		if this.disabler._visible [this.disable()]
+	]
+
+]
+
+
+
+
+

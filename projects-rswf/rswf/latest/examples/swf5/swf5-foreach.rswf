@@ -1,0 +1,39 @@
+rebol [
+	title: "SWF5-Foreach"
+	type: 'swf5
+	file: %foreach.swf
+	background: 153.165.139
+	rate: 12
+	size: 220x200
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 3-6-2003
+	purpose: {Evaluates a block for each value(s) in an array}
+	comment: {
+	I could not help myself to make this function available in the dialect although it's possible to write it in action script with 'for' loop as well.
+	I've also improved the dialect so now it's not neccessary to write: <code>x: make Array [1 2 3]</code>
+	Now you can type only <code>x: [1 2 3]</code>}
+
+]
+fnt_arial: defineFont2 [name "Arial"] 
+txt_test: EditText 'test 219x199 [
+        WordWrap Multiline ReadOnly noSelect
+        Color #cc0000 Font [fnt_arial 20] 
+        Layout [align: 'center]	border
+] 
+place txt_test
+doAction [
+	a1: ["a" "b" "c"]
+	a2: ["d" "e" "f" "g"]
+	value: "x"
+	foreach value a1 [
+		test: rejoin [test value ": "]
+		foreach [v1 v2] a2 [
+			test: test add v1 add "-" add v2 add " "
+		]
+		test: test add newline
+	]
+	test: reform [test "^/konec"]
+]
+
+showFrame end

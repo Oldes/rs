@@ -1,0 +1,47 @@
+rebol [
+	title: "SWF5-Image-FX noise"
+	type: 'swf5
+	file: %swf5-image-fx03.swf
+	background: 246.250.255
+	rate: 30
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	purpose: {Simple noise image FX}
+	date: 17-12-03
+	comment: {
+		This is another image FX variation. I must thanks to Cyphre for inspiration.
+	}
+]
+background 246.250.255
+bmp_picture: bitmap %hlava.jpg size 276x320
+spr_picture: Sprite [
+	rebol [
+		for i 0 319 1 [
+			rswf/compile load rejoin [{
+				shp_pictureLine} i {: Shape [
+					Bounds -138x0 138x1
+				    fill-style [bitmap bmp_picture at -138x} i * -1 {]
+				    box -138x0 138x1
+				]
+				spr_pictureLine} i {: Sprite shp_pictureLine} i {
+				l} i {: place spr_pictureLine} i { at 0x} i * 1 {
+			}]
+		]
+	]
+	showFrame end
+]
+place spr_picture [
+	at 160x0
+	actions [
+		enterFrame [
+			loop 10 [
+				line: eval(("l" add random 320))
+				;line._width: 154 + random 144
+				line._x: line._x - 1 + random 3
+			]
+		]
+	]
+]
+showFrame
+end

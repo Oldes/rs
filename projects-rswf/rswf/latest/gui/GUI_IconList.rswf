@@ -1,0 +1,81 @@
+rebol [
+	title: "GUI_IconList"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 24
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 16/10/2007
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+
+require [
+	%gui/GUI_DepthManager.rswf
+	%gui/GUI_BBPositioner.rswf
+	%gui/GUI_ClipHandler.rswf
+	%gui/GUI_Draggable.rswf
+]
+
+
+GUI_Icon: Extends GUI_Draggable [
+	init: func[width height][
+		super(width height)
+	]
+	onPress: does[
+		this.stopTween()
+		super.onPress()
+	]
+	onStopDrag: does [
+		super.onStopDrag()
+	]
+]
+
+GUI_IconList: Extends GUI_BBPositioner [
+	defaultIconClassName: "GUI_Icon"
+	lastIconWidth:  60
+	lastIconHeight: 60
+	maxwidth: 300
+	width:    300
+	height:   300
+	init: func[maxwidth][
+		if width  <> undefined [this.width:   width]
+		if height <> undefined [this.height: height]
+		either maxwidth <> undefined [this.maxwidth: maxwidth][
+			if width <> undefined [this.maxwidth: width]
+		]
+		trace("IL:" this.width this.maxwidth)
+		super(this.maxwidth)
+		this.updateObjects(this.maxwidth)
+	]
+	addIconsFromXML: func[iconsXML][
+		var node: iconsXML.firstChild
+		var base: ""
+		while [node <> none][
+			var att: node.attributes
+			switch node.nodeName [
+				"base" [base: att.path]
+				"i"    [
+					var src: att.src
+					if att.width <> undefined [
+						var width:  to-integer att.width
+						if integer? width  [this.lastIconWidth:  width ]
+					]
+					if att.height <> undefined [
+						var height: to-integer att.height
+						if integer? height [this.lastIconHeight: height]
+					]
+					if src <> undefined [
+						var obj: this.attachObject(this.defaultIconClassName this.lastIconWidth this.lastIconHeight)
+						obj.attachMovie("GUI_ClipHandler" "img" 1)
+						obj.img.loadClip((base add src) this.lastIconWidth this.lastIconHeight)
+					]
+				]
+			]
+			node: node.nextSibling
+		]
+	]
+]

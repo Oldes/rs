@@ -1,0 +1,58 @@
+rebol [
+	title: "SWF5-Selection object"
+	type: 'swf5
+	file: %selectionobj.swf
+	background: 152.174.149
+	rate: 12
+	size: 320x200
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 12-1-2002
+	purpose: {To show how to use the "selection" object and it's methods}
+]
+background 152.174.149
+fnt_arial: defineFont2 [name "Courier New" bold]
+txt_test: EditText 'x 320x200 [
+	ReadOnly
+	Color 0.0.0
+	Font [fnt_arial 12]
+	Layout [align: 'left Leading: -2]
+]
+place txt_test
+DoAction [
+	s: "selection object"
+]
+frm_loop: show frame
+DoAction [
+	with selection [
+		x: s + {
+
+	Selection.getBeginIndex() = } + getBeginIndex() + {
+	Selection.getCaretIndex() = } + getCaretIndex() + {
+	Selection.getEndIndex() = } + getEndIndex() + {
+	Selection.getFocus() = } + getFocus() + {
+	s.charAt(1) = } + s.charAt(1) + {
+	s.charCodeAt(1) = } + s.charCodeAt(1) + {
+	to-char Key.getAscii() = } + to-char key.getAscii() + {
+	key.getCode() = } + key.getCode()
+	]
+]
+show 5 frames
+DoAction [
+	either i = false [
+		s: s.toUpperCase()
+		i: true
+	][
+		s: s.toLowerCase()
+		i: false
+	]
+	with selection [
+		if getBeginIndex() == getEndIndex() [
+			setFocus("_level0.x")
+			setSelection(0 9)
+		]
+	]
+	goto frm_loop and play
+]
+showFrame
+end

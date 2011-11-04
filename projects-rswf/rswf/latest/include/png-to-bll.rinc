@@ -1,0 +1,98 @@
+rebol []
+
+png-to-bll: func[
+	png-file [file! url! binary!] "PNG file or binary data to parse"
+	/local idat palette szx byteAlign tRNS bytesPerRow
+][
+	png/parse png-file
+	print ">>>"
+	either png/idat [
+		case [
+			all [
+				png/header/bitDepth  = 8
+				png/header/colorType = 3
+			][
+				probe idat: png/decompressed-idat
+				probe palette: png/palette
+				probe tRNS:    png/tRNS
+				if tRNS [
+					;a tRNS chunk may contain fewer values than there are palette entries
+					insert/dup tail tRNS #{00} png/colors - length? tRNS
+					until [
+						palette: insert skip palette 3 to-char probe first tRNS
+						tail? tRNS: next tRNS
+					]
+				]
+				;probe head palette
+				;probe length? head palette
+				szx: png/header/size/x
+				either 0 = byteAlign: szx // 4 [
+					while [not tail? idat][idat: skip  remove idat  szx]
+				][
+					probe byteAlign: 4 - byteAlign
+					while [not tail? idat][idat: insert/dup skip  remove idat  szx #{00} byteAlign]
+				]
+				probe idat: head idat
+				rejoin [
+					#{03}
+					int-to-ui16 png/header/size/x  
+					int-to-ui16 png/header/size/y
+					int-to-ui8  png/colors - 1 ;BitmapColorTableSize
+					head remove/part tail compress join head palette head idat -4 ;ZLIBBITMAPDATA
+				]
+			]
+			all [
+				png/header/bitDepth  = 8
+				png/header/colorType = 2
+			][
+				print "2"
+				;probe
+				 idat: png/decompressed-idat
+				;probe
+				 tRNS: png/tRNS
+				if tRNS [
+					;a tRNS chunk may contain fewer values than there are palette entries
+					insert/dup tail tRNS #{00} png/colors - length? tRNS
+					until [
+						palette: insert skip palette 3 to-char probe first tRNS
+						tail? tRNS: next tRNS
+					]
+				]
+
+				szx: png/header/size/x
+				bytesPerRow: 4 * szx
+				new: make binary! (png/header/size/y * bytesPerRow)
+				either 0 = byteAlign: bytesPerRow // 4 [
+					until [
+						;probe copy/part idat 1
+						idat: next idat
+						loop szx [
+							;idat: skip  insert idat #{FF}  3
+							insert tail new join #{FF} copy/part idat 3
+							idat: skip idat 3
+						]
+						tail? idat
+					]
+				][
+					prin "bytealign:"
+					probe
+					 byteAlign: 4 - byteAlign
+					until [tail? idat: insert/dup skip remove idat bytesPerRow #{00} byteAlign]
+				]
+				;probe
+				 idat: head idat
+				rejoin [
+					#{05}
+					int-to-ui16 png/header/size/x  
+					int-to-ui16 png/header/size/y
+					head remove/part tail compress new -4 ;ZLIBBITMAPDATA
+				]
+			]
+			
+			true [
+				prin "Unsupported PNG type:" ? png/header
+				none
+			]
+		]
+	][	none ]
+]

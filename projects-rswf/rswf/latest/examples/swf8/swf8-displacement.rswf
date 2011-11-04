@@ -1,0 +1,55 @@
+rebol [
+	title: "FLASH8 - DisplacementMapFilter"
+	type: 'swf8
+	file: %swf8-displacement.swf
+	background: 255.255.255
+	rate: 12
+	size: 400x300
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 19-10-2005
+	purpose: {Example of bitmap displacement using the perlinNoise function as a displace map}
+	comment: {}
+	compressed: true
+]
+background 255.255.255
+bitmaps images [bmp_picture:  %bitmaps/holky.jpg]
+spr_picture: sprite img_picture
+exportAssets [bmp_picture "picture"]
+picture: place spr_picture
+
+doAction [
+    bmpDispMap: make BitmapData! [400 300 false #FFFFFF]
+
+    mapPoint: make Point! [0 0]
+	updateEffect: func[][
+	     bmpDispMap.perlinNoise(
+	        100    ;baseX
+	        100    ;baseY
+	        1 ;numOctaves
+	        (random 1000)   ;randomSeed
+	        true   ;stitch = smooth the transition edges of the image
+	               ;to create seamless textures for tiling as a bitmap fill
+	        true  ;fractalNoise (false=turbulence)
+	        1     ;channelOptions = 1 (red), 2(green), 4 (blue), and 8 (alpha).
+	        true  ;grayScale
+	        none   ;offsets
+	   	)
+	    var disp: make DisplacementMapFilter! [
+	    	bmpDispMap	;mapBitmap:BitmapData
+	    	mapPoint	;mapPoint:Point
+	    	1			;componentX:Number 1 (red), 2(green), 4 (blue), and 8 (alpha)
+			1			;componentY:Number
+			10			;scaleX:Number
+			10			;scaleY:Number
+			"clamp"		;[mode:String] (wrap,clamp,ignore,color)
+			#000000		;[color:Number] (color to use for out-of-bounds displacements.)
+			100			;[alpha:Number] (alpha value to use for out-of-bounds displacements.)
+		]
+		picture.filters: [disp]
+	]
+	updateEffect()
+	int: setInterval(updateEffect 50)
+]
+showFrame
+end

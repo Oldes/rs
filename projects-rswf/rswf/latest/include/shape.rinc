@@ -1,0 +1,912 @@
+rebol [
+	title: "RSWF Shape compiler"
+]
+
+create-shape: func[
+	id  [integer! none!]    "The result shape ID"
+	arg1
+	/local
+	changestyle draw-lines rect-min rect-max tmp buff
+	 LineStyles cur-LineSt-id cur-FillSt0-id cur-FillSt0 cur-FillSt1
+	cur-FillSt1-id shs cur-state i pos w c new x shapeRecords
+	bl at-pos relative? points n r r2 curved?  noise ns ns2
+	tm transf smooth alpha prepare-color default-transformation
+	noise? make-noise were-twips?
+][
+	shp-size: 100x100
+	alpha: false ;if we need to use RGBA colors
+	smooth: true ;smoothing images
+	;id: none
+	relative?: false
+	were-twips?: twips?
+	fixed-bounds?: false
+	at-pos: 0x0
+	curved?: false
+	noise?: false
+	pos: make pair! 0x0
+	shs: make block! 10 ;help block
+	FillStyles: make block! 5
+	LineStyles: make block! 5
+	def-LineSt: make block! [0 0.0.0]
+	cur-LineSt: copy def-LineSt
+	cur-FillSt0: none
+	cur-FillSt1: none
+	cur-LineSt-id: 0
+	cur-FillSt0-id: 0
+	cur-FillSt1-id: 0
+	rect-max: 0x0 rect-min: 10000x10000 ;bounds
+	ns: 0x0 ns2: 0x0 ;noise values
+	cur-state: make string! "00000"
+	shapeRecords: make string! 1000
+
+	prepare-color: func[c][
+		c: to binary! c
+		c: either alpha [
+			either 4 > length? c [head insert tail c #{FF}][copy/part c 4]
+		][	copy/part c 3 ]
+	]
+	prepare-pos: func[pos][
+		forall pos [
+			unless twips? [pos/1: pos/1 * 20]
+			pos/1: either relative? [pos/1 + at-pos][pos/1]
+		]
+		head pos
+	]
+	default-transformation: func[][
+		tm: make object! [ ;Transformation matrix
+			scX: 1	scY: 1
+			sk0: 0	sk1: 0
+			x: 0	y: 0
+			c: 0x0
+		]
+	]
+	default-transformation
+	transf: func[p /local lw][
+		p: p - tm/c
+		p: to pair! reduce [
+			round ((p/x * tm/scX) + (p/y * tm/sk1) + tm/x)
+			round ((p/y * tm/scY) + (p/x * tm/sk0) + tm/y)
+		]
+		p: p + tm/c
+		if not fixed-bounds? [
+			if error? try [lw: first cur-LineSt][lw: 20] ;line-width
+			rect-max: max rect-max (p + lw) 
+			rect-min: min rect-min (p - lw)
+		]
+		return p
+	]
+	noise: func[arg1 /x][
+		arg1: arg1 + either pair? arg1 [
+			ns2 - random ns
+		][ 	either x [
+				ns2/y - random ns/y
+			][	ns2/x - random ns/x	]
+		]
+	]
+	make-noise: func[p][
+		forall p [p/1: p/1 + (random ns) - (random ns2)]
+		head p
+	]
+	changestyle: func[first-pos /local buff][
+		;print ["changestyle:" mold first-pos] 
+		;if empty? LineStyles [cur-LineSt-id: 1 append/only LineStyles def-LineSt]
+		;probe
+		 buff: copy cur-state
+		first-pos: transf first-pos
+		if pos <> first-pos [
+			;need to move pen to new drawing position
+			buff/5: #"1"
+			;will include the MoveBits:
+			pos: first-pos
+			insert tail buff ints-to-sbs/complete reduce [pos/1 pos/2] 5
+		]
+		
+		if buff <> "00000" [
+			insert buff #"0"
+			insert shs buff
+			if cur-state/4 = #"1" [insert shs reduce ['f cur-FillSt0-id ]]
+			if cur-state/3 = #"1" [insert shs reduce ['f cur-FillSt1-id ]]
+			if cur-state/2 = #"1" [insert shs reduce ['l cur-LineSt-id ]]
+			cur-state: copy "00000"
+		]
+	]
+	draw-lines: func[corners /local c LF x new][
+		buff: make string! 1000
+		forall corners [
+			;now create STRAIGHTEDGERECORD
+			c: transf corners/1
+			new: c - pos
+			pos: c
+			unless zero? new [
+				LF: make string! 2 ;LineFlag
+				x: either zero? new/1 [ 
+					LF: "01" ;vertical line
+					first ints-to-sbs [new/2]
+				][
+					either zero? new/2 [
+						LF: "00"
+						first ints-to-sbs [new/1]
+					][
+						LF: "1"
+						rejoin ints-to-sbs [new/1 new/2]
+					]
+				]
+				insert tail buff rejoin ["11" int-to-bits max-bits - 2 4 LF	x]
+			]
+		]
+		insert shs buff
+	]
+	draw-curves: func[points /local x new1 new2][
+		buff: make string! 1000
+		foreach [c a] points [
+			;now create CURVEDEDGERECORD
+			c: transf c
+			a: transf a
+			new1: c - pos
+			new2: a - c
+			pos: a
+			x: rejoin ints-to-sbs [new1/1 new1/2 new2/1 new2/2]
+			insert tail buff rejoin ["10" int-to-bits max-bits - 2 4 x]
+		]
+		print ["draw-curves>" mold shs]
+		insert shs buff
+	]
+	draw-arc: func[
+		r startAngle endAngle
+		/center c
+		/local nSegs subangle angle cx cy ax ay
+	][
+	    if not pair? r [r: to pair! round r]
+		if not center [c: at-pos]
+		nSegs: 1 + round ( 7 * (endAngle - startAngle) / 360)
+		subangle: (endAngle - startAngle) / nSegs / 2
+		angle: startAngle
+		points: make block! []
+	    insert points to pair! reduce [
+			c/x + round (r/x * sine angle)
+			c/y + round negate (r/y * cosine angle)
+		]
+		for i 1 nSegs 1 [
+			angle: angle + subangle
+			cx: r/x * (sine angle) / (cosine subangle)
+			cy: r/y * (cosine angle) / (cosine subangle)
+			insert points to pair! reduce [
+				c/x + round cx
+				c/y + negate round cy
+			]
+			angle: angle + subangle
+			ax: r/x * sine angle
+			ay: negate (r/y * cosine angle)
+			insert points to pair! reduce [
+				c/x + round ax
+				c/y + round ay
+			]
+		]
+		points: reverse points
+		;change back tail points first points
+		changestyle first points
+		draw-curves next points
+		points
+	]
+	n-gon: func[n r /local fi x y][
+		fi: 360 / n
+		points: make block! n
+		for i 0 360 fi [
+			x: at-pos/x + round (noise/x r) * sine i
+			y: at-pos/y + round (noise r) * cosine i
+			insert tail points to pair! reduce [x y]
+		]
+		;remove points
+		if noise? [points: make-noise points]
+		change back tail points first points
+		points
+	]
+n-star: func[n r1 r2 ][
+fi: 360 / n
+corners: make block! n
+for i 0 360  fi [
+	i2: i + (fi / 2)
+	insert corners to pair! reduce [
+		at-pos/x + round r1 * sine i
+		at-pos/y + round r1 * cosine i
+	]
+	insert corners to pair! reduce [
+		at-pos/x + round r2 * sine i2
+		at-pos/y + round r2 * cosine i2
+	]
+]
+remove corners
+if noise? [corners: make-noise corners]
+if (last corners) <> (first corners) [change back tail corners first corners]
+corners
+]
+draw-box: func[corners r /roundonly rcorners /local c][
+tmp: prepare-pos corners
+either none? r [
+	;normal box
+	foreach [b-min b-max] tmp [
+		either noise? [
+			c: make-noise reduce [
+				to pair! reduce [b-max/1 b-min/2]
+				b-max
+				to pair! reduce [b-min/1 b-max/2]
+				b-min
+			]
+			update-gradient last c first c
+			changestyle last c
+			draw-lines c
+		][
+			update-gradient b-min b-max
+			changestyle b-min
+			draw-lines reduce [
+				to pair! reduce [b-max/1 b-min/2]
+				b-max
+				to pair! reduce [b-min/1 b-max/2]
+				b-min
+			]
+		]
+	]
+][
+	;rounded box
+	if none? rcorners [rcorners: [1 2 3 4]]
+	use [c1 c2 c3 c4 m1 m2 p][
+		r: either twips? [r][r * 20]
+		foreach [c1 c3] tmp [
+			;print [c1 c3]
+			update-gradient c1 c3
+			m1: c3/x - c1/x
+			m2: c3/y - c1/y
+			r: either m1 >= m2 [
+				min m2 / 2 r
+			][	min m1 / 2 r ]
+			c2: to pair! reduce [c3/1 c1/2]
+			c4: to pair! reduce [c1/1 c3/2]
+			m1: r * 1x0
+			m2: r * 0x1
+			either none? find rcorners 1 [
+				changestyle p: c1
+			][	changestyle p: c1 + m1 ]
+			
+			either none? find rcorners 2 [
+				draw-lines to block! p: c2
+			][
+				draw-lines to block! p: c2 - m1
+				draw-arc/center r 0 90 p + m2
+			]
+			either none? find rcorners 3 [
+				draw-lines to block! p: c3
+			][
+				draw-lines to block! p: c3 - m2
+				draw-arc/center r 90 180 p - m1
+			]
+			either none? find rcorners 4 [
+				draw-lines to block! p: c4
+			][
+				draw-lines to block! p: c4 + m1
+				draw-arc/center r 180 270 p - m2
+			]
+			either none? find rcorners 1 [
+				draw-lines to block! p: c1
+			][
+				draw-lines to block! p: c1 + m2
+				draw-arc/center r 270 360 p + m1
+			]
+			
+		]
+	]
+]
+]
+get-fill: func[fill /local i id c type colors center gr-type rot ratios pratios gsz][
+	;print ["get-fill:" mold fill]
+	switch first fill [
+		color [join #{00} prepare-color second fill]
+		bitmap [
+			type: #{40}
+			rot: 0
+			sc: 20x20
+			center: 0x0
+			id: none
+			parse next fill [
+				any [
+					'clipped (type: #{41})
+					| 'at set center [pair! | block!] (
+						unless twips? [
+							center/1: center/1 * 20
+							center/2: center/2 * 20
+						]
+					)
+					| 'rotate set rot [block! | number!] (
+						;unless twips? [
+						;	either block? rot [
+						;		forall rot [rot/1: rot/1 * 20]
+						;		rot: head rot
+						;	][	rot: rot * 20 ]
+						;]
+					)
+					| 'scale set sc [block! | number!] (
+						either block? sc [
+							unless twips? [
+								forall sc [sc/1: sc/1 * 20]
+							]
+							sc: head sc
+						][	unless twips? [sc: sc * 20] ]
+					)
+					| 'id set id [integer! | word!]
+					| tmp: word! (
+						either find names-ids-table tmp/1 [
+							id: tmp/1
+						][	make-warning! tmp ]
+					)
+				]
+			]
+			
+			if not smooth [type: switch type [#{41} [#{43}] #{40} [#{42}]]]
+			;print ["smoothing shape:" mold smooth "type:" mold type]
+			;type: either find fill 'clipped [#{41}][#{40}]
+			;probe center
+			fill: rejoin [
+				type
+				int-to-ui16 get-id id
+				bits-to-bin create-matrix center reduce ['scale sc 'rotate rot]
+			] 
+		]
+		gradient [
+			;probe fill
+			gr-type: #{10}
+			rot: 0
+			center: none
+			sc: none
+			gsz: none
+			pratios: make block! 8 ;recounted ratios
+			parse next fill [
+				any [
+					  'colors set colors block!
+					| 'center set center pair! ;(if not twips? [center: center * 20])
+					| 'radial (gr-type: #{12})
+					| 'rotate set rot number!
+					| 'size set gsz pair! (gsz: to-twips gsz)
+					| 'ratios set ratios block! (
+						;forall ratios [insert tail pratios to integer! (ratios/1 * 2.55)]
+						pratios: copy ratios
+						;ratios: copy head pratios
+	
+					)
+					| 'scale set sc [block! | number!]
+					| 'bounds set b-min pair! set b-max pair! (
+						if not twips? [
+							b-max: b-max * 20
+							b-min: b-min * 20
+						]
+						bbox: b-max + negate b-min
+						sc: min
+							1 /  (32768 / max abs bbox/x 0.1)
+							1 /  (32768 / max abs bbox/y 0.1)
+						
+						center: b-min + (bbox / 2)
+					)
+					| any-type!
+				] to end
+			]
+			if none? gsz [gsz: shp-size]
+	
+			if none? center [center: gsz / 2]
+			if none? sc [
+				sc: reduce [
+					1 /  (32768 / gsz/x)
+					1 /  (32768 / gsz/y)
+				]
+			]
+			
+		;print ["g" shp-size center sc]
+			if empty? pratios [
+				i: 0
+				c: (length? colors) - 1
+				step: 255 / c
+				repeat i c [
+					append pratios to integer! (i * step)
+				]
+				insert pratios 0
+			]
+			fill: rejoin [
+				gr-type
+				bits-to-bin create-matrix center reduce ['scale sc 'rotate rot]
+				int-to-ui8 length? colors
+			] 
+			i: 1
+			foreach color colors [
+				repend fill [
+					int-to-ui8 pratios/:i
+					prepare-color color
+				]
+				i: i + 1
+			]
+			fill
+		]
+	]
+]
+set-fill-style: func[fill /left /local new id f][
+	;print ["set-fill-style:" mold fill]
+	;print ["cur-FillSt0:" mold cur-FillSt0]
+	;print ["cur-FillSt1:" mold cur-FillSt1]
+	if fill = 'none [
+		if cur-FillSt0-id > 0 [
+			;print "!!!!1"
+			cur-FillSt0-id: 0 cur-state/4: #"1"
+		]
+		return
+	]
+	either issue? fill [fill: reduce ['color to tuple! issue-to-binary fill]][
+		if tuple? fill [fill: reduce ['color fill]]
+	]
+	new: get-fill copy fill
+	
+	id: either found? f: find FillStyles new [
+		index? f
+	][
+		append FillStyles new
+		length? FillStyles
+	]
+	;print ["FillStyles:" mold FillStyles]
+	
+	either left [
+		cur-FillSt1-id: id
+		cur-FillSt1: copy fill
+	][
+		cur-FillSt0-id: id
+		cur-FillSt0: copy fill
+	]
+	;print ["cur-FillSt0:" mold cur-FillSt0 cur-FillSt0-id]
+	;print ["cur-FillSt1:" mold cur-FillSt1 cur-FillSt1-id]
+]
+set-line-style: func[tmp /local w c new f][
+	cur-state/2: #"1"
+	w: c: none new: make block! 2
+	parse tmp [
+		any [
+			'width set w number!
+			| 'color set c tuple!
+			| 'color set c issue! (c: to tuple! issue-to-binary c)
+		] to end
+	]
+	new: reduce [
+		either none? w [cur-LineSt/1][to-twips w]
+		either none? c [cur-LineSt/2][c]
+	]
+	cur-LineSt-id: either found? f: find LineStyles new [
+		index? f
+	][
+		append/only LineStyles new
+		length? LineStyles
+	]
+	cur-LineSt: new
+]
+update-gradient: func[b-min b-max /local bbox sc c f][
+	;probe cur-FillSt0
+	if all [not none? cur-FillSt0 cur-FillSt0/1 = 'gradient none? find cur-FillSt0 'static] [
+		;print [b-min b-max]
+		bbox: b-max + negate b-min
+						
+		sc: reduce [
+			1 /  (32768 / max abs bbox/x 0.1) 1 /  (32768 / max abs bbox/y 0.1)
+		]
+		c: b-min + (bbox / 2)
+		;print [sc c]
+		either found? f: find/tail cur-FillSt0 'center [
+			f/1: c
+		][
+			repend cur-FillSt0 ['center c]
+		]
+		either found? f: find/tail cur-FillSt0 'scale [
+			f/1: sc
+		][
+			repend cur-FillSt0 ['scale sc]
+		]
+		;print ["Updated:" mold cur-FillSt0]
+		set-fill-style cur-FillSt0
+	]
+]	
+	
+
+	parse arg1 shp-rules: [
+		any [
+			'id set id integer!
+			| 'comment set v string!
+			| opt ['with] 'transparency (alpha: true)
+			| 'Rebol set arg1 block! (
+				error? try [if error? err: try [do arg1][probe disarm err]]
+			)
+			| 'Bounds set rect-min pair! set rect-max pair! (
+				fixed-bounds?: true
+				shp-size: rect-max + negate rect-min
+				if not twips? [
+					rect-min: rect-min * 20
+					rect-max: rect-max * 20
+					shp-size: 20 * shp-size
+				]
+			)
+			| 'noise copy tmp some [pair!] (
+				error? try [
+					ns: to-twips tmp/1
+					ns2: to-twips tmp/2
+					noise?: true
+				]
+			)
+			| 'transform set tmp block! (
+			use [v][
+				default-transformation
+				either not none? v: select tmp 'center [
+					if number? v [v: reduce [v v]]
+					tm/c: to-twips v
+					if relative? [tm/c: tm/c + at-pos]
+				][ tm/c: at-pos ]
+				if not none? v: select tmp 'rotate [
+					if number? v [v: reduce [v v]]
+					tm/scx: cosine v/1
+					tm/scy: cosine v/2
+					tm/sk0: sine v/1
+					tm/sk1: negate sine v/2
+				]
+				if not none? v: select tmp 'scale [
+					if number? v [v: reduce [v v]]
+					tm/scx: tm/scx * v/1
+					tm/scy: tm/scy * v/2
+					tm/sk0: tm/sk0 * v/1
+					tm/sk1: tm/sk1 * v/2
+				]
+				if not none? v: select tmp 'skew [
+					v: reduce either number? v [[v v]][[v/1 v/2]]
+					v: reduce [v/1 / 360 v/2 / 360]
+					tm/sk0: tm/sk0 + v/2
+					tm/sk1: tm/sk1 + v/1
+				]
+				if not none? v: select tmp 'reflect [
+					v: reduce either number? v [[v v]][[v/1 v/2]]
+					tm/scx: tm/scx * v/1
+					tm/scy: tm/scy * v/2
+				]
+				if not none? v: select tmp 'move [
+					v: to-twips v
+					v: reduce either number? v [[v v]][[v/1 v/2]]
+					tm/x: tm/x + v/1
+					tm/y: tm/y + v/2
+				]
+				;probe tm
+			]
+			)
+			| 'positions ['relative (relative?: true) | 'absolute (relative?: false)]
+			| 'at set at-pos pair! (if not twips? [at-pos: at-pos * 20] tm/c: at-pos relative?: true)
+			| 'units [
+				  'twips (twips?: on at-pos: at-pos * 20)
+				| 'pixels (twips?: off at-pos: at-pos / 20)
+			]
+			| 'no [
+				'fill (
+					if cur-FillSt0-id > 0 [
+						cur-FillSt0-id: 0 cur-state/4: #"1"
+					]
+				)
+				| 'edge (
+					if cur-LineSt-id > 0 [
+						cur-LineSt-id: 0 cur-state/2: #"1"
+					]
+				)
+				| 'noise (ns: ns2: 0x0)
+				| 'transform (default-transformation)
+			]
+			| 'pen [
+				'none (
+					if cur-LineSt-id > 0 [
+						cur-LineSt-id: 0 cur-state/2: #"1"
+					]
+				)
+			]
+
+			| ['line-style | 'edge | 'lines | 'pen] [
+				set tmp block! (set-line-style tmp)
+				| [
+					(w: c: none)
+					opt [opt ['width] set w number!]
+					opt [opt ['color] set c [tuple! | issue!]]
+					(set-line-style compose [width (w) color (c)])
+				]
+			 ]
+			| 'gradient set tmp [block! | 'static] (
+				either block? tmp [
+					cur-state/4: #"1"
+					insert tmp 'gradient
+					set-fill-style tmp
+				][
+					if all [
+						found? find cur-FillSt0 'gradient
+						none? find cur-FillSt0 'static
+					][append cur-FillSt0 'static]
+				]
+			)
+			| 'fill 'none (
+				if cur-FillSt0-id > 0 [
+					cur-FillSt0-id: 0 cur-state/4: #"1"
+				]
+			)
+			| 'fill 'bitmap set tmp [word! | integer! | block!] (
+				;print "!!!2"
+				cur-state/4: #"1"
+				set-fill-style compose [bitmap (tmp)]
+			)
+			| ['fill-style | 'fill 'color | 'výplò ] set tmp [block! | tuple! | issue!] (
+				;print "!!!3"
+				cur-state/4: #"1"
+				set-fill-style tmp
+			)
+			| 'fill-style1 set tmp block! (
+				;print "!!!4"
+				cur-state/3: #"1"
+				set-fill-style/left tmp
+			)
+			| 'smoothing ['on (smooth: true) | 'off (smooth: false)]
+			| 'image set tmp [word! | integer!] (
+				use [atp id][
+					atp: at-pos / 20
+					id: get-id tmp
+					parse/all compose/deep [
+						fill-style [bitmap id (tmp) at (atp) clipped]
+						no edge
+						box (atp) (atp + select placed-images id)
+					] shp-rules
+				]
+			)
+			| 'columns set tmp block! (
+				use [data from blk i w sp ofs][
+				ofs: none w: 10 sp: 0
+				parse tmp [
+					any [
+						'data set data block!
+						| 'from set from word!
+						| 'at set ofs pair!
+						| 'width set w number! 
+						| 'space set sp integer!
+						| any-type!
+					]
+				]
+				
+				blk: make block! 1 + 2 * length? data
+				insert blk 'box
+				i: 0
+				switch from [
+					bottom [
+						if none? ofs [ofs: shp-size / 20]
+						foreach h data [
+							repend blk [
+								to pair! reduce [ofs/x + i ofs/y]
+								to pair! reduce [ofs/x + i: i + w ofs/y - h]
+							]
+							i: i + sp
+						]
+					]
+					left [
+						if none? ofs [ofs: rect-min / 20]
+						foreach h data [
+							repend blk  [
+								to pair! reduce [ofs/x i + ofs/y]
+								to pair! reduce [ofs/x + h ofs/y + i: i + w]
+							]
+							i: i + sp
+						]
+					]
+				]
+				parse blk shp-rules
+				]
+			)
+			| ['box | 'rectangle | 'obdélník] (r: r2: none) any ['rounded set r any [integer!] opt 'only set r2 [block! | none] ] copy tmp any [pair!] (
+				if block? tmp [draw-box/roundonly tmp r r2]
+			)
+			| 'box2 (r: none) any ['rounded set r any [integer!]] copy tmp any [pair!] (
+				if block? tmp [
+					use [c p][
+					c: make block! 2 * length? tmp
+					forall tmp [
+						p: tmp/1 / 2
+						repend c [at-pos - p at-pos + p]
+					]
+					draw-box c r
+					]
+				]
+			)
+			| ['circle | 'oval] copy tmp any [number! | pair!] (
+				forall tmp [
+					c: either twips? [tmp/1][tmp/1 * 20]
+					update-gradient at-pos - c at-pos + c
+					draw-arc c 0 360
+				]
+			)
+			| 'arc copy tmp any [number!] (
+				foreach [r stAng enAng] tmp [
+					draw-arc either twips? [r][r * 20] stAng enAng
+					draw-lines reduce [at-pos first points]
+				]
+			)
+			| 'curved (curved?: true)
+			| 'n-gon set n integer! set r number! (
+				if not twips? [r: r * 20]
+				tmp: n-gon n r
+				update-gradient at-pos - r at-pos + r
+				changestyle first tmp
+				either curved? [
+					draw-curves next tmp
+					curved?: false
+				][	draw-lines next tmp]
+			)
+			| 'n-star set n integer! set r1 number! set r2 number! (
+				r1: to-twips r1
+				r2: to-twips r2
+				tmp: n-star n r1 r2
+				r: max r1 r2
+				update-gradient at-pos - r at-pos + r
+				changestyle first tmp
+				either curved? [
+					draw-curves next tmp
+					curved?: false
+				][	draw-lines next tmp]
+			)
+			| 'g-frame set tmp block! (
+			use [tw bmi bma w colors c1 c2 c3 c4 i1 i2 i3 i4][
+				bmi: to-twips tmp/1
+				bma: to-twips tmp/2
+				w: to-twips tmp/3
+				colors: tmp/4
+				tw: twips?
+				twips?: on
+				c1: bmi
+				c2: (0x1 * bmi) + (1x0 * bma)
+				c3: bma
+				c4: (1x0 * bmi) + (0x1 * bma)
+				i1: bmi + w
+				i2: c2 + (-1x1 * w)
+				i3: c3 - w
+				i4: c4 + (1x-1 * w)
+				;left
+				cur-state/4: #"1"
+				set-fill-style compose/deep [
+					gradient colors [(colors)]
+					bounds (c1) (c4 + (1x0 * w))
+				]
+				changestyle c1
+				draw-lines reduce [i1 i4 c4 c1]
+				;top
+				cur-state/4: #"1"
+				set-fill-style compose/deep [
+					gradient colors [(colors)]
+					rotate 90
+					bounds (c1) (c2 + (0x1 * w))
+				]
+				changestyle c1
+				draw-lines reduce [c2 i2 i1 c1]
+				
+				;right
+				cur-state/4: #"1"
+				set-fill-style compose/deep [
+					gradient colors [(colors)]
+					rotate 180
+					bounds (c2 - (1x0 * w)) (c3)
+				]
+				changestyle c3
+				draw-lines reduce [c2 i2 i3 c3]
+				
+				;bottom
+				cur-state/4: #"1"
+				set-fill-style compose/deep [
+					gradient colors [(colors)]
+					rotate 270
+					bounds (c4 - (0x1 * w)) (c3)
+				]
+				changestyle c3
+				draw-lines reduce [i3 i4 c4 c3]
+				twips?: tw
+			 ]
+			)
+			| 'line copy tmp any [pair!] (
+				if block? tmp [
+					tmp: prepare-pos tmp
+					changestyle first tmp
+					draw-lines next tmp
+				]
+			)
+			| 'curve copy tmp any [pair!] (
+				if block? tmp [
+					tmp: prepare-pos tmp
+					changestyle first tmp
+					draw-curves next tmp
+				]
+			)
+			| 'cross copy tmp any [pair!] (
+				if block? tmp [
+					foreach cr tmp [
+						if not twips? [cr: cr * 20]
+						cmin: to pair! reduce [cr/x / -2 cr/y / -2]
+						cmax: cmin * -1
+						if relative? [cmin: at-pos + cmin cmax: at-pos + cmax]
+						changestyle cmin
+						draw-lines to block! cmax
+						changestyle to pair! reduce [cmax/x cmin/y]
+						draw-lines to block! to pair! reduce [cmin/x cmax/y]
+					]
+				]
+			)
+			| 'grid copy tmp any [pair!] (
+				if block? tmp [
+					tmp: prepare-pos tmp
+					use [i c1 c2 mi ma sz][
+					set [mi ma sz] reduce [tmp/1 tmp/2 tmp/3]
+						if 0 < sz/1 [
+						i: mi/1
+						while [i <= ma/1][
+							c1: noise to pair! reduce [mi/1 + i 0]
+							c2: noise to pair! reduce [mi/1 + i ma/2]
+							changestyle c1
+							draw-lines reduce [c1 c2]
+							i: i + sz/1
+						]]
+						if 0 < sz/2 [
+						i: mi/2
+						while [i <= ma/2][
+							c1: noise to pair! reduce [0 mi/2 + i]
+							c2: noise to pair! reduce [ma/1 mi/2 + i]
+							changestyle c1
+							draw-lines reduce [c1 c2]
+							i: i + sz/2
+						]]
+					]
+				]
+			)
+			| arg1: any-type! (make-warning! arg1)
+		]
+		to end
+	]
+	
+	shp-size: rect-max + negate rect-min
+	;print [rect-min	rect-max shp-size]
+	
+	buff: make binary! 100
+	append buff rejoin [
+		set-id id
+		;either fixed-bounds? [
+		;	create-rect/bin rect-min rect-max
+		;][
+		;	create-rect/bin rect-min - 200 rect-max + 200
+		;]
+		create-rect/bin rect-min rect-max
+	]
+	;fillstyles
+	append buff either 255 <= tmp: length? FillStyles [
+		join #{FF} int-to-ui16 tmp
+	][	int-to-ui8 tmp ]
+	repeat i tmp [repend buff FillStyles/:i	]
+	;lineStyles
+	append buff either 255 <= tmp: length? LineStyles [
+		join #{FF} int-to-ui16 tmp
+	][	int-to-ui8 tmp ]
+	repeat i tmp [
+		repend buff [
+			int-to-ui16 first LineStyles/:i
+			prepare-color second LineStyles/:i
+		]
+	]
+	;------------
+	append buff debase/base (
+		join
+			int-to-bits bf: bits-needed length? FillStyles 4
+			int-to-bits bl: bits-needed length? LineStyles 4
+	) 2
+	;probe shs
+	parse shs [
+		any [
+			set tmp string! (insert shapeRecords tmp)
+			| 'l set tmp integer! (insert shapeRecords int-to-bits tmp bl)
+			| 'f set tmp integer! (insert shapeRecords int-to-bits tmp bf)
+		]
+	]
+	ins-def form-tag either alpha [32][2] rejoin [
+		buff
+		debase/base byte-align join shapeRecords "000000" 2
+	]
+	twips?: were-twips?
+]

@@ -1,0 +1,95 @@
+rebol [
+	title: "GUI_Core"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 24
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 8/10/2007
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+
+fnt_mini: font %myfonts/idea.rfnt as "mini"
+
+GUI_kotaTitle: Extends MovieClip [
+	init: does [
+		this.createEmptyMovieClip("bg" 1)
+		this.createTextField("tf" 2 0 0 1 10)
+		var tf: this.tf
+		this.format: make TextFormat ["mini" 8 #4F3F22]
+		tf.autoSize: true
+		tf.setTextFormat(this.format)
+		tf.setNewTextFormat(this.format)
+		tf.type: "dynamic"
+		tf.selectable: false
+		;this.tf.autoSize: "right"
+		tf.embedFonts: true
+		;tf.antiAliasType: "advanced"
+		tf.gridFitType: "pixel"
+
+	]
+	setText: func[text][
+		this.tf.text: text
+		this.redraw()
+	]
+	show: func[text][
+		this.setText(text)
+		this._visible: true
+		this.onMouseMove: does [
+			this._x: _xmouse
+			this._y: _ymouse
+			updateAfterEvent()
+		]
+	]
+	hide: does [
+		this._visible: false
+		delete this.onMouseMove
+	]
+	redraw: does [
+		var bg: this.bg
+		var tf: this.tf
+		tf._y: -28
+		bg.clear()
+		var x2: -19 - tf.textWidth
+		tf._x: x2 + 2
+		bg.beginFill(#FFFFFF 90)
+		bg.moveTo(-14 -14)
+		bg.lineTo(x2 -14)
+		bg.lineTo(x2 -26)
+		bg.lineTo(-14 -26)
+		bg.lineTo(-14 -14)
+		bg.endFill()
+		bg.lineStyle(
+			3       ;thickness:Number
+			#FFFFFF ; rgb:Number
+			80     ;alpha:Number
+			true    ;pixelHinting:Boolean
+			true    ;noScale:String
+			"none"  ;capsStyle:String
+			;jointStyle:String, miterLimit:Number
+		)
+		bg.moveTo(0 0)
+		bg.lineTo(-14 -14)
+		bg.lineTo(x2 -14)
+
+		bg.lineStyle(
+			1       ;thickness:Number
+			#4F3F22 ; rgb:Number
+			100     ;alpha:Number
+			true    ;pixelHinting:Boolean
+			true    ;noScale:String
+			"none"  ;capsStyle:String
+			;jointStyle:String, miterLimit:Number
+		)
+		bg.moveTo(0 0)
+		bg.lineTo(-14 -14)
+		bg.lineTo(x2 -14)
+		bg.lineStyle()
+		bg.endFill()		
+		
+	]
+]

@@ -1,0 +1,28 @@
+rebol [
+	title: "MX-Shared Objects"
+	type: 'mx
+	file: %sharedobject.swf
+	background: 152.174.149
+	rate: 20
+	size: 320x20
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 4-6-2002
+	purpose: {To show how to store variables in the user's machine}
+	comment: {
+	For more info look at this document:
+	<a href="http://www.macromedia.com/support/flash/ts/documents/local_so.htm">Flash TechNotes What is a local Shared Object</a>.}
+]
+background 152.174.149
+fnt_Courier: Font [name "Courier New" bold]
+txt_test: EditText x 310x20 [ReadOnly Font [fnt_Courier 12]]
+place txt_test
+doAction [
+	constantPool [myLocal_so data visits]	
+	myLocal_so: sharedobject.getLocal("flashcookie")
+	myLocal_so.data.visits++ ;increment visits
+	myLocal_so.flush() ;writes the data immediately
+	x: "You have been here " + myLocal_so.data.visits + " times."
+]
+showFrame
+end

@@ -1,0 +1,74 @@
+rebol [
+	title: "GUI_Clickable"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 24
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 8/10/2007
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+
+require [
+	%gui/defaults.rswf
+	%gui/GUI_Core.rswf
+]
+
+GUI_Clickable: Extends GUI_Core [
+	enabled?: true
+	init: func[width height][
+		super.init(width height)
+	]
+	setState: func[state][
+		if this.state <> state and this.enabled? [
+			switch state [
+				"down" [
+					if this.filters? [this.bg.filters: effectDown]
+					this.transform.colorTransform: downColorTransform
+				]
+				"out" [
+					if this.filters? [this.bg.filters: effectOut]
+					this.transform.colorTransform: outColorTransform
+				]
+				"over" [
+					if this.filters? [this.bg.filters: effectOver]
+					this.transform.colorTransform: overColorTransform
+				]
+				"disabled" [
+					if this.filters? [this.bg.filters: none]
+					this.transform.colorTransform: disabledColorTransform
+					this.useHandCursor: false
+				]
+			]
+			this.state: state
+			;this.onStateChange()
+		]
+	]
+	disable: does [this.setState("disabled") this.enabled?: false ]
+	enable:  does [this.enabled?: true  this.state: none this.setState("out") this.useHandCursor: true]
+	setEnabled: func[enabled?][
+		either enabled? [this.enable()][this.disable()]
+	]
+	onRollOver: does [
+		this.setState("over")
+	]
+	onRollOut: does [
+		this.setState("out")
+	]
+	onDragOut: does [
+		this.setState("out")
+	]
+	onPress:   does [
+		this.setState("down")
+	]
+	onRelease: does [
+		this.setState("over")
+	]
+	onReleaseOutside: does [
+		this.setState("out")
+	]
+]

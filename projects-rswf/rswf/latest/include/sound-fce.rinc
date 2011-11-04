@@ -1,0 +1,314 @@
+rebol [
+	title: "Sound related functions"
+	author: "oldes"
+]
+mp3: make object! [
+	header:		;frame header (binary!)
+	frame: none	;mp3 frame (binary!)
+	sdsize: 0
+	;parsed frameHeader variables:
+	Syncword: MpegVersion: Layer: ProtectionBit:
+	Bitrate: SamplingRate: PaddingBit: reserved:
+	ChannelMode: ModeExtension: Copyright: Original: Emphasis: none
+	;----------------------
+
+	;SHOULD BE REPLACED!::
+	;comment {
+	slice-bin: func [
+		"Slices the binary data to parts which length is specified in the bytes block"
+		bin [string! binary!]
+		bytes [block!]
+		/integers "Returns data as block of integers"
+		/local tmp b
+	][
+		tmp: make block! length? bytes
+		forall bytes [
+			b: copy/part bin bytes/1
+			append tmp either integers [to-integer debase/base refill-bits b 2][b]
+			bin: skip bin bytes/1
+		]
+		tmp
+	]
+	refill-bits: func[
+		"When an unsigned bit value is expanded into a larger word size the leftmost bits are filled with zeros."
+		bits
+		/local n
+	][
+		bits
+		n: (length? bits) // 8
+		if n > 0 [
+			n: 8 - n
+			insert/dup head bits #"0" n
+		]
+		bits		 
+	]
+	;}
+	;!!!!!!!!!!
+
+	getMp3Frame: func[port][
+		frame: none
+		if not none? header: copy/part port 4 [
+			if 255 <> first header [
+				;print ["ID3?" mold header]
+				switch (to-string copy/part header 3) [
+					"ID3" [
+						;print "ID3"
+						append header copy/part port 6
+						id3: copy/part port third parse-ID3header header
+						;probe length? id3
+					]
+					"TAG" [
+						copy/part port 124
+					]
+				]
+				header: copy/part port 4
+			]
+			if not none? header [
+				parse-Mp3FrameHeader header
+				frame: copy/part port to-integer sdsize
+			]
+		]
+		frame
+	]
+
+	SynchsafeInt: func[bin [binary!] "4 bytes"][
+		;remove each 8. bit
+		to integer! debase/base (
+			join "000" head remove skip (remove skip (remove skip (enbase/base bin 2) 8) 7) 7
+		) 2
+	]
+
+	parse-ID3header: func[header [binary!] /local version flags size][
+		set [version flags tmp] next slice-bin header [3 2 1 4]
+		flags: enbase/base flags 2
+		size: (SynchsafeInt tmp) + either flags/2 = "1" [10][0]
+		reduce [version flags size]
+	]
+
+	parse-Mp3FrameHeader: func[header [binary!]][
+		;probe header
+		if header = #{00000000} [return false]
+		set [
+			Syncword MpegVersion Layer ProtectionBit
+			Bitrate SamplingRate PaddingBit Reserved
+			ChannelMode ModeExtension Copyright Original Emphasis
+		] slice-bin/integers (enbase/base header 2) [11 2 2 1  4 2 1 1  2 2 1 1 2]
+		;print ["MpegVersion:" MpegVersion]
+
+		Bitrate: pick (switch layer either MpegVersion = 3 [[
+			3 [[32 64 96 128 160 192 224 256 288 320 352 384 416 448]]
+			2 [[32 48 56  64  80  96 112 128 160 192 224 256 320 384]]
+			1 [[32 40 48  56  64  80  96 112 128 160 192 224 256 320]]
+		]][[
+			3 [[32 48 56  64  80  96 112 128 144 160 176 192 224 256]]
+			2 [[ 8 16 24  32  40  48  56  64  80  96 112 128 144 160]]
+			1 [[ 8 16 24  32  40  48  56  64  80  96 112 128 144 160]]
+		]]) Bitrate
+		SamplingRate: pick switch MpegVersion [
+			3 [[44100 48000 32000 "--"]]
+			2 [[22050 24000 16000 "--"]]
+			0 [[11025 12000 8000 "--"]]
+		] (1 + SamplingRate)
+		;sdsize: to-integer ((((either MpegVersion = 3 [144][72]) * Bitrate * 1000) / SamplingRate) + PaddingBit - 4)
+		;comment {
+		sdsize: either MpegVersion = 3 [ ;version 1
+			((( either layer = 3 [48000][144000]) * bitrate) / SamplingRate) + PaddingBit  - 4
+		][
+			((( either layer = 3 [24000][72000]) * bitrate) / SamplingRate) + PaddingBit - 4
+		]
+		;}
+		
+		comment {
+		print [tabs
+			"MpegVersion:" pick [2.5 "" 2 1] (1 + MpegVersion)
+			"Layer:" pick ["" "III" "II" "I"] (1 + Layer)
+			"Protected by CRC:" ProtectionBit = 1
+		]
+		
+		print [tabs
+			"Bitrate:" Bitrate
+			"SamplingRate:" SamplingRate
+			"PaddingBit:" PaddingBit = 1
+		]
+		print [tabs
+			"ChannelMode:" pick ["Stereo" "Joint stereo (Stereo)" "Dual channel" "Single channel (Mono)"] (1 + ChannelMode)
+			"Copyright:" Copyright = 1
+			"Original:" Original = 1
+			"Emphasis:" pick [none "50/15 ms" "" "CCIT J.17"] (1 + Emphasis)
+		]
+		print [tabs "SampleDataSize:" sdsize]
+		;probe sdsize: to-integer ((((either MpegVersion = 3 [144][72]) * Bitrate * 1000) / SamplingRate) + PaddingBit - 4)
+		}
+	]
+]
+;m: open/direct/binary %/j/test/track03.mp3 %/j/binladin.mp3 ;
+;getMp3Frame m
+;getMp3Frame m
+;close m
+
+;----------------------------------wav functions-----------------------------
+wav: make object! [
+	WORD:  [copy v 2 skip (v: to integer! to binary! reverse v)]
+	DWORD: [copy v 4 skip (v: to integer! to binary! reverse v)]
+	RIFF-CHUNK: [
+		copy id 4 skip ;identifier, e.g. "fmt " or "data"
+		DWORD	;remaining chunk length after header
+		copy chunk-data v skip (
+			(print [id v mold chunk-data])
+			switch id [
+				"fmt " [parse/all chunk-data RIFF-FMT-CHUNK]
+				"data" [data-ck: to binary! chunk-data]
+			]
+		)
+	]
+	RIFF-FMT-CHUNK: [
+		WORD  (fmt-ck/wFormatTag: v)		
+		WORD  (fmt-ck/wChannels: v)
+		DWORD (fmt-ck/dwSamplesPerSec: v)
+		DWORD (fmt-ck/dwAvgBytesPerSec: v)
+		WORD  (fmt-ck/wBlockAlign: v)
+	]
+	id:
+	riff-data: none
+	chunk-data: none
+	data-ck: none
+	fmt-ck: make object! [
+		wFormatTag:			;Format category
+		wChannels:			;Number of channels
+		dwSamplesPerSec:	;Sampling rate
+		dwAvgBytesPerSec:	;For buffer estimation
+		wBlockAlign:		;Data block size
+		0
+	]
+	parse-wav: func[bin][
+		data-ck: none
+		parse/all bin [
+			"RIFF"	;identifier string
+			DWORD	;remaining length after this header
+			copy riff-data v skip (
+				parse/all riff-data [
+					copy riff-id 4 skip
+					any [RIFF-CHUNK]
+				]
+			)
+		]
+	]
+]
+
+;------------------
+
+create-soundStreamHead: func[ /local frameSize rate cmode soundRate][
+	rate: mp3/SamplingRate
+	soundRate: either rate < 11000 [0][either rate < 22000 [1][either rate < 44100 [2][3]]]
+	frameSize: either mp3/SamplingRate > 32000 [1152][576]
+	cmode: either mp3/ChannelMode = 3 [0][1]
+	stream/samplesPerFrame: to integer! (rate / swf-framerate)
+	stream/idealFrames: stream/samplesPerFrame / frameSize
+	form-tag 18 rejoin [
+		debase/base rejoin [
+			"0000"	;reserved
+			int-to-bits soundRate 2 ;playback sampling rate
+			"1" ;playback soundSize
+			int-to-bits cmode 1
+			"0010" ;mp3 compression
+			int-to-bits soundRate 2 ;streaming sampling rate
+			"1" ;streaming soundSize
+			int-to-bits cmode 1
+		] 2
+		int-to-ui16 stream/samplesPerFrame
+	]
+]
+create-soundStreamBlock: func[/local frameSize f tmp fr frames][
+	frameSize: either mp3/SamplingRate > 32000 [1152][576]
+	stream/frame: stream/frame + 1
+	f: to integer! (stream/idealFrames * stream/frame)
+	
+	;length: stream/delay + 4 + length? mp3/header
+	tmp: make binary! frameSize
+	fr: f - stream/mp3frames
+	insert tmp int-to-ui16 either fr <= 0 [0][abs stream/delay]
+	if stream/mp3frames = 0 [fr: fr + 1]
+	frames: 0
+	loop fr [
+;	while [all [mp3/frames < f not none? mp3/frame]][
+		stream/mp3frames: stream/mp3frames + 1
+		stream/length: stream/length + frameSize
+		frames: frames + 1
+		insert tail tmp rejoin [
+			mp3/header
+			mp3/frame
+		]
+		;length: length + 4 + length? mp3/frame
+		mp3/getMp3Frame stream/port
+		if none? mp3/frame [break]
+	]
+	;print [stream/mp3frames stream/frame f fr stream/delay]
+	;stream/delay: (stream/mp3frames * frameSize) - (stream/frame * stream/samplesPerFrame)
+	stream/delay: (stream/frame * stream/samplesPerFrame) - stream/length
+	insert tmp int-to-ui16 frames * frameSize
+	ins form-tag 19 tmp
+]
+create-defineSound: func[filename /local file rate soundRate soundSize bin f tmp][
+	probe filename
+	either any [
+		not none? xxx: filename: get-filepath filename
+	] [
+		switch last parse filename "." [
+			"wav" [
+				file: read/binary filename
+				if wav/parse-wav file [
+					rate: wav/fmt-ck/dwSamplesPerSec
+					soundRate: either rate < 11000 [0][either rate < 22000 [1][either rate < 44100 [2][3]]]
+					soundSize: either (wav/fmt-ck/dwSamplesPerSec / wav/fmt-ck/wChannels) = wav/fmt-ck/dwSamplesPerSec [0][1]
+					probe length? wav/data-ck
+					ins-def form-tag 14 bbb: rejoin [
+						set-id none
+						(debase/base aaaa: rejoin [
+							"0000" ;uncompressed
+							int-to-bits soundRate 2
+							int-to-bits soundSize 1
+							int-to-bits (wav/fmt-ck/wChannels - 1) 1
+						] 2)
+						int-to-ui32 length? wav/data-ck
+						wav/data-ck
+					]
+				]
+			]
+			"mp3" [
+				file: open/direct/binary filename
+				if mp3/getMp3Frame file [
+					f: 1
+					rate: mp3/SamplingRate
+					soundRate: either rate < 11000 [0][either rate < 22000 [1][either rate < 44100 [2][3]]]
+					frameSize: either mp3/SamplingRate > 32000 [1152][576]
+					bin: make binary! length? file
+					tmp: rejoin [
+						debase/base rejoin [
+							"0010" ;mp3
+							int-to-bits soundRate 2 ;playback sampling rate
+							"1" ;playback soundSize
+							int-to-bits either mp3/ChannelMode = 3 [0][1] 1
+						] 2
+					]
+					
+					insert bin join mp3/header mp3/frame
+					while [not none? mp3/getMp3Frame file][
+						f: f + 1
+						insert tail bin mp3/header
+						insert tail bin mp3/frame
+					]
+					ins-def form-tag 14 rejoin [
+						set-id none
+						tmp
+						int-to-ui32 (f * frameSize)
+						#{0000}
+						bin
+					]
+				]
+				close file
+			]
+		]
+	][
+		print ["Sound file or url (" filename ") doesn't exists!"]
+	]
+]

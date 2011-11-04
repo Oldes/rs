@@ -1,0 +1,39 @@
+rebol [
+	title: "SWF-capsule example"
+	type: 'swf
+	file: %capsule.swf
+	background: 152.174.149
+	rate: 1
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 14-12-2001
+	purpose: {To show how to create shapes with rounded boxes}
+]
+background 152.174.149
+shp_test: Shape [
+	Bounds 0x0 320x320
+	edge [width 4 color 200.0.0]
+	fill color 200.200.0
+	box rounded 80 10x10 310x310
+]
+shp_capsule: Shape [
+	Bounds -100x-10 100x10
+	edge [width 2 color 0.0.0]
+	fill color 110.0.0
+	box rounded 30 -100x-15 100x15
+	edge [width 4 color 200.0.0]
+	fill color 110.110.0
+	box rounded 10 -90x-10 90x10
+]
+shp_small: Shape [
+	Bounds -40x-6 40x6
+	edge [width 2 color 200.0.0]
+	fill color 250.160.0
+	box rounded 6 -40x-6 40x6
+]
+Place shp_test
+Place shp_capsule [at 160x160 scale [1 2.5]]
+Place shp_small at 160x160
+showFrame
+end

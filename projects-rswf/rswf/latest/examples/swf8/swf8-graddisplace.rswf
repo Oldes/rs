@@ -1,0 +1,100 @@
+rebol [
+	title: "FLASH8 - Gradient displace"
+	type: 'swf8
+	file: %swf8-graddisplace.swf
+	background: 255.255.255
+	rate: 24
+	size: 400x300
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 19-10-2005
+	purpose: {How to use gradient as a displacementMap}
+	comment: {}
+	compressed: true
+]
+background 255.255.255
+bitmaps images [bmp_picture:  %bitmaps/holky.jpg]
+spr_picture: sprite img_picture
+exportAssets [bmp_picture "picture"]
+
+es: EmptySprite
+gradient: place es
+picture: place spr_picture
+
+doAction [
+	gradient._visible: false
+	gradRatioCenter: 50
+	dir: 10
+	updateGradient: func[][
+		gradRatioCenter: gradRatioCenter + dir
+		if gradRatioCenter > 200 [
+			dir: -1 * dir
+			gradRatioCenter: gradRatioCenter + dir
+		] else if gradRatioCenter < 50 [
+			dir: -1 * dir
+			gradRatioCenter: gradRatioCenter + dir
+		]
+		
+		with gradient [
+			var matrix: make Matrix! []
+			matrix.createGradientBox(
+				400 ;width:Number
+				150 ;height:Number
+				(Math.PI / 2)	;[rotation:Number]
+				0	;[tx:Number]
+				0	;[ty:Number]
+			)
+			
+			clear() ;THIS IS VERY IMPORTANT!!!!!!!!
+			;If you do not clear, you are adding more and more gradient rectangles
+			;over each other so it will slow down everything very fast!
+			
+			beginGradientFill(
+				"linear" ;fillType:String (linear/radial)
+				([#000000 #CCCCCC #000000]) ;colors:Array
+				([100 100 100])				;alphas:Array
+				([0 gradRatioCenter 255])	;ratios:Array
+				matrix						;matrix:Object
+				"repeat"	;[spreadMethod:String] (pad,reflect,repeat)
+				"RGB"	;[interpolationMethod:String] (linearRGB,RGB)
+				0		;[focalPointRatio:Number] (-1 to 1)
+			)
+			moveTo(0 0)
+			lineTo(400 0) lineTo(400 300) lineTo(0 300) lineTo(0 0)
+			endFill()
+		]
+	]
+	updateGradient()
+	
+    bmpDispMap: make BitmapData! [400 300 false #FFFFFF]
+
+    mapPoint: make Point! [0 0]
+    matrix: make Matrix! []
+    clrTrans: make ColorTransform! [1 1 1 1 0 0 0 0]
+	updateEffect: func[][
+		updateGradient()
+	    bmpDispMap.draw(
+	    	gradient
+	    	matrix
+	    	clrTrans
+	    	"normal" gradient.rectangle false
+	    )
+	    disp: make DisplacementMapFilter! [
+	    	bmpDispMap	;mapBitmap:BitmapData
+	    	mapPoint	;mapPoint:Point
+	    	1			;componentX:Number 1 (red), 2(green), 4 (blue), and 8 (alpha)
+			1			;componentY:Number
+			1			;scaleX:Number
+			20			;scaleY:Number
+			"clamp"		;[mode:String] (wrap,clamp,ignore,color)
+			#000000		;[color:Number] (color to use for out-of-bounds displacements.)
+			100			;[alpha:Number] (alpha value to use for out-of-bounds displacements.)
+		]
+		picture.filters: [disp]
+	]
+	updateEffect()
+	int: setInterval(updateEffect 50)
+
+]
+showFrame
+end

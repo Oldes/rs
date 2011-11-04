@@ -1,0 +1,65 @@
+rebol [
+	title: "SWF5-cursor2 example"
+	type: 'swf5
+	file: %cursor2.swf
+	background: 152.174.149
+	rate: 60
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 4-Dec-2001
+	purpose: {This is more advanced example of own's one cursor using clipActions}
+	comment: {In Flash 5 you can set object's properties using special names. These names are:
+	_x and _y
+	_xscale and _yscale
+	_height and _width
+	_rotation
+	_alpha
+	_visible
+	_name
+	_highquality
+	_quality
+	_soundbuftime}
+]
+background 152.174.149
+shp_cursor: Shape [
+	Bounds -40x-40 40x40
+	edge [width 1]
+	line -20x0 20x0
+	line 0x-20 0x20
+	Fill color 255.200.100
+	box -5x-5 5x5
+]
+spr_cursor: Sprite [
+	Place shp_cursor
+	stop
+	showFrame
+	place shp_cursor [
+		move at 0x0 scale 0.8 multiply 200.0.100
+	]
+	stop
+	showFrame
+	end
+]
+obj_cursor: Place spr_cursor [
+	actions [
+		mouseMove [
+			ConstantPool [mx my _root]
+			mx: _root._xmouse
+			my: _root._ymouse
+			_x: mx
+			_y: my
+			if mx > 5 [ _xscale: 100 * (320 / mx) ]
+			if my > 5 [ _yscale: 100 * (320 / my) ]
+		]
+		mouseDown [goto frame 2]
+		mouseUp [goto frame 1]
+		keyDown  [
+			_width: 80
+			_height: 80
+		]
+	]
+]
+DoAction [Mouse hide stop]
+showFrame
+end

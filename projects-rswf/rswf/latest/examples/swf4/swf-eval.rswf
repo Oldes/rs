@@ -1,0 +1,42 @@
+rebol [
+	title: "SWF-Eval (arrays)" 
+	type: 'swf
+	file: %eval.swf
+	background: 153.165.139
+	rate: 60
+	size: 300x100
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {To show how to simulate an arrays in Flash 4 using EVAL function}
+	comment: {
+	In Flash 4, the eval function was used to simulate an arrays. In Flash 5 it is recommended that you use the Array object to create arrays. That's already posible in the Rebol/Flash dialect using:
+	b: make block! ["a" "b" "c"]
+	x: "[" add b/1 add " " add b/2 add " " add b/3 add "]"
+
+	<b>About joining strings:</b>
+	it's posible to use the <b>&</b> char as it's in ActionScript or a dot (<b>.</b>) as it's in PHP
+	}
+]
+background 153.165.139
+fnt_arial: defineFont2 [name "Courier New" bold]
+txt_test: EditText 'x 300x100 [
+	ReadOnly
+	Color 0.0.0
+	Font [fnt_arial 12]
+	Layout [align: 'left Leading: -2]
+]
+Place txt_test
+DoAction [
+	b0: "first"
+	b1: "second"
+	b2: "third"
+]
+frm_init: show frame
+DoAction [
+	a: random 3
+	x: "b" . a . " = " . eval( "b" . a)
+]
+show 10 frames
+DoAction [goto frame frm_init and play]
+show frame
+end

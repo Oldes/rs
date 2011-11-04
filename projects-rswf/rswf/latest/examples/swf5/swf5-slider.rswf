@@ -1,0 +1,126 @@
+rebol [
+	title: "SWF5-Slider" 
+	type: 'swf5
+	file: %slider.swf
+	background: 153.165.139
+	rate: 60
+	size: 300x100
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {..hmm... to make a slider?...}
+]
+background 153.165.139
+shp_slider-bg: shape [
+	bounds 0x0 200x19
+	fill color 0.0.0	box 0x0 200x19
+	fill color 66.81.74	box 1x1 199x18
+	fill color 82.97.90	box 2x2 199x18
+	fill color 99.113.107 box 3x3 199x18
+]
+shp_slider-pane: shape [
+	fill color 0.0.0 box 0x0 6x19
+	fill color 255.255.250 box 1x1 5x18
+]
+btn_slider-bg: defineButton2 [
+	as push
+	shapes [
+		[up hit down over] [id shp_slider-bg ]
+	]
+	actions [
+		[press] [
+			pane.a: true
+			pane._x: math.min(194 _xmouse)
+			update()
+			pane.startDrag(0 194 0 0)
+		]
+		[ReleaseOutside release] [
+			pane.a: false
+			update()
+			this.stopDrag()
+		]
+	]
+]
+btn_slider-pane: defineButton2 [
+	as push
+	shapes [
+		[up hit] [id shp_slider-pane ]
+		down [id shp_slider-pane add 100.200.0]
+		over [id shp_slider-pane add 60.10.200]
+	]
+	actions [
+		[press] [
+			a: true
+			update()
+			;startDrag "" [rect 0x0 194x0] ;<- not supported anymore
+			this.startDrag(0 194 0 0)
+		]
+		[ReleaseOutside release] [
+			a: false
+			this.stopDrag()
+		]
+	]
+]
+spr_slider-pane: sprite btn_slider-pane
+fnt_Arial: defineFont2 [name "Arial"]
+txt_label: EditText 't 60x18 [
+	Color 0.0.0
+	ReadOnly
+	Font [fnt_Arial 12]
+	Layout [align: 'right]
+]
+spr_label: sprite [place txt_label at -60x0 showFrame end]
+
+obj_slider: sprite [
+	lab: place spr_label
+	place btn_slider-bg
+	pane: place spr_slider-pane [
+		actions [
+			mouseMove [	if a [_parent.update()	] ]
+		]
+	]
+	doAction [
+		init: func[v l][
+			value: v
+			lab.t: l
+			pane._x: 194 * v
+			onChange()
+		]
+		update: func[][
+			old: value
+			value: pane._x / 194
+			if old <> value [
+				onChange()
+			]
+		]
+	]
+	show frame
+	end
+]
+ExportAssets [obj_slider "slider"]
+
+;and now just some practical example:
+fnt_Arial: defineFont2 [name "Arial"]
+txt_state: EditText 'test 60x18 [
+	Color 0.0.0	border
+	Font [fnt_Arial 12]
+	Layout [align: 'center]
+]
+spr_state: sprite [
+	place txt_state at -30x0
+	showFrame end
+]
+txt: place spr_state at 150x10
+sl1: place obj_slider at 50x40
+sl2: place obj_slider [at 50x60 add 50.50.0]
+doAction [
+	tellTarget sl1 [
+		onChange: func[][_parent.txt.test: value]
+		init(0 "Value:")
+	]
+	tellTarget sl2 [
+		onChange: func[][_parent.txt._xscale: 50 + to-integer (300 * value)]
+		init(1 "xScale:")
+	]
+]
+show frame
+end

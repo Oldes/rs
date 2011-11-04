@@ -1,0 +1,125 @@
+rebol [
+	title: "Image to BitLossless - Rebol/View version >= 1.2.8 !"
+	file: %img-to-bll2.r
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 4-11-2002
+	history: [
+		04-11-2002 {Fixed bug in images without alpha channel}
+		26-06-2002 {Fixed compression}
+		3-Apr-2002 {Fixed bug in key-masking}
+	]
+	purpose: {Converts any image to Flash bitmap (bitLossless) format}
+	comment: {Use this script only with Rebol/View version >= 1.2.8 - for older View use %img-to-bll.r}
+	note: {
+	1. You must use Rebol/View!
+	2. Probably still not bug free (but what is anyway:-)
+	3. This version works only for up to 255 colors per image!!!
+	}
+]
+
+img-to-bll: func[
+	{Converts any image to Flash bitmap (bitLossless) format}
+	img	[file! url! image!] "Image to convert"
+	/alpha transp	"If you want to create alpha version"
+	/mask maskimg	"Image that contains mask information"
+	/key key-color	"If you need some color to be transparent"
+	/local c pix w x szx szy i color colors BitmapPixelData ColorTableRGB f
+][
+	if key [key-color: to-binary key-color]
+	if not image? img [img: load img]
+	if mask [
+		if not image? maskimg [maskimg: load maskimg]
+		if maskimg/size <> img/size [
+			print "Size of the image and its mask must be same!"
+			halt
+		]
+	]
+	set [szx szy] reduce [img/size/x img/size/y]
+	colors: make hash! szx * szy
+	w: szx while [(w // 4) > 0][w: w + 1] w: w - szx
+	BitmapPixelData: make binary! 4 * (szx + w) * szy
+
+	x: 1
+	c: 1
+	pix: szx * szy
+	while [c <= pix] [
+		color: to-binary img/:c
+		either any [alpha key mask] [
+			either key [
+				either find/part color key-color 3 [color: #{00000000}][change skip color 3 #{FF}]
+			][
+				either alpha [
+					;probe color
+					either not none? transp [
+						change skip color 3 transp
+						;probe transp
+					][
+					]
+				][
+					;masked
+					change skip color 3 to-binary to-char first maskimg/:c
+				]
+			]
+		][
+			color: copy/part color 3
+		]
+		
+		;get-color-id: func [color /local i f][
+		i: either found? f: find colors color [
+			index? f
+		][
+			insert tail colors color
+			length? colors
+		]
+		i: int-to-ui8 (i - 1)
+		;i: get-color-id color
+		
+		insert tail BitmapPixelData i
+		either x = szx [
+			;if any [alpha key mask][i: get-color-id #{00000000}]
+			insert/dup tail BitmapPixelData i w
+			x: 1
+		][	x: x + 1]
+		c: c + 1
+	]
+	;probe length? colors
+	ColorTableRGB: rejoin to-block colors
+	;print ["colors:" length? colors]
+	rejoin [
+		int-to-ui8 3 ;BitmapFormat - this version works only for up to 255 colors!!!
+		int-to-ui16 szx ;(szx + w) ;BitmapWidth
+		int-to-ui16 szy ;BitmapHeight
+		int-to-ui8 (length? colors) - 1 ;BitmapColorTableSize
+		head remove/part tail compress join ColorTableRGB BitmapPixelData -4 ;ZLIBBITMAPDATA
+	]
+]
+
+img-to-bll-alpha: func[
+	{Converts any image to Flash bitmap (bitLossless) alpha format}
+	img	[image! file! url! string!] "Image to convert"
+	/local szx szy RGBA pixel
+][
+	if not image? img [img: load either string? img [to-rebol-file img][img]]
+	set [szx szy] reduce [img/size/x img/size/y]
+
+	RGBA: make binary! (szx * szy * 4)
+
+	while [not tail? img][
+		pixel: to-binary first img
+		insert tail RGBA complement copy/part skip pixel 3 1
+		insert tail RGBA copy/part pixel 3
+		img: next img
+	]
+	;probe rgba
+	;print [length? rgba (szx * szy * 4) ]
+	rejoin [
+		int-to-ui8 5 ;BitmapFormat - 32-bit RGBA image
+		int-to-ui16 szx ;(szx + w) ;BitmapWidth
+		int-to-ui16 szy ;BitmapHeight
+		;int-to-ui8 (length? colors) - 1 ;BitmapColorTableSize
+		head remove/part tail compress RGBA -4 ;ZLIBBITMAPDATA
+	]
+]
+
+;write/binary %bitmaps/strom2.gif.36 img-to-bll/key %/e/rbox2/img/strom2.gif 123.109.57

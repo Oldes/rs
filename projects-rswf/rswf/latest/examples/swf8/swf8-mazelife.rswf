@@ -1,0 +1,107 @@
+rebol [
+	title: "Flash8 - Life in a Maze"
+	type: 'swf8
+	file: %swf8-mazelife.swf
+	background: 255.255.255
+	rate: 12
+	size: 400x400
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 13-10-2005
+	purpose: {More advanced example how to use setPixel and getPixel functions}
+	comment: {The idea of this example is taken from another project which I did in Rebol about 3 years before with my friend <a href='http://www.krutek.info'>ReBolek</a>.
+	And if you wonder what are the strange keywords, these are czech equivalents of the english words:) As the dialect is made in Rebol, I can easily enhance it in such a linguistic way.}
+	compressed: true
+]
+pozadí 255.255.255
+obsahuje %includes/txt_info2.rswf
+
+es: prázdný sprajt
+bitmaps images [%bitmaps/maze2.gif]
+
+shp_buòka: tvar [výplò #FFFF00 obdélník 0x0 1x1]
+spr_buòka: sprajt shp_buòka
+ExportAssets [spr_buòka "buòka" bmp_maze2.gif "bmpMaze"]
+showFrame
+doInitAction spr_buòka [
+	CellClass: func[][this.init()]
+	CellClass.prototype: make MovieClip
+	CellClass.prototype.init: func[][
+		tellTarget this [
+			_x: random 400
+			_y: random 400
+			resolution: 45 ;odhodlani
+			patience: 50
+			_parent.bunky.push(this)
+			maze:  this._parent.paths.bmpMaze
+			paths: this._parent.paths.bmpPaths
+			dirs: [[-1 -1] [-1 0] [-1 1] [0 1] [1 1] [1 0] [1 -1] [0 -1]]
+			dir: pick dirs (random 8)
+		]
+	]
+	CellClass.prototype.inBounds: func[val min max][
+		return (Math.max(min (Math.min(max val))))
+	]
+	CellClass.prototype.canGoTo: func[x y][
+		var p: this.maze.getPixel(x y)
+		return (p = #FFFFFF)
+		
+	]
+	CellClass.prototype.makeMove: func[][
+		var x: this.dir/1
+		var y: this.dir/2
+		var nx: this._x + x
+		var ny: this._y + y
+		;cmsg((reform ["go:" nx ny]))
+		either this.canGoTo(nx ny) [
+			tellTarget this [
+				_x: inBounds(nx 0 399)
+				_y: inBounds(ny 0 399)
+				paths.setPixel32(_x _y #FFFF0000)
+				if 50 > random 100 [
+					ndir: pick dirs (random 8)
+					if ((-1 * dir/1) <> ndir/1) and ((-1 * dir/2) <> ndir/2) [
+						dir: ndir
+					]
+				]
+			]
+		][
+			
+			this.dir: pick this.dirs (random 8)
+			;cmsg((reform ["newdir" (random 100) this.dir/1 this.dir/2]))
+		]
+	]
+
+	Object.registerClass("buòka" CellClass)
+
+]
+
+paths: place es [
+	actions [
+		load [
+			bmpPaths: make BitmapData! [400 400 true #00FFFFFF]
+			bmpMaze:  flash.display.BitmapData.loadBitmap("bmpMaze")
+			this.attachBitmap(bmpMaze  1)
+			this.attachBitmap(bmpPaths 2)
+		]
+	]
+]
+
+doAction [
+	bunky: []
+	for i 1 100 1 [
+		this.attachMovie("buòka" ("c" add i) (i + 100))
+	]
+	ctr: make ColorTransform! [1 1 1 1 0 0 0 -1]
+	moveCells: func[][
+		foreach cell bunky [
+			cell.makeMove()
+		]
+		paths.bmpPaths.colorTransform(paths.bmpPaths.rectangle ctr)
+	]
+	int: setInterval(moveCells 10)
+]
+
+stop
+showFrame
+end

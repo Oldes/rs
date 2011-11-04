@@ -1,0 +1,45 @@
+rebol [
+	title: "SWF-Images example"
+	type: 'swf
+	file: %images.swf
+	background: 152.174.149
+	rate: 60
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 28-Dec-2001
+	purpose: {To show how to include pregenerated images (BitsLossless)}
+]
+background 152.174.149
+bmp_trava: bitmap %bitmaps/trava.gif
+shp_ground: Shape [
+	Bounds 0x0 320x320
+	edge [width 2]
+	fill-style [bitmap bmp_trava];clipped
+	box 0x0 320x320
+]
+Place shp_ground
+showFrame
+
+bmp_hrbol: alpha bitmap %bitmaps/hrbol-1.gif
+shp_hrbol: image bmp_hrbol
+Place shp_hrbol at 60x100
+showFrame
+
+bmp_palmy: alpha bitmap %bitmaps/palmy.gif
+shp_palmy: image bmp_palmy
+Place shp_palmy at 60x100
+showFrame
+
+bmp_strom: alpha bitmap %bitmaps/strom1.gif
+shp_strom: image bmp_strom
+Place shp_strom at 200x200
+Place shp_strom [at 80x190 scale 0.5]
+showFrame
+
+bmp_strom2: alpha bitmap %bitmaps/strom2.gif
+shp_strom2: image bmp_strom2
+Place shp_strom2 at 130x100
+stop
+showFrame
+end

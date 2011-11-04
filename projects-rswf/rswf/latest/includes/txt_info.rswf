@@ -1,0 +1,6 @@
+rebol [purpose: {Just an TextField for debugging output}]
+fnt_Arial: Font [name "Arial" bold]
+txt_info: EditText 'info 319x18 [
+	Color 0.0.0	border Font [fnt_Arial 12]
+]
+place txt_info

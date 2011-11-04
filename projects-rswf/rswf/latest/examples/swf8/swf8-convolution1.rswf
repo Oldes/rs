@@ -1,0 +1,69 @@
+rebol [
+	title: "Flash8 - Convolution1"
+	type: 'swf8
+	file: %swf8-convolution1.swf
+	background: 255.255.255
+	rate: 12
+	size: 320x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 5-10-2005
+	purpose: {To test and demonstrate the ConvolutionFilter}
+	comment: {}
+	compressed: true
+]
+background 255.255.255
+shp_bg: shape [
+	with transparency
+	gradient [
+		radial colors [
+			0.0.0.255 0.0.255.255 0.255.0.255 255.0.0.0
+		]
+	]
+	circle 160
+]
+shp_box: shape [
+	with transparency
+	gradient [
+		radial colors [
+			0.0.0.255 0.0.255.255 0.255.0.255 255.0.0.0
+		]
+	]
+	circle 80
+]
+spr_bg:  sprite shp_bg
+spr_box: sprite shp_box
+bg: place spr_bg [at 160x160 blend "diference"]
+box1: place spr_box at 160x160
+doAction [
+	bg.cacheAsBitmap: true
+	matrix: [
+		1 1 1 1 1
+		1 5 5 5 1
+		1 5 9 5 1
+		1 5 5 5 1
+		1 1 1 1 1
+	]
+	conv: make flash.filters.ConvolutionFilter[
+		5	;matrixX
+		5	;matrixY
+		matrix
+		1	;divisor
+		0	;bias
+		false	;preserveAlpha
+		true	;clamp (Indicates whether the image should be clamped)
+		#FF0000	;color
+		1	;alpha
+	]
+	d: dir: 1
+	changeConv: func[][
+		d: d + dir
+		if d > 100 [dir: -1] else if d = 2 [dir: 1]
+		conv.divisor: d
+		box1.filters: [conv]
+	]
+	changeConv()
+	setInterval(changeConv 20)
+]
+
+showFrame end

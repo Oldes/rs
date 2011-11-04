@@ -1,0 +1,60 @@
+rebol [
+	title: "SWF-EditText example" 
+	type: 'swf
+	file: %text.swf
+	background: 153.165.139
+	rate: 10
+	size: 300x100
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {To show how to make text fields}
+]
+background 153.165.139
+fnt_arial: defineFont2 [name "Arial" ]
+txt_test: EditText 'test 280x50 [
+	;Text "pokus"
+	WordWrap
+	Multiline
+	;Password
+	ReadOnly
+	NoSelect
+	;Border
+	Color 200.255.255
+	;MaxLength 20
+	Font [fnt_arial 22] ;[id height]
+	Layout [align: 'center] ;[align: 'left Margin: 10x10 Indent: 20 Leading: 2]
+]
+txt_test_shadow: EditText 'test 280x50 [
+	ReadOnly
+	NoSelect
+	Color 0.0.0
+	Font [fnt_arial 22]
+	Layout [align: 'center]
+]
+txt_frame: EditText 'frame 50x18 [
+	Border
+	Color 0.0.0
+	Font [fnt_arial 12]
+	Layout [align: 'center]
+]
+PlaceObject2 txt_test_shadow at 11x31
+PlaceObject2 txt_test at 10x30
+PlaceObject2 txt_frame at 0x0
+DoAction [
+	frame: "Rebol"
+]
+showFrame
+DoAction [test: "You"]
+showFrame
+DoAction [test: "can"]
+showFrame
+DoAction [test: "make"]
+showFrame
+DoAction [test: "Flash!"]
+showFrame
+DoAction [
+	GotoFrame2 2
+	Play
+]
+showFrame
+end

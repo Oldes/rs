@@ -1,0 +1,66 @@
+rebol [
+	title: "SWF5-Analog clock"
+	type: 'swf5
+	file: %clock2.swf
+	background: 246.250.255
+	rate: 12
+	size: 120x120
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 20-4-2002
+	purpose: {Just another clock example}
+]
+background #f6faff
+fnt_courier: defineFont2 [name "Courier New" bold] 
+txt_info: EditText 'x 100x15 [
+	ReadOnly NoSelect Color #00ff00
+	Font [fnt_courier 11] 
+	Layout [align: 'center Leading: -1]
+] 
+shp_face: Shape [
+	fill color #000000 circle 50
+	fill color #ffff00 circle 39 37 4
+	fill color #d2b48c circle 40 5
+	rebol [	for r 0 330 30 [
+		parse compose/deep [
+			transform [rotate (r)] box 35x-1 43x1
+		] rswf/shp-rules
+	]]
+	no transform
+	fill color #2f4f4f box -25x12 25x25
+	fill color #006400 box -24x13 24x24
+]
+shp_m-hand: Shape [
+	fill color #a52a2a line 0x4 -3x0 0x-42 3x0 0x4
+]
+shp_h-hand: Shape [
+	fill color #d2691e line 0x4 -4x0 0x-32 4x0 0x4
+]
+shp_s-hand: Shape [
+	fill color #800080 line 0x2 -1x0 0x-40 1x0 0x2
+]
+spr_h-hand: sprite shp_h-hand
+spr_m-hand: sprite shp_m-hand
+spr_s-hand: sprite shp_s-hand
+Place shp_face at 60x60
+Place txt_info at 10x69
+m: Place spr_m-hand at 60x60
+h: Place spr_h-hand at 60x60
+s: Place spr_s-hand at 60x60
+frm_loop: showFrame 
+doAction [
+	constantPool [c mi ho getMinutes getHours getSeconds]
+	c: make date! []
+	mi: c.getMinutes()
+	ho: c.getHours()
+	m._rotation: 6 * mi
+	s._rotation: 6 * c.getSeconds()
+	h._rotation: 30 * (ho + (mi / 60))
+	if mi < 10 [mi: "0" add mi]
+	if ho < 10 [ho: "0" add ho]
+	x: ho add ":" add mi
+] 
+showFrame
+DoAction [goto frm_loop and play] 
+showFrame 
+end

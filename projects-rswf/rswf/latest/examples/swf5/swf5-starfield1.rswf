@@ -1,0 +1,58 @@
+rebol [
+	title: "Star field 1"
+	type: 'swf5                                                                                      
+	file: %starfield1.swf
+	background: 0.0.0
+	rate: 32
+	size: 320x200
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {just another simple animation}
+	comment: {
+		The <code>animation</code> key word may change in the future!}
+
+]
+background 0.0.0
+shp_circle: Shape [
+	fill color 255.255.255
+	circle 0.5
+]
+spr_circle: Sprite shp_circle
+spr_star1: sprite [
+	place spr_circle
+	animation [move 1 from -2x0 to 322x0 in 200 frames]
+	show 201 frames
+	doAction [ _parent.reset(this) ]
+	showFrame
+]
+spr_star2: sprite [
+	place spr_circle
+	animation [move 1 from -2x0 to 322x0 in 100 frames]
+	show 101 frames
+	doAction [ _parent.reset(this) ]
+	showFrame
+]
+spr_star3: sprite [
+	place spr_circle
+	animation [move 1 from -2x0 to 322x0 in 50 frames]
+	show 51 frames
+	doAction [ _parent.reset(this) ]
+	showFrame
+]
+exportAssets [spr_star1 "star0" spr_star2 "star1" spr_star3 "star2"]
+doAction [
+	reset: func[o][
+		o._yscale: o._xscale: 100 + random 100
+		o._y: random 200
+		o.gotoAndPlay(1)
+	]
+	for i 1 220 1 [
+		this.attachMovie(("star" add random 3) ("s" add i) i)
+		o: eval(eval("s" add i))
+		o._y: random 200
+		o._yscale: o._xscale:  100 + random 100
+		o.gotoAndPlay((random 200))
+	]
+]
+showFrame
+end

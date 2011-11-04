@@ -1,0 +1,50 @@
+rebol [
+	title: "MX - ImageStream"
+	type: 6
+	file: %mx-imagestream.swf
+	background: 0.0.0
+	rate: 15
+	size: 260x185
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 9-Oct-2007/21:14:43+2:00
+	purpose: {ImageStream key word creates Sprite with sequence of images on each frame. You can also define action for first, last and each frame and use lit-words: 'streamImageNumber 'streamImageSpriteId 'streamImageBitmapId to get value of exported linkage IDs for bitmap and sprite with an image.}
+	comment: {If you want to try this script at home, change the path of the directory.}
+	compressed: true
+]
+
+background 0.0.0
+require %includes/txt_info.rswf
+
+spr_photos: imageStream %/I/rebol/rs/projects-rswf/danca-ryba/latest/danca_200/ 200x145 [
+	name "danca"
+	onFirstFrame [
+		if cycle > 9 [cycle: 1]
+		_root.info: "this is first frame"
+		;note that the message will not be visible
+		;it will be overwritten by onEachFrame call which will be also processed 
+	]
+	onEachFrame [
+		_root.info: reform [
+			"cycle:" cycle
+			'streamImageSpriteId
+			'streamImageBitmapId
+			'lastBitmapWidth
+			'lastBitmapHeight
+		]
+	]
+	onLastFrame [
+		cycle++
+	]
+	;firstFrameEmpty ;<- uncomment this if you want to leave first frame empty
+	;noPlace ;<- uncomment this if you don't want to place images on scene
+]
+photos: place spr_photos [
+	at 30x30
+	actions [
+		load    [cycle: 1	] ;<- this action is called only once
+		press   [this.stop()]
+		release [this.play()]
+	]
+]
+showFrame end

@@ -1,0 +1,100 @@
+rebol [
+	title: "SWF5-Checkbox" 
+	type: 'swf5
+	file: %checkbox.swf
+	background: 153.165.139
+	rate: 60
+	size: 300x100
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {..hmm... to make a checkbox?-)...}
+]
+background 153.165.139
+shp_checkbox0: shape [
+	bounds 0x0 14x14
+	fill color 0.0.0	box 0x0 14x14
+	fill color 255.255.255	box 1x1 13x13
+]
+shp_checkbox1: shape [
+	bounds 0x0 14x14
+	fill color 0.0.0	box 0x0 14x14
+	fill color 255.255.255	box 1x1 13x13
+	no fill
+	edge [color 0.0.0 width 1.5]
+	positions relative
+	at 7x7
+	cross 10x10
+]
+spr_checkbox: sprite [
+	place shp_checkbox0
+	doAction [
+		changestate: func[][
+			either _parent.state [
+				goto frame 2
+			][	goto frame 1 ]
+			_parent.onchange()
+		]
+		stop
+	]
+	showFrame
+	place shp_checkbox1
+	showFrame
+	end
+]
+
+btn_checkbox: defineButton2 [
+	shapes [
+		[hit] [id shp_checkbox0 ]
+	]
+	actions [
+		[press] [ state: not state fld.changestate() ]
+	]
+]
+
+fnt_Arial: defineFont2 [name "Arial" bold]
+txt_label: EditText 't 60x18 [
+	Color 0.0.0
+	ReadOnly
+	Font [fnt_Arial 12]
+	Layout [align: 'right]
+]
+spr_label: sprite [place txt_label at -60x0 showFrame end]
+
+obj_checkbox: sprite [
+	lab: place spr_label at 0x-3
+	fld: place spr_checkbox
+	place btn_checkbox
+	doAction [
+		init: func[s t lw][
+			state: s
+			fld.changestate()
+			lab.t: t
+			if lw > 10 [lab._width: lw]
+		]
+	]
+	show frame
+	end
+]
+ExportAssets [obj_checkbox "checkbox"]
+
+;and now just some practical example:
+txt_test: EditText 't 200x18 [
+	Color 0.0.0	border
+	Font [fnt_Arial 12]
+	Layout [align: 'center]
+]
+place txt_test at 50x10
+ch1: place obj_checkbox at 150x40
+ch2: place obj_checkbox [at 150x60 add 150.50.0]
+doAction [
+	tellTarget ch1 [
+		onchange: func[][_root.t: "Checkbox 1 is: " add state]
+		init(false "I agree:" 100)
+	]
+	tellTarget ch2 [
+		onchange: func[][_root.t: "Checkbox 2 is: " add  state]
+		init(true "It's nice:")
+	]
+]
+show frame
+end

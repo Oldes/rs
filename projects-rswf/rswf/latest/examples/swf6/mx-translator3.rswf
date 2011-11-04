@@ -1,0 +1,118 @@
+rebol [
+	title: "MX-Translator3"
+	type: 'mx
+	file: %mx-translator3.swf
+	background: 10.10.10
+	rate: 24
+	size: 320x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 30-10-2003
+	purpose: {special object for sprites movement with scaling as well}
+	comment: {
+	In this version the eyes tries to escape from your mouse:)}
+
+]
+background 10.10.10 ;153.165.139
+es: EmptySprite
+importAssets [spr_eye "eye"] %examples/compiled/swf5-eyeball2.swf
+
+translator: place es [
+	actions [
+		load [
+			objects: []
+			_global.maxSteps: 50
+		]
+		enterFrame [
+			for i 0 (objects.length) 1 [
+				obj: objects/:i
+				telltarget obj [
+					eb.update()
+					if (math.abs((_x - _root._xmouse)) < 20)
+						 and
+					   (math.abs((_y - _root._ymouse)) < 20)
+					[
+						destx: 40 + random 240
+						desty: 40 + random 240
+						destz: 10 + random 30
+						ac: 6 ;faster escape
+					]
+					vx: vx + ((destx - _x) / ac)
+					vy: vy + ((desty - _y) / ac)
+					vz: vz + ((destz -  z) / ac)
+					_x: _x + vx
+					_y: _y + vy
+					z: _xscale: _yscale: z + vz
+					steps++
+					if ((math.abs((desty - _y)) < 1) and (math.abs((lvy - vy)) < 0.01))
+					   or
+					   (steps > maxSteps)
+					[
+						stops: true
+					]
+					
+					lvx: vx lvy: vy
+					vx: vx * sl 
+					vy: vy * sl
+					vz: vz * sl
+					;_root.info: vx add "x" add vy add " " add _y
+				]
+				if obj.stops [
+					with obj [
+						vx: 20 - random 40
+						vy: 20 - random 40
+						destx: 40 + random 240
+						desty: 40 + random 240
+						destz: 10 + random 30
+						ac: 30 + random 30
+						;sl: 0.85 ;math.abs((math.random() - 0.2))
+						stops: false
+						steps: 0
+					]
+				]
+			]
+		]
+	]
+]
+rotate: place es [
+	at 160x160
+	scale 0.25
+	actions [
+		enterFrame [
+			_rotation: _rotation + 0.2
+			if _rotation > 360 [_rotation: _rotation - 360]
+		]
+	]
+]
+doAction [
+	i: 0
+	addEye: func[][
+		i++
+		if i = 5 [
+			clearInterval(intID)
+		]
+		o: make object! [
+			_x: 160
+			_y: 160
+			 z: 0
+			_xscale: 30
+			_yscale: 30
+			destx: 40 + random 240
+			desty: 40 + random 240
+			destz: 10 + random 30
+            vx: 0 vy: 0
+            ac: 10 + random 20  ;lower number means faster movement
+            sl: 0.75
+            steps: 0
+		]
+		attachMovie("eye" ("e" add i) (i + 10) o)
+		translator.objects.push((eval(eval("e" add i))))
+	]
+	intID: setInterval(addEye 200)
+	loadMovie(%daemon.swf rotate)
+	stop
+]
+
+
+showFrame
+end

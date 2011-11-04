@@ -1,0 +1,257 @@
+rebol [
+	title: "Calendar"
+	type: 'swf5
+	file: %calendar.swf
+	background: 0.0.0
+	rate: 25
+	size: 128x147
+	author: "oldes"
+	purpose: {if you need to work with dates:)}
+	date: 23-2-2003
+	email: oliva.david@seznam.cz
+]
+background 170.185.165
+showFrame
+es: EmptySprite
+importAssets [fnt_arial "B"] from %includes/fnt_euromode_b.swf
+
+shp_den: shape [
+	bounds 0x0 19x19
+	fill color 0.0.0
+	box 0x0 19x19
+	fill color 50.50.50 ;250.250.250 ;153.165.139
+	box 1x1 18x18 
+]
+txt_den: EditText 't 19x19 [
+	ReadOnly noSelect
+	Color 0.0.0
+	Font [fnt_arial 11]
+	Layout [align: 'center Leading: -2]
+	UseOutlines
+]
+btn_den: DefineButton2 [
+    as push 
+    shapes [
+            [up hit] [id shp_den add 155.200.0] 
+            over [id shp_den multiply 200.100.100 add 100.200.0] 
+            down [id shp_den multiply 200.100.180 add 160.100.100]
+        ] 
+        actions [
+			rollOver [_root.cursor.over()]
+        	rollOut  [_root.cursor.away()]
+        
+            [press] [
+				o: _parent.circle
+				o._visible: true
+				o._x: _x
+				o._y: _y
+			] 
+			release  [_parent.onDaySelect(this)]
+        ]
+    ] 
+    
+shp_circle: shape [
+	edge [width 2 color 250.100.0]
+	positions relative
+	at 9x9 circle 10
+]
+spr_circle: sprite shp_circle
+
+
+spr_den: sprite [
+	place shp_den [add 50.0.0]
+	stop showFrame
+	place btn_den
+	place txt_den
+	stop showFrame
+	place btn_den [move at 0x0 depth 2 multiply 100.200.0 add 100.0.0]
+	showFrame end
+]
+spr_nden: sprite [
+	place shp_den [multiply 200.0.100]
+	place txt_den [add 50.255.50]
+	showFrame end
+]
+shp_arrowl: shape [
+	bounds 0x0 19x19
+	fill color 0.200.0
+	line 1x9 18x4 15x9 15x10 18x15 1x10 1x9
+]
+shp_arrowr: shape [
+	bounds 0x0 19x19
+	fill color 0.200.0
+	line 1x4 3x9 3x10 1x15 18x10 18x9 1x4
+]
+btn_arrow-left: Button [
+    as push 
+    shapes [
+		up   [id shp_arrowl]
+		hit  [id shp_den] 
+		over [id shp_arrowl  add 0.100.100] 
+		down [id shp_arrowl multiply 200.100.180 add 160.100.100]
+	] 
+	actions [
+		rollOver [_root.cursor.over()]
+		rollOut  [_root.cursor.away()]
+		press    [_parent.change-month(-1)]
+	]
+]
+btn_arrow-right: Button [
+    as push 
+    shapes [
+		up   [id shp_arrowr]
+		hit  [id shp_den] 
+		over [id shp_arrowr add 0.100.100]  
+		down [id shp_arrowr multiply 200.100.180 add 160.100.100]
+	] 
+	actions [
+		rollOver [_root.cursor.over()]
+		rollOut  [_root.cursor.away()]
+		[press] [ _parent.change-month(1) ] 
+	]
+]
+
+shp_mesic: shape [
+	bounds 0x0 127x19 ;7 * 18
+	fill color 0.0.0
+	box 0x0 127x19
+	fill color 50.50.50 ;250.250.250 ;153.165.139
+	box 1x1 126x18 
+]
+txt_mesic: EditText 't 127x19 [
+	ReadOnly noSelect
+	Color 50.255.50
+	Font [fnt_arial 12]
+	Layout [align: 'center Leading: -2]
+	UseOutlines
+]
+spr_mesic: sprite [
+	place shp_mesic [multiply 200.0.100]
+	place txt_mesic [add 50.255.50]
+	place btn_arrow-left
+	place btn_arrow-right [at 108x0]
+	showFrame end
+]
+rebol [
+	use [ofs row col i][
+		i: 0
+		for col 0 6 1 [
+			ofs: to-pair reduce [18 * col 127]
+			rswf/compile compose [
+					(to-set-word join 'n i) place spr_nden at (ofs)
+			]
+			i: i + 1
+		]
+		i: 0
+		for row 0 5 1 [
+			for col 0 6 1 [
+				ofs: 0x18 + (18 * to-pair reduce [col row])
+				rswf/compile compose [
+					(to-set-word join 'd i) place spr_den at (ofs)
+				]
+				i: i + 1
+			]
+		]
+	]
+]
+nazevmesice: place spr_mesic at 0x0
+circle: place spr_circle
+show frame
+
+doAction [
+	mdny: [31 28 31 30 31 30 31 31 30 31 30 31]
+	nmesicu: [
+		"Leden" "Únor" "Bøezen" "Duben"
+		"Kvìten" "Èerven" "Èervenec" "Srpen"
+		"Záøí" "Øíjen" "Listopad" "Prosinec"
+	]
+	dny: ["Ne" "Po" "Út" "St" "Èt" "Pá" "So"]
+
+	now: make date! []
+	nowM: mesic: now.getMonth()
+	dnes: now.getDate()
+	nowY: rok: now.getFullYear()
+
+	change-month: func[ofs][
+		ted: make date! []
+		mesic: mesic + ofs
+		either mesic < 0 [
+			mesic: 11
+			rok: rok - 1
+		][
+			if mesic > 11 [
+				mesic: 0
+				rok: rok + 1
+			]
+		]
+		;dnes: ted.getDate()
+		init()
+	]
+	onDaySelect: func[dayBtn][
+		;for example:
+		;getURL(( rejoin ["javascript:alert('date: " dayBtn.t "." (mesic + 1) "." rok "');"]))
+	]
+	init: func[][
+		circle._visible: false
+		nazevmesice.t: nmesicu/:mesic add " " add rok
+		dnu: mdny/:mesic
+		;---test na prestupny rok
+			if mesic = 1 [
+				var d: make Date ((Date.UTC(rok 1 29)))
+				var m: d.getMonth()
+				if m = 1 [dnu: 29]
+			]
+		;---
+		prvniden: make date! []
+		prvniden.setMonth( mesic )
+		prvniden.setYear( rok )
+		prvniden.setDate( 0 )
+		;x: dnes
+		pd: 1 + prvniden.getDay()
+		i: 0
+		while [i < 7][
+			o: eval(eval("n" add i))
+			o.t: dny/:i
+			i: i + 1
+		]
+		if pd = 7 [pd: 0]
+		i: pd
+		for d 0 i 1 [
+			o: eval(eval("d" add d))
+			o.gotoAndStop(1)
+		]
+		while [i < 42][
+			o: eval(eval("d" add i))
+			o.gotoAndStop(1)
+			i: i + 1
+			d: i - pd
+			if d <= dnu [
+				o.t: d
+				o.gotoAndStop(2)
+				if (d = dnes) and (nowM = mesic) and (nowY = rok)[
+					circle._x: o._x
+					circle._y: o._y
+					circle._visible: true
+					;x: ted
+					o.gotoAndStop(3)
+				]
+			]
+		]
+	]
+	init()
+]
+showFrame
+;bmp_merak: bitmap %bitmaps/merak.gif
+;shp_oteviracidoba: shape [
+;	bounds 0x0 127x121
+;	fill color 0.0.0
+;	box 0x0 127x121
+;	fill color 73.79.70
+;	box 1x0 126x120
+;	fill-style [bitmap bmp_merak]
+;	box 1x0 125x120
+;]
+;place shp_oteviracidoba at 0x128
+stop
+showFrame
+end

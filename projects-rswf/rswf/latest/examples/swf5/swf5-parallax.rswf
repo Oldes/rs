@@ -1,0 +1,103 @@
+rebol [
+	title: "SWF5-Parallax scrolling"
+	type: 'swf5
+	file: %parallax.swf
+	background: 30.45.0
+	rate: 40
+	size: 320x125
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {just another practical example}
+	comment: {Thanks to cyphre@seznam.cz for his <b>Arcadia</b> Rebol script and to creators of one of the best arcada games: <b>Shadow of the Beast</b> for the graphic.<hr>
+I use <b>attachMovie</b> instead of just placing the sprites just for possibility to remove them in some more advanced version.}
+]
+background 30.45.0
+fnt_arial: defineFont2 [name "Arial" bold]
+txt_test: EditText 'info 320x20 [
+	text "...loading images..."
+	ReadOnly
+	layout [align: 'center]
+	Color 255.255.0
+	Font [fnt_arial 12]
+]
+place txt_test [at 0x105 depth 100]
+showFrame
+bitmaps images [
+	from %bitmaps/parallax/ make sprites
+	%mountains.png
+	%grass01.png %grass02.png %grass03.png
+	%grass04.png %grass05.png
+]
+exportAssets [
+	spr_mountains.png "gr1"
+	spr_grass01.png "gr2"
+	spr_grass02.png "gr3"
+	spr_grass03.png "gr4"
+	spr_grass04.png "gr5"
+	spr_grass05.png "gr6"
+]
+doAction [
+	ConstantPool [attachMovie dir o i]
+	rebol [
+		use [heights i y d][
+			heights: [74 2 3 7 8 10]
+			i: 1 y: d: 0
+			foreach h heights [
+				rswf/compile-actions compose/deep [
+					attachMovie (to-paren reduce [
+						join "gr" i
+						rejoin ["g" i "a"]
+						d: d + 1
+					])
+					(to-set-word rejoin ["g" i "a._y"]) (y)
+					attachMovie (to-paren reduce [
+						join "gr" i
+						rejoin ["g" i "b"]
+						d: d + 1
+					])
+					(to-set-word rejoin ["g" i "b._x"]) 320
+					(to-set-word rejoin ["g" i "b._y"]) (y)
+				]
+				i: i + 1
+				y: y + h
+			]
+		]
+	]
+	dir: 'right
+	info: "Use mouse to control the direction."
+	xmove: func[][
+		i: 1
+		either _xmouse > 170 [
+			dir: 'left
+		][
+			either _xmouse < 150 [dir: 'right][dir: null]
+		]
+		while [i < 7][
+			o: eval(eval("g" add i add "a"))
+			switch dir [
+				'left [
+					o._x: o._x -  i
+					if (0 - o._x ) > 319 [o._x: o._x + 640]
+					o: eval(eval("g" add i add "b"))
+					o._x: o._x -  i
+					if (0 - o._x ) > 319 [o._x: o._x + 640]
+				]
+				'right [
+					o._x: o._x + i
+					if o._x  > 320 [o._x: o._x - 640]
+					o: eval(eval("g" add i add "b"))
+					o._x: o._x +  i
+					if o._x  > 320 [o._x: o._x - 640]
+				]
+			]
+			i: i + 1
+		]
+	]
+]
+frm_loop: show 2 frames
+doAction [
+	xmove()
+	goto frm_loop and play
+]
+showFrame
+end

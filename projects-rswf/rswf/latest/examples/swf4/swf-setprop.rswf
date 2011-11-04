@@ -1,0 +1,38 @@
+rebol [
+	title: "SWF-SetProperties"
+	type: 'swf
+	file: %setprop.swf
+	background: 152.174.149
+	rate: 60
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 12-1-2002
+	purpose: {To show how to set properties of movies}
+	comment: {The available properties are:
+	rotate, x, y, scaleX, scaleY, alpha, visibility and name}
+]
+background 152.174.149
+shp_box: Shape [
+	bounds -40x-40 40x40
+	line-style [width 5]
+	fill-style [color 100.200.150]
+	box -30x-30 30x30
+]
+spr_box: Sprite [
+	Place shp_box
+	showFrame
+	end
+]
+obj_box: place spr_box
+frm_loop: show 4 frames
+DoAction [
+	SetProperties obj_box [
+		rotate [random 360]
+		x [random 320]
+		y [random 320]
+	]
+	goto frame frm_loop and play
+]
+show frame
+end

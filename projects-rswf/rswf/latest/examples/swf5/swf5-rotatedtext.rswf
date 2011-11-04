@@ -1,0 +1,30 @@
+rebol [
+	title: "Rotated text"
+	type: 'swf5
+	file: %rotatedtext.swf
+	background: 0.0.0
+	rate: 12
+	size: 151x141
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 1-3-2003
+	purpose: {To show how to rotate text}
+	comment: {You have to use font with shapes to rotate text}
+]
+background 0.0.0
+fnt_gcchanel: Font %fonts/fnt_gcchanel.rfnt
+txt_test: EditText 'v 250x15 [
+	text { this is editable rotated text}
+	Color #ff0000
+	Font [fnt_gcchanel 8]
+	UseOutlines
+]
+place txt_test [at 20x0]
+place txt_test [at 20x0 rotate 15]
+place txt_test [at 20x0 rotate 30]
+place txt_test [at 20x0 rotate 45]
+place txt_test [at 20x0 rotate 60]
+place txt_test [at 20x0 rotate 75]
+place txt_test [at 20x0 rotate 90]
+
+showFrame end

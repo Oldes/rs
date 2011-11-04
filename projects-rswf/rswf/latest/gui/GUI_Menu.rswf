@@ -1,0 +1,66 @@
+rebol [
+	title: "GUI_Core"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 24
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 8/10/2007
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+
+require %gui/GUI_TextButton.rswf
+
+GUI_Menu: Extends GUI_Core [
+	initObjs:   []
+	defaultButton: context [width: 150 height: 18 align: "left" filters?: false]
+	vertical?: true
+	padding: 0
+	init: func[width height][
+		super(width height)
+		;trace("init" this._name this.width this.height this.data)
+		if initObjs <> undefined [this.initObjs: initObjs]
+		if defaultButton <> undefined [this.defaultButton: defaultButton]
+		this.createEmptyMovieClip("bg"   1)
+		this.initButtons()
+	]
+	initButtons: does [
+		;trace("initbtns?" typeof this.initObjs this.initObjs.length )
+		this.createEmptyMovieClip("buttons" 2)
+		var i: 0
+		var def: this.defaultButton
+		var h: def.height
+		var w: def.width
+		var ofsx: 0
+		var ofsy: 0
+		while [i < this.initObjs.length][
+			var initObj: this.initObjs/:i
+			;trace(">>>" (i) (initObj.toString()) w h initObj.align)
+			if "object" <> typeof initObj  [
+				initObj: this.defaultButton
+				initObj.text: this.initObjs/:i
+			]
+			if initObj.width    = undefined [initObj.width:  w]
+			if initObj.height   = undefined [initObj.height: h]
+			if initObj.align    = undefined [initObj.align:    def.align   ]
+			if initObj.filters? = undefined [initObj.filters?: def.filters?]
+			initObj._y:  ofsy
+			initObj._x:  ofsx
+			initObj.id:  i
+			initObj.onRelease: does [
+				this._parent._parent.onButtonRelease(this)
+				super.onRelease()						
+			]
+			this.buttons.attachMovie("GUI_TextButton" ("b" add i) i initObj)
+			i++
+			either this.vertical? [
+				ofsy: ofsy + initObj.height - 1	+ this.padding
+			][	ofsx: ofsx + initObj.width  - 1 + this.padding]
+		]
+	]
+	onButtonRelease: func[button][]
+]

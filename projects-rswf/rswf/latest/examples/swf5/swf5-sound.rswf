@@ -1,0 +1,19 @@
+rebol [
+	title: "SWF5-Sound example"
+	type: 'swf5
+	file: %sound.swf
+	background: 153.165.139
+	rate: 12
+	size: 20x20
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 17-9-2003
+	purpose: {To show how to include sample sound in the swf file}
+	comment: {
+	<code>noMultiple</code> parameter means that only one sample can be played at one time}
+
+]
+snd_ring: sound %sounds/gong.mp3
+play snd_ring [noMultiple loop 2]
+show 20 Frames
+end

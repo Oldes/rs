@@ -1,0 +1,63 @@
+rebol [
+	title: "MX-Draw lines" 
+	type: 'mx
+	file: %mx-draw.swf
+	background: 153.165.139
+	rate: 10
+	size: 320x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 29-4-2002
+	purpose: {How to use ActionScript to draw lines + including scripts}
+	comment: {
+	Drawing lines from ActionScript is one of the new features in the FlashMX, but in this example is more interesting the <b>include</b> key word, because who wants to write some codes more times:-) This is first simple version of the 'include so you must be carefull not to use same ids (set-words) for more items. You may want to use ImportAssets to include some code, but in some cases it's better to have code just in one file.
+	Drawing more lines from the ActionScript seems to require a lot of system resources so I use another new function: <b>setInterval</b> to clear the lines after 1000ms.}
+]
+background 153.165.139
+es: EmptySprite
+spr_button: sprite [
+	include %includes/button.rswf
+	end
+]
+d: place es [
+	actions [
+		load [s: true]
+		enterFrame [
+			if s [
+				c: random #FFFFFF	
+				lineStyle( 10 c 100 ) ;width color alpha
+				x1: random 320	y1: random 320
+				x2: random 320	y2: random 320
+				moveTo( x1 y1 )	lineTo( x2 y2 )
+			]
+		]
+	]
+]
+b1: place spr_button
+b2: place spr_button at 108x0
+doAction [
+	constantPool [t b d onPress s b2 reset setInterval i]
+	reset: func[][d.clear()]
+	i: setInterval(reset 1000)
+	tellTarget b1 [
+		t: "Clear"
+		b.onPress: func[][reset()]
+	]
+	tellTarget b2 [
+		t: "Stop"
+		b.onPress: func[][
+			with d [
+				either s [
+					clearInterval(i)
+					b2.t: "Play"
+				][
+					i: setInterval(reset 1000)
+					b2.t: "Stop"
+				]
+				s: not s
+			]
+		]
+	]
+]
+showFrame
+end

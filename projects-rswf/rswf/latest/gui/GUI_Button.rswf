@@ -1,0 +1,219 @@
+rebol [
+	title: "GUI_button"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 24
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 8/10/2007
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+
+require [
+	%gui/defaults.rswf
+	%gui/GUI_Core.rswf
+]
+
+
+GUI_ButtonCore: Extends GUI_Core [
+	width:  100
+	height: 20
+	enabled?: true
+	r: 1
+	text: ""
+	type: "default"
+	colors: none
+	filters?: true
+	textPadding: 2
+	align:  "center"
+	valign: "middle"
+	
+	init: func[width height text][
+		this.createEmptyMovieClip("bg" 1)
+		this.createTextField("tf" 2 0 1 this.width this.height)
+		var tf: this.tf
+		;with this.tf [
+			tf.multiline: true
+			;wordWrap:  true
+			;embedFonts: true
+			;border: true
+			;tf.variable: "text"
+			tf.gridFitType: "pixel"
+			;thickness: -150
+			;antiAliasType: "advanced"
+			tf.html:      true
+			tf.setTextFormat(defaultButtonFont)
+			tf.setNewTextFormat(defaultButtonFont)
+		;]
+		this.bg.drawBox(0 0 100 100 1 #FF0000 #000000)
+		this.tff: this.tf.getTextFormat()
+		this.tff.leftMargin: 0
+		this.tff.align: this.align
+		
+		super(width height)
+				
+		;this.createEmptyMovieClip("ma" 3)
+		if text <> undefined [
+			this.text: text
+		]
+		
+		;trace("init" this this.width this.height this._x this.color)
+		;trace(this.tf.textWidth this.tf.textHeight)
+		;trace(this.type)
+		this.setType(this.type)
+		;this.resize(this.width this.height)
+		
+		if this.filters? [
+			;this.tf.filters: [defaultTextBevel]
+			this.bg.filters: effectOut
+		]
+		;this.trans: make Transform! []
+		this.cacheAsBitmap: true
+	]
+	setText: func[text][
+		this.tff.size: 11
+		this.tf.htmlText: text
+		this.updateText()
+		this.centerText()
+		;if this.tf.textWidth > 20 [trace(this.tf.textWidth this.tf._width this.tff.size)]
+		if (this.tf.textWidth >= this.tf._width) and (this.tff.size > 9) [
+			this.tff.size: 9
+			this.updateText()
+			this.centerText()
+		]
+	]
+	centerText: does [
+		var tf: this.tf
+		tf._height: tf.textHeight + 4
+
+		switch-default this.valign [
+			"top" [tf._y: 1]
+			"bottom" [tf._y: this.height - tf._height]
+		][ tf._y: Math.round(((this.height - tf._height) / 2)) ]
+		if this.state = "down" [tf._y++]
+	]
+	updateText: does [
+		this.tf.setTextFormat(this.tff)
+		this.tf.setNewTextFormat(this.tff)
+	]
+	setTextColor: func[clr][
+		this.tff.color: clr
+		this.updateText()
+		;this.text: this.text
+	]
+	enableFilters: func[filters?][
+		;trace("enableFilters" filters?)
+		this.filters?: filters?
+		either filters? [
+			var state: this.state this.state: none
+			this.setState(state)
+		][
+			this.tf.filters: this.bg.filters: none
+		]
+	]
+	setType: func[type][
+		super.setType(type)
+		this.setTextColor(this.colors.text)
+		this.redraw()
+	]
+	setState: func[state][
+		if this.state <> state and this.enabled? [
+			switch state [
+				"down" [
+					if this.filters? [this.bg.filters: effectDown]
+					this.transform.colorTransform: downColorTransform
+					this.tf._y++
+					this.img._y++
+					this.arrow._y++
+				]
+				"out" [
+					if this.filters? [this.bg.filters: effectOut]
+					this.transform.colorTransform: outColorTransform
+					if this.state = "down" [this.tf._y-- this.img._y-- this.arrow._y--]
+				]
+				"over" [
+					if this.filters? [this.bg.filters: effectOver]
+					this.transform.colorTransform: overColorTransform
+					if this.state = "down" [this.tf._y-- this.img._y-- this.arrow._y--]
+				]
+				"disabled" [
+					if this.filters? [this.bg.filters: none]
+					this.transform.colorTransform: disabledColorTransform
+					this.useHandCursor: false
+				]
+			]
+			this.state: state
+			;this.onStateChange()
+		]
+	]
+	setImage: func[imgId alpha][
+		this.attachMovie(imgId  "img" 10)
+		if alpha <> undefined [this.img._alpha: alpha]
+		this.redraw()
+	]
+	
+	disable: does [this.setState("disabled") this.bg.edgeAlpha: 10 this.enabled?: false ]
+	enable:  does [this.enabled?: true  this.state: none this.setState("out") this.useHandCursor: true this.bg.edgeAlpha: 60]
+	setEnabled: func[enabled?][
+		either enabled? [this.enable()][this.disable()]
+	]
+	onRollOver: does [
+		this.setState("over")
+	]
+	onRollOut: does [
+		this.setState("out")
+	]
+	onDragOut: does [
+		this.setState("out")
+	]
+	onPress:   does [
+		this.setState("down")
+	]
+	onRelease: does [
+		this.setState("over")
+	]
+	onReleaseOutside: does [
+		this.setState("out")
+	]
+	
+	setColor: func[clr_fill clr_text][
+		this.colors: make GUI_Colors [clr_fill clr_text]
+		;trace("??" defaultColors.default.edge)
+		;trace("XXXXXXXXXX:" this.colors.background this.colors.edge)
+		if clr_text <> undefined [this.setTextColor(clr_text)]
+		this.type: "custom"
+		this.redraw()
+	]
+	
+	redraw: does [
+		var w: this.width
+		var h: this.height
+		this.tf._width: w - (2 * this.textPadding)
+		this.tf._x: this.textPadding
+		;trace("redraw:" w h)
+		either (h < 15) or (w < 15) [this.tff.size: 9][this.tff.size: 11]
+		this.updateText()
+		this.centerText()
+		
+		this.bg.clear()
+		this.bg.drawBox(0 0 w h this.r this.colors.background this.colors.edge)
+		;trace("????" this.img)
+		if this.img <> undefined [
+			this.img._x: 1 + Math.round( ((w - this.img._width)  / 2) )
+			this.img._y: 1 + Math.round( ((h - this.img._height) / 2) )
+		]
+
+	]
+	updateStyle: does [
+		this.tf.setTextFormat(defaultButtonFont)
+		super.updateStyle()
+	]
+]
+
+GUI_Button: Extends GUI_ButtonCore [
+	;init: func[width height][super(width height)]
+]

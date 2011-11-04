@@ -1,0 +1,124 @@
+rebol [
+	title: "GUI: defaults"
+]
+fnt_microdigits: Font %microdigits.rfnt  as "microdigits" noAlign
+default: Extends MovieClip  [
+	Font: make TextFormat [
+		"_sans" ;font
+		;9       ;size
+		;#000000 ;color
+		;false   ;bold
+		;false   ;italic
+		;false   ;underline
+		;none	;url
+		;none	;target
+		;"left"  ;align
+		;none	;leftMargin
+		;none	;rightMargin
+		;none	;indent
+		;none	;leading
+	]
+	FontBold: make TextFormat ["_sans" 12 #000000 true]
+	FontMicrodigits: make TextFormat ["microdigits" 8]
+	
+	Shadow1: make DropShadowFilter! [
+        3        ;distance:Number
+        45       ;angle:Number
+        #000000  ;color:Number
+        0.5      ;alpha:Number
+        4        ;blurX:Number
+        4        ;blurY:Number
+        2        ;strength:Number
+        2        ;quality:Number
+        false    ;inner:Boolean
+        false    ;knockout:Boolean
+        false    ;hideObject:Boolean
+    ]
+    Shadow2: make DropShadowFilter! [
+        2        ;distance:Number
+        45       ;angle:Number
+        #000000  ;color:Number
+        0.5      ;alpha:Number
+        2        ;blurX:Number
+        2        ;blurY:Number
+        1        ;strength:Number
+        2        ;quality:Number
+        false    ;inner:Boolean
+        false    ;knockout:Boolean
+        false    ;hideObject:Boolean
+    ]
+    Shadow2b: make DropShadowFilter! [
+        1        ;distance:Number
+        45       ;angle:Number
+        #000000  ;color:Number
+        0.5      ;alpha:Number
+        2        ;blurX:Number
+        2        ;blurY:Number
+        1        ;strength:Number
+        2        ;quality:Number
+        false    ;inner:Boolean
+        false    ;knockout:Boolean
+        false    ;hideObject:Boolean
+    ]
+    InnerShadow1: make DropShadowFilter! [
+        2        ;distance:Number
+        45       ;angle:Number
+        #222222  ;color:Number
+        0.2      ;alpha:Number
+        5        ;blurX:Number
+        5        ;blurY:Number
+        2        ;strength:Number
+        2        ;quality:Number
+        true     ;inner:Boolean
+        false    ;knockout:Boolean
+        false    ;hideObject:Boolean
+    ]
+	Bevel: make BevelFilter! [
+        4        ;distance:Number
+        45       ;angle:Number
+        #eeeeee  ;highlightColor:Number
+        0.3      ;highlightAlpha:Number
+        #000000  ;shadowColor:Number
+        0.3      ;shadowAlpha:Number
+        8        ;blurX:Number
+        8        ;blurY:Number
+        1        ;strength:Number
+        2        ;quality:Number
+        "inner"  ;type:String ("inner", "outer", and "full") 
+        false    ;knockout:Boolean
+    ]
+    GlowInner: make GlowFilter! [
+        #FFFBE3 ;color
+        0.3     ;alpha
+        7       ;blurX
+        7       ;blurY
+        1       ;strength
+        2       ;quality
+        true    ;inner
+        false   ;knockout
+    ]
+    GlowOuter: make GlowFilter! [
+        #FFFBE3 ;color
+        0.1     ;alpha
+        8       ;blurX
+        8       ;blurY
+        1       ;strength
+        2       ;quality
+        false    ;inner
+        false   ;knockout
+    ]
+
+    init: does [
+    	this.EffectDown: [this.Shadow2b this.Bevel this.GlowInner this.GlowOuter]
+	    this.EffectOver: [this.Shadow2  this.Bevel this.GlowInner this.GlowOuter]
+	    this.EffectOut:  [this.Shadow2  this.Bevel]
+	]
+    ;_global.defaultHighlight  make object! [ra: 100 rb: 220 ga: 100 gb: 127 ba: 100 bb: 0   aa: 100 ]
+
+] with [
+	_global.GUI_StyleMaster: make object! []
+	AsBroadcaster.initialize(GUI_StyleMaster)
+]
+
+
+

@@ -1,0 +1,36 @@
+rebol [
+	title: "MX-LoadVars" 
+	type: 'mx
+	file: %loadvars.swf
+	background: 153.165.139
+	rate: 30
+	size: 320x100
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 29-4-2002
+	purpose: {How to communicate between Flash and browser (using LoadVars object)}
+]
+background 153.165.139
+fnt_arial: defineFont2 [name "Arial"]
+shp_frame: shape [
+	edge width 5 color #b0c4de fill color #006400
+	box 0x0 320x100
+]
+txt_data: EditText 'value 315x100 [
+	WordWrap html text "Loaded" ReadOnly
+	Color #00ff00 Font [fnt_arial 12]
+]
+place [shp_frame txt_data]
+doAction [
+	constantPool [LoadVars data_out data_in]
+	data_out: make LoadVars
+	data_in:  make LoadVars
+	data_out.c: "hello"
+	data_out.sendAndload("msg.php" data_in "get" )
+	data_in.onLoad: func[][
+		value: "<b>Received bytes:</b> " add data_in.getBytesTotal()
+		   add "^/<b>Received data:</b> " add data_in.value
+	]
+]
+showFrame
+end

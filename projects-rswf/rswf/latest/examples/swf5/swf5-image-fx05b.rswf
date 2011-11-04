@@ -1,0 +1,73 @@
+rebol [
+	title: "SWF5-Image-FX random lines 2"
+	type: 'swf5
+	file: %swf5-image-fx05b.swf
+	background: 246.250.255
+	rate: 30
+	size: 265x32
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	purpose: {Another variation of the random lines image effect with randomization on the client side}
+	date: 4-1-04
+	comment: {}
+]
+background 246.250.255
+bmp_picture: bitmap layout [
+	title red "REBOL/FLASH Dialect" shadow 2x2
+][key 200.200.200]
+spr_picture: Sprite [
+	rebol [
+		use [lines imgsize][
+			imgsize: rswf/placed-images/2
+			lines: imgsize/y
+			aLines: make block! lines
+			repeat i lines [insert tail aLines i]
+			rswf/compile load rejoin [{
+				doAction [
+					lines: } lines {
+					aLines: } mold aLines {
+					aLines2: } mold aLines {
+					bIn: true
+				]
+			}]
+			for i 0 lines 1 [
+				rswf/compile load rejoin [{
+					shp_pictureLine} i {: Shape [
+						Bounds 0x0 } imgsize/x {x1
+					    fill-style [bitmap bmp_picture at 0x} i * -1 {]
+					    box 0x0 } imgsize/x {x1
+					]
+					spr_pictureLine} i {: Sprite shp_pictureLine} i {
+					l} i {: place spr_pictureLine} i { [
+						at 0x} i * 1 {
+						actions [load [_visible: false]]
+					]
+				}]
+			]
+		]
+	]
+	showFrame end
+]
+place spr_picture [
+	at 0x0
+	actions [
+		load [
+			doLine: func[][
+				var i: random aLines.length
+				var l: eval(("l" add aLines/:i))
+				l._visible: bIn
+				aLines.splice(i 1)
+				if aLines.length = 0 [
+					bIn: not bIn
+					;now I must copy original array:
+					aLines: aLines2.slice(0)
+				]
+			]
+		]
+		enterFrame [
+			 doLine()
+		]
+	]
+]
+showFrame
+end

@@ -1,0 +1,37 @@
+rebol [
+	title: "SWF-shape example"
+	type: 'swf
+	file: %shape.swf
+	background: 152.174.149
+	rate: 1
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 28-Nov-2001
+	purpose: {To show how to create shapes with simple lines and curves}
+]
+background 152.174.149
+shp_test: Shape [
+	Bounds 0x0 320x320
+	line-style [width 4 color 200.0.0]
+	box 20x20 300x300 0x0 320x320
+	line-style [width 3 color 100.50.0]
+	line 160x0 160x320
+	curve 0x320 160x160 320x320
+	curve 0x0 160x160 320x0
+	line-style [color 0.50.200]
+	box 40x40 280x280
+	curve 	160x0 320x0 320x160
+			320x320 160x320 0x320
+			0x160 0x0 160x0
+	line-style [color 255.20.0]
+	positions relative
+	at 160x160
+	n-gon 8 80
+	circle 80
+	line-style [width 1 color 100.50.0]
+	cross 320x320
+]
+Place shp_test
+showFrame
+end

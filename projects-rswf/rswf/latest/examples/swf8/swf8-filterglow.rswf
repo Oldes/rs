@@ -1,0 +1,36 @@
+rebol [
+	title: "Flash8 - GlowFilter"
+	type: 'swf8
+	file: %swf8-filterglow.swf
+	background: 153.165.139
+	rate: 12
+	size: 320x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 4-10-2005
+	purpose: {To test and demonstrate the GlowFilter}
+	comment: {}
+	compressed: true
+]
+background 153.165.139
+shp_box: shape [fill color 0.0.0 box -50x-50 50x50]
+spr_box: sprite shp_box
+box: place spr_box at 160x160
+doAction [
+	myGlow: make flash.filters.GlowFilter[
+		#FFFFFF ;color
+		0.5     ;alpha
+		8		;blurX
+		8		;blurY
+		2		;strength
+		2		;quality
+		false	;inner
+		false	;knockout
+	]
+	setGlow: func[mc][
+		myGlow.blurX: myGlow.blurY: random 100
+		mc.filters: [myGlow]
+	]
+	int: setInterval(setGlow 100 box)
+]
+showFrame end

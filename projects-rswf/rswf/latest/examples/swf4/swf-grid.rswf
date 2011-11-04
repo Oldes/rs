@@ -1,0 +1,28 @@
+rebol [
+	title: "SWF-Grid example"
+	type: 'swf
+	file: %grid.swf
+	background: 152.174.149
+	rate: 1
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 11-12-2001
+	purpose: {To show how to use 'grids in the Shape}
+]
+background 152.174.149
+shp_grid1: Shape [
+	Bounds 0x0 320x320
+	line-style [width 2]
+	grid 0x0 320x320 40x40
+]
+shp_grid2: Shape [
+	Bounds 0x0 160x160
+	line-style [width 1 color 45.85.45]
+	grid 0x0 160x160 10x10
+]
+PlaceObject2 [shp_grid1 shp_grid2]
+PlaceObject2 shp_grid2 [at 160x160 scale .5]
+PlaceObject2 shp_grid2 [at 240x240 scale .25]
+showFrame
+end

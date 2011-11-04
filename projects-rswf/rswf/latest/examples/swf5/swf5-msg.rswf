@@ -1,0 +1,48 @@
+rebol [
+	title: "SWF5-Flash Methods" 
+	type: 'swf5
+	file: %msg.swf
+	id: 'msg
+	background: 153.165.139
+	rate: 30
+	size: 320x40
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 15-4-2002
+	html: %swf5-msgincluded.html
+	purpose: {How to communicate between Flash and browser (and/or server)}
+	comment: {<hr>
+	You have to look at the HTML source of this page to see the second part of this example.
+	I use FlashMethods: <code>TCallLabel(target, label)</code> to call action for loading variables from server and <code>SetVariable(variableName, value)</code> to set URL after loading the Flash movie and random number using JavaScript from browser.
+	The response from server must be as:
+<code>Content-Type: <b>application/x-www-form-urlencoded</b></code>
+so for example:
+<code>value=Hello%2C+your+IP+is+127.0.0.1</code>
+	For complete list of FlashMethods follow <a href="http://www.macromedia.com/support/flash/publishexport/scriptingwithflash/scriptingwithflash_03.html">this link</a>.}
+]
+background 153.165.139
+fnt_arial: defineFont2 [name "Arial" bold]
+shp_frame: shape [
+	edge width 5 color #b0c4de fill color #006400
+	box 0x0 320x40
+]
+txt_data: EditText 'value 315x35 [
+	text "Loaded" ReadOnly NoSelect
+	Color #00ff00 Font [fnt_arial 12]
+]
+spr_data: sprite txt_data
+place shp_frame
+d: place spr_data [
+	at 2x2
+	actions [
+		load [ FSCommand ["init" ""] ]
+		data [ FSCommand ["echo" value] ]
+	]
+]
+stop showFrame label "Connect"
+doAction [
+	d.value: ""
+	d.loadVariables(url "post")
+]
+ShowFrame
+end

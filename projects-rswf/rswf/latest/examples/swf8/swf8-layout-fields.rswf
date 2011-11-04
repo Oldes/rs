@@ -1,0 +1,40 @@
+rebol [
+	title: "FLASH8 - layout fields"
+	type: 8
+	file: %swf8-layout-fields.swf
+	background: 200.200.200
+	rate: 24
+	size: 401x250
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 19-Oct-2007/19:43:43+2:00
+	purpose: {Example of layout with fields (Field, Password and Area)}
+	compressed: true
+]
+
+background 200.200.200
+require %tracer.rswf
+
+layout [
+	at 10x60
+	across
+	Text 70x20 "Name:"
+	f1: Field 300x20 "test" [
+		trace("onKillFocus")
+	]
+	return
+	Text 70x20 "Password:"
+	f2: Password 300x20
+	return
+	Text 70x20 "Text:"
+	f3: Area 300x80
+	return
+	pad 72x0
+	Button-submit 300x20 [
+		trace("SUBMIT:" this)
+		trace("Text:" f3.text)
+		trace("Name:" f1.text "Password:" f2.text)
+	]
+]
+
+showFrame end

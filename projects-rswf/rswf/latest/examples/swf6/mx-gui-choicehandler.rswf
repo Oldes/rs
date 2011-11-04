@@ -1,0 +1,61 @@
+rebol [
+	title: "MX-GUI-ChoiceHandler"
+	type: 'mx
+	file: %gui-choicehandler.swf
+	background: 153.165.139
+	rate: 12
+	size: 220x200
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 3-6-2003
+	purpose: {To show how to use gui-checkbox}
+	related: [%includes/gui-choicehandler.rswf]
+]
+background 153.165.139
+require %includes/gui-mainfonts.rswf
+require %includes/gui-checkbox.rswf
+require %includes/gui-choicehandler.rswf
+require %includes/gui-button.rswf
+
+;fnt_arial: defineFont2 [name "Arial"] 
+
+txt_test: EditText 'test 219x99 [
+        WordWrap Multiline
+		ReadOnly ; noSelect
+        Color #cc0000 
+        Font [fnt_gui_arial 11 bold] 
+		border
+		UseOutlines
+] 
+place txt_test at 0x100
+
+showFrame
+CheckBox1: place gui_checkbox at 0x0
+CheckBox2: place gui_checkbox at 0x18
+CheckBox3: place gui_checkbox at 0x36
+
+choiceHandler: place gui_choiceHandler
+
+Button1: place gui_button at 100x0
+Button2: place gui_button at 100x18
+doAction [
+	choiceHandler.onChangeItemState: func[][
+		_root.test: _root.test add this.label add " = " add this.checked add newline
+	]
+	choiceHandler.setSupervisionOn(([CheckBox1 CheckBox2 CheckBox3]))
+	
+	Button1.setLabel("Values")
+	Button1.onRelease: func[][
+		this.setState(1)
+		tmp: this._parent.choiceHandler.getValues()
+		_root.test: _root.test add "CheckBoxes:" add this._parent.choiceHandler.aValues add newline
+	]
+	_root.test: _root.test add "XXCheckBoxes:" add  newline
+	Button2.setLabel("Reset")
+	Button2.onRelease: func[][
+		this.setState(1)
+		this._parent.choiceHandler.resetValues()
+	]
+	stop
+]
+showFrame end

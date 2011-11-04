@@ -1,0 +1,42 @@
+rebol [
+	title: "GUI_Draggable"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 24
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 8/10/2007
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+
+require [
+	%gui/defaults.rswf
+	%gui/GUI_Core.rswf
+	%gui/GUI_DepthManager.rswf
+]
+
+GUI_Draggable: Extends GUI_Core [
+	init: func[width height][
+		super.init(width height)
+	]
+	onPress:   does [
+		this.xmouse: this._xmouse
+		this.ymouse: this._ymouse
+		this.swapToTop()
+		this.onMouseMove: does [
+			this._x: this._parent._xmouse - this.xmouse
+			this._y: this._parent._ymouse - this.ymouse
+			updateAfterEvent()
+		]
+		this.onMouseUp: does [
+			delete this.onMouseMove
+			delete this.onMouseUp
+			this.onStopDrag()
+		]
+	]
+	onStopDrag: does [trace("onStopDrag" this._name this._x this._y)]
+]

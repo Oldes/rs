@@ -1,0 +1,46 @@
+rebol [
+	title: "MX-Key events"
+	type: 'mx
+	file: %mx-keyevents.swf
+	background: 246.250.255
+	rate: 12
+	size: 320x20
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 17-1-2004
+	purpose: {to test onKeyDown and onKeyUp events}
+	JS: {
+		document.getElementById('mx-keyevents').focus();
+	}
+	comment: {
+		I made this example to test how is working the onKeyUp event under Linux version of Flash. I can say that it's working but sometimes is not received if you press more keys at once. Under M$ it's working up to 3 keys at once.}
+]
+fnt_ArialN: font [name "_typewriter" bold]
+txt_testField: EditText test 319x19 [
+	Font [fnt_ArialN 11] border
+	noSelect ReadOnly
+	text "Press any key here..."
+]
+place txt_testField
+doAction [
+	keyListener: make object! []
+	keyListener.onKeyUp: func[][
+		test: rejoin [
+			"onKeyUp:  "
+			" ascii=" (Key.getAscii())
+			" code="  (Key.getCode())
+			" key=" (to-char (Key.getAscii()))
+		]
+	]
+	keyListener.onKeyDown: func[][
+		test: rejoin [
+			"onKeyDown:"
+			" ascii=" (Key.getAscii())
+			" code="  (Key.getCode())
+			" key=" (to-char (Key.getAscii()))
+		]
+	]
+	Key.addListener(keyListener)
+]
+showFrame
+end

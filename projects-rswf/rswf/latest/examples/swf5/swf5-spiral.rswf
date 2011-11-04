@@ -1,0 +1,50 @@
+rebol [
+	title: "SWF5-Spiral"
+	type: 'swf5
+	file: %swf5-spiral.swf
+	background: 20.20.20
+	rate: 24
+	size: 320x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 31-10-2003
+	purpose: {Test spiral generation}
+]
+background 20.20.20
+;include %includes/txt_info.rswf
+
+es: EmptySprite
+shp_circle: shape [
+	fill color 255.255.255
+	;edge [color 0.0.0 width 3]
+	circle 6
+]
+
+spr_circle: Sprite shp_circle
+exportAssets [spr_circle "circ"]
+
+place es [
+	at 160x160
+	actions [
+		load [
+			r: 30 i: 0
+		]
+		enterFrame [
+			a: i * (math.PI / 7.5)
+			o: make object! [
+				_x: r * math.sin(a)
+				_y: r * math.cos(a)
+			]
+			;_root.info: rejoin [(math.sin(a)) " " o._x " " o._y]
+			attachMovie("circ" ("c" add i) i o)
+			i++
+			r: r + 1.2
+			if i > 100 [
+				r: 30 i: 0
+			]
+		]
+	]
+]
+stop
+showFrame
+end

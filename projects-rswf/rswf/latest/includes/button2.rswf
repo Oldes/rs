@@ -1,0 +1,43 @@
+rebol [
+	title: "SWF-Button2 example"
+	type: 'swf
+	file: %button2.swf
+	background: 246.250.255
+	rate: 1
+	size: 320x100
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 27-4-2002
+	purpose: {How to create button with more layers inside}
+]
+background #f6faff
+;fnt_Arial: Font [name "Arial" Bold]
+txt_ibtn: EditText 't 110x18 [
+	Color #696969 ReadOnly NoSelect
+	Font [fnt_Arial 12]	Layout [align: 'center] useoutlines
+]
+shp_ibtn: Shape [
+	Bounds 0x0 110x18
+	fill color #000000 box 0x0 110x18
+	fill color #deb887 box 1x1 109x17
+]
+btn_ibtn: Button [
+	as push ;or as menu ; if not specified, button is as menu
+	shapes [
+		[up over down] [shp_ibtn multiply 0.0.0.80 layer 1 at 3x3]
+		[up over hit ] [shp_ibtn layer 2]
+		[up over] [txt_ibtn layer 3 at 2x0]
+		down  [shp_ibtn multiply [155 -55 -200] layer 2 at 2x2]
+		up    [txt_ibtn add 255.255.255 layer 4 at 0x-2]
+		over  [txt_ibtn multiply 0.0.0 layer 4 at 1x-1]
+		down  [txt_ibtn add 255.255.255 layer 3 at 2x2]
+	]
+	actions [
+		press [onPress()]
+		rollOver [onrollOver()]
+		rollOut [onrollOut()]
+	]
+]
+Place btn_ibtn
+showFrame
+end

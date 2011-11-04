@@ -1,0 +1,77 @@
+rebol [
+	title: "Flash8 - Perlin noise"
+	type: 'swf8
+	file: %swf8-perlinnoise.swf
+	background: 255.255.255
+	rate: 12
+	size: 320x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 6-10-2005
+	purpose: {To test and demonstrate the perlinNoise function and bitmapFill}
+	comment: {
+The Perlin noise algorithm is named for Ken Perlin, who developed it after generating
+computer graphics for the 1982 film Tron. Perlin received an Academy Award for
+Technical Achievement for the Perlin Noise function in 1997.}
+	compressed: true
+]
+background 255.255.255
+spr_bg: EmptySprite
+shp_circle: shape [
+	with transparency
+	gradient [
+		radial colors [
+			0.0.0.255 0.0.255.255 0.255.0.255 255.0.0.0
+		]
+	]
+	circle 160
+]
+spr_circle: sprite shp_circle
+
+bg: place spr_bg
+ci: place spr_circle [at 160x160 blend "diference"]
+
+doAction [
+	ci.cacheAsBitmap: true
+	bmp: make flash.display.BitmapData[
+		160         ;width
+		160         ;height
+		true        ;transparent
+		#000000     ;fill color	
+	]
+	changeBackground: func[][
+		bmp.perlinNoise(
+			160    ;baseX
+			160    ;baseY
+			(2 + random 10) ;numOctaves
+			(random 1000)   ;randomSeed
+			true   ;stitch = smooth the transition edges of the image
+			       ;to create seamless textures for tiling as a bitmap fill
+			false  ;fractalNoise (false=turbulence)
+			(1 | 4 | 8);channelOptions = 1 (red), 2(green), 4 (blue), and 8 (alpha).
+			false  ;grayScale
+			none   ;offsets
+		)
+		matrix: make flash.geom.Matrix []
+		with bg [
+			clear()
+			beginBitmapFill(
+				bmp      ;BitmapData
+				matrix   ;Matrix
+				true     ;repeat
+				false    ;smoothing
+			)
+			moveTo(0 0)
+			lineTo(320 0)
+			lineTo(320 320)
+			lineTo(0 320)
+			lineTo(0 0)
+			endFill()
+			cacheAsBitmap: true
+		]
+	]
+	changeBackground()
+	setInterval(changeBackground 200)
+]
+
+showFrame end

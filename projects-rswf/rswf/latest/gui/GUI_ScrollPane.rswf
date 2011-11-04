@@ -1,0 +1,258 @@
+rebol [
+	title: "GUI_ScrollPane"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 24
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 8/10/2007
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+
+require %gui/GUI_Scroller.rswf
+
+GUI_ScrollPane: Extends GUI_Core [
+	width:    200
+	height:   200
+	clr_edge: #444444
+	clr_fill: #bbbbcc
+	sliderWidth: 15
+	align:      "center"
+	originX: 2 originY:  2
+	scrollbars: "auto"
+	
+	init: func[width height][
+		this.createEmptyMovieClip("bg" 1)
+		this.createEmptyMovieClip("content" 2)
+		this.createEmptyMovieClip("mask" 3)
+		this.createEmptyMovieClip("edge" 8)
+		this.attachMovie("GUI_Scroller" "slider1" 5)
+		this.attachMovie("GUI_Scroller" "slider2" 6)
+		this.attachMovie("GUI_Button" "corner" 9)
+			
+		this.slider1.clr_edge: this.slider1.clr_fill
+		this.slider2.clr_edge: this.slider2.clr_fill
+		
+		this.initChilds()
+		super(width height)
+		this.updateSliders()
+	]
+	initChilds: does [
+		this.content.setMask(this.mask)
+		;this.filters: [defaultShadow1]
+		this.content._x: originX
+		this.content._y: originY
+		this.content._lockroot: true
+		;this.content.cacheAsBitmap: true
+		
+		this.corner.enabled?: false
+		;this.corner._visible: false
+		
+		this.content.setBackground: func[clr][this._parent.setBackground(clr)]
+		tellTarget this.corner [
+			onPress: useHandCursor: none
+			comment {
+			onPress: does [
+				if this.enabled? [
+					super.onPress()
+					this.offx: this._width - this._xmouse
+					this.offy: this._height - this._ymouse
+					this.onMouseMove: does [
+						;trace(this._parent._xmouse this._parent._ymouse)
+						var tp: this._parent
+						tp.resize((tp._xmouse + this.offx) (tp._ymouse + this.offy))
+						updateAfterEvent()
+					]
+				]
+			]
+			onRelease: does [
+				super.onRelease()
+				this.onMouseMove: none
+			]
+			onReleaseOutside: does [
+				super.onReleaseOutside()
+				this.onMouseMove: none
+			]
+			}
+		]
+		this.slider1.onChanged: does [
+			this._parent.content._y: this._parent.originY - (this._parent.contentHeight - this._parent.height + this._parent.bottomHeight - 2) * this.value
+		]
+		this.slider2.onChanged: does [
+			this._parent.content._x: this._parent.originX - (this._parent.contentWidth - this._parent.width + this._parent.rightWidth) * this.value
+		]
+		this.slider1.onSetRatio: func[ratio][
+			either ratio < 1 [
+				;trace("rightWidth:" this.width)
+				this._parent.rightWidth: 15 ;this.width
+				this._visible: true
+			][
+				this._parent.rightWidth: 1
+				this._visible: false
+				with this._parent [
+					either align = "center" [
+						
+						content._y: Math.round( ((2 + height - content._height - bottomHeight) / 2) )
+						;trace("CENTER Y>" content._y height content._height bottomHeight)
+					][	content._y: 1]
+				]
+			]
+		]
+		this.slider2.onSetRatio: func[ratio][
+			either ratio < 1 [
+				this._parent.bottomHeight: this.height
+				this._visible: true
+			][
+				this._parent.bottomHeight: 2
+				this._visible: false
+				with this._parent [
+					either align = "center" [
+						content._x: Math.round( ((2 + width - content._width - rightWidth) / 2) )
+					][	content._x: 1 ]
+				]
+			]
+		]
+		this.content.onResize: does[trace("contentResize")]
+	]
+	setBackground: func[clr][
+		;trace("setBackground" this._name clr)
+		if integer? clr [
+			;trace("NEWCLR:" clr)
+			this.clr_fill: clr
+			this.redraw()
+		]
+	]
+	loadClip: func[url][
+		;trace("loadClip" this this.content)
+		removeMovieClip(this.content)
+		this.attachMovie("GUI_ClipHandler" "content" 2)
+		this.content.setMask(this.mask)
+		this.content.hideWhileLoading?: false
+		this.content.loadClip(url this.width this.height)
+		this.content.mcl.addListener(this)
+		this.onLoadComplete: func[target httpStatus][
+			;this.resize(target._width target._height)
+			;trace("###" target target._parent._parent._width target._height)
+		]
+		this.content.onShowClip: func[content][
+			trace("!!!!!"  content._width content._height)
+		]
+	]
+
+	updateSliders: does [
+		this.slider1._visible: this.slider2._visible: false
+		this.contentWidth:  to-integer (this.content._width)  + (2 * this.originX)
+		this.contentHeight: to-integer (this.content._height) + (2 * this.originY)
+		;trace("upSlW:" this._name this.contentWidth this.width)
+		;trace("upSlH:" this._name this.contentHeight this.height this.content._height this.originY )
+		either ((2 * this.originY) + this.height + 2) < this.contentHeight [
+		;	trace("w1")
+			this.slider2.setRatio(( (this.width - this.sliderWidth + 1) / (this.contentWidth) ))
+		][
+			this.slider2.setRatio(( (this.width + 2 + (2 * this.originY)) / (this.contentWidth) ))
+		]
+		;trace(this this.width this.contentWidth)
+		either ((2 * this.originX) + this.width + 2) <= this.contentWidth [
+		;	trace("##########" ((2 * this.originX) + this.width))
+			this.slider1.setRatio(( (this.height - this.sliderWidth + 1 + (2 * this.originX)) / (this.contentHeight) ))
+		][
+			this.slider1.setRatio(( (this.height + 2 + (2 * this.originX)) / (this.contentHeight) ))
+		]
+		this.redraw()
+		
+	]
+	resize: func[width height][
+		;trace("@@RESIZE" width height)
+		width:  Math.max(60 width)
+		height: Math.max(60 height)
+		super.resize(width height)
+		this.content.resize(width height)
+		;trace("resize:" this.height)
+		;this.areaHeight: this.height + this.slider2.height - 2
+		this.updateSliders()
+	]
+	redraw: does [
+		
+		var w: this.width
+		var h: this.height
+		var sliderWidth: this.sliderWidth
+		var w2: w - sliderWidth
+		car h2: h - sliderWidth
+		var bothSliders?: this.slider1._visible and this.slider2._visible  
+		;trace("redraw" this._name w h bothSliders? this.slider1._visible this.slider2._visible  )
+		either bothSliders? [
+			this.slider1.resize( (sliderWidth) (h2 + 1) )
+			this.slider2.resize( (w2 + 1) (sliderWidth) )
+			this.corner.resize(sliderWidth sliderWidth)
+			this.corner._x: w2
+			this.corner._y: h2
+			this.corner._visible: true
+		][
+			this.corner._visible: false
+			either (not this.slider1._visible) and (not this.slider2._visible) [
+				this.slider1.resize( (sliderWidth) (h2 + 1) )
+				this.slider2.resize( (w2 + 1) (sliderWidth) )
+			][
+			
+				either this.slider1._visible [
+					this.slider1.resize( (sliderWidth) (h) )
+				][
+					this.slider2.resize( (w) (sliderWidth) )
+				]
+			]
+		]
+		
+		this.slider1._x: w2
+		this.slider2._y: h2
+
+		;comment {
+		with this.bg [
+			clear()
+			drawBox(0 0 w h 0 this.clr_fill none)
+		]
+		with this.edge [
+			clear()
+			drawBox(0 0 w h 0 none this.clr_edge)
+			if bothSliders? [
+				lineStyle(none)
+				beginFill( this.clr_edge 60 )
+				var x2: w - sliderWidth + 1
+				var y2: h - sliderWidth + 1
+				moveTo(  x2 y2 )
+				lineTo(  w  y2 )
+				lineTo(  w  h  )
+				lineTo(  x2 h  )
+				lineTo(  x2 y2 )
+				endFill()
+			]
+		]
+		;}
+		comment {
+		with this.bg [
+			clear()
+			drawBox(0 0 w h 1 this.clr_fill this.clr_edge)
+			;drawBox(0 0 w h 1 none this.clr_edge)
+		]
+		}
+
+		with this.mask [
+			clear()
+			w--
+			h--
+			drawBox(1 1 w h 1 100.0.0)
+		]
+	]
+	onChildResize: func[child][
+		trace("onChildResize")
+		this.updateSliders()
+	]
+]
+
+
+
+
+

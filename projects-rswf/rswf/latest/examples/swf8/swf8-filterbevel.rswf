@@ -1,0 +1,45 @@
+rebol [
+	title: "Flash8 - BevelFilter"
+	type: 'swf8
+	file: %swf8-filterbevel.swf
+	background: 153.165.139
+	rate: 12
+	size: 320x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 5-10-2005
+	purpose: {To test and demonstrate the BevelFilter}
+	comment: {}
+	compressed: true
+]
+background 153.165.139
+shp_box: shape [
+	fill color 255.0.0
+	box -50x-50 50x50
+	circle 30
+]
+spr_box: sprite shp_box
+box: place spr_box at 160x160
+doAction [
+	myBevel: make flash.filters.BevelFilter[
+		8        ;distance:Number
+		45       ;angle:Number
+		#FFFFFF  ;highlightColor:Number
+		0.5		 ;highlightAlpha:Number
+		#000000  ;shadowColor:Number
+		0.5      ;shadowAlpha:Number
+		8        ;blurX:Number
+		8        ;blurY:Number
+		1        ;strength:Number
+		2        ;quality:Number
+		"full"   ;type:String ("inner", "outer", and "full") 
+		false    ;knockout:Boolean
+	]
+	setBevel: func[mc][
+		myBevel.distance: random 4
+		myBevel.angle: random 360
+		mc.filters: [myBevel]
+	]
+	int: setInterval(setBevel 100 box)
+]
+showFrame end

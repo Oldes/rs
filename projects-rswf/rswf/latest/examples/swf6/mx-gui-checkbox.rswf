@@ -1,0 +1,54 @@
+rebol [
+	title: "MX-GUI-CheckBox"
+	type: 'mx
+	file: %gui-checkbox.swf
+	background: 153.165.139
+	rate: 12
+	size: 220x200
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 28-5-2003
+	purpose: {To show how to use gui-checkbox}
+	related: [%includes/gui-label.rswf %includes/gui-checkbox.rswf]
+
+]
+background 153.165.139
+require %includes/gui-mainfonts.rswf
+require %includes/gui-checkbox.rswf
+;fnt_arial: defineFont2 [name "Arial"] 
+txt_test: EditText 'test 220x50 [
+        WordWrap Multiline
+		ReadOnly noSelect
+        Color #cc0000 
+        Font [fnt_gui_arial 20] 
+        Layout [align: 'center]
+		UseOutlines
+		;border
+] 
+place txt_test at 0x150
+
+showFrame
+c1: place gui_checkbox at 0x0
+c2: place gui_checkbox at 0x18
+c3: place gui_checkbox at 0x36
+spr_test: sprite [
+	doAction [
+		createCheckBox(this "CheckBox4" 1)
+		createCheckBox(this "CheckBox5" 2)
+		CheckBox5._y: 18
+	]
+	showFrame end
+]
+place spr_test at 20x80
+doAction [
+	ConstantPool [label this]
+	c1.label: "CheckBox1"
+	c2.label: "CheckBox2"
+	c3.label: "CheckBox3"
+	GUI_CheckBoxClass.prototype.executeCallBack: func[][
+		_root.test: this.label add " = " add this.checked
+	]
+	c2.setSelected(true)
+	stop
+]
+showFrame end

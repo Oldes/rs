@@ -1,0 +1,31 @@
+rebol [
+	title: "SWF-Shape skew"
+	type: 'swf
+	file: %swf-shapeskew.swf
+	background: 153.165.139
+	rate: 12
+	size: 200x200
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 13-11-2002
+	purpose: {To show how to use skew transformation in shapes}
+	comment: {
+	Now it's possible to set the transformation center in the <code>transform</code> key block. If the center is not specified the center is either 0x0 or positions set using the <code>at</code> key word.
+	Since now, if you use the <code>at</code> word, the positions are calculated as relative to this position! If you want to use absolute psitioning, use: <code>positions absolute</code>.}
+
+]
+background 153.165.139
+shp_test: shape [
+	transparency
+    fill color 255.255.255 
+	edge [width 3 color 100.50.0] 
+	at 50x50 box 0x0 100x100
+	transform [skew [0 360] center 50x50]
+	fill color 200.200.0.128 box 0x0 100x100
+	transform [skew [360 0] center 50x50]
+	fill color 0.200.200.128 box 0x0 100x100
+]
+place shp_test
+showFrame
+end
+

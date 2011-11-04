@@ -1,0 +1,79 @@
+rebol [
+	title: "GUI_ComboBox"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 24
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 10/10/2007
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+require [
+	%gui/GUI_Button.rswf
+	%gui/GUI_Arrows.rswf
+]
+GUI_ComboBox: Extends GUI_Button [
+	text: "Combo"
+	init: func[width height text][
+		super(width height text)
+		this.attachMovie("gui_arrowDown2" "arrow" 3)
+		this.arrow._alpha: 60
+		comment {
+		with this.arrow [
+			beginFill( this.tff.color 60 )
+			lineTo( 8 0 )
+			lineTo( 4 9 )
+			lineTo( 0 0 )
+			endFill()
+		]
+		}
+		;this.text: this.text
+		this.redraw()
+	]
+
+	redraw: does [
+		var w: this.tf._width:  this.width
+		var h: this.tf._height: this.height
+		var r: this.r
+		;1 2   5  3 4
+		with this.bg [
+			;trace(this)
+			var x1: 0
+			var x2: r
+			var x3: w - r
+			var x4: w
+			var y1: 0
+			var y2: r
+			var y3: h - r
+			var y4: h
+			clear()
+			drawBox(0 0 w h this.r this.colors.background this.colors.edge)
+
+			var x5: w - 15
+			var clr: this.tff.color
+			lineStyle(undefined)
+			beginFill( this.clr_edge 10 )
+			moveTo(  x5 y1 )
+			lineTo(  x3 y1 )
+			lineTo(  x3 y2 )
+			lineTo(  x4 y2 )
+			lineTo(  x4 y3 )
+			lineTo(  x3 y3 )
+			lineTo(  x3 y4 )
+			lineTo(  x5 y4 )
+			lineTo(  x5 y1 )
+			endFill()
+			
+			lineStyle(1 clr 50)
+			moveTo(  x5 (y1 + 2) )
+			lineTo(  x5 (y4 - 2) )
+		]
+		this.arrow._x: w - this.arrow._width - 1
+		this.arrow._y: 1 + Math.round(((h - this.arrow._height) / 2))
+	]
+]
+

@@ -1,0 +1,78 @@
+rebol [
+	title: "MX-Bitmaped resizable window"
+	type: 'mx
+	file: %mxwindow.swf
+	background: 153.165.139
+	rate:  25 ;12
+	size: 320x240
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 05-11-2002
+	purpose: {To create resizable reusable window using bitmaps}
+	comment: {
+	This is not final version yet!
+	This will be only in FlashMX because I was not able to manage pixel precision resizing in older Flash versions. The next reason is, that I started to use the prototyping which is new in FlashMX}
+
+]
+background 153.165.139
+comment {
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; not ready for new RSWF version yet ;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+importAssets [fnt_Arial "B"] from %includes/fnt_euromode_b.swf
+
+spr_darthwindow: make window [
+	left	[%bitmaps/extended/left.gif  48 28]
+	right	[%bitmaps/extended/right.gif 48 28]
+	top		[%bitmaps/extended/top.gif 12 44]
+	bottom	[%bitmaps/extended/bottom.gif 4 4]
+	title	[at 25x4 rclip 84 font "Arial"]
+	background 68.68.68
+	size	160x170
+]
+
+comment {
+spr_envisionwindow: make window [
+	left	[%bitmaps/envision/left.gif  26 12]
+	right	[%bitmaps/envision/right.gif 25 12]
+	top		[%bitmaps/envision/top.gif 20 47]
+	bottom	[%bitmaps/envision/bottom.gif 2 2]
+	title	[at 25x6 rclip 5 font "Arial"]
+	background 68.68.68
+	size	160x170
+]}
+exportAssets [
+	spr_darthwindow "obj_darthwindow"
+	;spr_envisionwindow "obj_envisionwindow"
+]
+doAction [
+	Object.registerClass("obj_darthwindow" WindowClass)
+	;Object.registerClass("obj_envisionwindow" WindowClass)
+]
+doAction [
+	ConstantPool [createWindow parent name depth o _root]
+	createWindow: func[parent name depth x y /local o][
+		o: make object! [_x: x _y: y]
+		parent.attachMovie("obj_darthwindow" name depth o)
+	]
+	createWindow(_root "win1" 100 20 20)
+	createWindow(_root "win2" 101 100 60)
+]
+
+showFrame
+doAction [
+	win1.loadMovie("demon.swf")
+	win1.resize(120 120)
+	win1.setResizeContent(true)
+	win2.resize(120 120)
+	win2.loadMovie("clock2.swf")
+
+	resizeTest: func[][
+		win1.resize((100 + random 100) 100)
+	] 
+	int: setInterval(resizeTest 1000)
+	stop
+]
+}
+showFrame
+end

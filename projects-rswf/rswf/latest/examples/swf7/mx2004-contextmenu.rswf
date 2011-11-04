@@ -1,0 +1,24 @@
+rebol [
+	title: "MX2004-ContextMenu" 
+	type: 'mx2004
+	file: %contextmenu.swf
+	background: 153.165.139
+	rate: 30
+	size: 320x40
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 16-9-2003
+	purpose: {How to hide all builtInItems in the Context menu}
+	comment: {
+	This example hides all the built-in objects in the Context menu (the one which appears when you click with right mouse button on the movie). (However, the Settings
+and About items still appear, because they cannot be disabled.)}
+]
+
+doAction [
+	newMenu: make ContextMenu []
+	newMenu.hideBuiltInItems()
+	_root.menu: newMenu
+]
+
+ShowFrame
+end

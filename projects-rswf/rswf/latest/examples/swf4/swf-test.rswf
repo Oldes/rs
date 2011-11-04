@@ -1,0 +1,23 @@
+rebol [
+	title: "SWF-Circle example"
+	type: 'swf
+	file: %circle.swf
+	background: 152.174.149
+	rate: 1
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 29-Nov-2001
+	purpose: {To show how to make circles in the Shape}
+]
+background 152.174.149
+shp_circles: Shape [
+	Bounds 0x0 320x320
+	line-style [width 2 color 5.5.5]
+	fill-style [color 255.55.55]
+	Positions relative at 160x160
+	circle 10 30 60 90 120 150 180 210
+]
+PlaceObject shp_circles
+showFrame
+end

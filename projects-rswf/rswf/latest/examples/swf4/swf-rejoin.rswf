@@ -1,0 +1,27 @@
+rebol [
+	title: "SWF-Rejoin"
+	type: 'swf
+	file: %rejoin.swf
+	background: 226.230.235
+	rate: 12
+	size: 320x20
+	author: "oldes"
+	date: 29-Oct-2003/17:46:19+1:00
+	purpose: {To Rejoin multiple strings}
+	comment: {
+		I've add this possibility to avoid too many 'add codes which doesn't look so nice.
+		Using <code>rejoin ["a" "b"]</code> is same like <code>"a" add "b"</code>
+		Be careful to use parens if you are rejoining other values then simple numbers or strings! 
+		It's not working as in Rebol - you cannot use <code>rejoin block</code> because the compiler doesn't know block's values!
+	}
+]
+include %includes/txt_info.rswf
+doAction [
+	x: " - "
+	info: rejoin [
+		"a" "b" x (random 10)
+		(rejoin [" inside rejoin " 10])
+	]
+]
+showFrame
+end

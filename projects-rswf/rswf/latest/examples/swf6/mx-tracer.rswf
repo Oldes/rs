@@ -1,0 +1,32 @@
+rebol [
+	title: "MX-Tracer"
+	type: 'mx
+	file: %mx-tracer.swf
+	background: 153.165.139
+	rate: 6
+	size: 321x41
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 29-09-2003
+	purpose: {Just to see what's going on...}
+	comment: {}
+
+]
+background 153.165.139
+fnt_Courier: Font [name "_typewriter" bold]
+txt_trace: EditText v_trace 320x40 [
+    ReadOnly WordWrap Font [fnt_Courier 12]
+    border layout [indent: 10 leading: -2]
+]
+place txt_trace
+doAction [
+	constantPool [trace msg _v_trace scroll maxscroll]
+	_global.trace: func[msg][
+		v_trace: rejoin [v_trace msg newline]
+		v_trace.scroll: v_trace.maxscroll
+	]
+	trace("Tracer loaded")
+	trace("Next trace message")
+]
+showFrame
+end

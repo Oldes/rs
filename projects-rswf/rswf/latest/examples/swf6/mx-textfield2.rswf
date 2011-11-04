@@ -1,0 +1,59 @@
+rebol [
+	title: "MX-TextField" 
+	type: 'mx
+	file: %textfield2.swf
+	background: 153.165.139
+	rate: 24
+	size: 300x200
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {To make textfield with scroller}
+	date: 11-12-2003
+]
+background 153.165.139
+include %includes/txt_info.rswf
+
+importAssets [spr_scroller "scroller"] %examples/compiled/swf5-scroller.swf
+fnt_ArialN: font [name "_sans"]
+txt_testField: EditText test 286x149 [
+	Font [fnt_ArialN 11] border
+	color #000000
+	wordwrap multiline
+]
+
+tf: place txt_testField at 0x20
+sc: place spr_scroller  at 286x20
+
+doAction [
+	sc.onChange: func[][
+		tf: _parent.tf
+		tf.scroll: 1 + ((tf.maxscroll - 1) * data)
+		;_parent.info: rejoin ["sc.data:" data " m:" tf.maxscroll " h:" h]
+	]
+	sc.resize(150)
+	
+	tf.onScroller: func[][
+		if not sc.draging [
+			if tf.lastMaxscroll <> tf.maxscroll [
+				tf.lastMaxscroll: tf.maxscroll
+				d: tf.maxscroll - 1 
+				either tf.maxscroll > 1 [
+					r: 1 - (d * 0.01)
+					sc.setRatio(r)
+					sc.setStep((1 / d ))
+					;sc.redrag(((tf.scroll - 1) * sc.step))
+				][
+					sc.setRatio(1)
+				]
+			]
+			sc.redrag(((tf.scroll - 1) * sc.step) false)
+			info: rejoin ["oS! step:" sc.step " r:" r " a:" sc.draging]
+		]
+	]
+	info: "Write some text into the large field"
+	test: "1^/2^/3^/4^/5^/6^/7^/8^/9^/10"
+	;tf.onChanged()
+]
+
+show frame
+end

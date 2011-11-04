@@ -1,0 +1,48 @@
+rebol [
+	title: "Flash8 - blendMode2"
+	type: 'swf8
+	file: %swf8-blendmode2.swf
+	background: 255.255.255
+	rate: 20
+	size: 320x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 10-10-2005
+	purpose: {To test and demonstrate the blending modes}
+	comment: {}
+	compressed: true
+]
+background 255.0.255
+shp_star: Shape [
+    fill color 0.0.0
+    rebol [
+        use [s r][
+            s: 1
+            for r 0 360 60 [
+                parse compose/deep [
+                    transform [rotate (r) scale (s)]
+                    curved n-star 4 140 15
+                ] rswf/shp-rules
+                s: s - 0.13
+            ]
+        ]
+    ]
+]
+spr_star: sprite shp_star
+star1: place spr_star [at 160x160 scale 2.5]
+star2: place spr_star [at 160x160 scale 2 blend "invert"]
+doAction [
+	star1.onEnterFrame: func[][
+		tellTarget this [
+			_rotation: _rotation - 1
+			if _rotation < 0 [_rotation: _rotation + 360]
+		]
+	]
+	star2.onEnterFrame: func[][
+		tellTarget this [
+			_rotation: _rotation + 1
+			if _rotation > 360 [_rotation: _rotation - 360]
+		]
+	]
+]
+showFrame end

@@ -1,0 +1,16 @@
+rebol [
+	title: "Font Euromode Bold"
+	type: 'swf5
+	file: %includes/fnt_euromode_b.swf
+	background: 0.0.0
+	rate: 12
+	size: 1x1
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 23-2-2003
+	purpose: {To have this font with shapes for sharing in movies}
+	comment: {Only small characters, numbers and punctuation is included}
+]
+fnt_EuromodeB: Font %fonts/fnt_euromode_b.rfnt
+exportAssets [fnt_EuromodeB "B"]
+showFrame end

@@ -1,0 +1,93 @@
+rebol [
+	title: "GUI_Text"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 24
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 8/10/2007
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+
+require [
+	%gui/defaults.rswf
+	%gui/GUI_Core.rswf
+]
+
+
+GUI_Text: Extends GUI_Core [
+	width:  100
+	height: 20
+	text: ""
+	type: "default"
+	colors: none
+	
+	init: func[width height text][
+		super(width height)
+		this.createEmptyMovieClip("bg" 1)
+		this.createTextField("tf" 2 0 1 this.width this.height)
+		with this.tf [
+			multiline: true
+			wordWrap:  true
+			;embedFonts: true
+			;border: true
+			variable: "text"
+			gridFitType: "pixel"
+			;thickness: -150
+			;antiAliasType: "advanced"
+			;html:      true
+			setTextFormat(defaultFont)
+			setNewTextFormat(defaultFont)
+			;filters: [defaultTextBevel]
+		]
+		
+		this.tff: this.tf.getTextFormat()
+		this.tff.leftMargin: 2
+		;this.createEmptyMovieClip("ma" 3)
+		if text <> undefined [
+			this.text: text
+		]
+		this.tf.text: this.text
+		;trace("init" this this.width this.height this._x this.color)
+		;trace(this.tf.textWidth this.tf.textHeight)
+		this.setType(this.type)
+		this.cacheAsBitmap: true
+	]
+	setText: func[text][
+		this.text: text
+	]
+	setTextColor: func[clr][
+		this.tff.color: clr
+		this.tf.setTextFormat(this.tff)
+		this.tf.setNewTextFormat(this.tff)
+		;this.text: this.text
+	]
+	setType: func[type][
+		super.setType(type)
+		this.setTextColor(this.colors.text)
+		this.redraw()
+	]
+
+	
+	setColor: func[clr_fill clr_text][
+		this.colors: make GUI_Colors [clr_fill clr_text]
+		;trace("??" defaultColors.default.edge)
+		;trace("XXXXXXXXXX:" this.colors.background this.colors.edge)
+		if clr_text <> undefined [this.setTextColor(clr_text)]
+		this.type: "custom"
+		this.redraw()
+	]
+	
+	redraw: none
+	
+	
+	updateStyle: does [
+		this.tf.setTextFormat(defaultButtonFont)
+		super.updateStyle()
+	]
+]
+

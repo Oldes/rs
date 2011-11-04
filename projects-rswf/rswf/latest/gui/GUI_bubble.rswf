@@ -1,0 +1,110 @@
+rebol [
+	title: "GUI_bubble"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 24
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 8/10/2007
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+
+require [
+	%gui/defaults.rswf
+	%gui/GUI_Draggable.rswf
+]
+
+GUI_bubble: Extends GUI_Draggable [
+	width:  100
+	height: 18
+	clr_fill:  240.240.240
+	clr_edge:  0.0.0
+	r: 1
+	
+	init: func[width height][
+		 this.createEmptyMovieClip("bg" 1)
+		 this.createEmptyMovieClip("ma" 2)
+		 super(width height)
+		 trace("init" this this.width this.height this._x this.color)
+		 this.resize(this.width this.height)
+		 this.filters: effectOut ;[defaultInnerShadow1 defaultShadow1]
+		 this.cacheAsBitmap: true
+	]
+	resize: func[width height][
+		this.drawBubble(width height)
+	]
+	onRollOver: does [
+		this.filters: effectOver
+	]
+	onRollOut: does [
+		this.filters: effectOut
+	]
+	onPress:   does [
+		trace("onPress" this)
+		super.onPress()
+		this.filters: effectDown
+	]
+	onRelease: does [
+		super.onRelease()
+		this.filters: effectOver
+	]
+	onReleaseOutside: does [
+		super.onReleaseOutside()
+		this.filters: effectOut
+	]
+	setColor: func[clr][
+		this.clr_fill: clr
+		this.drawBubble(this.width this.height)
+	]
+	drawBubble: func[w h][
+		trace(this "drawbox:" w h)
+		var r: this.r
+		with this.bg [
+		
+			var x1: Math.round(((r + r + w) / 2))
+			var x2: x1 - r
+			var x3: 0 - x1
+			var x4: 0 - x2
+			var y3: Math.round(((r + r + h) / 2))
+			var y4: y3 - r
+			var y1: 0 - y3
+			var y2: 0 - y4
+			clear()
+			beginFill( this.clr_edge 60)
+			moveTo(  x2 y1 )
+			lineTo(  x2 y3 )
+			lineTo(  x4 y3 )
+			lineTo(  x4 y1 )
+			lineTo(  x2 y1 )
+			moveTo(  x1 y2 )
+			lineTo(  x1 y4 )
+			lineTo(  x3 y4 )
+			lineTo(  x3 y2 )
+			lineTo(  x1 y2 )
+			endFill()
+			beginFill( this.clr_fill )
+			moveTo(  x2 y2 )
+			lineTo(  x2 y4 )
+			lineTo(  x4 y4 )
+			lineTo(  x4 y2 )
+			lineTo(  x2 y2 )
+			endFill()
+		]
+		comment {
+		with this.ma [
+			clear()
+			beginFill( #ffffff)
+			moveTo(  x2 y2 )
+			lineTo(  x2 y4 )
+			lineTo(  x4 y4 )
+			lineTo(  x4 y2 )
+			lineTo(  x2 y2 )
+			endFill()
+		]
+		}
+	]
+]

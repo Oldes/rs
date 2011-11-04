@@ -1,0 +1,27 @@
+rebol [
+	title: "Moving lines"
+	type: 'swf5
+	file: %m-lines.swf
+	background: 153.165.139
+	rate: 24
+	size: 320x200
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {just some simple horizontal lines animation}
+	comment: {}
+
+]
+
+shp_line: Shape [
+	line-style [width 2 color 200.0.0] 
+	line 0x0 320x0
+]
+spr_line: Sprite shp_line
+line1: place spr_line
+line2: place spr_line
+animation [
+	move 1 from 0x0 to 0x200 in 20 frames
+	move 2 from 0x200 to 0x0 in 20 frames
+]
+show 21 frames
+end

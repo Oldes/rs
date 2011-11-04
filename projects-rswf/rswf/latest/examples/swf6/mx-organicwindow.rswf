@@ -1,0 +1,124 @@
+rebol [
+	title: "MX-Organic Window"
+	type: 'mx
+	file: %mx-organicwindow.swf
+	background: 255.255.255
+	rate: 25
+	size: 360x400
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 16-03-2006
+	purpose: {Just another tweening example}
+	comment: {Inspired by "organic zooming window" example found at this page: <a href='http://laco.wz.cz/tween/?page=examples'>http://laco.wz.cz/tween/?page=examples</a>. Using Ladislav Zigo's and Moses Gunesch's	precompiled	"Movieclip twening prototypes 1.2.0" which you can download as an actionscript from this page: <a href='http://laco.wz.cz/tween/'>http://laco.wz.cz/tween/</a>}
+
+]
+background 255.255.255
+;this is just a very simple progress bar:-)
+shp_prbox: shape [fill color 0.0.0 box -5x-10 5x10]
+spr_prbox: sprite [showFrame place shp_prbox show 2 Frames end]
+pr: place spr_prbox at 160x200
+showFrame
+;Include precompiled tweening prototype
+include %includes/lmc_tween_mx_1.2.0.rswf
+;Make sure you skip to another frame before you do some other actions
+;(it should be fixed in future)
+showFrame
+es: EmptySprite
+include %includes/txt_info.rswf
+spr_window: sprite [
+	shp_point: shape [fill color #FF0000 box -2x-2 2x2]
+	spr_point: sprite shp_point
+	drawing: place es
+	ptl: place spr_point
+	ptr: place spr_point
+	pbl: place spr_point
+	pbr: place spr_point
+	pt:  place spr_point
+	pb:  place spr_point
+	pl:  place spr_point
+	pr:  place spr_point
+	
+	showFrame end
+]
+
+win: place spr_window [
+	at 160x200 actions [
+		load [
+			
+			onRelease: func[][
+				this._parent.resizeWindow()
+			]
+			midstyle: "easeoutelastic"
+			corstyle: "easeoutexpo"
+			middur: 1
+			cordur: 0.3
+
+			stopZoom: func[][
+				_root.info: "zoom end"
+				onEnterFrame: none
+				clearInterval(int)
+			]
+			zoomTo: func[width height][
+				var wp: width  / 2
+				var hp: height / 2
+				var wn: 0 - wp
+				var hn: 0 - hp
+				clearInterval(int)
+				onEnterFrame: func[][redraw()]
+				_root.info: reform["zooming to: " width height]
+				;I rather stop possible previous tweens
+				ptl.stopAllTweens()
+				ptr.stopAllTweens()
+				pbl.stopAllTweens()
+				pbr.stopAllTweens()
+				pt.stopAllTweens()
+				pb.stopAllTweens()
+				pr.stopAllTweens()
+				pl.stopAllTweens()
+				;corners tweens with random delay
+				ptl.tween((["_x" "_y"]) ([wn hn]) cordur corstyle (Math.random()))
+				ptr.tween((["_x" "_y"]) ([wp hn]) cordur corstyle (Math.random()))
+				pbl.tween((["_x" "_y"]) ([wn hp]) cordur corstyle (Math.random()))
+				pbr.tween((["_x" "_y"]) ([wp hp]) cordur corstyle (Math.random()))
+				;midpoints tweens with random delay
+				pt.tween("_y" hn middur midstyle (Math.random()))
+				pb.tween("_y" hp middur midstyle (Math.random()))
+				pl.tween("_x" wn middur midstyle (Math.random()))
+				pr.tween("_x" wp middur midstyle (Math.random()))
+				int: setInterval(stopZoom (1000 * (middur + 1))) ;stop draw refresh
+			]
+			redraw: func[][
+				drawing.clear()
+				drawing.beginFill(#000000)
+				drawing.lineStyle(2 #000000 0) 
+				;wihout the lineStyle there are sometimes visible some drawing leftovers
+				;(because of some bug in Flash draw engine)
+				
+				drawing.moveTo(ptl._x ptl._y)
+				drawing.curveTo(pl._x pl._y pbl._x pbl._y)
+				drawing.curveTo(pb._x pb._y pbr._x pbr._y)
+				drawing.curveTo(pr._x pr._y ptr._x ptr._y)
+				drawing.curveTo(pt._x pt._y ptl._x ptl._y)
+
+				drawing.endFill()
+			]
+			zoomTo(300 300)
+		]
+	]
+]
+
+
+
+doAction [
+	pr.gotoAndStop(1)
+	resizeWindow: func[][
+        win.zoomTo((10 + random 300) (10 + random 300))
+        clearInterval(int)
+        int: setInterval(resizeWindow 4000)
+    ]
+    int: setInterval(resizeWindow 4000)
+]
+
+stop
+showFrame
+end

@@ -1,0 +1,20 @@
+rebol [title: "GUI_HorizontalExtendedImageClass"]
+
+	_global.GUI_HorizontalExtendedImageClass: func[][this.init()]
+	
+	GUI_HorizontalExtendedImageClass.prototype: make MovieClip
+	GUI_HorizontalExtendedImageClass.prototype.init: func[][
+		super.init()
+		;this.b._y: 20
+		this.minwidth: this.l._width + this.m._width + this.r._width
+		if this.width = undefined [this.width: this.minwidth]
+		;cmsg((reform [this "init" this.minwidth this.width]))
+		this.setWidth(this.width)
+	]
+	GUI_HorizontalExtendedImageClass.prototype.setWidth: func[w][
+		this.width: w
+		with this [
+			m._width: w - l._width - r._width + 2
+			r._x: l._width + m._width - 1
+		]
+	]

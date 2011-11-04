@@ -1,0 +1,45 @@
+rebol [
+	title: "MX-System capabilities" 
+	type: 'mx
+	file: %mx-system.swf
+	background: 153.165.139
+	rate: 6
+	size: 320x260
+	compressed: true
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {To show all System.capabilities properties}
+	comment: {
+	Although I have no sound card it tells me, that I have Audio with MP3... people in Macromedia probably think, that nobody has PC without audio nowadays:-) These informations are mainly to recognise if someone has Flash on cell phone or palmtop}
+]
+background 153.165.139
+fnt_Courier: defineFont2 [name "_typewriter" bold]
+txt_test: EditText 'x 310x260 [
+	ReadOnly Color 0.0.0 Font [fnt_Courier 12]
+	Layout [Leading: -2]
+]
+DoAction [
+	with System.capabilities [
+		x:    "  hasAudioEncoder: " add hasAudioEncoder add
+			"^/ hasAccessibility: " add hasAccessibility add
+			"^/         hasAudio: " add hasAudio add
+			"^/           hasMP3: " add hasMP3 add
+			"^/         language: " add language add
+			"^/     manufacturer: " add manufacturer add
+			"^/               os: " add os add
+			"^/ pixelAspectRatio: " add pixelAspectRatio add
+			"^/      screenColor: " add screenColor add
+			"^/        screenDPI: " add screenDPI add
+			"^/screenResolutionX: " add screenResolutionX add
+			"^/screenResolutionY: " add screenResolutionY add
+			"^/          version: " add version add
+			"^/  hasVideoEncoder: " add hasVideoEncoder add
+			"^/---MX2004 only---" add
+			"^/localFileReadDisable: " add localFileReadDisable add
+			"^/          playerType: " add playerType
+	]
+			
+]
+place txt_test at 5x0
+showFrame
+end

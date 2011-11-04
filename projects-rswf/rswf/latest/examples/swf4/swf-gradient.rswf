@@ -1,0 +1,40 @@
+	rebol [
+	title: "SWF-Gradient example"
+	type: 'swf
+	file: %gradient.swf
+	background: 152.174.149
+	rate: 1
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 17-Dec-2001
+	purpose: {To show how to use fill gradients}
+]
+background 152.174.149
+shp_grad: Shape [
+	Bounds 0x0 320x320
+	line-style [width 2 color 5.5.5]
+	;fill color 200.100.255
+	;gradient [colors [0.0.0 250.100.100] rotate 90]
+	;gradient [radial colors [0.0.0 0.0.255 255.255.255 255.0.0] ratios [0 10 30 100] center 100x100]
+	gradient [radial colors [0.0.0 0.0.255 0.255.0 255.0.0]]
+	positions relative
+	at 110x110 circle 100
+	at 220x220 n-gon 6 50
+	positions absolute
+	gradient [colors [255.0.0 255.255.0 0.255.0] rotate 90]
+	box rounded 10 5x200 50x315
+	gradient static
+	box 50x250 100x300 50x220 100x230
+	gradient [colors [0.255.0 0.0.0]]
+	box 100x290 290x300
+	gradient [
+		colors [0.0.0 0.0.255 255.255.255 255.0.0]
+		ratios [0 20 50 100]
+		rotate 270
+	]
+	box 290x20 310x300
+]
+PlaceObject2 shp_grad
+showFrame
+end

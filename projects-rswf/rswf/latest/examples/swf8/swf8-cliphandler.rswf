@@ -1,0 +1,31 @@
+rebol [
+	title: "FLASH8 ClipHandler"
+	type: 8
+	file: %swf8-cliphandler.swf
+	background: 200.200.200
+	rate: 24
+	size: 420x700
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 8-Oct-2007/16:37:56+2:00
+	purpose: {GUI_ClipHandler example - loads clip with animated edge as a progress bar}
+	comment: {The code here is the same like the one used in this site: <a href="http://www.miss3.cz/">www.miss3.cz</a>}
+	compressed: true
+]
+background 200.200.200
+
+require %includes/tracer.rswf
+require %gui/GUI_ClipHandler.rswf
+
+clip1: place GUI_ClipHandler at 10x80
+clip2: place GUI_ClipHandler at 10x382
+
+doAction [
+	Tracer.resize(419 50)
+	trace("== LoadClips ==")
+	clip1.loadClip("http://box.lebeda.ws/~hmm/rswf/bitmaps/holky.jpg" 400 300)
+	clip2.loadClip("http://box.lebeda.ws/~hmm/rswf/bitmaps/motyl.jpg" 400 300)
+]
+
+showFrame
+end

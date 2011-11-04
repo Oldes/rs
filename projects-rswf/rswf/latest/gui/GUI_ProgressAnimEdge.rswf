@@ -1,0 +1,88 @@
+rebol [
+	title: "GUI_ProgressAnimEdge"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 24
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 8/10/2007
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+require [
+	%gui/defaults.rswf
+	%gui/GUI_Core.rswf
+]
+GUI_ProgressAnimEdge: Extends GUI_Core [
+	width:  180
+	height: 120
+	percent: 0
+	clr_fill:  #FFFFFF
+	clr_edge1: #000000 ;#CCCCCC
+	clr_edge2: #EEEEEE
+	txtpercent: ""
+	init: func[][
+		;trace("init:" this)
+		this.createEmptyMovieClip("bg" 1)
+		this.createEmptyMovieClip("content" 2)
+		this.createEmptyMovieClip("mask" 3)
+		this.createEmptyMovieClip("edge" 4)
+		this.createTextField("tf_percent" 5 1 -2 30 12)
+		with this.tf_percent [
+			selectable: false
+			embedFonts: true
+			variable: "txtpercent"
+			setNewTextFormat(defaultFontMicrodigits)
+		]
+		this.content.setMask(this.mask)
+		;this.tf_percent.text: this.percent
+		this.redraw()
+	]
+	;;;0x0.....mwx0    wx0;;;
+	;;;                  .;;;
+	;;;                  .;;;
+	;;;0xmh           wxmh;;;
+	;;;.                  ;;;
+	;;;.                  ;;;
+	;;;0xh     mwxh....wxh;;;
+	redraw: does [
+		
+		;trace(" === " this.percent)
+		;trace(w mw h mh)
+		var p: this.percent / 100
+		var w: this.width
+		var mw: w * p
+		var h: this.height
+		var mh: h * p
+		with this.bg [
+			clear()
+			beginFill(this.clr_fill)
+			lineStyle(1 this.clr_edge1 100 true true "square")
+			moveTo(0 0) lineTo(w 0) lineTo(w h) lineTo(0 h) lineTo(0 0)
+			endFill()
+		]
+		with this.edge [
+			clear()
+			lineStyle(1 this.clr_edge2 100 true true "square")
+			moveTo(w 0) lineTo((w - mw) 0)
+			moveTo(w h) lineTo(w (h - mh))
+			moveTo(0 h) lineTo(mw h)
+			moveTo(0 0) lineTo(0 mh)
+		]
+		with this.mask [
+			clear()
+			beginFill(#FF0000)
+			moveTo(0 0) lineTo(w 0) lineTo(w h) lineTo(0 h) lineTo(0 0)
+			endFill()
+		]
+	]
+	resize: func[width height][
+		;trace(this "setSize" width height)
+		this.width:  width
+		this.height: height
+		this.redraw()
+	]
+]

@@ -1,0 +1,38 @@
+rebol [
+	title: "MX-FontTest"
+	type: 'mx
+	file: %mx-fonttest.swf
+	background: 153.165.139
+	rate: 6
+	size: 321x121
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 27-Mar-2002
+	purpose: {To see how looks standard fonts in the player}
+	comment: {
+	This test is because I've found that Linux MX plugin is not displaying font's if you publish files as a MX version and use unavailable font name (like Courier New). So this is a test how will look these fonts under Linux.}
+
+]
+fnt_sans:   Font [name "_sans" ]
+fnt_sansb:  Font [name "_sans" bold]
+fnt_serif:  Font [name "_serif" ]
+fnt_serifb: Font [name "_serif" bold]
+fnt_typewriter:  Font [name "_typewriter" ]
+fnt_typewriterb: Font [name "_typewriter" bold]
+txt_t1: EditText t1 319x20 [border Font [fnt_sans 12]]
+txt_t2: EditText t2 319x20 [border Font [fnt_sansb 12]]
+txt_t3: EditText t3 319x20 [border Font [fnt_serif 12]]
+txt_t4: EditText t4 319x20 [border Font [fnt_serifb 12]]
+txt_t5: EditText t5 319x20 [border Font [fnt_typewriter 12]]
+txt_t6: EditText t6 319x20 [border Font [fnt_typewriterb 12]]
+place txt_t1 at 0x0
+place txt_t2 at 0x20
+place txt_t3 at 0x40
+place txt_t4 at 0x60
+place txt_t5 at 0x80
+place txt_t6 at 0x100
+doAction [
+	t1: t2: t3: t4: t5: t6: "Èeština je krásný jazyk"
+]
+showFrame
+end

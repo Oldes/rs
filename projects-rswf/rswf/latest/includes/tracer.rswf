@@ -1,0 +1,53 @@
+rebol [purpose: {Tracing object}]
+
+require %gui/defaults.rswf
+
+GUI_Tracer: Extends MovieClip [
+	text: ""
+	init: func[width height][
+		this.cmsg(("INIT TRACER: " add this))
+		if width  = undefined [width: 400]
+		if height = undefined [height: 50]
+		this.createTextField("tf" 1 0 0 width height)
+		with this.tf [
+			multiline: true
+			wordWrap:  true
+			variable: "text"
+			border:    true
+			html:      false ;true
+			background: #FFFFFF
+			
+			setNewTextFormat(defaultFontBold)
+			text: ""
+		]
+		this._alpha: 50
+		_global.Tracer: this
+		_global.cmsg: func[m][Tracer.cmsg(m)]
+		this.filters: [defaultInnerShadow1 defaultShadow1]
+		 Key.addListener(this)
+		 GUI_StyleMaster.addListener(this)
+	]
+	cmsg:  func[m][this.text: m add "^/" add this.text]
+	resize: func[width height][
+		this.width:  this.tf._width:  width
+		this.height: this.tf._height: height
+		;cmsg((reform["resize:" this width height]))
+	]
+	onKeyUp: does[
+		if 'F1 = (Key.getCode()) [
+       		this._visible: not this._visible
+   		]
+    ]
+    updateStyle: does[
+    	;cmsg((reform["updating style" this defaultTextFormat.bold]))
+    	this.tf.setNewTextFormat(defaultFontBold)
+    	this.text: this.text
+	]
+]
+doAction [this.attachMovie("GUI_Tracer" "Tracer" 19000)]
+
+
+
+
+
+

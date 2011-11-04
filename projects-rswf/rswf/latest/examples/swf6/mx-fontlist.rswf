@@ -1,0 +1,42 @@
+rebol [
+	title: "MX-FontList" 
+	type: 'mx
+	file: %mx-fontlist.swf
+	background: 153.165.139
+	rate: 6
+	size: 320x210
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {How to change fonts in the TextFields}
+	comment: {}
+]
+background 153.165.139
+fnt_Courier: Font [name "Courier New" bold]
+txt_info: EditText 'info 320x40 [
+	ReadOnly Color 0.0.0 Font [fnt_Courier 12]
+]
+txt_test: EditText 'x 320x140 [
+	text "FlashMX^/from^/REBOL"
+	ReadOnly Color #006400 Font [fnt_Courier 40]
+	WordWrap Layout [layout: 'center Leading: -2]
+]
+place txt_info
+t: place txt_test at 5x50
+DoAction [
+	constantPool [fonts msg changeFont myTextFormat i length]
+	fonts: TextField.getFontList()
+	msg: "You have installed " add fonts.length add " fonts."
+	myTextFormat: make TextFormat
+	myTextFormat.align: "center"
+	i: 0
+	changeFont: func[][
+		info: msg . "^/Now you see font n." . i . ": " . fonts/:i
+		myTextFormat.font: fonts/:i
+		i++ if i > fonts.length [i: 0]
+		t.setTextFormat(myTextFormat)
+	]
+	changeFont()
+	i: setInterval(changeFont 500)
+]
+showFrame
+end

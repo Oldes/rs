@@ -1,0 +1,172 @@
+rebol [
+	title: "RSWF Layout compiler"
+]
+
+flash-vid: context [
+	key-words: [
+		Button
+		Ok-Button
+		Warning-button
+		cancel-button
+		yes-button
+		no-button
+		submit-button
+		important-button
+		Button-ok
+		Button-warning
+		Button-cancel
+		Button-yes
+		Button-no
+		Button-submit
+		Button-important
+		
+		Text
+	]
+	set 'compile-layout func[
+		specs
+		/local where word code pos arg1 arg2 arg3 spec code-pos last-size space way guide tabs pos-rule buttons depth rtn value vid-rules
+	][
+	;probe specs
+		where: 0x0
+		word: none
+		code: make string! 1000
+		last-size: 100x19
+		
+		depth: last-depth
+		max-off: where: 0x0
+		origin: 0x0
+	    space: 2x2 way: 0x1 pos: guide: none tabs: 100x100
+		rtn: [where: (max-off * reverse way) + (way * any [guide origin])]
+		pos-rule: [set pos [integer! | pair! | skip (error "Expected position or size:" :pos)]]
+		buttons: texts: 0
+		
+		vid-rules: [
+			'return (do rtn)
+	        | 'at (
+	        	print ["[AT] where:" where "origin:" origin "max-off:" max-off]
+	        ) [set pos pair! (where: origin: max-off: pos ) | none]
+	        | 'space pos-rule (space: 1x1 * pos)
+	        | 'pad pos-rule (
+	            value: either integer? pos [way * pos] [pos]
+	            where: where + value
+	            max-off: max-off + value
+	        )
+	        | 'across (if way <> 1x0 [way: 1x0 do rtn])
+	        | 'below (if way <> 0x1 [do rtn way: 0x1])
+	        | 'origin [set pos [pair! | integer!] (origin: pos * 1x1) (where: max-off: origin) | none (probe max-off: origin: where)]
+	        | 'origin-y (where: origin: max-off: as-pair origin/x max-off/y)
+	        | 'origin-x (where: origin: max-off: as-pair origin/y max-off/x)
+	        | 'guide [set pos pair! (guide: pos do rtn) | none (guide: where)] (max-off: 0x0)
+	        | 'tab (where: next-tab tabs way where)
+	        | 'tabs [
+	            set value [block! | pair!] (tabs: value) |
+	            set value integer! (tabs: value * 1x1)
+	        ]
+	        | 'indent pos-rule (where/x: either integer? pos [where/x + pos] [pos/x])
+		]
+	
+		while [not tail? specs] [
+        	forever [
+	        	value: first specs specs: next specs
+	            if set-word? :value [var: :value break]
+	            if not word? :value [error "Misplaced item:" :value break]
+	            if find vid-words value [
+	                either value = 'style [
+	                    facets: reduce [first specs]
+	                    specs: next specs
+	                ] [
+	                    set [specs facets] do-facets start: specs [] styles
+	                ]
+	                if :var [set :var where var: none]
+	                insert facets :value
+	                if not parse facets vid-rules [error "Invalid args:" start]
+	                break
+	            ]
+    		]
+		]
+		parse specs [any[
+			code-pos:
+	          
+			| set spec [
+				'Button
+				| 'Ok-Button | 'Warning-button | 'cancel-button | 'yes-button | 'no-button | 'submit-button | 'important-button
+				| 'Button-ok | 'Button-warning | 'Button-cancel | 'Button-yes | 'Button-no | 'Button-submit | 'Button-important
+				
+			]
+				set arg1 opt [string! | none]
+				set arg2 opt [pair! | integer! | none]
+				set arg3 opt [block! | none]
+			(
+				type: none
+				parse to-string spec [
+					"Button-" copy type to end
+					|
+					copy type to "-" to end
+				]
+				
+				size: switch/default type?/word arg2 [
+					pair!    [arg2]
+					integer! [as-pair arg2 last-size/y]
+				][	last-size ]
+				include-files/unique %gui/GUI_Button.rswf
+				buttons: buttons + 1
+				;print ["BUTTON:" mold arg1 mold arg2 mold arg3]
+				if none? word [word: join "_b" buttons]
+				if none? arg1 [
+					arg1: switch/default type [
+						"important" ["Important"]
+						"ok"        ["OK"]
+						"cancel"    ["Cancel"]
+						"yes"       ["Yes"]
+						"no"        ["No"]
+						"submit"    ["Submit"]
+					][join "Button " buttons]
+				]
+				
+				append code rejoin [
+					{this.attachMovie("GUI_Button" "} word {" } depth: depth + 1
+					{ (make object! [_x: } where/x { _y: } where/y
+					{ text: "} arg1 {"}
+					{ width: } size/x { height: } size/y
+					either none? type [""][rejoin [{ type: "} type {"}]]
+					either none? arg3 [""][rejoin [{ onRelease: does[super.onRelease() } mold/only arg3 {]}]]
+					{]))}
+				]
+				max-off: maximum max-off size + space + where
+				where: way * (size + space) + where
+				last-size: size
+				word: none
+			)
+			| 'Text
+				set arg1 opt [string! | none]
+				set arg2 opt [pair! | integer! | none]
+				set arg3 opt [block! | none]
+			(
+				include-files/unique %gui/GUI_Text.rswf
+				texts: texts + 1
+				size: switch/default type?/word arg2 [
+					pair!    [arg2]
+					integer! [as-pair arg2 last-size/y]
+				][	last-size ]
+				if none? word [word: join "_t" texts]
+				append code rejoin [
+					{this.attachMovie("GUI_Text" "} word {" } depth: depth + 1
+					{ (make object! [_x: } where/x { _y: } where/y
+					{ text: "} arg1 {"}
+					{ width: } size/x { height: } size/y
+					either none? type [""][rejoin [{ type: "} type {"}]]
+				;	either none? arg3 [""][rejoin [{ onRelease: does[super.onRelease() } mold/only arg3 {]}]]
+					{]))}
+				]
+				max-off: maximum max-off size + space + where
+				where: way * (size + space) + where
+				last-size: size
+				word: none
+			)
+			| set arg1 set-word! (word: form arg1)
+			| any-type! (print ["Unknown layout command near:" copy/part mold code-pos 30])
+		]]
+		last-depth: depth
+		insert tail action-bin compile-actions load code
+	]
+]

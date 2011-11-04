@@ -1,0 +1,393 @@
+rebol [
+	title: "GUI: defaults"
+]
+fnt_microdigits: Font %fonts/microdigits.rfnt  as "microdigits" noAlign
+;fnt_default:     Font %fonts/fnt_fff_business.rfnt as "normal"  noAlign
+;fnt_defaultBold: Font %fonts/fnt_fff_business_bold.rfnt as "normal Bold" noAlign
+
+GUI_Colors: Class [
+	background:   240.240.240
+	edge:         0.0.0
+	text:         #000000
+	focus:        #FFFFCC
+	init: func[background text edge focus][
+		if background <> undefined [this.background: background]
+		if edge  <> undefined [this.edge: edge]
+		if text  <> undefined [this.text: text]
+		if focus <> undefined [this.focus: focus]
+	]
+]
+
+GUI_default: EmptySprite
+doInitAction GUI_default [
+	;fscommand [showmenu false]
+	;fscommand [allowscale false]
+	Stage.scaleMode: "noScale"
+	Stage.align: "TL"
+	
+	_global.defaultFont: make TextFormat [
+		"_sans" ;font
+		;9       ;size
+		;#000000 ;color
+		;false   ;bold
+		;false   ;italic
+		;false   ;underline
+		;none	;url
+		;none	;target
+		;"left"  ;align
+		;none	;leftMargin
+		;none	;rightMargin
+		;none	;indent
+		;none	;leading
+	]
+	_global.defaultFontBold: make TextFormat ["_sans" 12 #000000 true]
+	_global.defaultFontMicrodigits:  make TextFormat ["microdigits" 8]
+	_global.defaultOutlinedFont:     make TextFormat ["normal" 8]
+	_global.defaultOutlinedFontBold: make TextFormat ["normal Bold" 8 #000000 true]
+	
+	_global.defaultButtonFont: make TextFormat ["_sans" 11 #333333 false false false none none "center"]
+	
+
+	_global.defaultShadow1: make DropShadowFilter! [
+        3        ;distance:Number
+        45       ;angle:Number
+        #000000  ;color:Number
+        0.5      ;alpha:Number
+        4        ;blurX:Number
+        4        ;blurY:Number
+        2        ;strength:Number
+        2        ;quality:Number
+        false    ;inner:Boolean
+        false    ;knockout:Boolean
+        false    ;hideObject:Boolean
+    ]
+    
+    _global.defaultShadow2: make DropShadowFilter! [
+        2        ;distance:Number
+        45       ;angle:Number
+        #000000  ;color:Number
+        0.5      ;alpha:Number
+        2        ;blurX:Number
+        2        ;blurY:Number
+        1        ;strength:Number
+        2        ;quality:Number
+        false    ;inner:Boolean
+        false    ;knockout:Boolean
+        false    ;hideObject:Boolean
+    ]
+    _global.defaultShadow2b: make DropShadowFilter! [
+        1        ;distance:Number
+        45       ;angle:Number
+        #000000  ;color:Number
+        0.5      ;alpha:Number
+        2        ;blurX:Number
+        2        ;blurY:Number
+        1        ;strength:Number
+        2        ;quality:Number
+        false    ;inner:Boolean
+        false    ;knockout:Boolean
+        false    ;hideObject:Boolean
+    ]
+    _global.defaultInnerShadow1: make DropShadowFilter! [
+        2        ;distance:Number
+        45       ;angle:Number
+        #222222  ;color:Number
+        0.2      ;alpha:Number
+        5        ;blurX:Number
+        5        ;blurY:Number
+        2        ;strength:Number
+        2        ;quality:Number
+        true     ;inner:Boolean
+        false    ;knockout:Boolean
+        false    ;hideObject:Boolean
+    ]
+
+	_global.defaultBevel: make BevelFilter! [
+        4        ;distance:Number
+        45       ;angle:Number
+        #eeeeee  ;highlightColor:Number
+        0.3      ;highlightAlpha:Number
+        #000000  ;shadowColor:Number
+        0.3      ;shadowAlpha:Number
+        8        ;blurX:Number
+        8        ;blurY:Number
+        1        ;strength:Number
+        2        ;quality:Number
+        "inner"  ;type:String ("inner", "outer", and "full") 
+        false    ;knockout:Boolean
+    ]
+	_global.defaultBevelDown: make BevelFilter! [
+        4        ;distance:Number
+        45       ;angle:Number
+        #000000  ;highlightColor:Number
+        0.3      ;highlightAlpha:Number
+        #eeeeee  ;shadowColor:Number
+        0.3      ;shadowAlpha:Number
+        8        ;blurX:Number
+        8        ;blurY:Number
+        1        ;strength:Number
+        2        ;quality:Number
+        "inner"  ;type:String ("inner", "outer", and "full") 
+        false    ;knockout:Boolean
+    ]
+    _global.defaultBevelField: make BevelFilter! [
+        2        ;distance:Number
+        45       ;angle:Number
+        #000000  ;highlightColor:Number
+        0.3      ;highlightAlpha:Number
+        #eeeeee  ;shadowColor:Number
+        0.3      ;shadowAlpha:Number
+        4        ;blurX:Number
+        4        ;blurY:Number
+        2        ;strength:Number
+        2        ;quality:Number
+        "inner"  ;type:String ("inner", "outer", and "full") 
+        false    ;knockout:Boolean
+    ]
+    _global.defaultTextBevel: make BevelFilter! [
+        1        ;distance:Number
+        90       ;angle:Number
+        #000000  ;highlightColor:Number
+        0.3      ;highlightAlpha:Number
+        #FFFFFF  ;shadowColor:Number
+        0.3      ;shadowAlpha:Number
+        1        ;blurX:Number
+        1        ;blurY:Number
+        3        ;strength:Number
+        2        ;quality:Number
+        "full"  ;type:String ("inner", "outer", and "full") 
+        false    ;knockout:Boolean
+    ]
+    _global.defaultGlowInner: make GlowFilter! [
+        #FFFBE3 ;color
+        0.3     ;alpha
+        7       ;blurX
+        7       ;blurY
+        1       ;strength
+        2       ;quality
+        true    ;inner
+        false   ;knockout
+    ]
+    _global.defaultGlowOuter: make GlowFilter! [
+        #FFFBE3 ;color
+        0.1     ;alpha
+        8       ;blurX
+        8       ;blurY
+        1       ;strength
+        2       ;quality
+        false    ;inner
+        false   ;knockout
+    ]
+    
+    _global.downColorTransform: make ColorTransform! [
+    	1 1 1 1 ;rgba multipliers
+    	-10 -10 -10 0 ;rgba offsets
+    ]
+    _global.outColorTransform:  make ColorTransform! [1 1 1 1  0  0  0 0]
+	_global.overColorTransform: make ColorTransform! [1 1 1 1 10 10 10 0]
+    _global.disabledColorTransform:  make ColorTransform! [1 1 1 1 0 0 0 -100]
+
+    _global.effectDown: [defaultShadow2b defaultBevelDown defaultGlowOuter]
+    _global.effectOver: [defaultShadow2  defaultBevel defaultGlowInner defaultGlowOuter]
+    _global.effectOut:  [defaultShadow2  defaultBevel]
+
+    
+	_global.GUI_StyleMaster: make object! []
+	
+	AsBroadcaster.initialize(GUI_StyleMaster)
+	_global.updateStyles: does [GUI_StyleMaster.broadcastMessage("updateStyle")]
+	
+	comment {
+	_global.defaultColors: make object! [
+		default: make object! [
+			background:   240.240.240
+			edge:         0.0.0
+			text:         #000000
+		]
+		ok: make object! [
+			background:   #5B839F
+			edge:         0.0.0
+			text:         #eeeeee
+		]
+		important: make object! [
+			background: 80.80.80
+			edge:       0.0.0
+			text:       #eeeeee
+		]
+		warning: make object! [
+			background: 80.0.0
+			edge:       0.0.0
+			text:       #eeeeee
+		]
+	]
+	}
+	_global.defaultColors: context [
+		default:   make GUI_Colors []
+		field:     make GUI_Colors [#FFFFFF  #000000]
+		area:      make GUI_Colors [#FFFFFF  #000000]
+		ok:        make GUI_Colors [#5B839F  #eeeeee]
+		submit:    make GUI_Colors [#5B839F  #eeeeee]
+		important: make GUI_Colors [80.80.80 #eeeeee]
+		warning:   make GUI_Colors [80.0.0   #eeeeee]
+		yes:       make GUI_Colors [#BADFBD  #000000]
+		no:        make GUI_Colors [#DFCFBA  #000000]
+		label:     make GUI_Colors [#444444  #FFFFFF]
+	]
+	comment {
+	;removed - using clasic lineStyle is not enough pixel precise!
+	MovieClip.prototype.drawBox1: func[x1 y1 width height r clr_fill clr_edge][
+		;trace("drawBox:" x1 y1 width height r clr_fill clr_edge)
+		var edge?: clr_edge <> undefined
+		if edge? [
+			width--
+			height--
+		]
+		var x2:  x1 + width
+		var y2:  y1 + height
+		either r > 0 [
+			var x1r: x1 + r
+			var x2r: x2 - r
+			var y1r: y1 + r
+			var y2r: y2 - r
+			
+			if clr_fill <> none [this.beginFill( clr_fill )]
+			if edge? [
+				this.lineStyle(
+					1  ;thickness:Number
+					clr_edge ; rgb:Number
+					60 ;alpha:Number
+					true ;pixelHinting:Boolean
+					true ;noScale:String
+					; capsStyle:String, jointStyle:String, miterLimit:Number
+				)
+			]
+			this.moveTo(  x1r y1  )
+			this.lineTo(  x2r y1  )
+			this.lineTo(  x2r y1r )
+			this.lineTo(  x2  y1r )
+			this.lineTo(  x2  y2r )
+			this.lineTo(  x2r y2r )
+			this.lineTo(  x2r y2  )
+			this.lineTo(  x1r y2  )
+			this.lineTo(  x1r y2r )
+			this.lineTo(  x1  y2r )
+			this.lineTo(  x1  y1r )
+			this.lineTo(  x1r y1r )
+			this.lineTo(  x1r y1  )
+		][
+			if clr_fill <> none [this.beginFill( clr_fill )]
+			if edge? [
+				this.lineStyle(
+					1  ;thickness:Number
+					clr_edge ; rgb:Number
+					60 ;alpha:Number
+					true ;pixelHinting:Boolean
+					true ;noScale:String
+					; capsStyle:String, jointStyle:String, miterLimit:Number
+				)
+			]
+			this.moveTo(  x1 y1 )
+			this.lineTo(  x2 y1 )
+			this.lineTo(  x2 y2 )
+			this.lineTo(  x1 y2 )
+			this.lineTo(  x1 y1 )
+		]
+		this.endFill()
+	]}
+
+	_global.edgeAlpha: 60
+	
+	MovieClip.prototype.drawBox: func[x1 y1 width height r clr_fill clr_edge][
+		;trace("drawBox:" x1 y1 width height r clr_fill clr_edge)
+		var x2:  x1 + width
+		var y2:  y1 + height
+		if edge?: clr_edge <> undefined [
+				var edgeAlpha: this.edgeAlpha
+				if edgeAlpha = undefined [edgeAlpha: _global.edgeAlpha] 
+		]
+		either r > 0 [
+			var x1r: x1 + r
+			var x2r: x2 - r
+			var y1r: y1 + r
+			var y2r: y2 - r
+			if clr_fill <> none [
+				this.beginFill( clr_fill )
+				this.moveTo(  x1r y1  )
+				this.lineTo(  x2r y1  )
+				this.lineTo(  x2r y1r )
+				this.lineTo(  x2  y1r )
+				this.lineTo(  x2  y2r )
+				this.lineTo(  x2r y2r )
+				this.lineTo(  x2r y2  )
+				this.lineTo(  x1r y2  )
+				this.lineTo(  x1r y2r )
+				this.lineTo(  x1  y2r )
+				this.lineTo(  x1  y1r )
+				this.lineTo(  x1r y1r )
+				this.lineTo(  x1r y1  )
+			]
+			if edge? [
+				this.beginFill( clr_edge edgeAlpha )
+				this.moveTo(  x1r y1  )
+				this.lineTo(  x2r y1  )
+				this.lineTo(  x2r y1r )
+				this.lineTo(  x2  y1r )
+				this.lineTo(  x2  y2r )
+				this.lineTo(  x2r y2r )
+				this.lineTo(  x2r y2  )
+				this.lineTo(  x1r y2  )
+				this.lineTo(  x1r y2r )
+				this.lineTo(  x1  y2r )
+				this.lineTo(  x1  y1r )
+				this.lineTo(  x1r y1r )
+				this.lineTo(  x1r y1  )
+				x1++ y1++
+				x2-- y2--
+				x1r++ x2r--
+				y1r++ y2r--
+				this.moveTo(  x1r y1  )
+				this.lineTo(  x2r y1  )
+				this.lineTo(  x2r y1r )
+				this.lineTo(  x2  y1r )
+				this.lineTo(  x2  y2r )
+				this.lineTo(  x2r y2r )
+				this.lineTo(  x2r y2  )
+				this.lineTo(  x1r y2  )
+				this.lineTo(  x1r y2r )
+				this.lineTo(  x1  y2r )
+				this.lineTo(  x1  y1r )
+				this.lineTo(  x1r y1r )
+				this.lineTo(  x1r y1  )
+			]
+
+		][
+			if clr_fill <> none [
+				this.beginFill( clr_fill )
+				this.moveTo(  x1 y1 )
+				this.lineTo(  x2 y1 )
+				this.lineTo(  x2 y2 )
+				this.lineTo(  x1 y2 )
+				this.lineTo(  x1 y1 )
+			]
+			if edge? [
+				this.beginFill( clr_edge edgeAlpha )
+				this.moveTo(  x1 y1 )
+				this.lineTo(  x2 y1 )
+				this.lineTo(  x2 y2 )
+				this.lineTo(  x1 y2 )
+				this.lineTo(  x1 y1 )
+				x1++ y1++
+				x2-- y2--
+				this.moveTo(  x1 y1 )
+				this.lineTo(  x2 y1 )
+				this.lineTo(  x2 y2 )
+				this.lineTo(  x1 y2 )
+				this.lineTo(  x1 y1 )
+			]
+		]
+		this.endFill()
+	]
+]
+
+
+

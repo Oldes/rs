@@ -1,0 +1,59 @@
+rebol [
+	title: "SWF5-Scrolling text"
+	type: 'swf5
+	file: %swf5-scrolltext.swf
+	background: 0.0.0
+	rate: 50
+	size: 340x18
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 8-11-2002
+	purpose: {just to scroll a text}
+	comment: {
+	Bitmaps are scrolling much more faster then pure text! If you don't believe me, just try to put two such a long texts (the second one as a shadow) and try to scroll them:-)}
+
+]
+background 0.0.0
+shp_border: shape [
+	bounds 0x0 340x18
+	fill color #0d140c box 0x0 340x18
+	fill color #5f6255 box 1x1 339x17
+]
+bmp_test: bitmap layout [
+    backcolor 255.255.25
+	do [
+		text: replace/all {Hej meduli... (Václav Ètvrtek)
+	Poslali èmeláka pro soudek medu, èekali celièkou støedu.
+Hej, meduli, meduli, dum, hejdum meduli, meduli, dum.
+Èekali na nìho celièký ètvrtek, báli se, že s medem utek.
+Hej, meduli, meduli, dum, hejdum meduli, meduli, dum.
+Vrátil se teprve naveèer v pátek, vrátil se, zavolal od samých vrátek:
+Hej, meduli, meduli, dum, hejdum meduli, meduli, dum.
+Poslali èmeláka pro soudek medu a on jich pøinesl za pìtník sedm.}
+		newline " --- "
+		f: make-face/spec 'lbl compose [
+			offset: 0x0 size: 10000x15 text: (text)
+		]
+		sz: 100x0 + size-text f
+	]
+	at 2x2 lbl 41.0.0 (text) (sz)
+    at 0x0 lbl 221.221.221 (text) (sz)
+	
+][ key 255.255.25 ]
+
+img_test: image bmp_test
+spr_test: sprite img_test
+place shp_border
+txt: place spr_test at 340x0
+doAction [w: txt._width]
+frm_loop: show 2 frames
+doAction [
+	ConstantPool [txt w]
+    txt._x: txt._x -  1
+	if (0 - txt._x ) > w [txt._x: 340]
+    goto frm_loop and play
+]
+
+showFrame
+end
+

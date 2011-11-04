@@ -1,0 +1,379 @@
+rebol [
+	title: "RSWF Layout compiler"
+]
+
+GUIcounters: make hash! 20
+
+compile-layout: func[
+	specs /target trg /depth start-depth
+	/local
+	where origin max-off word code pos arg1 arg2 arg3 spec code-pos last-size space way guide tabs pos-rule rtn value size-rule attachGUI last-word size original-size init with with-rule
+][
+;probe specs
+	target: either target [trg]["this"]
+	where: 0x0
+	word: none
+	code: make string! 1000
+	last-size: 100x19
+	
+	depth: either depth [start-depth][last-depth]
+	max-off: where: 0x0
+	origin: 0x0
+    space: 2x2 way: 0x1 pos: guide: none tabs: 100x100
+	rtn: [where: (max-off * reverse way) + (way * any [guide origin])]
+	pos-rule: [set pos [integer! | pair! | skip (error "Expected position or size:" :pos)]]
+	
+
+	attachGUI: func[name size [pair!] spec [block!] /local obj p][
+		name: to-string name
+		either none? c: find/tail GUIcounters name [
+			;include-files/unique rejoin [%gui/ name %.rswf]
+			append GUIcounters reduce [name p: 1]
+		][
+			change c p: 1 + c/1
+		]
+		if none? word [word: rejoin ["_" name p]]
+		obj: rejoin [
+			{ _x: } where/x { _y: } where/y
+			{ width: } size/x { height: } size/y
+		]
+		if init [append obj join LF mold/only init]
+		
+		foreach [var val] spec [
+			if not none? val [
+				if val = 'word [val: word]
+				append obj ajoin [
+					#" "
+					mold to-set-word var
+					#" "
+					case [
+						get-word? var [
+							either name = "GUI_Button" [
+								rejoin [{does[ super.} to-string var {() with this._parent [} mold/only val {]]^/}]
+							][
+								rejoin [{does[ super.} to-string var {() } mold/only val {]^/}]
+							]
+						]
+						block? var [ mold val ]
+						true [mold val ]
+					]
+				]
+			]
+		]
+
+		append code rejoin [
+			LF target {.attachMovie("} name {" "} word {" } depth: depth + 1
+			{ (context [} obj {]))}
+		]
+		if with [
+			append code rejoin [
+				LF {tellTarget } target "." word { [} mold/only with {]}
+			]
+		]
+		;probe code
+		max-off: maximum max-off size + space + where
+		where: way * (size + space) + where
+		last-size: size
+		last-word: rejoin [target "." word]
+		word: none
+		last-word
+	]
+	
+	size-rule: [
+		set size opt [pair! | integer! | none] (
+			original-size: size
+			size: switch/default type?/word size [
+				pair!    [size]
+				integer! [
+					case [
+						find [DateChooser Calendar] spec [ as-pair size 138]
+						true [as-pair size last-size/y]
+					]
+				]
+			][	last-size ]
+		)
+	]
+	with-rule: [
+		(with: init: none)
+		opt ['init set init [block! | none]]
+		opt ['with set with [block! | none]]
+	]
+	
+	parse specs [any[
+		code-pos:
+          'return (do rtn)
+        | 'at ;(print ["[AT] where:" where "origin:" origin "max-off:" max-off])
+          [set pos pair! (where: origin: max-off: pos ) | none]
+        | 'space pos-rule (space: 1x1 * pos)
+        | 'pad pos-rule (
+            value: either integer? pos [way * pos] [pos]
+            where: where + value
+            max-off: max-off + value
+        )
+        | 'across (if way <> 1x0 [way: 1x0 do rtn])
+        | 'below (if way <> 0x1 [do rtn way: 0x1])
+        | 'origin [set pos [pair! | integer!] (origin: pos * 1x1) (where: max-off: origin) | none (max-off: origin: where)]
+        | 'origin-y (where: origin: max-off: as-pair origin/x max-off/y)
+        | 'origin-x (where: origin: max-off: as-pair origin/y max-off/x)
+        | 'guide [set pos pair! (guide: pos do rtn) | none (guide: where)] (max-off: 0x0)
+        | 'tab (where: next-tab tabs way where)
+        | 'tabs [
+            set value [block! | pair!] (tabs: value) |
+            set value integer! (tabs: value * 1x1)
+        ]
+        | 'depth set depth integer!
+        | 'indent pos-rule (where/x: either integer? pos [where/x + pos] [pos/x])
+		| set spec [
+			'Button
+			| 'Ok-Button | 'Warning-button | 'cancel-button | 'yes-button | 'no-button | 'submit-button | 'important-button
+			| 'Button-ok | 'Button-warning | 'Button-cancel | 'Button-yes | 'Button-no | 'Button-submit | 'Button-important
+			
+		]
+			size-rule
+			set arg1 opt [string! | none]
+			set arg3 opt [block! | none]
+			with-rule
+		(
+			type: none
+			parse to-string spec [
+				"Button-" copy type to end
+				|
+				copy type to "-" to end
+			]
+		
+			if none? arg1 [
+				arg1: switch/default type [
+					"important" ["Important"]
+					"ok"        ["OK"]
+					"cancel"    ["Cancel"]
+					"yes"       ["Yes"]
+					"no"        ["No"]
+					"submit"    ["Submit"]
+				]['word]
+			]
+	
+			attachGUI 'GUI_Button size compose/only [
+				text       (arg1)
+				type       (type)
+				:onRelease (arg3)
+			]
+		)
+		| set spec [
+			'TextButton
+			| 'Ok-TextButton | 'Warning-TextButton | 'cancel-TextButton | 'yes-TextButton | 'no-TextButton | 'submit-TextButton | 'important-TextButton
+			| 'TextButton-ok | 'TextButton-warning | 'TextButton-cancel | 'TextButton-yes | 'TextButton-no | 'TextButton-submit | 'TextButton-important
+			
+		]
+			size-rule
+			set arg1 opt [string! | none]
+			set arg3 opt [block! | none]
+			with-rule
+		(
+			type: none
+			parse to-string spec [
+				"TextButton-" copy type to end
+				|
+				copy type to "-" to end
+			]
+		
+			if none? arg1 [
+				arg1: switch/default type [
+					"important" ["Important"]
+					"ok"        ["OK"]
+					"cancel"    ["Cancel"]
+					"yes"       ["Yes"]
+					"no"        ["No"]
+					"submit"    ["Submit"]
+				]['word]
+			]
+
+			attachGUI 'GUI_TextButton size compose/only [
+				text       (arg1)
+				type       (type)
+				:onRelease (arg3)
+			]
+		)
+		| 'Text
+			size-rule
+			set arg1 opt [string! | none]
+			set arg3 opt [block! | none]
+			with-rule
+		(
+			attachGUI 'GUI_Text size reduce [
+				'text  arg1
+				;'type  "text"
+			]
+		)
+		| 'Field
+			size-rule
+			set arg1 opt [string! | none]
+			set arg3 opt [block! | none]
+			with-rule
+		(
+			attachGUI 'GUI_Field size compose/only [
+				text  (arg1)
+				:onKillFocus (arg3)
+			]
+		)
+		| 'Password
+			size-rule
+			set arg1 opt [string! | none]
+			set arg3 opt [block! | none]
+			with-rule
+		(
+			attachGUI 'GUI_Field size compose/only [
+				text         (arg1)
+				password?    (true)
+				:onKillFocus (arg3)
+				;'type  "text"
+			]
+		)
+		| 'Area
+			size-rule
+			set arg1 opt [string! | none]
+			set arg3 opt [block! | none]
+			with-rule
+		(
+			attachGUI 'GUI_Area size compose/only [
+				text  (arg1)
+				:onKillFocus (arg3)
+			]
+		)
+		| 'Scroller size-rule
+			set arg3 opt [block! | none]
+			with-rule
+		(
+			attachGUI 'GUI_Scroller size compose/only [
+				;'type  "default"
+				:onChanged (arg3)
+			]
+		)
+		| 'ScrollPane size-rule
+			set arg1 opt [block! | none]
+			with-rule
+		(
+			attachGUI 'GUI_ScrollPane size reduce [
+				;'type  "default"
+			]
+			if block? arg1 [
+				append code first tmp: compile-layout/target/depth arg1 join last-word ".content" 1
+				append code rejoin [LF last-word {.updateSliders()}]
+			]
+		)
+		| 'ClipHandler size-rule
+			set arg1 [file! | url! | none]
+			with-rule
+		(
+			attachGUI 'GUI_ClipHandler size reduce [
+				;'type  "default"
+				'url to-string arg1
+			]
+		)
+		| 'Menu size-rule
+			set  arg1 block!
+			set  arg2 opt [block! | none]
+			with-rule
+		(
+			use [label initObjs tmp][
+				initObjs: copy []
+				parse arg1 [some [
+					set label string!
+					set tmp [block! | none] (
+						append/only initObjs either tmp [
+							append initObjs 'context
+							append tmp compose [text: (label)]
+							
+						][	label ]
+					)
+				]]
+				;probe initObjs
+				attachGUI 'GUI_Menu size compose/only [
+					initObjs (initObjs)
+					:onButtonRelease (arg2)
+				]
+			]
+		)
+		| 'Window size-rule
+			set arg1 [string! | none]
+			set arg2 [file! | url! | block! | none]
+			with-rule
+		(
+			if all [none? arg1 file? arg2][
+				arg1: to-string last split-path arg2
+			]
+			attachGUI 'GUI_Window size reduce [
+				;'type  "default"
+				;'url to-string arg1
+				'text arg1
+			]
+			case [
+				block? arg2 [
+					append code first tmp: compile-layout/target/depth arg2 join last-word ".area.content" 1
+					;print["!!!original-size:" original-size "size:" size "max-off:" tmp/2]
+					either pair? original-size [
+						append code rejoin [
+							;LF last-word {.resize(} tmp/2/x " " tmp/2/y {)}
+							LF last-word {.area.updateSliders()}
+						]
+					][
+						append code rejoin [
+							LF last-word {.resize(} tmp/2/x " " tmp/2/y {)}
+							;LF last-word {.area.updateSliders()}
+						]
+					]
+				]
+				any [file? arg2 block? arg2][
+					append code rejoin [LF last-word {.loadClip(} mold to-string arg2 {)}]
+				]
+			]
+		)
+		| 'background set arg1 [tuple! | issue! | integer!] (
+			append code rejoin [LF target {.setBackground(} mold arg1 {)}]
+		)
+		| ['ComboBox | 'Choice] size-rule
+			copy arg1 some string!
+			set  arg3 [block! | none]
+			with-rule
+		(
+			attachGUI 'GUI_ComboBox size compose/only [
+				labels    (arg1)
+				:onChange (arg3)
+			]
+		)
+		| 'IconList size-rule
+			set arg1 [string! | none]
+			with-rule
+		(
+			attachGUI 'GUI_IconList size compose/only [
+				iconsSource  (arg1)
+				maxwidth     (size/x)
+			]
+		)
+		| set spec ['DateChooser | 'Calendar] size-rule
+			set arg1 opt [date! | none]
+			set arg2 opt [block! | none]
+			
+		(
+			attachGUI 'GUI_DateChooser size compose/only [
+				date       (arg1)
+				:onSetDate (arg2)
+			]
+		)
+		| 'comment any-type!
+		| set arg1 set-word! (word: form arg1)
+		| set arg1 word! size-rule with-rule (
+			attachGUI arg1 size copy []
+		)
+		| any-type! (print ["Unknown layout command near:" copy/part mold code-pos 30])
+	]]
+	
+	if start-depth [last-depth: depth]
+
+	either target = "this" [
+		;probe code
+		insert tail action-bin compile-actions load code
+		foreach [name p] GUIcounters [
+			include-files/unique rejoin [%gui/ name %.rswf]
+		]
+	][	reduce [code max-off - space] ]
+]

@@ -1,0 +1,233 @@
+rebol [
+	title: "GUI_DateChooser"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 24
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 8/10/2007
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+
+require [
+	%gui/GUI_TextButton.rswf
+	%gui/GUI_Arrows.rswf
+]
+
+GUI_DateChooser: Extends GUI_Core [
+	width: 120
+	height: 138
+	daysInMonth: [31 28 31 30 31 30 31 31 30 31 30 31]
+    monthNames: [
+        ;"Leden" "Únor" "Bøezen" "Duben"
+        ;"Kvìten" "Èerven" "Èervenec" "Srpen"
+        ;"Záøí" "Øíjen" "Listopad" "Prosinec"
+        "January" "February" "March" "April" "May" "June"
+    	"July" "August" "September" "October" "November" "December"
+    ]
+    dayNames: ["Su" "Mo" "Tu" "We" "Th" "Fr" "Sa"] ;["Ne" "Po" "Út" "St" "Èt" "Pá" "So"]
+    
+	init: func[width height][
+		this.createEmptyMovieClip("bg" 1)
+		;this.bg._x: -3
+		this.attachMovie("GUI_Button" "arrowBack" 3)
+		this.attachMovie("GUI_Button" "monthBtn" 4 )
+		this.attachMovie("GUI_Button" "arrowNext" 5)
+		;this.bg.filters: [defaultShadow1]
+		
+		var i:   0
+		while [i < 42] [
+			this.attachMovie("GUI_TextButton" ("day" add i) (i + 10) (context[textPadding: 0]))
+			i++
+		]
+		i: 0
+		while [i < 7] [
+			this.attachMovie("GUI_TextButton" ("dayLabel" add i) (i + 60) (context[textPadding: 0]))
+			i++
+		]
+		super(width height)
+		this.showDate(this.date)
+	]
+	resize: func[width height /local row col][
+		super.resize(width height)
+		var btnh: GUI_ButtonCore.prototype.height	
+		either height < 120 [
+			var labelsHeight: 10
+		][	var labelsHeight: 15 ]	
+		var w1: to-integer ((width - 1) / 7)
+		var w2: w1 + 1
+		var h1: to-integer ((height - 1 - ( btnh + labelsHeight)) / 6)
+		var h2: h1 + 1
+		var w3: (width - 1 - 7 * w1)
+		var xofs: to-integer (w3 / 2)
+		var yofs: to-integer (height - 1 - ( btnh + labelsHeight) - 6 * h1)
+		
+
+		
+		this.arrowBack.resize((xofs + w2) btnh)
+		this.monthBtn.resize((1 + 5 * w1) btnh)
+		this.arrowNext.resize((2 + width - this.monthBtn.width - this.arrowBack.width) btnh)
+		this.monthBtn._x: xofs + w1
+		;this.arrowBack._x: xofs
+		this.arrowNext._x: xofs + 6 * w1
+		;this.arrowNext._y: this.arrowBack._y: this.monthBtn._y: yofs
+		
+		
+		
+		tellTarget this.arrowBack [
+			setImage("gui_arrowLeft2" 60)
+			onRelease: does [
+				super.onRelease()
+				this._parent.changeMonth((this._parent.month - 1))
+			]
+		]
+		
+		tellTarget this.arrowNext [
+			setImage("gui_arrowRight2" 60)
+			onRelease: does [
+				super.onRelease()
+				this._parent.changeMonth((this._parent.month + 1))
+			]
+		]
+		this.monthBtn.onRelease: does [super.onRelease() this._parent.showDate()]
+		var i:   0
+		var ofsy: btnh - 1
+		for row 0 5 1 [
+			var ofsx: xofs
+			for col 0 6 1 [
+				var d: this/("day" add i)
+				;trace(d)
+				d.resize(w2 h2)
+				d.disable()
+				d.onRelease: does [super.onRelease() if this.enabled? [this._parent.setDate(this.data)]]
+				;d.setText((i + 1))
+				d._x: ofsx
+				d._y: ofsy
+				ofsx: ofsx + w1
+				i++
+			]
+			ofsy: ofsy + h1
+		]
+		var ofsx: xofs
+		var i:   0
+		for col 0 6 1 [
+			var d: this/("dayLabel" add i)
+			d.resize((w2) (labelsHeight + yofs))
+			d.setType("label")
+			var dayName: this.dayNames/:i
+			;trace(w1)
+			if w1 < 16 [
+				;trace("?????" dayName)
+				dayName: dayName.substr(0 1)
+			]
+			d.setText(dayName)
+			d._x: ofsx
+			d._y: ofsy
+			ofsx: ofsx + w1
+			i++
+		]
+		with this.bg [
+			clear()
+			drawBox(0 0 (width) (height) 1 this.colors.background this.colors.edge)
+		]
+	]
+	isLeapYear?: func[year][
+		return (
+			 ( ( (Modulo year 4  ) == 0) && ( not ( (Modulo year 100) == 0) ) )
+			|| ( (Modulo year 400) == 0)
+		)
+	]
+
+	changeMonth: func[month][
+		;trace("changeMonth:" month)
+		this.showDate((make Date! [this.year month]))
+    ]
+    getMonthDays: func[date][
+    	var month: date.getMonth() 
+    	var year:  date.getFullYear()
+    	either (month = 1) and (this.isLeapYear?(year)) [
+    		var days: 29
+		][
+    		var days: this.daysInMonth/:month
+		]
+		return days
+	]
+	showDate: func[date /local now nowMonth nowDate nowYear month year][
+		if not date? date [date: make Date! []]
+		now: make Date! []
+    	nowMonth: now.getMonth() 
+    	nowDate:  now.getDate()
+    	nowYear:  now.getFullYear()
+    	this.date:  date
+    	this.now:   now
+    	this.day:   day:   date.getDate()
+    	this.month: month: date.getMonth() 
+    	this.year:  year:  date.getFullYear()
+
+		this.prevMonth: make Date! [year (month - 1)]
+		this.nextMonth: make Date! [year (month + 1)]
+		
+    	var days:       this.getMonthDays(date)
+    	var daysbefore: this.getMonthDays(this.prevMonth)
+    	
+    	var monthName: this.monthNames/:month
+    	if this.width < 120 [monthName: monthName.substr(0 3)]
+    	this.monthBtn.setText((reform [monthName year]))
+    	
+    	var firstDay: make Date! [ year month ]
+    	firstDay: firstDay.getDay()
+
+        
+    	;trace(month days firstDay daysbefore)
+    	
+    	var i: 0
+    	var n: firstDay - 1
+    	while [i < firstDay][
+    		var d: this/("day" add i)
+    		d.setText((daysbefore - n))
+    		d.setType("warning")
+    		d.enableFilters(off)
+    		d.disable()
+    		i++
+    		n--
+		]
+		var n: 1
+		while [n <= days][
+			var d: this/("day" add i)
+			d.setText(n)
+			d.enable()
+			d.enableFilters(on)
+			d.data: make Date! [year month n]
+			either nowMonth = month and nowDate = n and nowYear = year [
+				d.setType("no")
+			][
+				;either nowMonth = month and nowDate = n and nowYear = year [
+				d.setType("yes")
+			]
+			n++
+			i++
+		]
+		n: 1
+		while [i < 43][
+			var d: this/("day" add i)
+			d.setText(n)
+    		d.setType("warning")
+    		d.enableFilters(off)
+    		d.disable()
+			n++
+			i++
+		]
+		this.onChangeMonth(this.date)
+	]
+	setDate: func[date][
+		this.date: date
+		this.onSetDate(date)
+	]
+	onSetDate:     func[date][]
+	onChangeMonth: func[date][]
+	
+]

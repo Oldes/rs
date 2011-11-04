@@ -1,0 +1,87 @@
+rebol [
+	title: "GUI-CheckBox"
+	type: 'mx
+	file: none
+	background: 153.165.139
+	rate: 12
+	size: 1x1
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 28-5-2003
+	purpose: {To have CheckBox GUI object}
+	build: 'no-page
+]
+require %includes/gui-label.rswf
+shp_gui_checkbox0: shape [
+    bounds 0x0 14x14
+    fill color 0.0.0    box 0x0 14x14
+    fill color 255.255.255  box 1x1 13x13
+]
+shp_gui_checkbox1: shape [
+    bounds 0x0 14x14
+    no fill edge [color 0.0.0 width 1]
+    positions relative at 7x7
+    cross 10x10
+]
+
+gui_checkbox: sprite [
+    place shp_gui_checkbox0
+	doAction [ stop ]
+    showFrame
+    place shp_gui_checkbox1
+    showFrame
+    end
+]
+exportAssets [gui_checkbox "GUI_CheckBox"]
+doAction [
+	ConstantPool [
+		_global setTextFormat setValue GUI_CheckBox
+		GUI_CheckBoxClass prototype this attachMovie fcb-label
+		gotoAndStop checked executeCallBack checkedValue setCheckState
+		where name depth
+	]
+		_global.GUI_CheckBoxClass: func[][this.init()]
+		GUI_CheckBoxClass.prototype: make MovieClip
+		
+		GUI_CheckBoxClass.prototype.init: func[][
+			this.attachMovie("GUI_Label" "fcb-label" 10)
+			this.fcb-label._x: 16
+			this.fcb-label.autoSize: "left"
+			this.label: this._name
+			this.type: "check"
+			this.setCheckState(false)
+			super.setSize(this._width this._height)
+		]
+		GUI_CheckBoxClass.prototype.setCheckState: func[checkedValue][
+			either checkedValue [
+				this.gotoAndStop(2)
+				this.checked: true
+				this.fcb-label.setTextFormat(gui_TF_labelBold)
+			][	this.gotoAndStop(1)
+				this.checked: false
+				this.fcb-label.setTextFormat(gui_TF_label)
+			]
+		]
+		GUI_CheckBoxClass.prototype.setValue: func[checkedValue][
+			either checkedValue [
+				this.setCheckState( checkedValue )
+			][	this.setCheckState( checkedValue )]
+			this.executeCallBack()
+		]
+		GUI_CheckBoxClass.prototype.setSelected: func[checkedValue][
+			this.setValue(checkedValue)
+		]
+		GUI_CheckBoxClass.prototype.getValue: func[][return this.checked]
+		GUI_CheckBoxClass.prototype.executeCallBack: none
+		GUI_CheckBoxClass.prototype.onPress: func[][
+			this.pressFocus()
+		]
+		GUI_CheckBoxClass.prototype.onRelease: func[][
+			this.setValue((not this.checked))
+		]
+		Object.registerClass("GUI_CheckBox" GUI_CheckBoxClass)
+		
+		_global.createCheckBox: func[where name depth][
+			where.attachMovie("GUI_CheckBox" name depth)
+		]
+]

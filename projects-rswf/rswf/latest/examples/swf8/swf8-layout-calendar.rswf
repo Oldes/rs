@@ -1,0 +1,36 @@
+rebol [
+	title: "FLASH8 DateChooser"
+	type: 8
+	file: %swf8-layout-calendar.swf
+	background: 200.200.200
+	rate: 24
+	size: 401x420
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 24-Oct-2007/10:41:57+2:00
+	purpose: {DateChooser (Calendar) GUI example}
+	comment: {}
+	compressed: true
+]
+background 200.200.200
+require %tracer.rswf
+
+layout [
+	at 10x60
+	across
+	DateChooser 120
+	Calendar     92
+	DateChooser 162x265 2009-1-1 [
+		trace("SetDATE!!" this.date)
+	]
+]
+
+doAction [
+	GUI_DateChooser.prototype.onSetDate: func[date][
+		trace(this._name "onSetDate:" date)
+	]
+	GUI_DateChooser.prototype.onChangeMonth: func[date][
+		trace(this._name "newMonth:" date)
+	]
+]
+showFrame end

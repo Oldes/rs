@@ -1,0 +1,204 @@
+rebol [
+	title: "Place related tag functions"
+]
+
+ins-place: func[
+	ids  [integer! word! block!] "ID or block with IDs of a character/s"
+	spec [pair! block! none!]    "Position or block with position and transform spec."
+			;- position spec can contain:
+			;-   at pair!   - new position
+			;-   multiply [integer! | tuple! | block!] - Multiplication Transforms
+			;-   add      [integer! | tuple! | block!] - Addition Transforms
+			;-   rotate   [number! | pair | block!]    - Rotation
+			;-   scale    [number! | pair | block!]    - Scale
+			;-   skew     [number! | pair | block!]    - Skew
+			;-   reflect  [number! | pair | block!]    - Reflect
+			;-   blend [
+			;-		  Normal
+			;-		| Layer
+			;-		| Darken
+			;-		| Multiply
+			;-		| Lighten
+			;-		| Screen
+			;-		| Overlay 
+			;-		| HardLight
+			;-		| Add 
+			;-		| Subtract
+			;-		| Diference"
+			;-		| Invert
+			;-		| Alpha
+			;-		| Erase
+			;-   ]
+			;-  actions block!    - block with clip event actions
+	/local old-act-bin act af flags bin tmp f m a name depth pos aid add-act mouseEvents actionIDs blendMode
+][
+	unless block? ids [ids: to block! ids]
+	either pair? spec [spec: reduce ['at spec]][
+		unless   spec [spec: copy   [at 0x0]]
+	]
+	
+	blendMode: select [
+		"Layer"     #{02}
+		"Darken"    #{06}
+		"Multiply"  #{03} 
+		"Lighten"   #{05}
+		"Screen"    #{04} 
+		"Overlay"   #{0D}
+		"HardLight" #{0E}
+		"Add"       #{08}
+		"Subtract"  #{09}
+		"Diference" #{07}
+		"Invert"    #{0A}
+		"Alpha"     #{0B}
+		"Erase"     #{0C}
+	] select spec 'blend
+	
+	foreach id ids [
+		if id = 'EmptySprite [
+			insert tail names-ids-table reduce [
+				to-word rejoin ['spr_empty id: get-new-id]
+				id
+			]
+			ins form-tag 39 rejoin [int-to-ui16 id #{010040000000}]
+		]
+		bin:   make binary! 40
+		flags: make string! "00000010"
+		if act: select spec 'actions [
+			flags/1: #"1"
+			af: make binary! #{0000}
+			old-act-bin: copy action-bin
+			insert bin either swf-version > 5 [#{00000000}][#{0000}]
+			add-act: func[actions types /local type t t1 t2][
+				t1: make block! []
+				t2: make block! []
+				forall types [
+					either none? t: select actionIDs types/1 [
+						either none? t: select mouseEvents types/1 [
+							make-warning!/msg none ["Unknown action event:" types/1]
+						][	insert t2 t	]
+					][ insert t1 t ]
+				]
+				unless empty? t2 [
+					either swf-version < 6 [
+						make-warning!/msg none [
+							"Mouse events are not permitted in this SWF version near:" head types
+						]
+					][
+						type: #{00000000}
+						forall t2 [
+							type: type or t2/1
+							af:   af   or t2/1
+						]
+
+						action-bin: compile-actions actions
+
+						insert bin rejoin [type int-to-ui32 1 + length? action-bin action-bin #{00}]
+					]
+				]
+				unless empty? t1 [
+						type: #{00000000}
+						forall t1 [
+							if swf-version < 6 [change t1 copy/part t1/1 2]
+							type: type or t1/1
+							af:   af   or t1/1
+						]
+						if swf-version < 6 [type: copy/part type 2]
+
+						action-bin: compile-actions actions
+						insert bin rejoin [type int-to-ui32 1 + length? action-bin action-bin #{00}]
+				]
+
+			]
+			actionIDs: [
+				Load         #{01000000}
+				EnterFrame   #{02000000}
+				Unload       #{04000000}
+				MouseDown    #{10000000}
+				MouseUp      #{20000000}
+				MouseMove    #{08000000}
+				KeyDown      #{40000000}
+				KeyUp        #{80000000}
+				Data         #{00010000}
+			]
+			mouseEvents: [
+				Press        #{00040000}
+				Release      #{00080000}
+				ReleaseOutside   #{00100000}
+				RollOver     #{00200000}
+				RollOut      #{00400000}
+				DragOver     #{00800000}
+				DragOut      #{00000100}
+				;Key          #{00000200}
+			]
+			parse act [any[
+				  copy aid word!  set tmp block! ( add-act tmp aid )
+				| set  aid block! set tmp block! ( add-act tmp aid )
+			]]
+			insert bin join #{0000} af 
+			action-bin: copy old-act-bin
+		]
+		if any [
+			name: select spec 'name
+			name: set-word
+		][
+			insert bin rejoin [#{} name #{00}]
+			flags/3: #"1"
+		]
+		
+		if find spec 'move [flags/8: #"1"]
+		depth: select spec 'depth
+		last-depth: either none? depth [
+			either flags/8 = #"1" [last-depth][last-depth + 1]
+		][depth]
+		
+		if parse spec [
+			  thru 'ClipDepth set tmp integer! to end
+			| thru 'Mask set tmp integer! to end (tmp: last-depth + tmp)
+		][
+			insert bin int-to-ui16 tmp
+			flags/2: #"1"
+		]
+		m: select spec 'multiply
+		a: select spec 'add
+		if any [a m][
+			insert bin bits-to-bin create-cxform/withalpha m a
+			flags/5: #"1"
+		]
+		
+		if any [
+			 pos: select spec 'at
+			 depth
+		][
+			unless pos [pos: 0x0]
+			pos: either block? pos [
+				to pair! reduce [to-twips pos/1 to-twips pos/2]
+			][	to-twips pos]
+			insert bin bits-to-bin create-matrix pos spec
+			flags/6: #"1"
+		]
+		;Ratio still skipped!!!!!!!!
+		if number? ratio: select spec 'ratio [
+			insert bin reverse int-to-ui16 ratio
+			flags/4: #"1"
+		]
+		insert bin int-to-ui16 get-id id
+		insert bin int-to-ui16 last-depth
+		either all [swf-version > 7 not none? blendMode][
+			append bin blendMode
+			insert bin #{02} ;I don't know what is it! But must be here.
+			insert bin load rejoin ["2#{" flags "}"]
+			ins form-tag 70 bin
+		][
+			insert bin load rejoin ["2#{" flags "}"]
+			ins form-tag 26 bin
+		]
+		;----------------------
+		if set-word [
+			;print [set-word ":" id last-depth name pos]
+			insert/only placed-objects reduce [name pos]
+			insert placed-objects last-depth
+			remove set-word-buff
+		]
+	];end of foreach
+]
+

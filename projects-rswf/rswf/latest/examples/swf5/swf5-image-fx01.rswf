@@ -1,0 +1,50 @@
+rebol [
+	title: "SWF5-Image-FX wave"
+	type: 'swf5
+	file: %swf5-image-fx01.swf
+	background: 246.250.255
+	rate: 30
+	size: 360x74
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	purpose: {Simple wave image FX}
+	date: 17-12-03
+	comment: {
+		I was quite suprised how easy it was to make this effect:)
+		I can say that I don't know other way how to do this SWF in other Flash tool.
+		It's nice that the SWF file is smaller than the source PNG image because of compression:)
+	}
+]
+background 246.250.255
+bmp_picture: bitmap %parallax/mountains.png
+spr_picture: Sprite [
+	rebol [
+		for i 0 73 1 [
+			rswf/compile load rejoin [{
+				shp_pictureLine} i {: Shape [
+					Bounds 0x0 320x1
+				    fill-style [bitmap bmp_picture at 0x} i * -1 {]
+				    box 0x0 320x1
+				]
+				spr_pictureLine} i {: Sprite shp_pictureLine} i {
+				l} i {: place spr_pictureLine} i { at 0x} i * 1 {
+			}]
+		]
+	]
+	showFrame end
+]
+place spr_picture [
+	at 0x0
+	actions [
+		load [ freq: 0.06 ph: 0 amp: 20 ]
+		enterFrame [
+			for i 0 73 1 [
+				line: eval(("l" add i))
+				line._x: (amp * ( Math.sin(( (line._y * freq) + ph) )) + amp)
+			]
+			ph: ph + 0.05
+		]
+	]
+]
+showFrame
+end

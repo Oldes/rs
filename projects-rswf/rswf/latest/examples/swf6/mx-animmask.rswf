@@ -1,0 +1,56 @@
+rebol [
+	title: "MX-Animated mask"
+	type: 'mx
+	file: %mx-animmask.swf
+	background: 246.250.255
+	rate: 30
+	size: 400x370
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 4-1-2004
+	purpose: {How to use animation (sprite) to mask an image}
+	comment: {
+	This is available only for Flash version 6 and more}
+]
+background 246.250.255
+es: EmptySprite
+spr_animmask: Sprite [
+	stop showFrame
+	rebol [
+		repeat i 74 [
+			rswf/compile load rejoin [{
+				shp_arc} i {: Shape [
+					Bounds -300x-300 300x300
+					fill color 255.55.55
+					arc 300 0 } i * 5 {
+				]
+				RemoveDepth 1
+				Place shp_arc} i { [at 0x0 depth 1]
+				showFrame
+			}]
+		]
+	]
+	end
+]
+place spr_animmask [
+	at 200x185 mask 1
+	actions [
+		load [bIn: true]
+		enterFrame [
+			either bIn [
+				nextFrame
+				if _currentFrame = _totalframes [bIn: not bIn]
+			][
+				prevFrame
+				if _currentFrame = 1 [bIn: not bIn]
+			]
+		]
+	]
+]
+picture: place es
+doAction [
+	picture.loadMovie(%demon.swf)
+]
+
+showFrame
+end

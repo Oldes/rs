@@ -1,0 +1,56 @@
+rebol [
+	title: "MX2004 - MovieClipLoader"
+	type: 'swf7
+	file: %mx2004-moviecliploader.swf
+	background: 255.255.255
+	rate: 24
+	size: 500x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 12-10-2005
+	purpose: {How to load image/movie using MovieClipLoader class}
+	comment: {}
+	compressed: true
+]
+background 255.255.255
+include %includes/txt_info2.rswf
+es: EmptySprite
+image_mc: place es
+doAction [
+	tf_info._height: 320
+	tf_info.textColor: #00FF99
+	mclListener: make object! []
+	mclListener.onLoadInit: func[target_mc][
+		cmsg((reform [target_mc "LoadInit"]))
+		var w: target_mc._width
+		var h: target_mc._height
+		;center movie
+		target_mc._x: Math.round(((Stage.width  / 2) - (w / 2)))
+		target_mc._y: Math.round(((Stage.height / 2) - (h / 2)))
+		;draw image frame
+		target_mc.lineStyle(5 #000000)
+		target_mc.moveTo(0 0)
+		target_mc.lineTo(w 0)
+		target_mc.lineTo(w h)
+		target_mc.lineTo(0 h)
+		target_mc.lineTo(0 0)
+	]
+	mclListener.onLoadError: func[target_mc errorCode httpStatus][
+		cmsg((reform [target_mc "LoadError:" errorCode httpStatus]))
+	]
+	mclListener.onLoadComplete: func[target_mc httpStatus][
+		cmsg((reform [target_mc "LoadComplete:" httpStatus]))
+	]
+	mclListener.onLoadProgress: func[target_mc loadedBytes totalBytes][
+		cmsg((reform [target_mc "LoadProgress:" loadedBytes totalBytes]))
+	]
+	mclListener.onLoadStart: func[target_mc][
+		cmsg((reform [target_mc "LoadStart"]))
+	]
+	var image_mcl: make MovieClipLoader []
+	image_mcl.addListener(mclListener)
+	image_mcl.loadClip("images/noparking.jpg" image_mc)
+]
+
+showFrame
+end

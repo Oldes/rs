@@ -1,0 +1,34 @@
+rebol [
+	title: "SWF5-Noise shapes"
+	type: 'swf
+	file: %swf-shapenoise.swf
+	background: 153.165.139
+	rate: 12
+	size: 220x220
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 13-11-2002
+	purpose: {To show how to use noise key word to make random shapes}
+	comment: {
+	The <code>noise</code> key word has two parameters: first is for positive random values and the second is for negative random values which are added into normal position.
+	The noise works only with some shapes as n-gons and n-stars.}
+]
+background 153.165.139
+rebol [random/seed 500]
+shp_test: shape [
+	transparency
+	edge [width 3 color 255.255.255.128] 
+	fill color 0.200.200
+	at 110x110
+	noise 10x10 10x10
+	n-star 6 100 50
+	curved n-star 6 20 50
+	
+	no noise no edge
+	fill color 200.0.100.100
+	n-star 6 100 50
+	curved n-star 6 20 50
+]
+place shp_test
+showFrame
+end

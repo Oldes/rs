@@ -1,0 +1,142 @@
+rebol [
+	title: "Flash8 - color picker"
+	type: 'swf8
+	file: %swf9-colorpicker.swf
+	background: 255.255.255
+	rate: 24
+	size: 320x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 11-10-2005
+	purpose: {More complicated example how to use some of the new Flash8 functions}
+	comment: {}
+	compressed: true
+]
+background 255.255.255
+
+shp_bg: shape [fill color #FFFFFF box 0x0 320x320]
+spr_bg: sprite shp_bg
+bg: place spr_bg
+
+es: EmptySprite
+include %includes/txt_info.rswf
+
+spr_pallet: sprite [
+	bitmaps images [alpha %bitmaps/pallet.png]
+	ExportAssets [bmp_pallet.png "bmpPallet"]
+	spr_palletclrs: sprite img_pallet.png
+	
+	shp_palcross: shape [edge [width 1 color #FFFFFF] line -4x0 5x0 line 0x-4 0x5]
+	spr_palcross: sprite shp_palcross
+	shp_paledge: shape [fill color #000000 box -1x-1 151x151 0x0 150x150]
+	colors: place spr_palletclrs at -1x-1
+	place shp_paledge
+	cross: place spr_palcross [at 0x0 blend "invert"]
+	showFrame end
+]
+
+spr_whslider: sprite [
+	shp_whedge: shape [fill color #000000 box -1x-1 16x151 0x0 15x150]
+	shp_whcross: shape [
+		fill color #000000 box -1x-1 16x2
+		fill color #FFFFFF box 0x0 15x1
+	]
+	spr_whcross: sprite shp_whcross
+	place shp_whedge
+	grad: place es
+	cross: place spr_whcross
+	showFrame end
+]
+
+pallet: place spr_pallet [at 85x85]
+whslider: place spr_whslider at 240x85
+
+doAction [
+	bmpPalletOrig: flash.display.BitmapData.loadBitmap("bmpPallet")
+	bmpPallet: make flash.display.BitmapData[150 150 false #FFFFFF]
+	formColor: func[c][
+		c: c.toString(16)
+		var d: 6 - c.length - 1
+		if d > 0 [for i 0 d 1 [c: "0" add c]]
+		return ("#" add (c.toUpperCase()))
+	]
+	
+	updateWhSlider: func[c][
+		with whslider.grad [
+			clear()
+			matrix: make flash.geom.Matrix []
+			matrix.createGradientBox(15 150 (Math.PI / 2))
+			beginGradientFill(
+				"linear"
+				([c #FFFFFF])
+				([100 100])
+				([0 255])
+				matrix
+			)
+			moveTo(0 0)
+			lineTo(15 0)
+			lineTo(15 150)
+			lineTo(0 150)
+			lineTo(0 0)
+			endFill()
+		]
+	]
+	
+	setWhitness: func[w][
+		whitness: 255 * w
+		var clrPal: make Color [pallet.colors]
+		clrTransf: make object! [
+			ra: 100	rb: whitness
+			ga: 100	gb: whitness
+			ba: 100	bb: whitness
+			aa: 100	aa: 0
+		]
+		clrPal.setTransform(clrTransf)
+		
+		var matrix: make flash.geom.Matrix []
+		var bmpClrTrans: make flash.geom.ColorTransform[1 1 1 1 whitness whitness whitness 0]
+		bmpPallet.draw(pallet.colors matrix bmpClrTrans )
+		getColor(currentClrPosX currentClrPosY)
+	]
+	
+	currentClrPosX: 0
+	currentClrPosY: 0
+	inBounds: func[val min max][return (Math.max(min (Math.min(max val))))]
+	getColor: func[x y][
+		x: inBounds(x 0 149)
+		y: inBounds(y 0 149)
+		pallet.cross._x: x
+		pallet.cross._y: y
+		currentClrPosX: x
+		currentClrPosY: y
+		clr1: bmpPallet.getPixel(x y)
+		clr_bg: make Color [bg]
+		clr_bg.setRGB(clr1)
+		clr2: bmpPalletOrig.getPixel(x y)
+		updateWhSlider(clr2)
+		info: reform ["Color:" (formColor(clr1)) "whitness:" whitness]
+	]
+	pallet.onPress: func[][
+		this.onMouseMove: func[][
+			this._parent.getColor(this._xmouse this._ymouse)
+		]
+		this.onMouseMove()
+	]
+	pallet.onRelease: func[][this.onMouseMove: none]
+	pallet.onReleaseOutside: func[][this.onMouseMove: none]
+	whslider.onPress: func[][
+		;update whitness
+		this.onMouseMove: func[][
+			var y: inBounds(this._ymouse 0 150)
+			this.cross._y: y
+			this._parent.setWhitness((y / 150))
+		]
+		this.onMouseMove()
+	]
+	whslider.onRelease: func[][this.onMouseMove: none]
+	whslider.onReleaseOutside: func[][this.onMouseMove: none]
+	setWhitness(0)
+]
+
+showFrame
+end

@@ -1,0 +1,248 @@
+rebol [
+	title: "MX-Folder menu (part2)" 
+	type: 'mx
+	file: %mx-foldermenu_p2.swf
+	background: 153.165.139
+	rate: 24
+	size: 420x210
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {Menu with folders using XML structure - part 2}
+	comment: {}
+]
+background 153.165.139
+fnt_Courier: Font [name "_typewriter" bold]
+fnt_ArialB: Font [name "_sans" bold]
+txt_info: EditText 'info 319x209 [
+	ReadOnly Color 0.0.0 Font [fnt_Courier 11]
+]
+txt_menuname: EditText 'n 200x16 [
+	ReadOnly NoSelect
+	;wordwrap multiline
+	Color 0.0.0 Font [fnt_ArialB 12]
+	layout [leading: -1]
+	;border ;text "test"
+]
+place txt_info at 240x0
+
+es: EmptySprite
+spr_menufolderBtn: EmptySprite
+spr_menufolder: Sprite [
+	btn: place es
+	name: place txt_menuname [at 0x0 depth 2]
+	showFrame end
+]
+spr_menurow: Sprite [
+	btn: place es
+	name: place txt_menuname
+	showFrame end
+]
+exportAssets [
+	spr_menufolder    "menufolder"
+	spr_menufolderBtn "menufolderBtn"
+	spr_menurow       "menurow"
+]
+
+menuroot: place es
+doAction [
+	_global.GUI_menuFolderClass: func[][this.init()]
+	GUI_menuFolderClass.prototype: make MovieClip
+	GUI_menuFolderClass.prototype.init: func[][
+		this.color1: #99ff00
+		this.color2: #99ffcc
+	]
+	GUI_menuFolderClass.prototype.onRelease: func[][
+		with this._parent._parent [
+			_root.info: rejoin [n " " nodes " " level]
+			 ;node.attributes.o: 0
+			; _root.info: menudataxml.toString()
+			var node: findItemNode(_root.menudata.childNodes id )
+			if node.nodeName = "f" [
+				either node.attributes.o = "1" [
+					node.attributes.o: "0"
+				][
+					node.attributes.o: "1"
+				]
+				;_root.info: node.toString()
+				_root.redrawMenu()
+			]
+
+		]
+	]
+	GUI_menuFolderClass.prototype.onRollOver: func[][
+		this.drawShape(this._width this._height this.color2 )
+	]
+	GUI_menuFolderClass.prototype.onRollOut: func[][
+		this.drawShape(this._width this._height this.color1)
+	]
+	GUI_menuFolderClass.prototype.onDragOut: GUI_menuFolderClass.prototype.onRollOut
+	;GUI_menuFolderClass.prototype.onDragOver: GUI_menuFolderClass.prototype.onRollOver
+	GUI_menuFolderClass.prototype.drawShape: func[x y color][
+		if color = undefined [var color: this.color1]
+	
+		with this [
+			clear()
+			beginFill( color )
+					moveTo(0 y)
+				lineStyle( 0 #555555 100 )
+					lineTo(0 0)	lineTo(x 0)
+				lineStyle( 0 #000000 100 )
+					lineTo(x y)	lineTo(0 y)
+			endFill()
+		]
+		with this._parent._parent.submsh [
+			clear()
+			var x: _parent.subm._width
+			var y: _parent.subm._height
+			beginFill( #aa0000 )
+				lineStyle( 0 #000000 100 )
+					lineTo(x 0)	lineTo(x y)
+					lineTo(0 y) lineTo(0 0)
+			endFill()
+		]
+	]
+	Object.registerClass("menufolderBtn" GUI_menuFolderClass)
+]
+doAction [
+	menudataxml: {
+		<f n="Download">
+			<f n="Folder1.1" o="1">
+				<m n="Menu1"/>
+				<f n="Empty folder"></f>
+				<m n="Menu2"/>
+			</f>
+			<f n="Folder1" o="0">
+				<f n="Folder1.1" o="1">
+					<m n="Menu1"/>
+					<f n="Empty folder"></f>
+					<m n="Menu2"/>
+				</f>
+				<m n="Menu3"/>
+			</f>
+			<f n="Folder with very very very long name">
+				<m n="Menu4"/>
+			</f>
+			<m n="Menu5"/>
+			<m n="Menu3"/>
+		</f>
+		<f n="Folder2">
+			<m n="Menu4"/>
+		</f>
+		<m n="Menu5"/>
+	}
+	menudata: make Xml[menudataxml]
+
+	showFolder: func[nodes target prefix /local i][
+		;variables 'i and 'n MUST be local
+		;else would be lost during recursion!!
+		level++
+		var folders: 0
+		var y: 0
+		
+		target.items: []
+		for i 0 nodes.length 1 [
+			var n: nodes/:i
+			switch n.nodeName [
+				"f" [
+					target.attachMovie("menufolder" ("f" add folders) (folders + 1))
+					var f: eval(eval(target add ".f" add folders))
+					f.btn.attachMovie("menufolderBtn" "shape" 1)
+					f.createEmptyMovieClip("submsh" 3)
+					f.createEmptyMovieClip("subm" 4)
+					f._y: y
+					folders++
+					f.id: prefix add folders
+					f.level: level
+					f.name.autoSize: "left"
+					f.n: f.id add " " add n.attributes.n
+					f.submsh._y: f.subm._y: f.name._height
+					f.submsh._x: f.subm._x: 3
+					if n.attributes.o = "1" [
+						showFolder(n.childNodes f.subm (prefix add folders add "_"))
+					]
+					var maxw: (width - (level * 5))
+					if f.name._width > maxw [
+						f.name._width: maxw
+						f.name.autoSize: false
+					]
+					f.btn.shape.drawShape(maxw f.name._height)
+					
+					y: y + f._height
+					target.items.push(f)
+					
+				]
+				"m" [
+					target.attachMovie("menurow" ("f" add folders) (folders + 1))
+					var f: eval(eval(target add ".f" add folders))
+					f.btn.attachMovie("menufolderBtn" "shape" 1)
+					f._y: y
+					with f.name [
+						autoSize: "left"
+					]
+					folders++
+					f.id: prefix add folders
+					f.n:  f.id add " " add n.attributes.n
+					var maxw: (width - (level * 5))
+					if f.name._width > maxw [
+						f.name._width: maxw
+						f.name.autoSize: false
+					]
+					with f.btn.shape [
+						color1: #ffa500
+						color2: #ffa5a0
+					]
+					f.btn.shape.drawShape(maxw f.name._height)
+					y: y + f._height
+					;info: rejoin [info tabs "M:" n.attributes.n newline]
+					target.items.push(f)
+				]
+			]
+		]
+		level--
+		
+	]
+	
+	findItemNode: func[nodes id prefix /local i][
+		level++
+		var folders: 0
+		for i 0 nodes.length 1 [
+			var n: nodes/:i
+			if (n.nodeName = "f") || (n.nodeName = "m") [
+					folders++
+					nid: prefix add folders
+					if nid = id [ return n ]
+					;info: rejoin [info tabs nid "=" id newline]
+					if n.attributes.o = "1" [
+						;tabs: tabs add "^-"
+						var tmp: findItemNode(n.childNodes id (prefix add folders add "_"))
+						if tmp <> undefined [return tmp]
+						;tabs: tabs.slice(0 (tabs.length - 1))
+					]
+			]
+		]
+		level--
+	]
+
+	redrawMenu: func[][
+		level: 0
+		width: 230
+		menuroot.createEmptyMovieClip("submsh" 1) 
+		menuroot.createEmptyMovieClip("subm" 2) 
+		showFolder(menudata.childNodes menuroot.subm)
+		with menuroot.submsh [
+			clear()
+			var x: _parent.subm._width
+			var y: _parent.subm._height
+			beginFill( #aa0000 )
+				lineStyle( 0 #000000 100 )
+					lineTo(x 0)	lineTo(x y)
+					lineTo(0 y) lineTo(0 0)
+			endFill()
+		]
+		;info: rejoin [info width newline]
+	]
+	redrawMenu()
+
+]
+showFrame
+end

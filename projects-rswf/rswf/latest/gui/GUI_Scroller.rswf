@@ -1,0 +1,284 @@
+rebol [
+	title: "GUI_Scroller"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 24
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 10/10/2007
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+require [
+	%gui/GUI_Core.rswf
+	%gui/GUI_Button.rswf
+	%gui/GUI_Arrows.rswf
+]
+
+GUI_ScrollerCore: Extends GUI_Core [
+	clr_fill: #aaaaaa
+	clr_edge: 0.0.0
+	width: 200
+	height: 16
+	horizontal?: true
+	vertical?:  false
+	init: func[width height][
+		;trace("init" this)
+		this.createEmptyMovieClip("bg" 1)
+		this.createEmptyMovieClip("activebg" 2)
+
+		this.attachMovie("GUI_Button" "arrow1"  3)
+		this.attachMovie("GUI_Button" "dragger" 4)
+		this.attachMovie("GUI_Button" "arrow2" 5)
+		
+		this.cacheAsBitmap: true
+		
+		this.bg._alpha: 80
+		
+		this.activebg._alpha: 0
+		this.activebg.onPress: does [
+			var dragger: this._parent.dragger
+			either this._parent.horizontal? [
+				var draggerWidth: dragger._width
+				var activebgWidth: this._width
+				var minx: this._parent.arrow1._width - 1
+				var maxx: minx + activebgWidth - draggerWidth + 1
+				var val: (this._xmouse + (draggerWidth / 2)) / (activebgWidth + draggerWidth)
+				dragger._x: Math.max(
+					(minx) (
+						Math.min(
+							(maxx)
+							(minx + (val * activebgWidth) - (draggerWidth / 2))
+						)
+					)
+				)
+			][
+				var draggerHeight: dragger._height
+				var activebgHeight: this._height
+				var miny: this._parent.arrow1._height - 1
+				var maxy: miny + activebgHeight - draggerHeight + 1
+				var val: (this._ymouse + (draggerHeight / 2)) / (activebgHeight + draggerHeight)
+				dragger._y: Math.max(
+					(miny) (
+						Math.min(
+							(maxy)
+							(miny + (val * activebgHeight) - (draggerHeight / 2))
+						)
+					)
+				)
+			]
+			dragger.onPress()
+		]
+		this.activebg.onRelease: does [this._parent.dragger.onRelease()]
+		this.activebg.onReleaseOutside: does [this._parent.dragger.onRelease()]
+		
+		this.value: 0
+		this.ratio: 0.5
+		this.step:  0.1
+		
+		super(width height)	
+		
+		this.dragger.onDragOut: none
+		this.dragger.onPress: does [
+			super.onPress()
+			this.xMouse: this._xmouse
+			this.yMouse: this._ymouse
+			this.onMouseMove: this._parent.onDraggerMove
+			this.onMouseMove()
+
+		]
+		this.dragger.onRelease: does [
+			this.onMouseMove: none
+			super.onRelease()
+		]
+		this.dragger.onReleaseOutside: does [
+			this.onMouseMove: none
+			super.onReleaseOutside()
+		]
+		this.arrow1.onPress: does [
+			super.onPress()
+			tellTarget this._parent [
+				setValue((value - step))
+			]
+		]
+		this.arrow2.onPress: does [
+			super.onPress()
+			tellTarget this._parent [
+				setValue((value + step))
+			]
+		]
+		this.setValue(0)
+	]
+	resize: func[width height][
+		;trace("resize" this._name width height)
+		either width >= height [
+			this.horizontal?: true
+			this.vertical?:   false
+		][
+			this.horizontal?: false
+			this.vertical?:   true
+		]
+		super.resize(width height)
+	]
+
+	onDraggerMove: does [
+		;trace("onDragerMove" this)
+		either this._parent.horizontal? [
+			var minx: this._parent.arrow1.width - 1
+			this._x: Math.round((Math.max( 
+				(minx)
+				(Math.min(
+					(this._parent.arrow1._width + this._parent.activebg._width - this._width)
+					(this._parent._xmouse - this.xMouse)
+				))
+			)))
+			var width: this._parent.activebg._width - this._width + 1
+			either width = 0 [
+				this._parent.value: 0
+			][	this._parent.value: (this._x - minx) / width ]
+			
+
+		][
+			var miny: this._parent.arrow1.height - 1
+			this._y: Math.round((Math.max( 
+				(miny)
+				(Math.min(
+					(this._parent.arrow1._height + this._parent.activebg._height - this._height)
+					(this._parent._ymouse - this.yMouse)
+				))
+			)))
+			this._parent.value: (this._y - miny) / (this._parent.activebg._height - this._height + 1)
+		]
+		with this._parent [
+			value: Math.max(0 (Math.min(1 value)) )
+			onChanged()
+		]
+		updateAfterEvent()
+	]
+	setRatio: func[ratio][
+		;if ratio = NaN [ratio: 1]
+		this.ratio: Math.max(0.2 (Math.min(1 ratio)))
+		;trace("setRatio:" this ratio)
+		;this.setValue(this.value)
+		this.redrag()
+		this.redraw()
+		this.onChanged()
+		this.onSetRatio(ratio)
+	]
+	setValue: func[newValue anim][
+		;trace("setValue:" newValue)
+		this.value: Math.max(0 (Math.min(1 newValue)) )
+		this.redrag()
+		;trace("setValue" (this.value) (minx + (this.value * activebgWidth) - (draggerWidth / 2)))
+		this.onChanged()
+	]
+	redrag: does [
+		var dragger: this.dragger
+		either this.horizontal? [
+			var draggerWidth: dragger._width + 1
+			var activebgWidth: this.activebg._width
+	
+			var minx: this.arrow1._width - 1
+			var maxx: minx + activebgWidth - draggerWidth + 1
+	
+			dragger._x: -1 + Math.round((Math.max(
+				(minx) (
+					Math.min(
+						(maxx)
+						(minx + (this.value * (activebgWidth - draggerWidth + 1))) ; - (draggerWidth / 2))
+					)
+				)
+			)))
+		][
+			var draggerHeight: dragger._height
+			var activebgHeight: this.activebg._height
+	
+			var miny: this.arrow1._height - 1
+			var maxy: miny + activebgHeight - draggerHeight + 1
+	
+			dragger._y: Math.round((Math.max(
+				(miny) (
+					Math.min(
+						(maxy)
+						(miny + (this.value * (activebgHeight - draggerHeight + 1))) ; - (draggerheight / 2))
+					)
+				)
+			)))
+		]
+	]
+	onChanged: does [
+		;trace("newvalue:" Math.round((100 * this.value)))
+	]
+	redraw: does [
+		var w: this.width
+		var h: this.height
+		
+		;trace("redraw" this.horizontal?)
+		var x2: w - 1 ;- 2
+		var y2: h - 1 ;- 2
+		with this.bg [
+			clear()
+			drawBox(1 1 x2 y2 1 this.clr_fill this.clr_edge)
+		]
+		either this.horizontal? [
+			with this.activebg [
+				var x2: w - ( 2 * h) + 1
+				var y2: h - 1
+				clear()
+				beginFill( 0.0.0 )
+				moveTo(  0  0 )
+				lineTo(  x2 0 )
+				lineTo(  x2 h )
+				lineTo(  0  h )
+				lineTo(  0  0 )
+				endFill()
+				_x: h - 1
+				_y: 0
+			]
+		;	trace("???" this.ratio)
+			this.dragger.resize( ((this.activebg._width + 1) * this.ratio) h)
+			this.dragger._x: h
+			this.dragger._y: 0
+			this.arrow1.setImage("gui_arrowLeft2" 70)
+			this.arrow2.setImage("gui_arrowRight2" 70)
+			this.arrow1.resize(h h)
+			this.arrow2.resize(h h)
+			this.arrow2._x: w - h
+			this.arrow2._y: 0
+		][
+			
+			with this.activebg [
+				var y2: h - ( 2 * w) + 1
+				var x2: w - 1
+				clear()
+				beginFill( 0.0.0 )
+				moveTo(  0  0 )
+				lineTo(  w  0 )
+				lineTo(  w y2 )
+				lineTo(  0 y2 )
+				lineTo(  0  0 )
+				endFill()
+				_y: w
+				_x: 0
+			]
+			
+
+			this.arrow1.setImage("gui_arrowUp2" 70)
+			this.arrow2.setImage("gui_arrowDown2" 70)
+			
+			this.dragger.resize( w ((this.activebg._height + 1) * this.ratio))
+			this.dragger._x: 0
+			this.dragger._y: w
+			this.arrow1.resize(w w)
+			this.arrow2.resize(w w)
+			this.arrow2._x: 0
+			this.arrow2._y: h - w
+		]
+		this.redrag()
+	]
+]
+
+GUI_Scroller: Extends GUI_ScrollerCore []

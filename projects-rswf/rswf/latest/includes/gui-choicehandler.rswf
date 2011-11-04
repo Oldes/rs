@@ -1,0 +1,54 @@
+rebol [
+	title: "GUI-ChoiceHandler"
+	type: 'mx
+	file: none
+	background: 153.165.139
+	rate: 12
+	size: 1x1
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 3-6-2003
+	purpose: {This object supervises group of CheckBox GUI objects}
+	build: 'no-page
+]
+gui_choiceHandler: EmptySprite
+exportAssets [gui_choiceHandler "GUI_choiceHandler"]
+
+doAction [
+	ConstantPool [
+		_global GUI_ChoiceHandlerClass this init prototype
+		executeCallBack _root.test element in_aElements
+	]
+		_global.GUI_ChoiceHandlerClass: func[][this.init()]
+		GUI_ChoiceHandlerClass.prototype: make MovieClip
+		GUI_ChoiceHandlerClass.prototype.init: func[][
+			_root.test: this._name add " init^/"
+			this.aElements: make Array
+			this.aValues: none
+		]
+		GUI_ChoiceHandlerClass.prototype.setSupervisionOn: func[in_aElements /local i][
+			_root.test: _root.test add this._name add " setSupervisionOn: " add newline
+			this.aElements: in_aElements
+			foreach element in_aElements [
+				_root.test: _root.test add "^-" add element add newline
+				element.executeCallBack: this.onChangeItemState
+			]
+		]
+		GUI_ChoiceHandlerClass.prototype.getValues: func[][
+			this.aValues: make Array []
+			foreach element this.aElements [
+				;_root.test: _root.test add element._name add element.checked add"^/"
+				this.aValues.push(element.checked)
+			]
+			;_root.test: _root.test add this._name add ".getValues=" add this.aValues add "^/"
+			;return "aaa" ;this.aValues
+		]
+		GUI_ChoiceHandlerClass.prototype.resetValues: func[][
+			foreach element this.aElements [
+				;_root.test: _root.test add element._name add element.checked add"^/"
+				element.setValue(false)
+			]
+		]
+		GUI_ChoiceHandlerClass.prototype.onChangeItemState: none
+		Object.registerClass("GUI_choiceHandler" GUI_ChoiceHandlerClass)
+]

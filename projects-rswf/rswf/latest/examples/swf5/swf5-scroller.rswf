@@ -1,0 +1,166 @@
+rebol [
+	title: "SWF5-Scroller" 
+	type: 'swf5
+	file: %scroller.swf
+	background: 153.165.139
+	rate: 24
+	size: 300x200
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {To make scroller (slider with arrows)}
+	date: 11-12-2003
+	comment: {
+		This is a try to make the most simple solution for slider with arrows without need to use MX functions.
+		I used bitmap for arrow just becuase I didn't liked the results using arrows as a vector shape. I like pixel precision and it's hard to control every pixel if you are using vectors which are antialiased. 
+	}
+]
+background 153.165.139
+include %includes/txt_info.rswf
+shp_scr-bg1: shape [
+	bounds 0x0 13x1
+	fill color 109.38.0	box 0x0 13x1
+]
+shp_scr-bg2: shape [
+	bounds 1x0 12x1
+	fill color 209.118.6 box 1x0 12x1
+]
+shp_scr-pane: shape [
+	bounds 1x0 12x1
+	fill color 235.226.19 box 1x0 12x1
+]
+bitmaps images [
+	key 255.255.255 smoothing off
+ 	%arrow.gif
+]
+btn_scr-arrow: defineButton2 [
+	as push
+	shapes [
+		[up hit] [id img_arrow.gif ]
+		down [id img_arrow.gif add 100.200.0]
+		over [id img_arrow.gif add 60.10.200]
+	]
+	actions [
+		release [
+			_parent.redrag((_parent.data + s))
+		]
+	]
+]
+btn_scr-pane: defineButton2 [
+	as push
+	shapes [
+		[up hit] [id shp_scr-pane ]
+		down [id shp_scr-pane add 100.200.0]
+		over [id shp_scr-pane add 60.10.200]
+	]
+	actions [
+		[press] [
+			a: true
+			_parent.update()
+			this.startDrag(false 0 9 0 (mh - _height))
+			_parent.draging: true
+		]
+		[ReleaseOutside release] [
+			a: false
+			_parent.update()
+			_parent.draging: false
+			stopDrag
+		]
+	]
+]
+spr_scr-bg1: sprite shp_scr-bg1
+spr_scr-bg2: sprite shp_scr-bg2
+spr_scr-pane: sprite btn_scr-pane
+spr_scr-arrow: sprite [
+	place btn_scr-arrow at -1x-1
+	showFrame end
+]
+spr_scroller: sprite [
+	bg1: place spr_scr-bg1 at 0x0
+	bg2: place spr_scr-bg2 at 0x9
+	ar1: place spr_scr-arrow at 0x0
+	ar2: place spr_scr-arrow [at 12x0 rotate 180]
+	pane: place spr_scr-pane [
+		at 0x9
+		actions [
+			mouseMove [	if a [_parent.update()	] ]
+		]
+	]
+	doAction [
+		ratio: 1
+		data: 0
+		setStep: func[s][
+			;step is used for scroller buttons to modify the data value
+			step: s
+			ar1.s: 0 - s
+			ar2.s: s
+		]
+		resize: func[h][
+			;use this functions to change height of the scroller
+			height: Math.max(h 28)
+			bg1._height: height
+			bg2._height: height - 18
+			pane.mh: height - 9
+			ar2._y: height - 1
+			pane._height: Math.round((Math.max(5 (bg2._height * ratio))))
+			maxh: bg2._height - pane._height
+			pane._y: (data * maxh) + 9
+		]
+		redrag: func[newdata noChange][
+			;use redrag if you want to change the data value
+			data: Math.max(0 (Math.min(1 newdata)))
+			pane._y: (data * maxh) + 9
+			if (noChange = undefined) or (noChange = true) [
+				_root.info: "Change" add (noChange = true)
+				onChange(this)
+			]
+		]
+		update: func[][
+			either maxh = 0 [
+				data: 0
+			][
+				data: (pane._y - 9) / maxh
+			]
+			onChange(this)
+		]
+		setRatio: func[r][
+			ratio: Math.max(0 (Math.min(1 r)))
+			resize(height)
+			onChange(this)
+		]
+		onChange: none
+		setStep(0.02)
+		resize(100)
+	]
+	showFrame end
+]
+exportAssets [spr_scroller "scroller"]
+showFrame
+;=======usage test=========
+scr_1: place spr_scroller at 100x25
+scr_2: place spr_scroller at 130x25 
+scr_3: place spr_scroller at 160x25 
+doAction [
+	scr_1.onChange: func[][
+		_parent.scr_3.resize((data * 150))
+		_parent.info: rejoin ["[scroller1] y:" pane._y " data:" data ]
+	]
+	scr_2.onChange: func[][
+		scr_1: _parent.scr_1
+		scr_1.ratio: 1 - data
+		scr_1.resize(scr_1.height)
+		_parent.info: rejoin ["[scroller2] y:" pane._y " data:" data ]
+	]
+	scr_3.onChange: func[][
+		_parent.info: rejoin ["[scroller3] y:" pane._y " data:" data ]
+	]
+	scr_2.ratio: 0.2
+	scr_2.resize(150)
+	scr_1.resize(150)
+	scr_3.setRatio(0.5)
+	scr_2.setStep(0.5)
+	scr_1.onChange()
+	stop
+]
+
+show frame
+end

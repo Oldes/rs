@@ -1,0 +1,47 @@
+rebol [
+	title: "MX-WebCam test"
+	type: 'mx
+	file: %mx-webcam.swf
+	background: 153.165.139
+	rate: 6
+	size: 330x270
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 30-8-2004
+	purpose: {Just to test WebCamera in Flash}
+	comment: {
+	Requires RSWF 0.9.3 and newer}
+]
+background 0.0.0
+obj_video: video
+myVid: place obj_video [at 5x5 scale 2] ;default size is 160x120
+doAction [
+	webcams: Camera.names.length
+	if webcams = 0 [
+		test: "No WebCam found"
+	] else if webcams > 1 [
+		System.showSettings(3)
+	]
+	
+	myCam: Camera.get()
+	myCam.setMode(160  120 12) ;(width height fps)
+	myVid.attachVideo(myCam)
+	
+	;motion detection:
+	x: 0
+	motion: func[mode][
+		test: reform [
+			"move" x  mode
+			"bandwidth:" myCam.bandwidth
+		]
+		x++
+	]
+	myCam.setMotionLevel(30 100) ;(sensitivity, timeout)
+	myCam.onActivity: func[mode][motion(mode)]
+]
+
+fnt_Courier: Font [name "_typewriter" bold]
+txt_test: EditText test 320x18 [ReadOnly border Font [fnt_Courier 11]]
+place txt_test at 5x245
+showFrame
+end

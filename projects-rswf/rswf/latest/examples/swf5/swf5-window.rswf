@@ -1,0 +1,335 @@
+rebol [
+	title: "SWF5-Window"
+	type: 'swf5
+	file: %window.swf
+	background: 153.165.139
+	rate: 60
+	size: 320x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 27-Mar-2002
+	history: [24-Apr-2002 "Window shadow casting"]
+	purpose: {To create resizable reusable window}
+	comment: {In this more advanced example it's possible to see the Flash5 limitations:
+	1. it's not possible to make window, that would contain larger movie than the window size because it's not possible to make resizable masking in Flash (mask may be only as a shape that is not resizable as a sprite)
+	2. It's not possible to make resizable sprite with bitmap tiling (that's mostly used in the skining softwares as WindowBlinds; in flash it's just stretching:-(
+	3. I'm missing some function to count text sizes and posibility to resize text fields (I'm using scale that is working a little bit with 'system fonts' (fonts that have no shapes defined), but that's not the best solution
+	4. I had some problems to use the resize() function from outside the window object [really strange] so I have to call it from the spr_resizer object that is used to set the right size of the window (because in the "data" action fired from the "content" [should be done when the content-movie is loaded] the content size is sometimes not set yet)
+	5. Bitmaps used in Flash are displaied with first row and column doubled (2pixels used) - probably some bug in Flash, because it's same in the files made in the Macromedia editor as well and is probably done by the smoothing Flash algorithm.
+	<hr>
+	Check out the new "<b>bitmaps</b>" key word for importing more bitmaps [images] at once}
+
+]
+background 153.165.139
+    
+shp_shadow: shape [	bounds 0x0 1x1 fill color 0.0.0 box 0x0 1x1 ]
+spr_shadow: sprite shp_shadow
+
+shp_w-left-upper-corner: shape [
+	bounds 0x0 2x16
+	fill color 115.150.132 box 0x0 2x16
+	fill color 0.0.0 box 1x1 2x14 1x15 2x16
+]
+spr_w-left-upper-corner: sprite shp_w-left-upper-corner
+shp_w-right-upper-corner: shape [
+	bounds 0x0 2x16
+	fill color 115.150.132 box 0x0 2x16
+	fill color 0.0.0 box 0x1 1x14 0x15 1x16
+]
+spr_w-right-upper-corner: sprite shp_w-right-upper-corner
+fnt_Arial: defineFont2 [name "Arial" bold]
+txt_w-title: EditText 't 100x18 [
+	Color 0.0.0	ReadOnly noSelect
+	Font [fnt_Arial 11]
+	Layout [align: 'left]
+]
+
+spr_w-title: sprite txt_w-title
+
+shp_w-top: shape [
+	bounds 0x0 1x16
+	fill color 115.150.132 box 0x0 1x16
+	fill color 0.0.0 box 0x1 1x14 0x15 1x16
+	fill color 66.81.74	box 0x2 1x3
+	fill color 82.97.90	box 0x3 1x4
+	fill color 99.113.107 box 0x4 1x13
+]
+btn_w-top: DefineButton2 [
+	shapes [[up down hit over][id shp_w-top]]
+	actions [
+		press [
+			constantPool [_parent]
+			_parent._parent._parent.tofront(_parent._parent)
+			startDrag "../../"
+		]
+		[release releaseOutside] [stopDrag]
+	] as push
+]
+spr_w-top: sprite [place btn_w-top showFrame end]
+
+shp_w-left: shape [
+	bounds 0x0 2x1
+	fill color 115.150.132 box 0x0 1x1
+	fill color 0.0.0 box 1x0 2x1
+]
+spr_w-left: sprite shp_w-left
+shp_w-right: shape [
+	bounds 0x0 2x1
+	fill color 0.0.0 box 0x0 1x1
+	fill color 115.150.132 box 1x0 2x1
+]
+spr_w-right: sprite shp_w-right
+shp_w-left-bottom-corner: shape [
+	bounds 0x0 2x2
+	fill color 115.150.132 box 0x0 2x2
+	fill color 0.0.0 box 1x0 2x1
+]
+spr_w-left-bottom-corner: sprite shp_w-left-bottom-corner
+shp_w-right-bottom-corner: shape [
+	bounds 0x0 2x2
+	fill color 115.150.132 box 0x0 2x2
+	fill color 0.0.0 box 0x0 1x1
+]
+btn_w-right-bottom-corner: defineButton2 [
+	shapes [[up down hit over][id shp_w-right-bottom-corner]]
+	actions [
+		press [if _parent._parent.type <> 2 [a: true]]
+		[release releaseOutside] [a: false]
+	]
+]
+spr_w-right-bottom-corner: sprite btn_w-right-bottom-corner
+shp_w-bottom: shape [
+	bounds 0x0 1x2
+	fill color 0.0.0 box 0x0 1x1
+	fill color 115.150.132 box 0x1 1x2
+]
+shp_w-bottom: sprite shp_w-bottom
+shp_w-bg: shape [
+	bounds 0x0 1x1
+	fill color 115.150.132 box 0x0 1x1
+]
+btn_w-bg: defineButton2 [
+	shapes [[up down hit over] [id shp_w-bg]]
+	actions [
+		press [
+			constantPool [_parent tofront]
+			_parent._parent.tofront(_parent)
+			startDrag "_parent"
+		]
+		[release releaseOutside] [stopDrag]
+	]
+]
+spr_w-bg: sprite btn_w-bg
+es: EmptySprite
+
+bitmaps images [
+	from %bitmaps/
+	%w-close0.gif %w-close1.gif	%w-min0.gif %w-min1.gif
+]
+
+btn_wb-close: defineButton2 [
+	shapes [
+		[over up] [id img_w-close0.gif]
+		[hit down] [id img_w-close1.gif]
+	]
+	actions [
+		release [_parent._parent.removeMovieClip()]
+	]
+]
+btn_wb-min: defineButton2 [
+	shapes [
+		[over up] [id img_w-min0.gif]
+		[hit down] [id img_w-min1.gif]
+	]
+	actions [
+		release [
+			_parent.minimize()
+		]
+	]
+]
+
+shp_w-menu: shape [
+	bounds -27x0 1x14
+	fill color 115.150.132 box -27x0 1x14
+	fill color 0.0.0 box -27x0 -26x13
+]
+spr_w-menu: sprite [
+	place shp_w-menu
+	place btn_wb-close at -13x-1
+	place btn_wb-min at -26x-1
+	showFrame end
+]
+
+spr_w-frame: sprite [
+	luc: place spr_w-left-upper-corner
+	top: place spr_w-top [at 2x0 scale [100 1]]
+	t1: place spr_w-title [at 4x0 ]
+	t2: place spr_w-title [at 2x-2  add 255.255.255]
+	lef: place spr_w-left [at 0x16 scale [1 50]]
+	rig: place spr_w-right [at 102x16 scale [1 50]]
+	bot: place shp_w-bottom [at 2x66 scale [100 1]]
+	ruc: place spr_w-right-upper-corner at 102x0
+	menu: place spr_w-menu at 102x1
+	rbc: place spr_w-right-bottom-corner [
+		at 102x66
+		actions [
+			mouseMove [
+				if a [
+					constantPool [_parent ym xm nh nw Math.max]
+					tellTarget _parent [
+						ym: Math.max(top._height _ymouse)
+						xm: Math.max(menu._width _xmouse)
+						nh: ym - top._height
+						nw: xm - lef._width
+						resize(nw nh)
+					]
+				]
+			]
+			mouseUp [a: false]
+		]
+	]
+	lbc: place spr_w-left-bottom-corner at 0x66
+
+	doAction [
+		constantPool [
+			m o _parent top bot rig ruc luc bg
+			resize content szx szy t1 t2 menu frame
+		]
+		m: "1"
+		minimize: func[][
+			either m = "1" [
+				m: "0" o: top._height shd_height: o
+				_parent.shd._height: o + bot._height
+			][	m: "1" o: _parent.h + top._height
+				_parent.shd._height: o + bot._height
+			]
+			_parent.content._visible: m
+			_parent.bg._visible: m
+			lef._visible: m
+			rig._visible: m
+			bot._y: o
+			rbc._y: o
+			lbc._y: o
+		]
+		resize: func[szx szy][
+			tellTarget _parent [
+				h: szy	w: szx
+				bg._width: szx
+				bg._height: szy
+				shd._height: szy + frame.top._height 
+					+ frame.bot._height
+				shd._width: szx + frame.lef._width
+					+ frame.rig._width
+				if type <> 2 [
+					content._width: szx
+					content._height: szy
+				]
+			]
+			top._width: szx
+			ruc._x: szx + luc._width
+			lef._height: szy
+			rig._height: szy
+			rig._x: ruc._x
+			bot._y: szy + top._height
+			bot._width: top._width
+			rbc._x: ruc._x
+			rbc._y: bot._y
+			lbc._y: bot._y
+			t1._width: szx
+			t2._width: szx
+			menu._x: ruc._x
+		]
+	]
+	showFrame
+	end
+]
+spr_resizer: sprite [
+	stop show 2 frames
+	doAction [
+		constantPool [_parent w h frame content type]
+		either _parent.w <> 0 [
+			tellTarget _parent [
+				frame.resize(w h)
+			]
+			goto frame 1
+		][
+			tellTarget _parent [
+				if type = "1" [
+					w: content._width
+					h: content._height
+				]
+			]
+			goto frame 2 and play
+		]
+	]
+	showFrame end
+]
+spr_window: sprite [
+	shd: place spr_shadow [at 3x3 scale 100x50 multiply 0.0.0.150]
+	bg: place spr_w-bg [at 2x16 scale 100x50]
+	rsz: place spr_resizer
+	content: place spr_w-bg [
+		at 2x16
+		actions [
+			data [
+				constantPool [_parent w h]
+				switch _parent.type [
+					"0" [
+						_width: _parent.w
+						_height: _parent.h
+					]
+					"1" [
+						_parent.w: _width
+						_parent.h: _height
+					]
+				]
+				_parent.rsz.gotoandplay(2)
+			]
+		]
+	]
+	frame: place spr_w-frame
+	showFrame end
+]
+ExportAssets [spr_window "window"]
+
+;and practical example:
+doAction [
+	constantPool [
+		win t t1 t2 ttl tp
+		addwin i id url top
+	]
+	init: func[win ttl tp url][
+		tellTarget win [
+			type: tp
+			t: ttl
+			content.loadMovie(url get)
+			tellTarget frame [
+				t1.t: ttl
+				t2.t: ttl
+			]
+		]
+	]
+	tofront: func[obj][
+		obj.swapDepths(top)
+		top: obj
+	]
+	top: i: 0
+	addwin: func[id ttl atx aty szx szy url tp][
+		attachMovie("window" id i)
+		win: eval(eval(id))
+		init(id ttl tp url)
+		win.w: szx
+		win.h: szy
+		win._x: atx
+		win._y: aty
+		top: win
+		i: i + 1
+	]
+	addwin("w2" "Slider example" 10 10 300 90 "slider.swf" 2)
+	addwin("w1" "Daemon picture" 50 110 130 130 "demon.swf")
+	addwin("w3" "Analog clock" 180 140 120 120 "clock2.swf")
+	addwin("w4" "Scale slider" 20 170 115 115 "sc-slider.swf" 2)
+]
+
+showFrame
+end

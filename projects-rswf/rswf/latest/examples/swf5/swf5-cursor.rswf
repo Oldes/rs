@@ -1,0 +1,33 @@
+rebol [
+	title: "SWF5-cursor example"
+	type: 5
+	file: %cursor.swf
+	background: 152.174.149
+	rate: 60
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 4-Dec-2001
+	purpose: {To show how to hide default mouse cursor and use one's own}
+	Comment: {For SWF version 6 and later use %mx-cursor.rswf version}
+]
+
+background 152.174.149
+shp_cursor: Shape [
+	Bounds -20x-20 20x20
+	edge [width 1]
+	line -20x0 20x0
+	line 0x-20 0x20
+	Fill color 255.200.100
+	box -5x-5 5x5
+]
+spr_cursor: Sprite shp_cursor
+obj_cursor: Place  spr_cursor
+
+DoAction [
+	Mouse.hide()
+	obj_cursor.startDrag(true 0 0 320 320)
+	;stop
+]
+showFrame
+end

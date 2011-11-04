@@ -1,0 +1,45 @@
+rebol [
+	title: "SWF5-SET variable"
+	type: 'swf5
+	file: %setvar.swf
+	background: 153.165.139
+	rate: 12
+	size: 321x101
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 20-8-2002
+	purpose: {To show how to set dynamically created variables}
+	comment: {
+	Since 20.8.02 the <b>set</b> function is able to set dynamically created variables.
+	The syntax is:
+	<code>set [some expression] = value or expression</code>
+	and is equal to:
+	<code>set(variable,expression);</code>
+	in the ActionScript.
+	<i>The sign <b>=</b> after the 'set' block is not necessary!</i>}
+]
+background 153.165.139
+fnt_Arial: Font [name "Arial" bold]
+txt_test: EditText info 320x100 [
+	Font [fnt_Arial 12] border
+]
+place txt_test
+doAction [
+	b: 1 a: "var" c: "ccc"
+	set [a add "_number_" add b] "Rebolution"
+	set ["test" add 2] = "random number " add random 100
+	set ["blk"] [1 "2.value in block" 3]
+	set ["test" add 3] make date! []
+	set ["obj"] make object! [value: 100]
+	set ["obj.va" add "lue"] var_number_1
+	info: rejoin [
+		{Variable 'var_number_1' is: } var_number_1
+	  	{^/Variable 'test2' is: } test2
+	  	{^/Variable 'blk' is a block: } blk.toString()
+	  	{^/Variable 'test3' is: } test3
+	  	{^/Variable 'obj.value' is: } obj.value
+  	]
+]
+
+showFrame
+end

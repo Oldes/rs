@@ -1,0 +1,31 @@
+rebol [
+	title: "SWF-mask example"
+	type: 'swf
+	file: %mask.swf
+	background: 152.174.149
+	rate: 1
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 11-12-2001
+	purpose: {To show how to use 'ClipDepth in the PlaceObject2}
+]
+background 152.174.149
+shp_grid: Shape [
+	Bounds 0x0 320x320
+	line-style [width 2]
+	grid 0x0 320x320 20x20
+]
+shp_mask: Shape [
+	Bounds 0x0 320x320
+	no edge
+	fill-style [color 0.0.0]
+	positions relative
+	at 60x60 circle 40
+	at 260x260 circle 40
+	at 160x160 circle 140 60
+]
+PlaceObject2 shp_mask [ClipDepth 3]
+PlaceObject2 shp_grid
+showframe
+end

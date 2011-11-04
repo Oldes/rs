@@ -1,0 +1,64 @@
+rebol [
+	title: "Flash8 - File upload"
+	type: 'swf8
+	file: %swf8-fileupload.swf
+	background: 255.255.255
+	rate: 24
+	size: 400x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 12-10-2005
+	purpose: {To test file uploading possibility of the Flash 8}
+	comment: {}
+	compressed: true
+]
+background 255.255.255
+include %includes/txt_info2.rswf
+doAction [
+	tf_info._visible: true
+	tf_info._height: 319
+	tf_info._width: 399
+	tf_info.border: true
+	cmsg("File upload test... select an image you want to upload.")
+	imageTypes: make object! [
+		description: "Images (*.jpg, *.jpeg, *.gif, *.png)"
+		extension:   "*.jpg; *.jpeg; *.gif; *.png"
+	]
+	allTypes: [imageTypes]
+
+	listener: make object! []
+	listener.onSelect: func[file][
+		cmsg((reform [
+			"onSelect:" file.name
+			"^/  size:" file.size "bytes"
+			"^/  type:" file.type
+			"^/  modificationDate:" file.modificationDate
+			"^/  creationDate:    " file.creationDate
+			"^/  creator: " file.creator
+		]))
+		either file.size <= 100000 [
+			if not file.upload("http://box.lebeda.web/~hmm/rswf/uploadexample.php") [
+				cmsg("Upload dialog failed to open.")
+			]
+		][
+			cmsg((reform ["The file is too large for uploading!"]))
+		]
+	]
+	listener.onCancel:    func[file][cmsg("onCancel")]
+	listener.onOpen:      func[file][cmsg((reform ["onOpen:" file.name]))]
+	listener.onProgress:  func[file bytesLoaded bytesTotal][
+		cmsg((reform ["onProgress with bytesUpLoaded:" bytesLoaded "bytesTotal:" bytesTotal]))
+	]
+	listener.onComplete:  func[file][cmsg((reform ["onComplete:"  file.name]))]
+	listener.onHTTPError: func[file httpError][cmsg((reform ["onHTTPError:" file.name httpError]))]
+	listener.onIOError:   func[file][cmsg((reform ["onIOError:"   file.name]))]
+	listener.onSecurityError: func[file errorString][
+		cmsg((reform ["onSecurityError:" file.name "errorString:" errorString]))
+	]
+	var fileRef: make FileReference! []
+	fileRef.addListener(listener)
+	fileRef.browse(allTypes)
+]
+
+showFrame
+end

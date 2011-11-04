@@ -1,0 +1,60 @@
+rebol [
+	title: "Star field 2"
+	type: 'swf5                                                                                      
+	file: %starfield2.swf
+	background: 0.0.0
+	rate: 24
+	size: 320x200
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {just another simple animation}
+	comment: {
+		Inspired by Anton Rolls' rebol script <a href="http://www.lexicon.net/anton/rebol/anim-stars.r">%anim-stars.r</a>}
+
+]
+background 0.0.0
+shp_circle: Shape [
+	fill color 255.255.255
+	circle 1
+]
+spr_circle: Sprite shp_circle
+exportAssets [spr_circle "star"]
+doAction [
+	sx: 320 sy: 200	;screen size
+	mx: sx / 2
+	my: sy / 2
+	for i 1 100 1 [
+		o: make object! [
+			x: random sx - mx
+			y: random sy - my
+			z: random 2100 + 50
+		]
+		this.attachMovie("star" ("s" add i) i o)
+	]
+	reset: func[][
+		for i 1 100 1 [
+			o: eval(eval("s" add i))
+			with o [
+				z: z - 40
+				if z < 10 [
+					x: random sx - mx
+					y: random sy - my
+					z: 2100 + random 50
+				]
+				_xscale: _yscale: 210 - (z * 0.1)
+				_x: mx + (x * 1000 / z)
+				_y: my + (y * 1000 / z)
+				
+			]
+		]
+	]
+]
+es: emptySprite
+emiter: place es [
+    actions [
+        enterFrame [_parent.reset()]
+    ]
+]
+
+showFrame
+end

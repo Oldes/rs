@@ -1,0 +1,129 @@
+rebol [
+	title: "SWF5-Scale slider" 
+	type: 'swf5
+	file: %sc-slider.swf
+	background: 0.0.0
+	rate: 1
+	size: 116x116
+	author: "Oldes"
+	date: 26-4-2002
+	email: oliva.david@seznam.cz
+	purpose: {How to make scales using precise bitmap grids + HTML text}
+	comment: {
+	It was really hard to find that bitmaps (DefineBitsLossless) are always considered to be as long tags although they are smaller than 62 bytes (that was bug in the compiler).
+	Check out the new key words '<b>smoothing off</b>' in the shape tag. This tells the interpreter that bitmaps should be draw without smoothing (another undocumented feature in the Flash spec.) More you can see in the <a href="swf-smoothing.html">smoothing example</a>
+	Another interesting thing in this example is how to make HTML text field.
+	About <b>ConstantPool</b>: this is used to make the file smaller - words or strings that are defined in the ConstantPool are then used in the compiled code just as 2bytes. The limitation is, that ConstantPool is just for one Action tag; ConstantPool is not used for setting function names so it's useless to include word 'onChange' in CP on the end of this example.}
+]
+background 0.0.0
+bitmaps [
+	from %bitmaps/grids/ key 255.158.0
+	%grid1x2.gif %grid1x10.gif %grid1x20.gif
+]	
+shp_scale: shape [
+	bounds 0x0 16x101 smoothing off
+	fill color 0.0.0 box 0x0 15x101
+	fill color 255.158.0 box 1x1 14x100
+	fill bitmap bmp_grid1x2.gif  box 0x0 5x100
+	fill bitmap bmp_grid1x10.gif box 0x0 10x100
+	fill bitmap bmp_grid1x20.gif box 0x0 15x101
+]
+shp_arrow: shape [
+	fill color #006400 line 0x0 7x-6 7x6 0x0
+	fill color #f0f8ff line 1x0 5x-4 5x4 1x0
+]
+btn_sc-slider-bg: Button [
+	as push
+	shapes [
+		[up hit down over] [id shp_scale ]
+	]
+	actions [
+		[press] [
+			ConstantPool [pane]
+			pane.a: true
+			pane._y: math.min(100 _ymouse)
+			update()
+			pane.startDrag(false 6 0 6 100)
+		]
+		[ReleaseOutside release] [
+			pane.a: false
+			update()
+			this.stopDrag()
+		]
+	]
+]
+btn_slider-pane: Button [
+	as push
+	shapes [
+		[up down over hit] [id shp_arrow ]
+	]
+	actions [
+		[press] [
+			a: true
+			update()
+			this.startDrag(false 6 0 6 100)
+		]
+		[ReleaseOutside release] [
+			a: false
+			this.stopDrag()
+		]
+	]
+]
+spr_slider-pane: sprite btn_slider-pane
+obj_sc-slider: sprite [
+	place btn_sc-slider-bg
+	pane: place spr_slider-pane [
+		at 6x0
+		actions [
+			mouseMove [	if a [_parent.update() updateAfterEvent()]]
+		]
+	]
+	doAction [
+		constantPool [
+			init v value pane onChange old
+		]
+		init: func[v][
+			value: v
+			pane._y: 100 * v
+			onChange()
+		]
+		update: func[][
+			old: value
+			value: pane._y / 100
+			if old <> value [
+				onChange()
+			]
+		]
+	]
+	show frame
+	end
+]
+ExportAssets [obj_sc-slider "sc-slider"]
+
+;and usage example:
+fnt_Arial: defineFont2 [name "Arial"]
+txt_state: EditText 'test 100x100 [
+	html Color 0.0.0 border Font [fnt_Arial 12]
+]
+place txt_state at 15x15
+o1: place obj_sc-slider  [at 15x15 reflect [-1 1]]
+o2: place obj_sc-slider [at 15x15 rotate 270]
+doAction [
+	constantPool [
+		{^/<b><font color="#FF0000">Slider } {</font></b> = }
+		info value o1 _parent
+	]
+	info: func[][
+		test: {^/<b><font color="#FF0000">Slider } add "1"
+		  add {</font></b> = } add (o1.value * 5)
+		  add {^/<b><font color="#FF0000">Slider } add "2"
+		  add {</font></b> = } add (o2.value * 5)
+	]
+	telltarget o1 [
+		init(0.5)
+		onChange: func[][_parent.info()]
+	]
+	o2.onChange: func[][_parent.info()]
+	info()
+]
+showFrame end

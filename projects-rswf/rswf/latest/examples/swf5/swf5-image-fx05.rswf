@@ -1,0 +1,39 @@
+rebol [
+	title: "SWF5-Image-FX random lines"
+	type: 'swf5
+	file: %swf5-image-fx05.swf
+	background: 0.0.0
+	rate: 60
+	size: 276x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	purpose: {Another variation of the image effect}
+	date: 3-1-04
+	comment: {}
+]
+background 0.0.0
+bmp_picture: bitmap %hlava.jpg size 276x320
+rebol [
+	use [imgsize line i][
+		imgsize: rswf/placed-images/2
+		line: make block! imgsize/x
+		repeat i imgsize/x [insert tail line i]
+		line: random line
+		forall line [
+			i: first line
+			rswf/compile load rejoin [{
+				shp_pictureLine} i {: Shape [
+					Bounds 0x0 1x} imgsize/y {
+				    fill-style [bitmap bmp_picture at } i * -1 {x0]
+				    box 0x0 1x} imgsize/y {
+				]
+				spr_pictureLine} i {: Sprite shp_pictureLine} i {
+				l} i {: place spr_pictureLine} i { at } i * 1 {x0
+				showFrame
+			}]
+		]
+	]
+]
+
+show 50 frames
+end

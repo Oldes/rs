@@ -1,0 +1,477 @@
+rebol [
+	title: "GUI_EarthMap"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 24
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 31/1/2008
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+
+require [
+	%gui/defaults.rswf
+	%gui/GUI_ClipHandler.rswf
+]
+
+
+GUI_EarthMap: Extends MovieClip [
+	depth: 1
+;	maxRows:
+;	maxCols:
+;	maxWidth:
+;	maxHeight:
+;	midWidth:
+;	midHeight:
+;	maxCol:
+;	minCol:
+;	maxRow:
+;	minRow:
+;	Pos:
+;	width:
+;	height:
+;	width2:
+;	height2: none
+	maxDepth: 14
+	m2p:  40075004 ;40078554.1189064 ;<-obvod rovníku
+	km2p: 40075.004   
+	scale: 1
+	TILESIZE: 256
+	typ: "YahooSat"
+	
+	b_mm2km: [
+1.92E-5
+4E-5
+8E-5
+1.55E-4
+3.1E-4
+6.2E-4
+1.24E-3
+2.6E-3
+4.9E-3
+9.8E-3
+2.06E-2
+4.1E-2
+8.2E-2
+0.164
+0.328
+0.68
+1.36
+	]
+	comment {
+	foreach [px km][
+	78 5000
+	62 2000
+	62 1000
+	75 600
+	75 300
+	75 150
+	75 75
+	60 30
+	80 20
+	80 10
+	85 5
+	64 2
+	64 1
+	64 .5
+	64 .25
+	50 .1
+	50 .05
+][
+print (px + 18) / (km * 1000)
+]
+}
+
+	init: func[width height][
+		;trace("initCore:" this)
+		if width  <> undefined [this.width:   width]
+		if height <> undefined [this.height: height]
+		
+		this.createEmptyMovieClip("satTiles" 2)
+		this.createEmptyMovieClip("mapTiles" 1)
+		this.createEmptyMovieClip("oveTiles" 3)
+		this.createEmptyMovieClip("canvas"   4)
+		this.createEmptyMovieClip("copyright" 5)
+		this.copyright.createTextField("tf" 3 0 0 100 15)
+		this.copyright.blendMode: "invert"
+		var tf: this.copyright.tf
+		tf.embedFonts: tf.selectable: tf.html: tf.autoSize: true
+		tf.setNewTextFormat(defaultSmallFont)
+		tf.htmlText: {<font color="#FFFFFF">made in rebol/flash dialect. map©2008 yahoo! inc., data©2006 navteq, imagery©2008 i-cubed</font>}
+
+		this.satTiles._visible: true
+		this.mapTiles._visible: false
+		;this.satTiles.blendMode: "darken"
+		;this.satTiles._alpha: 80
+		
+		
+		this.setDepth(this.depth)
+		
+		GUI_StyleMaster.addListener(this)
+		
+		;this.cacheAsBitmap: true
+		;trace(this "ready")
+		this.setSize(512 512)
+		;this.setLatLong(([0 0]))
+	]
+	
+	mercToDec: func[n][
+		return (( Math.atan(( Math.exp(n) )) * 2 - 1.570796E+000  ))
+	]
+	decToMerc: func[n][
+	    return (( Math.log(( Math.tan(( (n + 1.570796E+000) / 2 )) )) ))
+    ]
+	latLongToPos: func[latLong][
+		var pos: make Point! []
+		;trace(latLong/2 latLong/1 this.midWidth)
+		pos.x: Math.round(( this.midWidth  - ((latLong/2 / -360) * this.maxWidth) ))
+		pos.y: Math.round(( this.midHeight - (((( this.decToMerc(( (latLong/1 * 'PI) / 180)) ) / 2) / 'PI) * this.maxHeight) ))
+		return pos
+	]
+	posToLatLong: func[pos][
+		return [
+			( (180 * this.mercToDec(( (( (this.midHeight - pos.y) / this.maxHeight) * 'PI) * 2) )) / 'PI)
+			(pos.x - this.midWidth) / this.maxWidth * 360
+		]
+	]
+	;metresToPixels: func[metres][
+	;	return ((this.maxWidth / this.m2p) * metres)
+	;]
+	metresToPixels: func[metres][
+		return ( (this.b_mm2km/(this.depth - 1)) * metres )
+	]
+	kmToPixelsFromLL: func[km lat long][
+		var lat2: lat + 2
+		var d: this.distance(lat long lat2 long)
+		var p1: this.latLongToPos(([lat long])) 
+		var p2: this.latLongToPos(([lat2 long])) 
+		var k: (p1.y - p2.y ) / d
+		;trace("d:" d)
+		;trace("p1:" p1)
+		;trace("p2:" p2)
+		;trace("k:" k)
+		trace("kmTOPixelsFromLL: dk:"  k km)
+		return ( k * km )
+	]
+	kmToPixels: func[km][
+		;var lat2: lat + 2
+		;var d: this.distance(lat long lat2 long)
+		;var p1: this.latLongToPos(([lat long])) 
+		;var p2: this.latLongToPos(([lat2 long])) 
+		;var k: (p1.y - p2.y ) / d
+		;trace("d:" d)
+		;trace("p1:" p1)
+		;trace("p2:" p2)
+		;trace("k:" k)
+		trace("kmTOPixels: dk:"  this.distKoef km)
+		return ( this.distKoef * km )
+	]
+	updateDistKoef: func[lat long] [
+		var lat2: lat + 2
+		var d: this.distance(lat long lat2 long)
+		var p1: this.latLongToPos(([lat long])) 
+		var p2: this.latLongToPos(([lat2 long])) 
+
+		this.distKoef: (p1.y - p2.y ) / d
+		trace("UpdateDistKoef:" lat long this.distKoef)
+	]
+	
+	distance: func[lat1 lon1 lat2 lon2][
+		;r=3437.74677 (nautical miles)
+		;r=6378.7 (kilometers)
+		;r=3963.0 (statute miles) 
+		var r: Math.PI / 180
+		lat1: lat1 * r
+		lat2: lat2 * r
+		
+		return (( 6378.135 * Math.acos((
+			( (Math.sin(lat1)) * (Math.sin(lat2)) ) + ((Math.cos(lat1)) * (Math.cos(lat2)) * (Math.cos(((lon2 - lon1) * r))))
+			))
+		))
+	]
+	distancePX: func[lat1 lon1 lat2 lon2][
+		var p1: latLongToPos(lat1 lon1)
+		var p2: latLongToPos(lat2 lon2)
+		var distPX: make Point! []
+		distPX.x: p1.x - p2.x
+		distPX.y: p1.y - p2.y
+		trace("distPX:" distPX)
+	]
+	
+	resize: func[width height][
+		if (this.width <> width) or (this.height <> height) [
+			this.setSize(width height)
+			this.redraw()
+		]
+	]
+	redraw: func[ /local row col][
+		vat Pos: this.Pos
+		var width:   this.width
+		var height:  this.height
+		var width2:  this.width2
+		var height2: this.height2
+		var sc: 1
+		trace("redraw:" Pos width2)
+		this.minCol: var minCol: to-integer ((Pos/x + width2  + (1 - sc * width))  / 256)
+		this.maxCol: var maxCol: to-integer ((Pos/x - width2  - (1 - sc * width))  / 256)
+		this.minRow: var minRow: to-integer ((Pos/y + height2 + (1 - sc * height)) / 256)
+		this.maxRow: var maxRow: to-integer ((Pos/y - height2 - (1 - sc * height)) / 256)
+		;trace("min/max:" this.minCol this.minRow "/" this.maxCol this.maxRow)
+		
+		this.satLayer._x: this.mapLayer._x: this.oveLayer._x: this.canvas._x: Math.round((width2 - Pos.x))
+		this.satLayer._y: this.mapLayer._y: this.oveLayer._y: this.canvas._y: Math.round((height2 - Pos.y))
+
+		
+		;trace(this.mapLayer._x this.mapLayer._y)
+		;trace(this.satLayer)
+		for row minRow maxRow 1 [
+			for col minCol maxCol 1 [
+				;trace(col row )
+				var name: rejoin ["t" col "x" row]
+				
+				if this.satTiles._visible [
+					var tile: this.satLayer/(name)
+					either tile = undefined [
+						this.satLayer.attachMovie("GUI_ClipHandler" (name) ( row * this.maxCols + col) (
+							context[
+								_x: 256 * col
+								_y: 256 * row
+								
+							]
+						))
+						var tile: this.satLayer/(name)
+						
+						var srcSat: this.getYahooSatSource(col row this.depth)
+						tile.hideWhileLoading?: false
+						tile.clr_fill:  #cccccc
+						tile.clr_edge1: #000000 ;#CCCCCC
+						tile.clr_edge2: #cccccc
+						tile.loadClip( srcSat 256 256 )
+					][
+						tile._visible: true
+					]
+				]
+				if this.mapTiles._visible [
+					var tile: this.mapLayer/(name)
+					either tile = undefined [
+						this.mapLayer.attachMovie("GUI_ClipHandler" (name) ( row * this.maxCols + col) (
+							context[
+								_x: 256 * col
+								_y: 256 * row
+								
+							]
+						))
+						var tile: this.mapLayer/(name)
+						var srcMap: this.getYahooMapSource(col row this.depth)
+						;trace(srcMap)
+						tile.hideWhileLoading?: false
+						tile.clr_fill:  #cccccc
+						tile.clr_edge1: #000000 ;#CCCCCC
+						tile.clr_edge2: #cccccc
+						tile.loadClip( srcMap 256 256 )
+					][
+						tile._visible: true
+					]
+				]
+				if this.oveTiles._visible [
+					var tile: this.oveLayer/(name)
+					either tile = undefined [
+						this.oveLayer.attachMovie("GUI_ClipHandler" (name) ( row * this.maxCols + col) (
+							context[
+								_x: 256 * col
+								_y: 256 * row
+								
+							]
+						))
+						var tile: this.oveLayer/(name)
+					
+						var srcOve: this.getYahooOveSource(col row this.depth)
+
+						tile.hideWhileLoading?: false
+						tile.clr_fill:  #cccccc
+						tile.clr_edge1: #000000 ;#CCCCCC
+						tile.clr_edge2: #cccccc
+						tile.loadClip( srcOve 256 256 )
+					][
+						tile._visible: true
+					]
+				]
+			]
+		]
+		this.copyright._y: this.height - 12
+		
+	]
+	setLatLong: func[latLong][
+		;trace("setLatLong:" latLong)
+		this.latLong: latLong
+		this.Pos: this.latLongToPos(latLong)
+		this.redraw()
+	]
+	setSize: func[width height][
+		this.width:  width
+		this.height: height
+		this.width2:  width  / 2
+		this.height2: height / 2
+	]
+
+	getBBDepth: func[latMin lngMin latMax lngMax /local i ][
+		;trace("BB?" latMin lngMin latMax lngMax )
+		var latDist: map.distance(latMin 0 latMax 0)
+		var lngDist: map.distance(0 lngMin 0 lngMax)
+		for depth this.maxDepth 1 -1 [
+			var k: ((Math.pow(2 depth)) * this.TILESIZE) / this.km2p
+			;trace(depth "W:" (k * latDist) this.height this.width)
+			if ((k * latDist) < (this.width - 10)) and ((k * lngDist) < (this.height - 10)) [ break] 
+		]
+		;trace("BBDepth:" depth)
+		return depth
+	]
+	setDepth: func[depth][
+		;trace("setDepth:" depth)
+		if depth > this.maxDepth or depth < 1 [depth: this.depth]
+		this.depth: depth
+		this.maxRows: this.maxCols: Math.pow(2 depth)
+		this.maxWidth:  this.maxCols * this.TILESIZE
+		this.maxHeight: this.maxRows * this.TILESIZE
+		this.midWidth:  this.maxWidth / 2
+		this.midHeight: this.maxHeight / 2
+		var layerName: "satLayer" add depth
+		var layer: this.satTiles/(layerName)
+		either layer = undefined [
+			this.satTiles.createEmptyMovieClip(layerName depth)
+			this.satLayer: this.satTiles/(layerName)
+		][
+			layer._visible: true
+			this.satLayer: layer
+		]
+		;comment {
+		var layerName: "mapLayer" add depth
+		var layer: this.mapTiles/(layerName)
+		either layer = undefined [
+			this.mapTiles.createEmptyMovieClip(layerName depth)
+			this.mapLayer: this.mapTiles/(layerName)
+			this.mapTiles._alpha: 100
+			
+		][
+			layer._visible: true
+			this.mapLayer: layer
+		]
+		var layerName: "oveLayer" add depth
+		var layer: this.oveTiles/(layerName)
+		either layer = undefined [
+			this.oveTiles.createEmptyMovieClip(layerName depth)
+			this.oveLayer: this.oveTiles/(layerName)
+			this.oveTiles._alpha: 100
+			
+		][
+			layer._visible: true
+			this.oveLayer: layer
+		]
+	;	}
+
+
+		
+		;this.m2p: 2000 * this.distance(0 -90 0 90)
+		this.onChangeDepth(depth)
+		;return true
+	]
+	zoomIn:  does [
+		this.satLayer._visible: this.mapLayer._visible: this.oveLayer._visible: false
+		this.setDepth((this.depth + 1))
+		this.setLatLong(this.latLong)
+	]
+	zoomOut: does [
+		this.satLayer._visible: this.mapLayer._visible: this.oveLayer._visible: false
+		this.setDepth((this.depth - 1))
+		;trace(this.latLong)
+		this.setLatLong(this.latLong)
+	]
+	
+	
+	updateStyle: does[
+    	this.redraw()
+    	;trace("updating")
+	]
+	
+	getYahooSatSource: func[x y z][
+		;trace("YahooMaps:" x y z)
+		return rejoin [
+			"http://us.maps3.yimg.com/aerial.maps.yimg.com/img?md=200611151500"
+			"&x=" x
+			"&y=" to-integer (( this.maxRows / 2) - y - 1)
+			"&z=" (18 - z) ;18 = maxDepth
+			"&v=1.6&t=a" ;satType
+		]
+	]
+	getYahooMapSource: func[x y z][
+		return rejoin [
+			"http://us.maps1.yimg.com/us.png.maps.yimg.com/png?v=3.6&t=m&s=256&f=j"
+			"&x=" x
+			"&y=" to-integer (( this.maxRows / 2) - y - 1)
+			"&z=" (18 - z)
+		]
+	]
+	getYahooOveSource: func[x y z][
+		return rejoin [
+			"http://us.maps3.yimg.com/aerial.maps.yimg.com/png?v=2.2&t=h&s=256"
+			"&x=" x
+			"&y=" to-integer (( this.maxRows / 2) - y - 1)
+			"&z=" (18 - z)
+		]
+	]
+	onChangeDepth: none
+	dragMap: does [
+		this.oldX: this.wasX: this._xmouse
+		this.oldY: this.wasY: this._ymouse
+		var p: make Point! []
+		p.x: this.mapLayer._xmouse
+		p.y: this.mapLayer._ymouse
+		var ll: this.posToLatLong(p)
+					
+		;trace(p)
+		this._parent.fld.setText(ll)
+		this.onMouseMove: does [
+			;this.Pos.x: this.Pos.x + this.oldX - this._xmouse
+			;this.Pos.y: this.Pos.y + this.oldY - this._ymouse
+			this.mapLayer._x: this.satLayer._x: this.oveLayer._x: this.canvas._x: this.mapLayer._x - this.oldX + this._xmouse
+			this.mapLayer._y: this.satLayer._y: this.oveLayer._y: this.canvas._y: this.mapLayer._y - this.oldY + this._ymouse
+			
+			this.oldX: this._xmouse
+			this.oldY: this._ymouse
+			updateAfterEvent()
+			;this.redraw()
+		]
+		this.onMouseUp: does [
+			this.Pos.x: this.Pos.x + this.wasX - this._xmouse
+			this.Pos.y: this.Pos.y + this.wasY - this._ymouse
+			this.latLong: this.posToLatLong(this.Pos)
+			;trace(this.latLong)
+			this.redraw()
+			delete this.onMouseMove
+			delete this.onMouseUp
+		]
+	]
+	slideToPos: func[x y][
+		this.mapLayer.roundedSlideTo(x y .5)
+		this.satLayer.roundedSlideTo(x y .5)
+		this.canvas.roundedSlideTo(x y .5)
+		this.mapLayer.onTweenComplete: does [
+			var tp: this._parent._parent
+			tp.Pos.x: tp.width2  - this._x
+			tp.Pos.y: tp.height2 - this._y
+			;trace("???:" tp.Pos.x tp.Pos.y tp tp.width2 this._x)
+			tp.latLong: tp.posToLatLong(tp.Pos)
+			;trace(this.latLong)
+			tp.redraw()
+			delete this.onTweenComplete
+		]
+	]
+	onPress: does [
+		;trace(this.mapLayer._xmouse this.mapLayer._ymouse)
+		this.dragMap()
+	]
+]

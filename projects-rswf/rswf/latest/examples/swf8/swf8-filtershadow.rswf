@@ -1,0 +1,44 @@
+rebol [
+	title: "Flash8 - DropShadowFilter"
+	type: 'swf8
+	file: %swf8-filtershadow.swf
+	background: 153.165.139
+	rate: 12
+	size: 320x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 5-10-2005
+	purpose: {To test and demonstrate the DropShadowFilter}
+	comment: {}
+	compressed: true
+]
+background 153.165.139
+shp_box: shape [
+	fill color 255.255.255
+	box -50x-50 50x50
+	circle 30
+]
+spr_box: sprite shp_box
+box: place spr_box at 160x160
+doAction [
+	myShadow: make flash.filters.DropShadowFilter[
+		10       ;distance:Number
+		75       ;angle:Number
+		#000000  ;color:Number
+		0.5      ;alpha:Number
+		4        ;blurX:Number
+		4        ;blurY:Number
+		2        ;strength:Number
+		2        ;quality:Number
+		false    ;inner:Boolean
+		false    ;knockout:Boolean
+		false    ;hideObject:Boolean
+	]
+	setShadow: func[mc][
+		myShadow.distance: random 20
+		myShadow.angle: random 360
+		mc.filters: [myShadow]
+	]
+	int: setInterval(setShadow 100 box)
+]
+showFrame end

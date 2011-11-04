@@ -1,0 +1,95 @@
+rebol [
+	title: "SWF-menu example"
+	type: 'swf5
+	file: %menu.swf
+	background: 246.250.255
+	rate: 40
+	size: 320x100
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	purpose: {Just a simple one}
+]
+background 246.250.255
+fnt_Arial: defineFont2 [name "Arial" bold]
+txt_name: EditText 't 182x18 [
+	Color 0.65.132
+	ReadOnly
+	NoSelect
+	Font [fnt_Arial 12]
+	Layout [align: 'center]
+]
+txt_info: EditText 'info 136x18 [
+	Color 0.0.0
+	border ReadOnly
+	NoSelect
+	Font [fnt_Arial 12]
+]
+place txt_info at 183x0
+shp_box: Shape [
+	Bounds 0x0 182x18
+	fill color 255.255.255 box 0x0 182x18
+	fill color 0.0.0 box 1x1 181x18
+	fill color 214.239.255 box 1x1 180x17
+]
+btn_box: DefineButton2 [
+	shapes [
+		[up hit] [id shp_box ]
+		down [id shp_box multiply 200.0.180 add 100.200.0]
+		over [id shp_box add 60.10.200]
+	]
+	actions [
+		release  [_parent.hit(id) hit()]
+	]
+]
+spr_box: sprite [
+	place [btn_box txt_name]
+	showFrame end
+]
+spr_menu: sprite [
+	doAction [
+		constantPool [hit i o title]
+		init: func[][
+			i: 0
+			while [i < title.length][
+				nn: "m" add i
+				attachMovie("btnmenu" nn i)
+				o: eval(eval(nn))
+				o._y: i * 18
+				o.t: title/:i
+				o.id: i
+				i: i + 1
+			]
+		]
+	]
+	showFrame end
+]
+ExportAssets [spr_box "btnmenu" spr_menu "menu"]
+menu2: place spr_menu [at 0x0 multiply 90.90.0 add 100.100.0]
+menu1: place spr_menu at 0x18
+
+doAction [
+	constantPool ["_parent/_parent/menu1" hit title i st]
+	tellTarget menu1 [
+		title: ["menu 1" "menu 2" "menu 3"]
+		init()
+		hit: func[i][
+			_root.info: "hit: " add title/:i
+			getURL(("javascript:alert('menu:" add i add "');"))
+		]
+		_visible: 0
+	]
+	tellTarget menu2 [
+		title: ["SHOW MENU"]
+		init()
+		hit: func[i][_root.info: "hit: " add title/:i]
+		m0.st: 0
+		m0.hit: func[][
+			either st = 1 [
+				t: _parent.title/:id  st: 0
+			][	t: "HIDE MENU" st: 1]
+			_parent._parent.menu1._visible: st
+		]
+	]
+]
+showFrame
+end

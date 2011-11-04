@@ -1,0 +1,72 @@
+rebol [
+	title: "Flash8 - color matrix"
+	type: 'swf8
+	file: %swf8-colormatrix.swf
+	background: 255.255.255
+	rate: 24
+	size: 320x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 12-10-2005
+	purpose: {To test the ColorMatrixFilter}
+	comment: {
+	Check out the <b>ColorMatrixFilter!</b> word. Since version 1.0.2 it possible to use such a shortcut.
+	Without this shortcut I would need to write full path: <b>flash.filters.ColorMatrixFilter</b>.
+	At this moment, there are defined these shortcuts:<code>
+	BitmapFilter!          flash.filters.BitmapFilter
+	BevelFilter!           flash.filters.BevelFilter
+	BlurFilter!            flash.filters.BlurFilter
+	ColorMatrixFilter!     flash.filters.ColorMatrixFilter
+	ConvolutionFilter!     flash.filters.ConvolutionFilter
+	DisplacementMapFilter! flash.filters.DisplacementMapFilter
+	DropShadowFilter!      flash.filters.DropShadowFilter
+	GlowFilter!            flash.filters.GlowFilter
+	GradientBevelFilter!   flash.filters.GradientBevelFilter
+	GradientGlowFilter!    flash.filters.GradientGlowFilter
+	BitmapData!         flash.display.BitmapData
+	ColorTransform!     flash.geom.ColorTransform
+	Matrix!             flash.geom.Matrix
+	Point!              flash.geom.Point
+	Rectangle!          flash.geom.Rectangle
+	Transform!          flash.geom.Transform
+	ExternalInterface!  flash.external.ExternalInterface
+	FileReference!      flash.net.FileReference
+	FileReferenceList!  flash.net.FileReferenceList
+	Locale!             mx.lang.Locale
+	TextRenderer!       flash.text.TextRenderer</code>
+	}
+	compressed: true
+]
+background 255.255.255
+shp_circle: shape [
+    gradient [
+        radial colors [0.0.0 0.0.255 0.255.0 255.0.0]
+    ]
+    circle 160
+]
+spr_circle: sprite shp_circle
+circle: place spr_circle [
+	at 160x160
+	actions [
+		load [
+			cacheAsBitmap: true
+			_parent.info: "Move your mouse over this circle to change it's color"
+		]
+		mouseMove [
+			xPercent: 1 - ((_xmouse / 160))
+			yPercent: 1 - ((_ymouse / 160))
+			matrix: [
+				yPercent 0 0 0 0   ;red
+				0 xPercent 0 0 0   ;green
+				0 0 xPercent 0 0   ;blue
+				0 0 0 1        0   ;alpha
+			]
+			filter: make ColorMatrixFilter! [matrix]
+			filters: [filter]
+			_parent.info: reform ["MM:" _xmouse _ymouse xPercent yPercent]
+		]
+	]
+]
+include %includes/txt_info.rswf
+showFrame
+end

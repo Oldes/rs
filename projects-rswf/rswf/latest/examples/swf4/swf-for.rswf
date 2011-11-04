@@ -1,0 +1,40 @@
+rebol [
+	title: "SWF-FOR cycle"
+	type: 'swf
+	file: %for.swf
+	background: 153.165.139
+	rate: 24
+	size: 321x101
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 3-5-2002
+	purpose: {To test the FOR loop}
+	history: [6-5-02 "Fixed bug with negative bump"]
+	comment: {
+	I decided to make the FOR loop as it's in the Rebol, that means:
+	<code>FOR word start end bump body
+word  -- Variable to hold current value (Type: word)
+start -- Starting value (Type: number word)
+end   -- Ending value (Type: number word)
+bump  -- Amount to skip each time (Type: number)
+body  -- Block to evaluate (Type: block)</code>
+
+	As you can see, my FOR cycle is available in the Flash4 version as well, but takes a little bit more bytes, because there was no register and ConstantPool in the Flash4
+	If you need bump as variable, you shoud rather use the WHILE cycle}
+
+]
+background 153.165.139
+fnt_Arial: Font [name "Arial" bold]
+txt_test: EditText t 320x100 [Font [fnt_Arial 12] border]
+place txt_test
+doAction [
+	for line 5 1 -1 [
+		end: 10 + random 19
+		t: rejoin [t "line" line ": " end " "]
+		for x 1 end 1 [	t: t add "x" ]
+		t: rejoin [t " = " x newline]
+	]
+]
+
+showFrame
+end

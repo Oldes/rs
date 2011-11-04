@@ -1,0 +1,59 @@
+rebol []
+
+GUI_DepthManager: Class [
+	swapToTop: func[/local o][
+		var depthTable: []
+		var fromDepth: this.getDepth()
+		;trace("swapToTop:" this "from depth:" fromDepth)
+		for o in this._parent [
+			var obj: this._parent/(o)
+			if movieclip? obj [
+				var depth: obj.getDepth()
+				if fromDepth < depth [
+					obj._depth: depth
+					depthTable.push((context [obj: obj depth: depth]))
+					;I'm using context here to be able use sortOn with the depth
+				]
+			]
+		]
+		depthTable.sortOn("depth" Array.NUMERIC)
+		;I should use FOREACH here buy first have to implement it:(
+		var i: 0
+		while [i < depthTable.length][
+			var o: depthTable/:i
+			;trace( o.depth o.obj)
+			this.swapDepths(o.obj)
+			i++
+		]
+	]
+	swapToBottom: func[/local o][
+		var depthTable: []
+		var fromDepth: this.getDepth()
+		;trace("swapToBottom:" this "from depth:" fromDepth)
+		for o in this._parent [
+			var obj: this._parent/(o)
+			if movieclip? obj [
+				var depth: obj.getDepth()
+				if fromDepth > depth [
+					obj._depth: depth
+					depthTable.push((context [obj: obj depth: depth]))
+					;I'm using context here to be able use sortOn with the depth
+				]
+			]
+		]
+		depthTable.sortOn("depth" (Array.DESCENDING | Array.NUMERIC) )
+		;I should use FOREACH here buy first have to implement it:(
+		var i: 0
+		while [i < depthTable.length][
+			var o: depthTable/:i
+			;trace( o.depth o.obj)
+			this.swapDepths(o.obj)
+			i++
+		]
+	]
+] with [
+	if MovieClip.prototype.swapToTop = undefined [
+		MovieClip.prototype.swapToTop: GUI_DepthManager.prototype.swapToTop
+		MovieClip.prototype.swapToBottom: GUI_DepthManager.prototype.swapToBottom
+	]
+]

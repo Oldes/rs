@@ -1,0 +1,43 @@
+rebol [
+	title: "SWF-Counter" 
+	type: 'swf
+	file: %counter.swf
+	background: 153.165.139
+	rate: 60
+	size: 300x100
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {To show how to make simple mathematic action}
+	comment: {In this example it's really interesting to watch how faster is 'GotoFrame2 in comparison to 'GotoFrame}
+]
+background 153.165.139
+fnt_arial: defineFont2 [name "Arial" ]
+txt_test: EditText 'x 280x50 [
+	ReadOnly
+	NoSelect
+	Color 0.0.0
+	Font [fnt_arial 42]
+	Layout [align: 'center]
+]
+spr_c1: Sprite [
+	PlaceObject2 txt_test at 10x0
+	showFrame
+	DoAction [x: x + 1]
+	showFrame
+	DoAction [GotoFrame2 2 Play]
+	showFrame
+	end
+]
+spr_c2: Sprite [
+	PlaceObject2 txt_test at 10x40
+	showFrame
+	DoAction [x: x + 1]
+	showFrame
+	DoAction [GotoFrame 2 Play]
+	showFrame
+	end
+]
+obj_c1: PlaceObject2 spr_c1
+obj_c2: PlaceObject2 spr_c2
+showFrame
+end

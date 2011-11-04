@@ -1,0 +1,43 @@
+rebol [
+	title: "MX-DoInitAction"
+	type: 'mx
+	file: %mx-doinitaction.swf
+	background: 153.165.139
+	rate: 6
+	size: 320x40
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 27-Mar-2002
+	purpose: {Just to show how to use the DoInitAction}
+	comment: {
+	<b>In the Flash specifications is written</b>:
+	The DoInitAction tag is similar to the DoAction Tag: it defines a series of bytecodes to be executed. However, the actions defined with DoInitAction are executed earlier than the usual DoAction actions, and are executed only once.
+There are situations in which there are actions that must be executed before the ActionScript representation of the first instance of a particular sprite is created. The most common such action is calling Object.registerClass to associate an ActionScript class with a sprite. Such a call is generally found within the #initclip pragma in the ActionScript language. DoInitAction is used to implement the #initclip pragma.
+A DoInitAction tag specifies a particular sprite to which its actions apply. There may be multiple DoInitAction tags in a single frame; their actions will be executed in the order in which the tags appear. However, there may only be one DoInitAction tag anywhere in the SWF file for any particular sprite.
+The specified actions are executed immediately before the normal actions of the frame in which the DoInitAction tag appears. This only occurs the first time that this frame is encountered – if playback reaches the same frame again later, actions provided in DoInitAction are skipped.}
+
+]
+background 153.165.139
+fnt_Courier: Font [name "Courier New" bold]
+txt_test: EditText x 320x20 [
+    ReadOnly WordWrap Font [fnt_Courier 12]
+    layout [indent: 10 leading: -2]
+]
+spr_somesprite: Sprite [
+	place txt_test
+	showFrame end
+]
+DoInitAction spr_somesprite [
+	step: 1 + random 9
+	x: "This was set By doInitAction -> step: " add step
+]
+test: place spr_somesprite at 0x0
+place txt_test at 0x20
+frm_loop: show 2 frames
+doAction [
+	test.x: test.x + step
+	goto frm_loop and play
+]
+
+showFrame
+end

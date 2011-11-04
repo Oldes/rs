@@ -1,0 +1,56 @@
+rebol [
+	title: "SWF5-Functions"
+	type: 'swf5
+	file: %func.swf
+	background: 152.174.149
+	rate: 12
+	size: 320x320
+	compressed: true
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 12-1-2002
+	purpose: {To show how to define function and use the build one}
+	comment: {Be careful not to use same names for your functions as the dialect words!}
+]
+background 152.174.149
+fnt_arial: defineFont2 [name "Courier New" bold]
+txt_test: EditText 'x 320x320 [
+	ReadOnly
+	Color 0.0.0
+	Font [fnt_arial 12]
+	Layout [align: 'left Leading: -2]
+]
+DoAction [
+	random2: func[min max][
+		return (min + random(max - min + 1))
+	]
+]
+place txt_test
+frm_loop: showFrame
+DoAction [
+	x: {Function Random2(min, max) that returns:
+	random number in interval [10 20] = } . random2(10 20) . {
+	random number in interval [-10 5] = } . random2(-10 5) . {
+
+escape "{[W]}" = } . escape("{[W]}") . {
+unescape "%7B%5BW%5D%7D" = } . unescape("%7B%5BW%5D%7D") . {
+version = } . GetVersion .  {
+to-logic 1 = } . boolean(1) . {
+to-integer 10.3 = } . to-integer 10.3 . {
+to-number "12" = } . to-number "12" . {
+to-char 65 = } . to-char 65 . {
+isFinite? 10 = } . isFinite(10) . {
+isNaN? 10 = } . isNaN(10) . {
+x.maxscroll } . x.maxscroll . {
+parseFloat("3.5e6") = } . parseFloat("3.5e6") . {
+parseInt("0x3F8") = } . parseInt("0x3F8") . {
+parseInt("1010" 2) = } . parseInt("1010" 2) . {
+length? x = } . length? x . {
+_totalframes = } . _totalframes . {
+_framesloaded = } . _framesloaded 
+
+]
+show 5 frames
+DoAction [goto frame frm_loop and play]
+showFrame
+end

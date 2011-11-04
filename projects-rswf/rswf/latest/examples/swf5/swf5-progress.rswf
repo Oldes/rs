@@ -1,0 +1,55 @@
+rebol [
+	title: "SWF5-Progress bar"
+	type: 'swf5
+	file: %progress.swf
+	background: 152.174.149
+	rate: 30
+	size: 320x100
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	purpose: {Progress bar example}
+	comment: {If you need to modify properties, make sure you are using SPRITE!}
+]
+background 152.174.149
+fnt_courier: defineFont2 [name "Courier New" bold]
+txt_test: EditText 'x 40x14 [
+	ReadOnly
+	Color 0.0.0
+	Font [fnt_courier 10]
+	Layout [align: 'left]
+]
+shp_prframe: shape [
+	fill color 0.0.0
+	box 0x0 100x10
+	fill color 200.50.0
+	box 2x2 98x8
+]
+shp_prbar: shape [
+	fill color 255.200.0
+	box 0x0 96x6
+]
+spr_bar: sprite shp_prbar
+spr_prbar: sprite [
+	place shp_prframe
+	b: place spr_bar at 2x2
+	place txt_test at 100x-3
+	showFrame end
+]
+prbar1: place spr_prbar at 110x40
+prbar2: place spr_prbar at 110x53
+doAction [i: 0 j: 0]
+showFrame
+frm_loop: showFrame
+doAction [
+	ConstantPool [i j prbar1 prbar2 x b]
+	i: i + random 3
+	j: j + random 3
+	if i > 100 [i: 0 prbar1.x: prbar1.x + 1]
+	if j > 100 [j: 0 prbar2.x: prbar2.x + 1]
+	prbar1.b._xscale: i
+	prbar2.b._xscale: j	
+]
+show frame
+doAction [goto frame frm_loop and play]
+showFrame
+end

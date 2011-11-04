@@ -1,0 +1,34 @@
+rebol [
+	title: "SWF5-Clock example"
+	type: 'swf5
+	file: %clock.swf
+	background: 152.174.149
+	rate: 60
+	size: 320x100
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	purpose: {Simple "clock" example}
+]
+background 152.174.149
+fnt_arial: defineFont2 [name "Courier New" bold]
+txt_test: EditText 'x 320x380 [
+	ReadOnly
+	Color 0.0.0
+	Font [fnt_arial 32]
+	Layout [align: 'center Leading: -2]
+]
+place txt_test
+frm_loop: showFrame
+doAction [
+	c: make date! []
+	ms: c.getMilliseconds()
+	if ms < 100 [ms: "0" + ms]
+	x: c.getHours() + ":"
+	 + c.getMinutes() + ":"
+	 + c.getSeconds() + "."
+	 + ms
+]
+showFrame
+DoAction [goto frame frm_loop play]
+showFrame
+end

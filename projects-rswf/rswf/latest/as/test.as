@@ -1,0 +1,1 @@
+_global.cmsg("hello")

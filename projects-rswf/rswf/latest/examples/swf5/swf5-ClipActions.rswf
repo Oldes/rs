@@ -1,0 +1,41 @@
+rebol [
+	title: "SWF5-ClipActions" 
+	type: 'swf5
+	file: %clipactions.swf
+	background: 153.165.139
+	rate: 60
+	size: 300x100
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {To show how to assign actions to movies}
+	comment: {About the _level0.test => we have to set variable 'test in the _level0 context, that's all.
+The 'data action is initiated when data is received in a 'loadVariables or 'loadMovie action. When specified with a 'loadVariables action, the data event occurs only once, when the last variable is loaded. When specified with a 'loadMovie action, the data event occurs repeatedly, as each section of data is retrieved.}
+]
+background 153.165.139
+spr_sensor: EmptySprite
+fnt_arial: defineFont2 [name "Arial" ]
+txt_test: EditText 'test 280x50 [
+	ReadOnly
+	NoSelect
+	;Border
+	Color 0.0.0
+	Font [fnt_arial 22]
+	Layout [align: 'center]
+]
+PlaceObject2 txt_test at 10x30
+PlaceObject2 spr_sensor [
+	actions [
+		load		[_level0.test: "loaded"]
+		unload		[_level0.test: "Unloading"]
+		mouseMove	[_level0.test: "moving mouse"]
+		mouseDown	[_level0.test: "mouse down"]
+		mouseUp		[_level0.test: "mouse up"]
+		keyDown		[
+			_level0.test: "down (random number " add Random 10 add " )"
+		]
+		keyUp		[_level0.test: "key up"]
+		data		[_level0.test: "data loaded"]
+	]
+]
+showFrame
+end

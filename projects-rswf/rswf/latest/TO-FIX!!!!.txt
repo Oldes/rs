@@ -1,0 +1,27 @@
+!!!!!!!!!!!!!!BUGS!!!!!!!!!!!!!!!!
+
+trace inside foreach (as in automat2.rswf)
+			foreach box moving [
+				;trace("ZZZ" box)
+				box._x: this.x0 + (this.w * newx)
+				box._y: this.y0 + (this.h * newy)
+				box.x: newx
+				box.y: newy
+			]
+=========================================================
+var x: 0
+repeat x 10 [
+	trace(x) ;<===  still 0
+]
+
+=========================================================
+var k: 0
+var b: [1 2 3]
+foreach k b [
+	trace(k)
+]
+=========================================================
+context [
+	a: true
+	b false
+]

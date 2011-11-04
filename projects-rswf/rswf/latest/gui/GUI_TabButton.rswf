@@ -1,0 +1,145 @@
+rebol [
+	title: "GUI_TabButton"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 24
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 8/10/2007
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+
+require [
+	%gui/GUI_Button.rswf
+]
+
+
+GUI_TabButton: Extends GUI_ButtonCore [
+	width:  100
+	height: 20
+	enabled?: true
+	r: 1
+	text: ""
+	type: "default"
+	colors: none
+	filters?: on ;false
+	textPadding: 2
+	edgeAlpha: 40
+	align:  "left"
+	valign: "middle"
+	
+	init: func[width height text][
+		super(width height text)
+		this.bg.filters: [defaultShadow2]
+		this.tff.leftMargin: 6
+		
+	]
+	setText: func[text][
+		super.setText(text)
+		this.width: this.tf.textWidth + 30
+		
+		this.redraw()
+	]
+	setState: func[state][
+		if this.state <> state and this.enabled? [
+			switch state [
+				"down" [
+					if this.filters? [this.bg.filters: [defaultShadow2b defaultGlowOuter]]
+					this.transform.colorTransform: downColorTransform
+					this.tf._y++
+					this.img._y++
+				]
+				"out" [
+					if this.filters? [this.bg.filters: [defaultShadow2]]
+					this.transform.colorTransform: outColorTransform
+					if this.state = "down" [this.tf._y-- this.img._y-- ]
+				]
+				"over" [
+					if this.filters? [this.bg.filters: [defaultShadow2 defaultGlowInner defaultGlowOuter]]
+					this.transform.colorTransform: overColorTransform
+					if this.state = "down" [this.tf._y-- this.img._y-- ]
+				]
+				"disabled" [
+					if this.filters? [this.bg.filters: none]
+					this.transform.colorTransform: disabledColorTransform
+					this.useHandCursor: false
+				]
+			]
+			this.state: state
+			;this.onStateChange()
+		]
+	]
+	setImage: func[imgId alpha][
+		this.attachMovie(imgId  "img" 10)
+		if alpha <> undefined [this.img._alpha: alpha]
+		this.redraw()
+	]
+	
+
+	redraw: does [
+		var w: this.width
+		var h: this.height
+		this.tf._width: w - (2 * this.textPadding)
+		this.tf._x: this.textPadding
+		;trace("redraw:" w h)
+		;either (h < 15) or (w < 15) [this.tff.size: 9][this.tff.size: 11]
+		this.updateText()
+		this.centerText()
+		
+		var bg: this.bg
+		bg.clear()
+		;bg.drawBox(0 0 w h this.r this.colors.background this.colors.edge)
+		var r: this.r
+		var x1: var y1: 0
+		var x2:  x1 + w
+		var y2:  y1 + h
+		var x1r: x1 + r
+		var x2r: x2 - r
+		var y1r: y1 + r
+		var y2r: y2 - r
+		;if this.colors.background <> none [
+			bg.beginFill( this.colors.background )
+			if this.colors.edge <> undefined [
+				var edgeAlpha: this.edgeAlpha
+				if edgeAlpha = undefined [edgeAlpha: _global.edgeAlpha] 
+				bg.lineStyle(
+					1  ;thickness:Number
+					this.colors.edge ; rgb:Number
+					edgeAlpha ;alpha:Number
+					true ;pixelHinting:Boolean
+					true ;noScale:String
+					; capsStyle:String, jointStyle:String, miterLimit:Number
+				)
+			]
+				
+			bg.moveTo(  x1 y2  )
+			bg.lineTo(  x1  y1r )
+			bg.lineTo(  x1r y1r )
+			bg.lineTo(  x1r y1  )
+			bg.lineTo(  (x2r - 10) y1  )
+			bg.lineTo(  (x2r - 10) y1r )
+			bg.lineTo(  (x2 - 10)  y1r )
+			bg.lineTo(  (x2)  (y2r - 2) )
+			bg.lineTo(  (x2r + 5) y2 )
+			bg.lineStyle()
+			bg.lineTo(  (x2r + 5) (y2 + 2) )
+			bg.lineTo(  (x1) (y2 + 2)  )
+			bg.lineTo(  x1 y2  )
+			
+			
+
+		;]
+
+		;trace("????" this.img)
+		if this.img <> undefined [
+			this.img._x: 1 + Math.round( ((w - this.img._width)  / 2) )
+			this.img._y: 1 + Math.round( ((h - this.img._height) / 2) )
+		]
+
+	]
+
+]

@@ -1,0 +1,40 @@
+rebol [
+	title: "SWF-Images2 example"
+	type: 'swf
+	file: %images2.swf
+	background: 0.0.0
+	rate: 60
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 3-1-2002
+	purpose: {To show how to include JPG image in the Flash movie}
+]
+background 0.0.0
+
+bmp_hlava: bitmap %hlava.jpg size 276x320
+shp_hlava: Shape [
+	Bounds -160x-160 160x160
+	fill-style [bitmap bmp_hlava at -138x-160]
+	no edge
+	box -138x-160 138x160
+]
+Place shp_hlava [at 160x160 scale [1 10]]
+showFrame
+rebol [
+	for i 10 1 -.1 [
+		rswf/compile compose/deep [
+			Place shp_hlava [move at 160x160 scale [1 (i)]]
+			showFrame
+		]
+	]
+	loop 100 [rswf/showFrame]
+	for i 0	360 2 [
+		rswf/compile compose/deep [
+			Place shp_hlava [move at 160x160 rotate (i)]
+			showFrame
+		]
+	]
+	loop 100 [rswf/showFrame]
+]
+end

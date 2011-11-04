@@ -1,0 +1,125 @@
+rebol [
+	title: "SWF-Simple ball game"
+	type: 'swf5
+	file: %game.swf
+	background: 226.230.235
+	rate: 60
+	size: 320x320
+	author: "oldes"
+	;compressed: false
+	email: oliva.david@seznam.cz
+	purpose: {How to catch collisions in the ActionScript}
+	comment: {
+	It's a shame that the collisions are counted just with the bounding boxes}
+]
+background 226.230.235
+fnt_Arial: defineFont2 [name "Arial" bold]
+txt_info: EditText 'info 320x18 [
+	Color 0.0.0	ReadOnly NoSelect
+	Font [fnt_Arial 12]
+]
+place txt_info at 2x0
+
+shp_dot: Shape [
+	bounds -10x-10 10x10
+	fill color 0.0.0 circle 10
+]
+spr_dot: sprite shp_dot
+shp_bar: shape [
+	bounds -25x-5 25x5
+	fill color 40.180.90 box2 50x10
+]
+spr_bar: sprite shp_bar
+shp_edge: shape [
+	fill color 0.0.0
+	box 0x0 320x320
+	box 2x2 318x320
+]
+place shp_edge
+bar: place spr_bar [
+	at 160x310
+	actions [ mouseMove [ _x: _root._xmouse ] ]
+]
+snd_gong: sound %sounds/gong.mp3
+exportAssets [spr_dot "dot" snd_gong "gong" ]
+es: emptySprite
+
+
+emiter: place es [
+	actions [
+		load [
+			constantPool [i o x y lost info hits _parent newdot]
+			i: lost: hits: 0
+			mouse.hide()
+			snd: make Sound []
+			snd.attachSound("gong")
+			info: func[][
+				_parent.info:
+					"Lost balls: " add lost add
+					" hits: " add hits
+			]
+			newdot: func[x y][
+				i: i + 1
+				nn: "m" add i
+				_parent.attachMovie("dot" nn i)
+				tellTarget eval("_parent." add nn) [
+					_x: x _y: y
+					ex: -1 + random 3
+					ey: 1 + random 3
+				]
+			]
+			fy: func[o][
+				tellTarget o [
+					ey: 0 - ey + ((-1 + random 3) / 10)
+					_y: _y + (2 * ey)
+				]
+			]
+			fx: func[o][
+				tellTarget o [
+					ex: 0 - ex + ((-1 + random 3) / 10)
+					_x: _x + (2 * ex)
+				]
+			]
+			newdot((10 + random 300) 10)
+			newdot((10 + random 300) 10)
+			newdot((10 + random 300) 10)
+			info()
+		]
+		enterFrame [
+			constantPool [
+				j i o ex ey lost info hits newdot _parent.bar w
+			]
+			j: 1 while [j <= i][
+				o: eval(eval("_parent.m" add j))
+				telltarget o [
+					_y: _y + ey
+					_x: _x + ex
+				]
+				either o.hitTest(_parent.bar) [
+					snd.start()
+					w: (o._x - _parent.bar._x)
+					o.ex: o.ex + w / 25
+					if (math.abs(w) < 30) and (o._y < 315) [
+						fy(o)
+						o._y: math.min(o._y 295)
+					]
+					hits++ info()
+				][
+					if (o._x > 310) or (o._x < 10) [fx(o)]
+					either o._y > 320 [
+						lost++	info()
+						tellTarget o [
+							_x: 10 + random 300
+							_y: 10
+							ex: -2 + random 4
+							ey: 1 + random 2
+						]
+					][ if o._y < 10 [fy(o)]	]
+				]
+				j++
+			]
+		]
+	]
+]
+showFrame
+end

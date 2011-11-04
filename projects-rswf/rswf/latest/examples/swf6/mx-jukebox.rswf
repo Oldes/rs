@@ -1,0 +1,74 @@
+rebol [
+	title: "MX-MP3 Jukebox"
+	type: 'mx
+	file: %jukebox.swf
+	background: 153.165.139
+	rate: 12
+	size: 320x20
+	compressed: true
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 18-9-2003
+	purpose: {To show a simple way how to play more MP3 streams}
+	comment: {
+	I didn't inlcuded any control to keep it simple.
+	All mp3 files used in this example (except the first two songs) are made by my friends Boleslav Bøezovský (alias ReBolek) and Richard Smolak (Cyphre) which are well known in the Rebol community but just a few people know that they are making music as well under name: "WeirdDream"
+	If the song is not available (as the second one which is local file) next song is loaded."
+	I hope that the sever is fast enough to be able stream mp3 files.}
+
+]
+include %includes/txt_info.rswf
+doAction [
+	songs: [
+		"Flétna"
+		"Local file"
+		"Big is always"
+		"Jazzová"
+		"Masný sady"
+		"Okružní"
+		"Ya es tiempo"
+	]
+	urls: [
+		"sounds/fletna3.mp3"
+		"c:/mp3/PsychicTV/kondole/psychic tv - Thee Whale.mp3"
+		"http://www.volny.cz/weirddream/mp3/Big is always.mp3"
+		"http://www.volny.cz/weirddream/mp3/jazzova.mp3"
+		"http://www.volny.cz/weirddream/mp3/masnysady.mp3"
+		"http://www.volny.cz/weirddream/mp3/okruzni.mp3"
+		"http://www.volny.cz/weirddream/mp3/ya es tiempo.mp3"
+	]
+	songid: random urls.length
+	int: none
+	loadSong: func[id][
+		var url: urls/:id
+		info: rejoin["Loading sound [" id "]: " songs/:id]
+		mySound: make Sound []
+		mySound.onLoad: func[success][
+			clearInterval(int)
+			either success [
+				info: rejoin ["[" songid "] " songs/:songid
+				      " - duration: " mySound.duration "ms"]
+			][	nextSong() ]
+		]
+		mySound.onSoundComplete: func[][
+			nextSong()
+		]
+		mySound.onID3: func[][
+			info: info add " ID3 tag found"
+		]
+		mySound.loadSound(url true)
+		;From some reason in Mozilla the onLoad function is not called
+		;with success=false if there is not net connection so I added this
+		;timeout check:
+		clearInterval(int)
+		int: setInterval(nextSong 8000)
+	]
+	nextSong: func[][
+		songid: songid + 1
+		if songid >= songs.length [songid: 0]
+		loadSong(songid)
+	]
+	loadSong(songid)
+]
+showFrame
+end

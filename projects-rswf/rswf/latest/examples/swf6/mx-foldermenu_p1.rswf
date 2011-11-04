@@ -1,0 +1,60 @@
+rebol [
+	title: "MX-Folder menu (part1)" 
+	type: 'mx
+	file: %mx-foldermenu_p1.swf
+	background: 153.165.139
+	rate: 6
+	size: 320x210
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {Menu with folders using XML structure - part 1}
+	comment: {}
+]
+background 153.165.139
+fnt_Courier: Font [name "_typewriter" bold]
+txt_info: EditText 'info 319x209 [
+	ReadOnly Color 0.0.0 Font [fnt_Courier 12]
+]
+place txt_info
+doAction [
+	menudataxml: {
+		<f n="Folder1">
+			<f n="Folder1.1">
+				<m n="Menu1"/>
+				<f n="Empty folder"/>
+				<m n="Menu2"/>
+			</f>
+			<m n="Menu3"/>
+		</f>
+		<f n="Folder2">
+			<m n="Menu4"/>
+		</f>
+		<m n="Menu5"/>
+	}
+	menudata: make Xml[menudataxml]
+	level: 0 tabs: ""
+	showFolder: func[nodes /local i][
+		;variables 'i and 'n MUST be local
+		;else would be lost during recursion!!
+		level++
+		for i 0 nodes.length 1 [
+			var n: nodes/:i
+			switch n.nodeName [
+				"f" [
+					info: rejoin [info tabs "F:" n.attributes.n newline]
+					tabs: tabs add "^-"
+					showFolder(n.childNodes)
+					tabs: tabs.slice(0 (tabs.length - 1))
+				]
+				"m" [
+					info: rejoin [info tabs "M:" n.attributes.n newline]
+				]
+			]
+		]
+		level--
+		
+	]
+	showFolder(menudata.childNodes)
+]
+showFrame
+end

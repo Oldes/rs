@@ -1,0 +1,75 @@
+class Plant extends MovieClip
+{
+	private static var x = 1;
+	var s = "a";
+	function Person2(param_name:String, param_age:Number) { 
+}
+	
+DoInitAction(59):
+     For sprite: #{0400}
+     aConstantPool ["_global" "Plant" "super" "prototype" "MovieClip" "x" "s" "a" "ASSetPropFlags"]
+     aPush ["CP:_global"]
+     aGetVariable #{1C}
+     aPush ["CP:Plant"]
+     aGetMember #{4E}
+     aNot #{12}
+     aNot #{12}
+     aIf
+         aPush ["CP:_global"]
+         aGetVariable #{1C}
+         aPush ["CP:Plant"]
+         aDefineFunction none[] #{1000}
+             aPush [0.0 "CP:super"]
+             aCallFunction #{3D}
+             aPop #{17}
+         aStoreRegister #{87}
+         aSetMember #{4F}
+         
+         ///in SWF<7
+	         aPush ["CP:_global"]
+	         aGetVariable #{1C}
+	         aPush ["CP:Plant"]
+	         aGetMember #{4E}
+	         aPush ["CP:prototype" 0.0 "CP:MovieClip"]
+	         aNewObject #{40}
+	         aStoreRegister #{87}
+	         aSetMember #{4F}
+         /// else:
+	         aPush ["CP:_global"]
+	         aGetVariable #{1C}
+	         aPush ["CP:Plant"]
+	         aGetMember #{4E}
+	         aPush ["CP:MovieClip"]
+	         aGetVariable #{1C}
+	         aExtends #{69}
+	         aPush [register/1 "CP:prototype"]
+	         aGetMember #{4E}
+	         aStoreRegister #{87}
+         
+         
+         ///private static var x = 1;
+         
+         aPush [register/1 "CP:x" 1]
+         aSetMember #{4F}
+         
+         ///var s = "a";
+         aPush [register/2 "CP:s" "CP:a"]
+         aSetMember #{4F}
+         
+         
+         aPush [1 null "CP:_global"]
+         aGetVariable #{1C}
+         aPush ["CP:Plant"]
+         aGetMember #{4E}
+         aPush ["CP:prototype"]
+         aGetMember #{4E}
+         aPush [3 "CP:ASSetPropFlags"]
+         aCallFunction #{3D}
+     aPop #{17}
+     END of aRecord #{00}
+showFrame(1):
+end(0):
+
+
+
+

@@ -1,0 +1,55 @@
+rebol [
+	title: "SWF-Images example (shadow)"
+	type: 'swf
+	file: %images-sh.swf
+	background: 152.174.149
+	rate: 20
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 11-Apr-2002
+	purpose: {To show how to include pregenerated images (BitsLossless) with shadows}
+	comment: {
+	The shadow is created by converting the same image to black and setting alpha chanel by: 
+place some_image [multiply [-255 -255 -255 125]]
+	The depth is here used to prevent placing shadow over another image.
+	If you need real shadow, you have to use another image as shadow mask.
+	You can compare this example with <a href="swf-images.html">the same but without shadows</a>}
+]
+background 152.174.149
+bmp_trava: bitmap %bitmaps/trava.gif
+shp_ground: Shape [
+	Bounds 0x0 320x320
+	edge [width 2]
+	fill-style [bitmap bmp_trava];clipped
+	box 0x0 320x320
+]
+Place shp_ground
+showFrame
+
+bmp_hrbol: alpha bitmap %bitmaps/hrbol-1.gif
+shp_hrbol: image bmp_hrbol
+Place shp_hrbol at 60x100
+showFrame
+
+bmp_palmy: alpha bitmap %bitmaps/palmy.gif
+shp_palmy: image bmp_palmy
+Place shp_palmy [at 65x105 depth 10 multiply [-255 -255 -255 125]]
+Place shp_palmy [at 60x100 depth 20]
+showFrame
+
+bmp_strom: alpha bitmap %bitmaps/strom1.gif
+shp_strom: image bmp_strom
+Place shp_strom [at 205x205 depth 11 multiply [-255 -255 -255 125]]
+Place shp_strom [at 85x195 scale 0.5 multiply [-255 -255 -255 125]]
+Place shp_strom [at 200x200 depth 21]
+Place shp_strom [at 80x190 scale 0.5]
+showFrame
+
+bmp_strom2: alpha bitmap %bitmaps/strom2.gif
+shp_strom2: image bmp_strom2
+Place shp_strom2 [at 135x105 depth 13 multiply [-255 -255 -255 125]]
+Place shp_strom2 [at 130x100 depth 23]
+stop
+showFrame
+end

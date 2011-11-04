@@ -1,0 +1,76 @@
+rebol [
+	title: "Flash8 - Blend drawing"
+	type: 'swf8
+	file: %swf8-blenddrawing.swf
+	background: 255.255.255
+	rate: 25
+	size: 320x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 13-10-2005
+	purpose: {Simple example how to draw into bitmap using sprite as a brush.}
+	comment: {}
+	compressed: true
+]
+background 255.255.255
+include %includes/txt_info.rswf
+shp_brush: shape [
+	with transparency
+    gradient [
+        radial colors [
+            0.0.0.255 0.0.255.200 0.255.0.140 255.0.0.0
+        ]
+    ]
+	circle 20
+]
+spr_brush: sprite shp_brush
+es: EmptySprite
+picture: place es
+brush: place spr_brush [at 160x160 actions [
+	load [
+		drawrect: _parent.bmpPicture.rectangle
+		modes: [
+			"normal"
+	        "darken"
+    	    "multiply"
+	        "lighten"
+        	"screen"
+        	"overlay"
+        	"hardLight"
+        	"add"
+        	"subtract"
+        	"diference"
+        	"invert"
+        	"erase"
+    	]
+	]
+	mouseMove [
+		_x: _root._xmouse _y: _root._ymouse
+		if isDrawing [
+			matrix: make Matrix! []
+			matrix.translate(_root._xmouse _root._ymouse)
+			ctrans: make ColorTransform! [1 1 1 1 0 0 0 0]
+			_parent.bmpPicture.draw(this matrix ctrans blendmode this.drawrect true)
+		]
+	]
+	mouseDown [
+		isDrawing: true
+		blendmode: pick modes (random 12)
+		_parent.info: reform ["BlendMode:" blendmode]
+	]
+	mouseUp   [this.isDrawing: false]
+]]
+doAction [
+	Mouse.hide()
+	bmpPicture: make BitmapData! [320 320 true #00FFFFFF]
+	picture.attachBitmap(bmpPicture 1)
+	ctrfade: make ColorTransform! [1 1 1 1 0 0 0 -1]
+	fadeDrawing: func[][
+		bmpPicture.colorTransform(bmpPicture.rectangle ctrfade)
+	]
+	int: setInterval(fadeDrawing 20)
+	info: "Use your mouse to draw here"
+]
+
+showFrame
+end

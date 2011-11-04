@@ -1,0 +1,27 @@
+rebol [
+	title: "SWF-Cross"
+	type: 'swf
+	file: %cross.swf
+	background: 152.174.149
+	rate: 12
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 11-12-2001
+	purpose: {To show how to create cross shapes}
+]
+background 152.174.149
+shp_cross: Shape [
+	Bounds -160x-160 160x160
+	positions relative
+	edge [width 1 color 55.55.55]
+	cross 320x320 100x80 80x100
+	edge [width 5 color 255.55.55]
+	at -100x-100 cross 50x50
+	at  100x100  cross 50x50
+	at -100x100  cross 50x50
+	at  100x-100 cross 50x50
+]
+Place shp_cross at 160x160
+showFrame
+end

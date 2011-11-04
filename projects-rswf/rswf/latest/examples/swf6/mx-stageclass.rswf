@@ -1,0 +1,31 @@
+rebol [
+	title: "MX-Stage class"
+	type: 'mx
+	file: %stageclass.swf
+	background: 152.174.149
+	rate: 20
+	size: 200x100
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 4-6-2002
+	purpose: {How to access and manipulate information about the boundaries of a SWF file.}
+	comment: {
+<b>Stage.align</b> Alignment of the SWF file in the player or browser.
+<b>Stage.height</b> Height of the Stage, in pixels.
+<b>Stage.scaleMode</b> The current scaling of the SWF file.
+<b>Stage.showMenu</b> Shows or hides the default items in the Flash Player context menu.
+<b>Stage.width</b> Width of the Stage, in pixels.}
+]
+background 152.174.149
+fnt_Courier: Font [name "_typewriter" bold]
+txt_test: EditText x 200x100 [ReadOnly NoSelect Font [fnt_Courier 12]]
+place txt_test
+doAction [
+	x: "Stage.align     = " add Stage.align add
+	   "^/Stage.height    = " add Stage.height add
+	   "^/Stage.width     = " add Stage.width add
+	   "^/Stage.scaleMode = " add Stage.scaleMode add
+	   "^/Stage.showMenu  = " add Stage.showMenu
+]
+showFrame
+end

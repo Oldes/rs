@@ -1,0 +1,76 @@
+rebol [
+	title: "SWF5-Eyeballs2"
+	type: 'swf5
+	file: %swf5-eyeball2.swf
+	background: 20.20.20
+	rate: 24
+	size: 320x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 3-11-2003
+	purpose: {eyeballs staring at your cursor}
+]
+background 20.20.20
+es: EmptySprite
+shp_eye: shape [
+	fill color 255.255.255
+	edge [color 0.0.0 width 3]
+	circle 30
+]
+
+shp_eyeball: Shape [
+    no edge fill color 0.0.0
+    circle 14
+]
+spr_eyeball: Sprite shp_eyeball
+
+shp_eyelib: shape [
+	no edge fill color 0.0.0
+    circle 30
+]
+spr_eyelib: Sprite [
+	doAction [
+		this.gotoAndPlay((random 10))
+	]
+	showFrame
+	show 30 frames
+	place shp_eyelib
+	show 3 frame
+	end
+]
+
+spr_eye: sprite [
+	place shp_eye
+	eb: place spr_eyeball [
+		actions [
+			load [
+				constantPool [_parent Math alfa r sin cos atan2]
+				r: 15
+				useHandCursor: false
+				update: func[][
+					alfa: Math.atan2(_parent._ymouse _parent._xmouse)
+					_y: Math.sin(alfa) * r
+					_x: Math.cos(alfa) * r
+				]
+			]
+			mouseMove [
+				updateAfterEvent()
+				update()
+			]
+		]
+	]
+	el: place spr_eyelib
+]
+spr_eyes: sprite [
+	place spr_eye at -30x0
+	place spr_eye at  30x0
+	showFrame
+	end
+]
+place spr_eyes at 160x160
+place spr_eyes [at 20x10 scale 0.2]
+
+exportAssets [spr_eye "eye" spr_eyes "eyes"]
+stop
+showFrame
+end

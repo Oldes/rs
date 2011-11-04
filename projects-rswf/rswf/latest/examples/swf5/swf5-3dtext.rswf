@@ -1,0 +1,106 @@
+rebol [
+	title: "SWF5-3D-text test"
+	type: 'swf5
+	file: %3dtext.swf
+	background: 0.0.0
+	rate: 30
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 15-1-04
+	purpose: {Just a silly rotating texts}
+	comment: {
+	This is my re-make of the "3d text.fla" example which can be found somewhere on the http://wireframe.co.za and which one friend of mine send me}
+]
+background 0.0.0
+importAssets [fnt_EuromodeB "B"] from %includes/fnt_euromode_b.swf
+
+txt_vertex_text: EditText 'v 60x10 [
+	Color #ffaa00
+    Font [fnt_EuromodeB 7]
+    Layout [align: 'center Leading: -2]
+    UseOutlines NoSelect ReadOnly 
+]
+spr_vertex: sprite [
+	place txt_vertex_text at -30x-5
+	show 2 frames
+	doAction [
+		v: random 10000000
+		goto 1 and play
+	]
+	showFrame
+]
+
+exportAssets [spr_vertex "vertex"]
+
+es: EmptySprite
+spr_move3d: place es [
+	at 160x160
+	actions [
+		load [
+			;first I create some vertexs
+         	for c 1 8 1 [
+            	this.attachMovie("vertex" ("vertex" add c) c)
+     		]
+	        CenterRotationX: 0
+         	CenterRotationY: 0
+         	perspective: 100
+         	mouseReaction: 20
+         	z1:  35  x1: -35  y1: -35
+         	z2:  35  x2:  35  y2: -35
+         	z3: -35  x3: -35  y3: -35
+			z4: -35  x4:  35  y4: -35
+         	z5:  35  x5: -35  y5:  35
+         	z6:  35  x6:  35  y6:  35
+         	z7: -35  x7: -35  y7:  35
+         	z8: -35  x8:  35  y8:  35
+		]
+		enterFrame [
+			;MouseTracking
+         	DifferenceX: _xmouse - TrailerX
+         	DifferenceY: _ymouse - TrailerY
+         	TrailerX: TrailerX + (DifferenceX / mouseReaction)
+         	TrailerY: TrailerY + (DifferenceY / mouseReaction)
+         	either TrailerX > 0 [
+            	addX: to-integer (TrailerX / 360) * -360
+     		][
+            	addX: (to-integer (TrailerX / 360) - 1) * -360
+     		]
+         	either TrailerY > 0 [
+            	addY: to-integer (TrailerY / 360) * -360
+     		][
+            	addY: (to-integer (TrailerY / 360) - 1) * -360
+     		]
+         	Yangle: (TrailerX + addX)
+         	Xangle: (TrailerY + addY)
+         	
+         	;Calc3D
+         	for c 1 8 1 [
+            	Xang: Xangle * (math.PI / 180)
+            	Yang: Yangle * (math.PI / 180)
+            	var vertex: eval(("vertex" add c))
+            	var tz: eval(("z" add c))
+            	var tx: eval(("x" add c))
+            	var ty: eval(("y" add c))
+            	;### y rotate ###
+	           	vertex.zpos: tz * math.cos(Yang) - tx * math.sin(Yang)
+            	vertex.xpos: tz * math.sin(Yang) + tx * math.cos(Yang)
+            	;### x rotate ###
+            	vertex.ypos: ty * math.cos(Xang) - vertex.zpos * math.sin(Xang)
+            	vertex.zpos: ty * math.sin(Xang) + vertex.zpos * math.cos(Xang)
+            	;### 3d to 2d ###
+            	vertex.depth: (1 / ( (vertex.zpos / perspective) + 1))
+            	;##### draw #####
+            	vertex._x: vertex.xpos * vertex.depth + CenterRotationX
+            	vertex._y: vertex.ypos * vertex.depth + CenterRotationY
+            	vertex._xscale: vertex._yscale: (vertex.depth / 2) * 200
+            	vertex._alpha: (vertex.depth * 200) - 130
+            	vertex._rotation: ((vertex.depth * 1000) * (Math.PI / 180)) + 335
+				;### Z-Sorting ##
+            	vertex.swapDepths((vertex.depth * 350))
+     		]
+		]
+	]
+]
+showFrame
+end

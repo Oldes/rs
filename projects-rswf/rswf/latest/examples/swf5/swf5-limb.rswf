@@ -1,0 +1,70 @@
+rebol [
+	title: "SWF5-Limb"
+	type: 'swf5
+	file: %swf5-limb.swf
+	background: 20.20.20
+	rate: 24
+	size: 320x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 30-10-2003
+	purpose: {Strange limb following your cursor}
+]
+background 20.20.20
+;clude %includes/txt_info.rswf
+
+;es: EmptySprite
+shp_limbpart: shape [
+	fill color 255.255.255
+	edge [color 0.0.0 width 3]
+	circle 30
+]
+
+spr_limbpart: Sprite shp_limbpart
+spr_limbparts: sprite [
+	place shp_limbpart
+	l1: place spr_limbpart [at 0x0 scale 0.9]
+	l2: place spr_limbpart [at 0x0 scale 0.8]
+	l3: place spr_limbpart [at 0x0 scale 0.7]
+	l4: place spr_limbpart [at 0x0 scale 0.6]
+	l5: place spr_limbpart [at 0x0 scale 0.5]
+	l6: place spr_limbpart [at 0x0 scale 0.4]
+]
+spr_limb: sprite [
+	place spr_limbparts [
+		at 0x0
+		actions [
+			load [
+				constantPool [_parent Math alfa r sin cos atan2]
+				l1.r: 5
+				l2.r: 10
+				l3.r: 15
+				l4.r: 20
+				l5.r: 25
+				l6.r: 30
+				useHandCursor: false
+				update: func[][
+					
+					for i 1 6 1 [
+						obj: eval(eval("l" add i))
+						tellTarget obj [
+							alfa: Math.atan2(_parent._ymouse _parent._xmouse)
+							_y: Math.sin(alfa) * r
+							_x: Math.cos(alfa) * r
+						]
+					]
+				]
+			]
+			mouseMove [
+				updateAfterEvent()
+				update()
+			]
+		]
+	]
+	showFrame end
+]
+place spr_limb at 160x160
+exportAssets [spr_limb "limb"]
+stop
+showFrame
+end

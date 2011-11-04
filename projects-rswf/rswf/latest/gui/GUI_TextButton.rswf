@@ -1,0 +1,26 @@
+rebol [
+	title: "GUI_TextButton"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 24
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 8/10/2007
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+
+require [
+	%gui/defaults.rswf
+	%gui/GUI_Button.rswf
+]
+
+
+GUI_TextButton: Extends GUI_Button [
+	filters?: false
+	;align: "left"
+	r: 0
+]

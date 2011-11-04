@@ -1,0 +1,32 @@
+rebol [
+	title: "SWF-MoveDepth (layer) example"
+	type: 'swf
+	file: %movedepth.swf
+	background: 153.165.139
+	rate: 6
+	size: 300x100
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 24-Jul-2002
+	purpose: {To show how to move existing layers (depths)}
+	comment: {
+	If not specified number of the depth, the last-depth from the last "Place" command is used}
+]
+background 153.165.139
+shp_circle: Shape [
+	edge width 3 fill color 250.100.0 circle 10
+]
+spr_movingcircle: sprite [
+	place shp_circle   showFrame
+	MoveDepth at -10x0 showFrame
+	MoveDepth at   0x0 showFrame
+	MoveDepth at  10x0 showFrame
+	end
+]
+place spr_movingcircle [at 100x50 depth 10]
+place spr_movingcircle [at 200x50 depth 50]
+showFrame
+MoveDepth 10 [at 100x30 add 200.0.0] showFrame
+MoveDepth 10 [at 100x50 add 0.200.0] showFrame
+MoveDepth 10 [at 100x70 add 0.0.200] showFrame
+end

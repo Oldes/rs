@@ -1,0 +1,118 @@
+rebol [
+	title: "MX-tweening5 - frameTo"
+	type: 'mx
+	file: %mx-tweening5.swf
+	background: 255.255.255
+	rate: 25
+	size: 320x280
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 16-03-2006
+	purpose: {Simple demonstration of frameTo tweening}
+	comment: {using Ladislav Zigo's and Moses Gunesch's	precompiled	"Movieclip twening prototypes 1.2.0" which you can download as a actionscript from this page: <a href='http://laco.wz.cz/tween/'>http://laco.wz.cz/tween/</a>}
+
+]
+background 255.255.255
+;this is just a very simple progress bar:-)
+shp_prbox: shape [fill color 0.0.0 box -5x-10 5x10]
+spr_prbox: sprite [showFrame place shp_prbox show 2 Frames end]
+pr: place spr_prbox at 160x160
+showFrame
+;Include precompiled tweening prototype
+include %includes/lmc_tween_mx_1.2.0.rswf
+;Make sure you skip to another frame before you do some other actions
+;(it should be fixed in future)
+showFrame
+es: EmptySprite
+mov: place es at 0x20
+
+include %includes/txt_info.rswf
+
+doAction [
+	mov.loadMovie("includes/movie2.swf")
+	mov._alpha: 0
+	mov.scaleTo(200 0)
+	pr.tween("_y" 300 1 "easeOutSine")
+	
+	;You can use following strings as types of animation (easing equations by Robert Penner)
+	animationTypes: [
+		"linear"
+		"easeInQuad"    "easeOutQuad"    "easeInOutQuad"    "easeOutInQuad"
+		"easeInCubic"   "easeOutCubic"   "easeInOutCubic"   "easeOutInCubic"
+		"easeInQuart"   "easeOutQuart"   "easeInOutQuart"   "easeOutInQuart"
+		"easeInQuint"   "easeOutQuint"   "easeInOutQuint"   "easeOutInQuint"
+		"easeInSine"    "easeOutSine"    "easeInOutSine"    "easeOutInSine"
+		"easeInExpo"    "easeOutExpo"    "easeInOutExpo"    "easeOutInExpo"
+		"easeInCirc"    "easeOutCirc"    "easeInOutCirc"    "easeOutInCirc"
+		"easeInElastic" "easeOutElastic" "easeInOutElastic" "easeOutInElastic"
+		"easeInBack"    "easeOutBack"    "easeInOutBack"    "easeOutInBack"
+		"easeInBounce"  "easeOutBounce"  "easeInOutBounce"  "easeOutInBounce"
+	]
+
+	clr: make color [mov]
+
+	randomContrast: func[][
+		mov.contrastTo((100 - random 200) (3 * (Math.random())) "easeOutInBack" 0 randomContrast 10)
+	]
+	randomColorize: func[][
+		ra: random 100
+		ga: random 100
+		ba: random 100
+		rb: random 255
+		gb: random 255
+		bb: random 255
+		aa: 100 ab: 0
+		seconds:  1 + random 3
+	
+		
+		mov.colorTransformTo(
+			ra rb ga gb ba bb aa ab ;use like Color.setTransform
+			seconds     ;Duration of tween (number).
+						;Defaults to 2 if null or ommitted. Pass 0 to apply the change with no tween. 
+			"easeOutElastic"
+			0.5			;Delay in seconds to start animation (number) defaults to 0
+			randomColorize	;callback function to be called when finished
+						;(function, string, or object with scope, func, args params)
+		)
+	]
+
+	doSomething: func[][
+		frame: random mov._framesloaded
+
+		seconds:  2
+		animtype: pick animationTypes (random animationTypes.length)
+		
+		info: reform [
+			"_fl:"      mov._framesloaded
+			"_cf:"      mov._currentframe
+			"frameTo:"  frame
+			"animType:" animtype
+		]
+		
+		mov.frameTo(
+			frame       ;frame end frame of movieclip timeline
+			seconds     ;Duration of tween (number).
+						;Defaults to 2 if null or ommitted. Pass 0 to apply the change with no tween. 
+			animtype
+			0			;Delay in seconds to start animation (number) defaults to 0
+			doSomething	;callback function to be called when finished
+						;(function, string, or object with scope, func, args params)
+		)
+	]
+	testMovie: func[][
+		;wait at least to download some frames of the movie befor start
+		if mov._framesloaded > 40 [
+			clearInterval(int)
+			mov.alphaTo(100 1)
+			pr.gotoAndStop(1) ;hide the blinking cursor
+			doSomething()
+			randomColorize()
+			randomContrast()
+		]
+	]
+	int: setInterval(testMovie 100)
+]
+
+stop
+showFrame
+end

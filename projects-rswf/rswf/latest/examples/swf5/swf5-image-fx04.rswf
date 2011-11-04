@@ -1,0 +1,92 @@
+rebol [
+	title: "SWF5-Image-FX interlace"
+	type: 'swf5
+	file: %swf5-image-fx04.swf
+	background: 246.250.255
+	rate: 60
+	size: 265x32
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	purpose: {Simple noise image FX}
+	date: 28-12-03
+	comment: {
+		This is another image FX variation.
+	}
+]
+background 246.250.255
+bmp_picture: bitmap layout [
+	title red "REBOL/FLASH Dialect" shadow 2x2
+][key 200.200.200]
+spr_picture_a: Sprite [
+	rebol [
+		use [imgsize][
+			imgsize: rswf/placed-images/2
+			for i 0 imgsize/y 2 [
+				rswf/compile load rejoin [{
+					shp_pictureLine} i {: Shape [
+						Bounds 0x0 } imgsize/x {x1
+					    fill-style [bitmap bmp_picture at 0x} i * -1 {]
+					    box 0x0 } imgsize/x {x1
+					]
+					spr_pictureLine} i {: Sprite shp_pictureLine} i {
+					place spr_pictureLine} i { at 0x} i * 1 {
+				}]
+			]
+		]
+	]
+	showFrame end
+]
+spr_picture_b: Sprite [
+	rebol [
+		use [imgsize][
+			imgsize: rswf/placed-images/2
+			for i 1 imgsize/y 2 [
+				rswf/compile load rejoin [{
+					shp_pictureLine} i {: Shape [
+						Bounds 0x0 } imgsize/x {x1
+					    fill-style [bitmap bmp_picture at 0x} i * -1 {]
+					    box 0x0 } imgsize/x {x1
+					]
+					spr_pictureLine} i {: Sprite shp_pictureLine} i {
+					place spr_pictureLine} i { at 0x} i * 1 {
+				}]
+			]
+		]
+	]
+	showFrame end
+]
+spr_picture: Sprite [
+	a: place spr_picture_a
+	b: place spr_picture_b
+	showFrame end
+]
+place spr_picture [
+	at 0x0 
+	actions [
+		load [
+			w: 100
+			a._x: 0 - a._width
+			b._x: 0 + a._width
+		]
+		enterFrame	[
+			either (w > 0) and (a._x <> 0) [
+				a._x: a._x + 1
+				b._x: b._x - 1
+				if a._x > a._width [
+					a._x: 0 - a._width
+					b._x: 0 + a._width
+				]
+			][
+				w--
+				if w < 0 [
+					w: 100
+					a._x: a._x + 1
+					b._x: b._x - 1
+				]
+			]
+		]
+	]
+	
+]
+showFrame
+end

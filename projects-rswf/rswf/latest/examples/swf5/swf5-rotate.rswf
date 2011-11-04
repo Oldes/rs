@@ -1,0 +1,83 @@
+rebol [
+	title: "SWF5-Rotations"
+	type: 'swf5
+	file: %rotate.swf
+	background: 152.174.149
+	rate: 60
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 28-5-2002
+	purpose: {How to use ActionSript to animate objects}
+	comment: {
+	It's now possible to set more variables at once as for example:<code>
+_xscale: _yscale: 100 * (math.abs(p) + 0.1)</code>
+	that's same as this code in the ActionScript:<code>
+_xscale = 100 * (math.abs(p) + 0.1);
+_yscale = _xscale;</code>
+	but should be a little bit faster, because I use a register to store variable and reduce necessary pushing and poping values in the stack.}
+]
+background 152.174.149
+;include %includes/txt_info.rswf
+shp_circle: Shape [
+	Bounds -15x-15 15x15
+	edge [width 3] fill color 255.200.100
+	circle 10
+]
+spr_circle: Sprite shp_circle
+spr_objects: Sprite [
+	a: place spr_circle [at 0x0 add 200.0.0]
+	spr_b: sprite [
+		c: place spr_circle	[at 20x0 scale 0.5]
+		place spr_circle	[at 0x0 multiply 100.255.0]
+		showFrame end
+	]
+	b: place spr_b	at 0x0
+	d: place spr_circle	[at 0x0 scale 1.3]
+	showFrame end
+]
+m: place spr_objects [
+	at 160x160
+	actions [
+		load [
+			constantPool [phase a b c d]
+			a.phase: d.phase: 0
+			b.phase: 3.5
+			b.c.phase: 1.5
+		]
+		enterFrame [
+			constantPool [a b c _parent rot]
+			with _parent [
+				rot(a 50 0.02 2.3 0)
+				rot(b 100 0.002 0.5 1)
+				rot(b.c 20 0.05 1.5 1)
+				rot(d 5 -0.1 1 1)
+				sca(a)
+			]
+		]
+	]
+]
+
+doAction [
+	constantPool [but phase math o r v t cos pi2 p]
+	pi2: 6.28318530717959
+	
+	rot: func[o r v xel yel][;object, radius, velocity
+		with o [
+			phase: phase + v
+			either phase > pi2 [ phase: phase - pi2][
+				if phase < 0 [phase: phase + pi2]
+			]
+			_y: cy + yel * (r * math.sin(phase))
+			_x: cx + xel * (r * math.cos(phase))
+		]
+	]
+	sca: func[o /local p][
+		with o [
+			p: math.cos(phase)
+			_xscale: _yscale: 100 * (math.abs(p) + 0.1)	
+		]
+	]
+]
+showFrame
+end

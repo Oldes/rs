@@ -1,0 +1,85 @@
+rebol [
+	title: "MX-Chinese"
+	type: 'mx
+	file: %mx-chinese.swf
+	background: 255.0.0
+	rate: 50
+	size: 320x120
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 14-10-2003
+	purpose: {to see stupid chinese wathing atomic bomb explosion}
+	comment: {}
+
+]
+background 153.165.139
+bitmaps images [
+	make sprites
+	%chinese.gif
+]
+spr_panorama: sprite [
+	p1: place spr_chinese.gif
+	p2: place spr_chinese.gif
+	showFrame
+	end
+]
+
+panorama: place spr_panorama [
+	actions [
+		load [
+			pw: p1._width
+			p2._x: 0 - pw
+			destx: ((Math.random() * 2) - 1) * pw / 2
+            vx: 0
+            ac: 80 ;lower number means faster movement
+            sl: 0.86
+            steps: 0
+            maxSteps: 100
+
+		]
+		enterFrame [
+			constantPool [
+				destx steps
+			]
+			if 3 > random 10 [
+				tr: make object! [
+		            ra: 60 + random 40 rb: 100 - random 200
+		            ga: 0 gb: 0
+		            ba: 0 bb: 0
+		            aa: 100 ab: 0
+		        ]
+		        clr: make color this
+		        clr.setTransform(tr)
+			]
+		
+			vx: vx + ((destx - p1._x) / ac)
+			p1._x: p1._x + vx
+			p2._x: p1._x - pw
+			either p1._x > pw [
+				p1._x: p1._x - pw
+				p2._x: p1._x - pw
+			][
+				if p1._x < (320 - pw) [
+					p1._x: p1._x + pw
+					p2._x: p1._x - pw
+				]
+			]
+			steps++ 
+			if ((math.abs((destx - p1._x)) < 1) and (math.abs((lvx - vx)) < 0.01))
+			   or
+			   (steps > maxSteps)
+			[
+				destx: ((Math.random() * 2) - 1) * pw / 2
+				ac: 60 + random 30
+				sl: math.abs((math.random() - 0.2))
+				steps: 0
+			]
+			lvx: vx
+			vx: vx * sl 
+		]
+	]
+]
+
+
+showFrame
+end

@@ -1,0 +1,160 @@
+Rebol [
+	title: "Functions for Text related tags"
+]
+
+ins-DefineFont2: func[
+	arg1 "Spec, name or direct data"
+	arg2 "Optional way how to change font name before import"
+	arg3 "OPTIONS"
+	/local flags bin name enc tmp file file2
+][
+	bin: make binary! 1000
+	if string? arg1 [arg1: reduce ['name arg1]]
+	either any [file? arg1 url? arg1] [
+		;probe
+		file:  get-filepath arg1
+		file2: either any [none? arg3 none? find arg3 'noAlign] [get-filepath join arg1 %.align][none]
+		arg1: read/binary file
+		if string? arg2 [
+			;change font name (arg2 is new name)
+			arg1: rename-font arg1 arg2
+		]
+		if block? arg3 [
+			flags: first arg1
+			parse arg3 [any[
+				  'bold   (flags: flags or  1  )
+				| 'italic (flags: flags or  2  )
+				| 'normal (flags: flags and 252)
+				| 'pixel  (flags: flags or  32 )
+				| any-type!
+			]]
+			change arg1 to-char flags
+		]
+		either not none? file [
+			either all [found? file2 exists? file2][
+				;using Font3 type of tag with alignZones
+				ins-def form-tag 75 join (set-id none) arg1
+				ins-def form-tag 73 join (int-to-ui16 last-id) read/binary file2
+			][
+				ins-def form-tag 48 join (set-id none) arg1
+			]
+		][
+			make-warning! "Cannot find font file!"
+		]
+		
+	][
+		either binary? arg1 [
+			if string? arg2 [
+				;change font name (arg2 is new name)
+				arg1: rename-font arg1 arg2
+			]
+			ins-def form-tag 48 join (set-id none) arg1
+		][
+			flags: make string! "00000000"
+			
+			insert bin #{00000200} ;because there are no glyphs
+			if none? name: select arg1 'name [name: "_sans"]
+			insert bin to binary! name
+			insert bin int-to-ui8 length? name
+			if find arg1 'italic [flags/7: #"1"]
+			if find arg1 'bold   [flags/8: #"1"]
+			if find arg1 'small  [flags/3: #"1"]
+			either find arg1 'WideCodes [
+				flags/6: #"1"
+				;flags/16: #"1"
+			][
+				if error? try [
+					enc: 1 + index? find [ShiftJIS Unicode ANSI] select arg1 'encoding
+				][	enc: 4 ]
+				poke flags enc #"1"
+			]
+			insert bin either swf-version > 5 [#{01}][#{00}] ;languageCode (1 = western)
+			insert bin load rejoin ["2#{" flags "}"]
+			insert bin set-id select arg1 'id
+			
+			ins-def form-tag 48 bin
+		]
+	]
+	
+]
+		
+		
+ins-EditText: func[
+	variable "Name of the variable where the contents of the text field are stored."
+	size     "Size of the text field"
+	spec     "EditText specification."
+	/local flags bin tmp f fontId
+][
+	bin:   make binary! 40
+	flags: make string! "0000000000000000"
+	if tmp: select spec 'text [
+		insert bin rejoin [either swf-version > 5 [either utf8-encode? [utf8/encode tmp][as-binary tmp] ][tmp] #{00}]
+		flags/1: #"1"
+	]
+	insert bin either none? variable [#{00}][join to binary! variable #{00}]
+	if tmp: select spec 'layout [
+		tmp: make make object! [align: 'left margin: 0x0 indent: 0 leading: 2] tmp
+		tmp/align: either found? f: find [left right center justify] tmp/align [
+			(index? f) - 1
+		][0]
+		insert bin rejoin [
+			int-to-ui8  tmp/align
+			int-to-ui16 tmp/margin/x * 20
+			int-to-ui16 tmp/margin/y * 20
+			int-to-ui16 tmp/indent   * 20
+			int-to-ui16 tmp/leading  * 20
+		]
+		flags/11: #"1"
+	]
+	if tmp: select spec 'MaxLength [
+		insert bin int-to-ui16 tmp
+		flags/7: #"1"
+	]
+	if tmp: select spec 'color [
+		tmp: either issue? tmp [issue-to-binary tmp][to binary! tmp]
+		if 4 > length? tmp [insert tail tmp #{FF}]
+		insert bin tmp
+		flags/6: #"1"
+	]
+	if any [
+		tmp: select spec 'Font
+		tmp: select spec 'FontSize
+	][
+		unless block? tmp [
+			tmp: reduce either integer? tmp [
+				["_sans" tmp]
+			][	[tmp 12] ]
+		]
+		fontId: tmp/1
+		case/all [
+			none? fontId [fontId: "_sans"]
+			word? fontId [
+				any [
+					fontId: select names-ids-table fontId
+					fontId: select names-ids-table to-word join 'fnt_ fontId
+					fontId: to-string tmp/1
+				]
+			]
+			string? fontId [
+				insert set-word-buff to-word join 'fnt_ fontId
+				ins-DefineFont2 fontId none none
+				fontId: last-id
+			]
+		]
+
+		insert bin rejoin [int-to-ui16 fontId int-to-ui16 tmp/2 * 20]
+		flags/8: #"1"
+	]
+	if find spec 'WordWrap    [flags/2:  #"1"]
+	if find spec 'Multiline   [flags/3:  #"1"]
+	if find spec 'Password    [flags/4:  #"1"]
+	if find spec 'ReadOnly    [flags/5:  #"1"]
+	if find spec 'NoSelect    [flags/12: #"1"]
+	if find spec 'Border      [flags/13: #"1"]
+	if find spec 'HTML        [flags/15: #"1"]
+	if find spec 'UseOutlines [flags/16: #"1"]
+	insert bin debase/base flags 2
+	insert bin create-rect/bin 0x0 size * 20
+	insert bin set-id select spec 'id 
+	ins-def form-tag 37 bin
+]

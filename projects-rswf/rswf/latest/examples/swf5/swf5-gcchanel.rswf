@@ -1,0 +1,16 @@
+rebol [
+	title: "Font GC Chanel"
+	type: 'swf5
+	file: %includes/fnt_gcchanel.swf
+	background: 0.0.0
+	rate: 12
+	size: 1x1
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 23-2-2003
+	purpose: {To have this font with shapes for sharing in movies}
+	comment: {Only small characters, numbers and punctuation is included}
+]
+fnt_gcchanel: Font %fonts/fnt_gcchanel.rfnt
+exportAssets [fnt_gcchanel "N"]
+showFrame end

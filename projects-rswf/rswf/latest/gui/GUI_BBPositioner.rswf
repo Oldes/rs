@@ -1,0 +1,250 @@
+rebol [
+	title: "GUI - BBPositioner"
+	type: 8
+	file: none
+	background: 255.255.255
+	rate: 24
+	size: 1024x768
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 29/3/2007
+	compressed: true
+	purpose: {}
+	comment: {}
+]
+
+GUI_BBPositioner: Extends MovieClip [
+	maxwidth: 1600
+	slide?: false
+	slideDelay: 0.01
+	slideDuration: 1
+	init: func[maxwidth][
+		if integer? maxwidth [this.maxwidth: maxwidth]
+		this.edges: [0 0 this.maxwidth 0]
+		this.maxY: this.lastDepth: 0
+		this.lastX: this.lastY: 0
+		this.initX: this.initY: none
+		this.resultX: this.resultY: none
+		this.aObjects: []
+		;trace("BBP maxwidth:" this.maxwidth)
+	]
+	resetPositions: func[][
+		this.maxY: 0
+		this.edges: [0 0 this.maxwidth 0]
+		this.resultX: this.resultY: none
+		;trace("resetPositions")
+	]
+	
+	attachObject: func[name width height /local pos][
+		trace("attachObject" name)
+		this.lastDepth++
+		var id: "obj" add this.lastDepth
+		either integer? this.initY [var initY: this.initY][var initY: this.maxY]
+		this.attachMovie(name id this.lastDepth (context [width: width height: height _x: this.lastX _y: initY]))
+		var obj: this/(id)
+		;obj.bg._width:  width  - 8
+		;obj.bg._height: height - 8
+		;trace("add" id obj obj.width)
+		pos: obj.pos:  this.addBoundingBox(width height)
+	;	trace("NEWOBJ:" obj)
+		
+		either this.slide? [
+			obj.slideTo( pos.x pos.y this.slideDuration)
+		][
+			obj._x: pos.x
+			obj._y: pos.y
+		]
+		this.aObjects.push(obj)
+		return obj
+	]
+	updateObjects: func[width /local i pos][
+		;trace("UpdateObjects" this this.maxwidth)
+		if integer? width [this.maxwidth: width]
+		this.resetPositions()
+
+		var ob: this.aObjects.length
+		var i: 0
+		var d: 0
+		;trace("UpdateObjects" this this.maxwidth this.aObjects.length this.aObjects)
+				
+		while [i < ob][ 
+			obj: this.aObjects/(i)
+			
+			obj.pos: pos: this.addBoundingBox(obj.width obj.height)
+			;trace(i obj pos.x pos.y)
+
+			if (pos.x <> obj.pos._x) or (pos.y <> obj.pos._y) [
+				either this.slide? [
+					obj.slideTo( pos.x pos.y this.slideDuration "" d)
+					d: d + this.slideDelay ;0.05
+				][
+					obj._x: pos.x
+					obj._y: pos.y
+				]
+				
+			]
+			;trace(obj obj._x obj._width w h)
+			i++
+		]
+	]
+	removeObject: func[objToRemove][
+		var ob: this.aObjects.length
+		var i: 0
+		var d: 0
+		
+		while [i < ob][ 
+			var obj: this.aObjects/(i)
+			if obj = objToRemove [
+				if obj.stream <> undefined [
+					obj.stream.close()
+				]
+				;trace("remove1:" this.aObjects)
+				this.aObjects.splice(i 1)
+				
+				obj.removeMovieClip()
+				this.updateObjects()
+				return true
+			]
+			i++
+		]
+	]
+	
+	removeObjects: func[newwidth][
+		if integer? newwidth [this.maxwidth: newwidth]
+		var ob: this.aObjects.length
+		var i: 0
+		var d: 0
+		
+		while [i < ob][ 
+			obj: this.aObjects/(i)
+			if obj.stream <> undefined [
+				obj.stream.close()
+			]
+			obj.removeMovieClip()
+			i++
+		]
+		this.aObjects: []
+		this.lastDepth: 0
+		this.resetPositions()
+			
+	]
+	addBoundingBox: func[
+		bbwidth bbheight
+		/local
+		w i j nEdges indexresultedges hrana xcorner edgesToRemove lastY newHeight rY hrana2
+	][
+		;trace("addBB:" bbwidth bbheight "MW:" this.maxwidth)
+		with this [
+			either bbwidth > maxwidth [
+				resultX: 0
+				resultY: maxY
+				maxY: maxY + bbheight
+				edges: [0 maxY maxwidth 0]
+			][
+				nEdges: edges.length - 1
+	
+				resultX: edges/1
+				resultY: edges/2
+				
+				;trace("?" resultX resultY)
+
+				indexresultedges: false
+				
+				rY: maxY + 1
+				
+				i: 0
+				while [i <= nEdges] [
+					edgeX: edges/(i)
+					edgeY: edges/(i + 1)
+					;trace("testing edge:" edgeX edgeY "<" rY)
+					if (edgeY < rY) and ((rY - edgeY) > 4) [ ;4 je vyskova tolerance pro rozpoznani hrany
+						var pY: edgeY
+						j: i + 2
+						w: 0
+						while [j <= nEdges][
+							edge2X: edges/(j)
+							edge2Y: edges/(j + 1)
+							w: edge2X - edgeX
+							if (edge2Y > rY) or (width <= w) [ break ]
+							if edge2Y > pY [pY: edge2Y] 
+							j: j + 2
+						]
+						if bbwidth <= w [
+							;trace("new position" edgeX edgeY)
+							rY: pY
+							resultX: edgeX
+							resultY: pY
+							indexresultedges: i
+						]
+					]
+					i: i + 2
+				]
+				
+				;update edges....
+				
+				i: indexresultedges
+				newHeight: resultY + bbheight
+				if newHeight > maxY [maxY: newHeight]
+				;trace("odstranit hranu?" i newHeight edges/(i - 1) )
+				either (i > 1) and (newHeight = edges/(i - 1)) [
+					;odstran tuhle hranu, protoze ma stejnou vysku jak predchozi
+					;trace("odstranuju hranu")
+					edges.splice(i 2)
+					i: i - 2
+				][
+					;print ["upravuju vysku pocatecni edges:" edges/(i)/y "->" newHeight]
+					;edges/(i + 1): newHeight
+					poke edges (i + 1) newHeight
+				]
+				xcorner: resultX + bbwidth
+				
+				either i = nEdges [
+					;pridavam na konec
+					if (xcorner < maxwidth) and (resultY <> edges/(nEdges)) [
+						;print ["pridavam hranu na konec" xcorner]
+						edges.push(xcorner resultY)
+					]
+				][
+					;print ["removetest:" i edges/:i xcorner]
+					j: i: i + 2
+					while [(i < nEdges) and (edges/(i) <= xcorner)][
+						;print ["Remove.." edges/:i xcorner]
+						i: i + 2
+					]
+			
+					edgesToRemove: i - j
+					
+					;trace("hran na smazani:" edgesToRemove)
+					
+					lastY: edges/(i - 1)
+					either 0 < edgesToRemove [
+						edges.splice(j edgesToRemove)
+						either lastY <> edges/(j - 1) [
+							;print ["vkladam koncovou hranu:" as-pair xcorner lastY]
+							;insert at edges j as-pair xcorner lastY
+							edges.splice(j 0 xcorner lastY)
+						][
+							;print ["!!NEvkladam koncovou hranu:" xcorner lastY mold edges edges/(j - 1)/y  j]
+						]
+					][
+						if edges/(j - 2) < xcorner [
+							;print ["vkladam koncovou hranu:" as-pair xcorner  result/y edges/(j - 1)]
+							;insert at edges j as-pair xcorner  result/y
+							edges.splice(j 0 xcorner resultY)
+						]
+					]
+					
+			
+			
+					;print ["????" i j edges]
+				]
+				
+			]
+			;trace("R==>" resultX resultY "edges:" edges)
+			lastX: resultX
+			lastY: resultY
+			result: context [x: resultX y: resultY]
+			return result
+		]
+	]
+]

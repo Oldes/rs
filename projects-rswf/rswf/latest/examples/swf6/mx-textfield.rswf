@@ -1,0 +1,43 @@
+rebol [
+	title: "MX-TextField properties"
+	type: 'mx
+	file: %mx-textfield.swf
+	background: 153.165.139
+	rate: 30
+	size: 320x100
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 3-5-2002
+	purpose: {To show some of the new TextField properties}
+	comment: {
+	You can enter just numbers in the 1. text field and uppercase letters in the second one}
+]
+background 153.165.139
+require %includes/gui-mainfonts.rswf
+txt_t1: EditText t 0x18 [Font [fnt_gui_arial 12] border useOutlines]
+txt_t2: EditText t 0x18 [Font [fnt_gui_arial 12] border useOutlines]
+txt_t3: EditText t 0x18 [Font [fnt_gui_arial 12] border useOutlines]
+txt1: place txt_t1 at 160x20
+txt2: place txt_t2 at 160x40
+txt3: place txt_t3 at 160x60
+doAction [
+	constantPool [redText autoSize restrict]
+	redText: make TextFormat ["Arial CE" 12 #ff0000]
+	with txt1 [
+		autoSize: "left"
+		restrict: "0-9"
+	]
+	with txt2 [
+		autoSize: "center"
+		restrict: "A-Z"
+		backgroundColor: #ffa500
+		borderColor: #ff0000
+	]
+	with txt3 [
+		autoSize: "right"
+		setNewTextFormat(redText)
+	]
+	t: "TextField example"
+]
+showFrame
+end

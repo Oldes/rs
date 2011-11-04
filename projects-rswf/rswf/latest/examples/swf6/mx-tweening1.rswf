@@ -1,0 +1,71 @@
+rebol [
+	title: "MX-tweening1 - scaleTo"
+	type: 'mx
+	file: %mx-tweening1.swf
+	background: 255.255.255
+	rate: 25
+	size: 320x320
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 15-03-2006
+	purpose: {Simple demonstration of scaleTo tweening}
+	comment: {using Ladislav Zigo's and Moses Gunesch's	precompiled	"Movieclip twening prototypes 1.2.0" which you can download as a actionscript from this page: <a href='http://laco.wz.cz/tween/'>http://laco.wz.cz/tween/</a>}
+
+]
+background 255.255.255
+shp_circle: shape [fill color 0.0.0 circle 10 3 1]
+spr_circle: sprite [
+	showFrame
+	place shp_circle
+	showFrame
+	end
+]
+c: place spr_circle at 160x160
+showFrame
+;Include precompiled tweening prototype
+include %includes/lmc_tween_mx_1.2.0.rswf
+;Make sure you skip to another frame before you do some other actions
+;(it should be fixed in future)
+showFrame 
+
+include %includes/txt_info.rswf
+
+doAction [
+	c.gotoAndStop(2)
+	;You can use following strings as types of animation (easing equations by Robert Penner)
+	animationTypes: [
+		"linear"
+		"easeInQuad"    "easeOutQuad"    "easeInOutQuad"    "easeOutInQuad"
+		"easeInCubic"   "easeOutCubic"   "easeInOutCubic"   "easeOutInCubic"
+		"easeInQuart"   "easeOutQuart"   "easeInOutQuart"   "easeOutInQuart"
+		"easeInQuint"   "easeOutQuint"   "easeInOutQuint"   "easeOutInQuint"
+		"easeInSine"    "easeOutSine"    "easeInOutSine"    "easeOutInSine"
+		"easeInExpo"    "easeOutExpo"    "easeInOutExpo"    "easeOutInExpo"
+		"easeInCirc"    "easeOutCirc"    "easeInOutCirc"    "easeOutInCirc"
+		"easeInElastic" "easeOutElastic" "easeInOutElastic" "easeOutInElastic"
+		"easeInBack"    "easeOutBack"    "easeInOutBack"    "easeOutInBack"
+		"easeInBounce"  "easeOutBounce"  "easeInOutBounce"  "easeOutInBounce"
+	]
+	doScaling: func[][
+		either scale = 250 [scale: 10][scale: 250]
+		seconds:  1 + random 10
+		animtype: pick animationTypes (random animationTypes.length)
+		
+		info: reform ["scale:" scale "seconds:" seconds "animtype:" animtype ]
+		c.sizeTo(
+			scale		;target scale in percents
+			seconds     ;Duration of tween (number).
+						;Defaults to 2 if null or ommitted. Pass 0 to apply the change with no tween. 
+			animtype	;one of the animation types from above
+			0			;Delay in seconds to start animation (number) defaults to 0
+			doScaling	;callback function to be called when finished
+						;(function, string, or object with scope, func, args params)
+		)
+	]
+
+	doScaling()
+]
+
+stop
+showFrame
+end

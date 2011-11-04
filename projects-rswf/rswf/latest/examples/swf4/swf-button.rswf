@@ -1,0 +1,47 @@
+rebol [
+	title: "SWF-button example"
+	type: 'swf
+	file: %button.swf
+	background: 152.174.149
+	rate: 40
+	size: 320x240
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 25-Nov-2001
+	purpose: {To show how to create a button with some assigned actions}
+]
+background 100.0.0
+fnt_Arial: defineFont2 [name "Arial" ]
+txt_state: EditText 'test 110x18 [
+	Color 0.0.0
+	ReadOnly
+	NoSelect
+	Font [fnt_Arial 12]
+	Layout [align: 'center]
+]
+shp_box: Shape [
+	Bounds 0x0 110x18
+	fill-style [color 200.100.40]
+	box 0x0 110x18
+]
+btn_box: DefineButton2 [
+	as push ;or as menu ; if not specified, button is as menu
+	shapes [
+		[up hit] [id shp_box ]
+		down [id shp_box multiply 200.0.180 add 100.200.0]
+		over [id shp_box add 60.10.200]
+	]
+	actions [
+		[press key #"^M"] [test: "pressed"]
+		rollOver [test: "mouse over"]
+		rollOut  [test: "mouse out"]
+		release  [test: "released"]
+		ReleaseOutside  [test: "Released Outside"]
+		DragOut  [test: "DragOut"]
+		DragOver [test: "DragOver"]
+	]
+]
+Place [btn_box txt_state] at 105x100
+doAction [	test: "Press me!"	]
+showFrame
+end

@@ -1,0 +1,22 @@
+rebol [
+	title: "SWF-Smoothing" 
+	type: 'swf
+	file: %smoothing.swf
+	background: 0.0.0
+	rate: 1
+	size: 320x100
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 27-4-2002
+	purpose: {Just a simple comparison between smoothing ON and OFF}
+]
+background 0.0.0
+bmp_grid: bitmap %bitmaps/grids/grid1x2.gif
+shp_grid: shape [
+	smoothing off
+	fill bitmap [bmp_grid scale 6] box 0x0 160x100
+	smoothing on
+	fill bitmap [bmp_grid scale 6] box 160x0 320x100
+]
+place shp_grid
+showFrame end

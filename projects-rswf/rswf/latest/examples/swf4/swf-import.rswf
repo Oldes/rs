@@ -1,0 +1,18 @@
+rebol [
+	title: "SWF-ImportAssets"
+	type: 'swf
+	file: %import.swf
+	background: 0.0.0
+	rate: 12
+	size: 320x320
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	purpose: {To show how to import part of the movie from other file}
+	comment: {This will import star shape from the "star example" (swf-star.swf)
+	To be able import the part of the movie using ImportAssets action, you have to export the part in the movie you are using for importing!}
+]
+background 0.0.0
+ImportAssets [shp_star "niceStar"] from %examples/compiled/swf-star.swf
+place shp_star [at 160x160 scale 2.4]
+showFrame
+end

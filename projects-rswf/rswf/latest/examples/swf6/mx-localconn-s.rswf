@@ -1,0 +1,60 @@
+rebol [
+	title: "MX-Local connection - sender"
+	type: 'mx
+	file: %localconn-s.swf
+	background: 152.174.149
+	rate: 20
+	size: 320x20
+	author: "oldes"
+	email: oliva.david@seznam.cz
+	date: 4-6-2002
+	id: 'lc_s
+	build: 'no-page
+	purpose: {local connection object demonstration - sender}
+	comment: {
+	For more info look at this document:
+	<a href="http://www.macromedia.com/support/flash/action_scripts/local_connection_objects/local_connection_object02.html">How to use local connection objects </a>.}
+]
+background 152.174.149
+fnt_Courier: Font [name "Courier New" bold]
+shp_frame: shape [
+    edge width 5 color #b0c4de fill color #006400
+    box 0x0 295x20
+	no edge fill color #000000
+	box 295x0 320x20
+]
+txt_test: EditText x 295x20 [
+	color #00ff7f Font [fnt_Courier 12]
+]
+txt_test2: EditText y 25x20 [
+	color #ff4500 Font [fnt_Courier 12]
+	ReadOnly layout [align: 'center]
+]
+place [shp_frame txt_test]
+place txt_test2 at 296x0
+es: emptySprite
+sensor: place es [
+	actions [
+		load [
+			constantPool [sendingLC infoObject _parent y]
+			sendingLC: make LocalConnection
+			sendingLC.onStatus: func[infoObject][
+				if infoObject.level = "error" [
+  					_parent.y: "KO"
+	    		]	_parent.y: "OK"
+			]
+		]
+		keyDown [
+			constantPool [sendingLC "lc_test" x]
+			sendingLC.send("lc_test" "tick")
+			if Key.getCode() = 'enter [
+				with _parent [
+					sendingLC.send("lc_test" "processMSG" x)
+					x: ""
+				]
+			]
+		]
+	]
+]
+showFrame
+end

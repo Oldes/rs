@@ -1,0 +1,39 @@
+rebol [
+	title: "FLASH8 DraggableClipHandler"
+	type: 8
+	file: %swf8-draggablecliphandler.swf
+	background: 200.200.200
+	rate: 24
+	size: 420x700
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 8-Oct-2007/16:37:56+2:00
+	purpose: {Demontstrates how to extend existing Class to create a new one}
+	comment: {}
+	compressed: true
+]
+background 200.200.200
+
+require %includes/tracer.rswf
+require %gui/GUI_ClipHandler.rswf
+
+GUI_DraggableClipHandler: Extends GUI_ClipHandler [
+	;init not required if there is no new action to provide
+	;init: func[url width height][super(url width height)]
+	onPress:   does [this.startDrag() this.updateAfterEvent()]
+	onRelease: does [this.stopDrag()]
+	onReleaseOutside: does [this.stopDrag()]
+]
+
+clip1: place GUI_DraggableClipHandler at 10x80
+clip2: place GUI_DraggableClipHandler at 10x382
+
+doAction [
+	Tracer.resize(419 50)
+	trace("== LoadClips ==")
+	clip1.loadClip("http://box.lebeda.ws/~hmm/rswf/bitmaps/holky.jpg" 400 300)
+	clip2.loadClip("http://box.lebeda.ws/~hmm/rswf/bitmaps/motyl.jpg" 400 300)
+]
+
+showFrame
+end

@@ -1,0 +1,50 @@
+rebol [
+	title: "FLASH8 - GUI_BBPositioner"
+	type: 8
+	file: %swf8-bbpositioner.swf
+	background: 0.0.0
+	rate: 24
+	size: 450x420
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	date: 9-Oct-2007/21:14:43+2:00
+	purpose: {To show how to use BBPositioner Class with ImageStream and a fullScreen displayState as a bonus:)}
+	comment: {You must have Flash Player at leat version 9.0.28 to be able switch into fullscreen mode!}
+	compressed: true
+]
+
+background 0.0.0
+require %gui/GUI_BBPositioner.rswf
+bbp: place GUI_BBPositioner
+doAction [
+	Stage.scaleMode: "noScale"
+	Stage.align:     "TL"
+	onResize: does [
+		bbp.updateObjects(Stage.width)
+	]
+	Stage.addListener(this)
+	bbp.onPress: does [
+		either Stage.displayState = "normal" [ 
+			Stage.displayState: "fullScreen"
+		][	Stage.displayState: "normal" ]
+	]
+	onResize()
+]
+showFrame
+imageStream [
+		%/I/rebol/rs/projects-rswf/danca-ryba/latest/danca_150/
+		%/F/!!fotky/rusko2007/!kost/150/
+	][
+		onEachFrame [
+			bbp.attachObject('streamImageSpriteId 'lastBitmapWidth 'lastBitmapHeight)
+		]
+		ExportOnly
+	]
+showFrame
+require %includes/zMovieclipTween_2.28.28_8.rswf
+showFrame
+doAction [
+	bbp.slide?: on
+]
+stop
+showFrame end

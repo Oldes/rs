@@ -1,0 +1,107 @@
+rebol [
+	title: "SWF5-ColorTransform2"
+	type: 'swf5
+	file: %colortransform2.swf
+	background: 153.165.139
+	rate: 60
+	size: 400x370
+	author: "Oldes"
+	email: oliva.david@seznam.cz
+	purpose: {Another Color transorm example - using sliders}
+	comment: {
+Try to set another value to the field instead of <b>_root.obj_box</b> to modify another object (for example <b>_root.rbsl</b> or just <b>_root</b> for all screen)
+<hr>
+I've improved object handling so now it's possible to dynamically create/change them...
+Objects are now created by: <pre>
+obj: make another_obj [arg1 arg2...]</pre>
+If there is only one argument, it's possible to leave the square brackets:<pre>
+obj: make another_obj arg</pre>
+It's possible to create simple actions as:<pre>
+obj: make color ("clr" add random 10)
+obj: make another_obj [arg1 (random 2)]</pre>
+It's necessary to hold the action in  parenthesis to be recognized as one argument. (It's a shame, that in Rebol it's not possible to work with commas in blocks:( hope it will be changed in future versions)}
+	
+]
+background 153.165.139
+es: EmptySprite
+obj_box: place es
+ImportAssets [obj_slider "slider"] from %slider.swf
+
+rbsl: place obj_slider [at 160x0 scale [0.6 .8]]
+gbsl: place obj_slider [at 160x20 scale [0.6 .8]]
+bbsl: place obj_slider [at 160x40 scale [0.6 .8]]
+
+rasl: place obj_slider [at 20x0 scale [0.6 .8]]
+gasl: place obj_slider [at 20x20 scale [0.6 .8]]
+basl: place obj_slider [at 20x40 scale [0.6 .8]]
+
+fnt_arial: defineFont2 [name "Arial" bold]
+txt_test: EditText 'what 260x18 [
+	text "_root.obj_box"
+	border Color 50.0.0
+	Font [fnt_arial 12]
+]
+place txt_test at 20x60
+
+DoAction [
+	ConstantPool [
+		rb rbi gb gbi bb bbi clr_box obj_box x
+		tr ra ga ba aa ab setTransform transform _parent
+	]
+	obj_box.loadmovie(%demon.swf)
+	ra: ga: ba: 100 rb: gb: bb: 0
+	transform: func[][
+		tr: make object! [
+			ra: ra rb: rb
+			ga: ga gb: gb
+			ba: ba bb: bb
+			aa: 100 ab: 0
+		]
+		clr_box: make color (eval(_root.what))
+		clr_box.setTransform(tr)
+	]
+	tellTarget rasl [
+		onChange: func[][
+			_parent.ra: -100 + to-integer (200 * value)
+			_parent.transform()
+		]
+		init(1 "RA:")
+	]
+	tellTarget gasl [
+		onChange: func[][
+			_parent.ga: -100 + to-integer (200 * value)
+			_parent.transform()
+		]
+		init(0 "GA:")
+	]
+	tellTarget basl [
+		onChange: func[][
+			_parent.ba: -100 + to-integer (200 * value)
+			_parent.transform()
+		]
+		init(0 "BA:")
+	]
+	tellTarget rbsl [
+		onChange: func[][
+			_parent.rb: -255 + to-integer (510 * value)
+			_parent.transform()
+		]
+		init(.96 "RB:")
+	]
+	tellTarget gbsl [
+		onChange: func[][
+			_parent.gb: -255 + to-integer (510 * value)
+			_parent.transform()
+		]
+		init(1 "GB:")
+	]
+	tellTarget bbsl [
+		onChange: func[][
+			_parent.bb: -255 + to-integer (510 * value)
+			_parent.transform()
+		]
+		init(1 "BB:")
+	]
+]
+showFrame
+end

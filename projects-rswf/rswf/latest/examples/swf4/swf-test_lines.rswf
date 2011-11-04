@@ -1,0 +1,24 @@
+rebol [
+	title: "Test_lines"
+	type: 'swf
+	file: %test_lines.swf
+	background: 152.174.149
+	rate: 12
+	size: 320x40
+	author: "Damien Tomezzoli"
+	email: dtom@club-internet.fr
+	purpose: {To test lines with width less then 1 pixel}
+]
+background 152.174.149
+shp_testlines: Shape [
+	edge width 0.1 color 255.0.0 line 0x5 320x5
+	edge width 0.2 color 0.255.0 line 0x10 320x10
+	edge width 0.5 color 0.0.255 line 0x15 320x15
+	edge width 1   color 0.255.255 line 0x20 320x20
+	edge width 1.5 color 255.0.255 line 0x25 320x25
+	edge width 2   color 255.255.0 line 0x30 320x30
+]
+place shp_testlines
+showFrame
+end
+
