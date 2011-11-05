@@ -9,13 +9,24 @@ unless value? 'with [
 	with: func[obj body][do bind body obj]
 ]
 
+unless any [
+	all [value? 'dir_imagemagick exists? dir_imagemagick]
+	all [value? 'rs exists? dir_imagemagick: dirize rs/home/lib]
+	exists? dir_imagemagick: %/c/utils/imagemagick/
+	exists? dir_imagemagick: %"/c/Program Files/ImageMagick/"
+][
+	print "Set imagick/dir_imagemagick variable to directory where is CONVERT exe!"
+]
+
+
+
 ctx-imagick: context [
 	unless value? 'debug [
-		debug: func[msg /print][print msg]
+		debug: func[msg /print][system/words/print msg]
 	]
 	if error? system/words/try [
 		lib_ImageMagickWand: load/library either system/version/4 = 3 [
-			%"/c\Program Files (x86)\ImageMagick-6.6.7-Q16\CORE_RL_wand_.dll"
+			dir_imagemagick/CORE_RL_wand_.dll
 		][	%/usr/lib/libMagickWand.so ]
 	][
 		debug/print "IMAGICK: Unable to load the library!"

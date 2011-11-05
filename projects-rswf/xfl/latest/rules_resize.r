@@ -3,7 +3,7 @@ rebol []
 resize-image: func[src trg percent /name fname][
 	src-size: get-image-size src
 	if 0 <> call/wait probe ajoin [
-		"c:\Program Files (x86)\ImageMagick-6.6.7-Q16\convert.exe"
+		to-local-file dir_imagemagick "convert"
 		{ "} to-local-file src {"}
 		;" -resize " form (100 * percent/1) "%x" form (100 * percent/2) "%!"
 		" -resize " form (round/ceiling(percent/1 * src-size/x)) "x" form (round/ceiling(percent/2 * src-size/y)) "!"
@@ -30,7 +30,7 @@ resize-image-android: func[src trg percent /name fname /local filename tmp src-s
 	
 	
 	if 0 <> call/wait probe ajoin [
-		"c:\Program Files (x86)\ImageMagick-6.6.7-Q16\convert.exe"
+		to-local-file dir_imagemagick "convert"
 		{ "} to-local-file src {"}
 		;" -resize " form (100 * percent/1) "%x" form (100 * percent/2) "%!"
 		" -resize " form (round/ceiling(percent/1 * src-size/x)) "x" form (round/ceiling(percent/2 * src-size/y)) "!"
