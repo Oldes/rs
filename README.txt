@@ -46,3 +46,14 @@ PlaceObject2(26):
 showFrame(01):x
 end(00):x
 >>
+
+
+If you need to pack a projects which require other subprojects or other files so you could run it without RS, you can use 'rs/build' or 'rs/build/save' commands like:
+
+>> rs/build 'cookies-daemon
+== [REBOL [
+        Title: "Cookies-daemon"
+        Date: 7-Nov-2011/8:30:44+1:00
+        Name: none
+        Version: 1.2.2
+   ...
