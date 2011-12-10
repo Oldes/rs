@@ -124,3 +124,11 @@ from-ieee64f: func [
 	change third tmp: make struct! [f [double]] [0] remove/part head insert tail bin: copy bin copy/part bin 4 4
 	tmp/f
 ]
+from-ieee64: func [
+	"Conversion of number from IEEE"
+	bin [binary!]
+	/local tmp
+][
+	change third tmp: make struct! [f [double]] [0] bin
+	tmp/f
+]
