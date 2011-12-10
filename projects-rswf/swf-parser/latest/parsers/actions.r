@@ -73,7 +73,7 @@ comment {
 		result
 	]
 	readMultiname: funct[][
-		reduce switch readByte [
+		reduce switch/default kind: readByte [
 			#{07} [['QName   ABC/Cpool/namespace/(readUI30) ABC/Cpool/string/(readUI30)]]
 			#{0D} [['QNameA  ABC/Cpool/namespace/(readUI30) ABC/Cpool/string/(readUI30)]]
 			#{0F} [['RTQName  ABC/Cpool/string/(readUI30)]]
@@ -84,7 +84,16 @@ comment {
 			#{0E} [['MultinameA ABC/Cpool/string/(readUI30) ABC/Cpool/nsset/(readUI30)]]
 			#{1B} [['MultinameL  ABC/Cpool/nsset/(readUI30)]]
 			#{1C} [['MultinameLA ABC/Cpool/nsset/(readUI30)]]
+			#{1D} [['GenericName ABC/Cpool/multiname/(readUI30) readGenericName ]]
+		][	ask ["UNKNOWN multiname kind:" mold kind] ]
+	]
+	readGenericName: funct[][
+		count: readUI30
+		result: make block! count
+		loop count [
+			append result ABC/Cpool/multiname/(readUI30)
 		]
+		result
 	]
 	
 	readParamTypes: funct[count][
@@ -150,13 +159,13 @@ comment {
 				ABC/Cpool/string/(readUI30)
 			]
 		]
-		result
+		new-line/all result true
 	]
 	readMetadata: funct[][
-		reduce [
+		new-line/skip reduce [
 		 	ABC/Cpool/string/(readUI30)       ;name
 		 	readItemsArray ;items
-		]
+		] true 2
 	]
 
 	
@@ -188,10 +197,10 @@ comment {
 	readMultinameArray: funct[][
 		count: readUI30 - 1
 		either count >= 0 [
-			result: make block! count
-			loop count [ append/only result readMultiname ]
-			result
-		][ copy [] ]
+			ABC/Cpool/multiname: make block! count
+			loop count [ append/only ABC/Cpool/multiname readMultiname ]
+			ABC/Cpool/multiname
+		][  ABC/Cpool/multiname: copy [] ]
 	]
 	readMethodArray: funct[][
 		count: readUI30
@@ -382,20 +391,34 @@ comment {
 		ABC/Cpool/string:    (readStringInfoArray)
 		ABC/Cpool/namespace: (readNamespaceArray)
 		ABC/Cpool/nsset:     (readNSsetArray)
-		ABC/Cpool/multiname: (readMultinameArray)
+		(readMultinameArray)
 		
 		ABC/MethodInfo:  readMethodArray
 		ABC/Metadata:    readMetadataArray
-		;probe abc	ask ""
+		
+		foreach tmp [
+			integer
+			uinteger
+			double
+			string
+			namespace
+			nsset
+			multiname
+		][	error? try [new-line/all ABC/Cpool/(tmp) true] ]
+		foreach tmp [
+			MethodInfo
+			Metadata
+		][	error? try [new-line/all ABC/(tmp) true] ]
+		
 		ABC/InstanceInfo: (
 			class_count: readUI30
 			readInstanceArray class_count
 		)
-		;probe inBuffer
+
 		;print ["class_count: " class_count]
 		;ask ""
 		ABC/ClassInfo:    readClassArray class_count
-		;probe abc	ask ""
+
 		ABC/ScriptInfo:   readScriptArray
 		ABC/MethodBodies: readMethodBodyArray
 		
@@ -412,7 +435,7 @@ comment {
 
 		ABC
 	]
-	
+
 	parse-DoABC2: does [reduce [
 		readSI32   ;skip
 		to-string readString ;frame
