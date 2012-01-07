@@ -3,10 +3,14 @@ REBOL [
     File:  %decimal.r
     Author: "Eric Long"
     Email: kgd03011@nifty.ne.jp
-    Co-Authors: ["Larry Palmiter" "Gerald Goertzel"]
-    Date: 15-Feb-2000
+    Co-Authors: ["Larry Palmiter" "Gerald Goertzel" "Oldes"]
+    Date: 7-Jan-2012
     Category: [math util 4]
-    Version: 1.0.0
+    Version: 1.0.1
+	History: [
+		1.0.0 15-Feb-2000 "Original Eric's version"
+		1.0.1 7-Jan-2012 "Added real/to-native32 function"
+	]
     Purpose: {
         Contains functions for the manipulation of decimal values,
         packaged into the REAL object. These provide full support for
@@ -147,7 +151,22 @@ to-native: func [
     insert out to char! exponent / 16 + (128 * sign)
     return either rev [head reverse out][out]
 ]
-
+to-native32: func [
+    "convert a numerical value into native binary format"
+    x  [number!]
+    /rev     "reverse binary output"
+    /local out sign exponent fraction
+][
+    set [sign exponent fraction] split32 x
+	out: copy #{}
+    loop 2 [
+        insert out to char! byte: fraction // 256
+        fraction: fraction - byte / 256
+    ]
+    insert out to char! exponent * 128 // 256  + fraction
+    insert out to char! exponent / 2 + (128 * sign)
+    return either rev [head reverse out][out]
+]
 from-native: func [
     {convert a binary native into a decimal value - also accepts a binary
     string representation in the format returned by REAL/SHOW}
@@ -353,6 +372,30 @@ split: func [
     reduce [sign exponent fraction]
 ]
 
+split32: func [
+    "Returns block containing three components of double floating point value"
+    x [number!] /local sign exponent fraction
+][
+    sign: either negative? x [x: (- x) 1][0]
+
+    either zero? x [exponent: 0  fraction: 0][
+
+        either zero? 128 - exponent: to integer! log-2 x [exponent: 127][
+            if positive? (2 ** exponent) - x [exponent: exponent - 1]
+        ]
+        fraction: x / (2 ** exponent)
+
+        either positive? exponent: exponent + 127 [
+            fraction: fraction - 1         ; drop the first bit for normals
+            fraction: fraction * (2 ** 23) ; make the remaining fraction an
+                                           ; "integer"
+        ][
+            fraction: 2 ** (22 + exponent) * fraction  ; denormals
+            exponent: 0
+        ]
+    ]
+    reduce [sign exponent fraction]
+]
 comment { =============== REAL/CONVERT REAL/RESTORE ===============
 
 These functions are principally meant to be used by REAL/SAVE and
