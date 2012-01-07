@@ -7,10 +7,10 @@ REBOL [
     Date: 7-Jan-2012
     Category: [math util 4]
     Version: 1.0.1
-	History: [
-		1.0.0 15-Feb-2000 "Original Eric's version"
-		1.0.1 7-Jan-2012 "Added real/to-native32 function"
-	]
+    History: [
+        1.0.0 15-Feb-2000 "Original Eric's version"
+        1.0.1 7-Jan-2012 "Added real/to-native32 and real/from-native32 functions"
+    ]
     Purpose: {
         Contains functions for the manipulation of decimal values,
         packaged into the REAL object. These provide full support for
@@ -158,7 +158,7 @@ to-native32: func [
     /local out sign exponent fraction
 ][
     set [sign exponent fraction] split32 x
-	out: copy #{}
+    out: copy #{}
     loop 2 [
         insert out to char! byte: fraction // 256
         fraction: fraction - byte / 256
@@ -197,7 +197,36 @@ from-native: func [
         2 ** (exponent - 1023) * (2 ** -52 * fraction + 1)
     ]
 ]
-
+from-native32: func [
+    {convert a binary native into a decimal value - also accepts a binary
+    string representation in the format returned by REAL/SHOW}
+    in      [binary! string!]
+    /rev    "binary input in reverse order"
+    /local sign exponent fraction
+][
+    in: copy in
+    either binary? in [
+        if rev [reverse in]
+        sign: either zero? to integer! (first in) / 128 [1][-1]
+        exponent: ((first in) and 127) * 2 + to integer! (second in) / 128
+        fraction: to decimal! (second in) // 128
+        in: skip in 2
+        loop 2 [
+            fraction: fraction * 256 + first in
+            in: next in
+        ]
+    ][
+        set [sign exponent fraction] parse in none
+        sign: either sign = "0" [1][-1]
+        exponent: from-bin exponent
+        fraction: from-bin fraction
+    ]
+    sign * either zero? exponent [
+        2 ** -149 * fraction
+    ][
+        2 ** (exponent - 127) * (2 ** -23 * fraction + 1)
+    ]
+]
 comment { =============== REAL/SAVE REAL/LOAD ===============
 
 REAL/SAVE and REAL/LOAD are meant to be completely compatible
@@ -393,6 +422,7 @@ split32: func [
             fraction: 2 ** (22 + exponent) * fraction  ; denormals
             exponent: 0
         ]
+        fraction: to integer! fraction + .5
     ]
     reduce [sign exponent fraction]
 ]
