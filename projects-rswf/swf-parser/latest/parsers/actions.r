@@ -350,7 +350,7 @@ comment {
 			local_count:      readUI30
 			init_scope_depth: readUI30
 			max_scope_depth:  readUI30
-			code: readBytes readUI30
+			code: parse-ABC-code readBytes readUI30
 			exception:   (
 				blk: make block! count: readUI30
 				loop count [append blk readException]
@@ -362,6 +362,257 @@ comment {
 				blk
 			)
 		]
+	]
+	readLookupOffsets: has[count result][
+		result: copy []
+		loop readUI30 [append result readS24]
+		result
+	]
+	opcode-reader: make stream-io []
+	parse-ABC-code: funct[opcodes [binary!]][
+		;probe opcodes
+		result: copy []
+		with opcode-reader [
+			setStreamBuffer opcodes
+			while [not empty? inBuffer][
+				op: readByte
+				result: insert result new-line reduce [
+					switch/default op [
+						#{a0} ['add]
+						#{c5} ['add_i]
+						#{86} ['astype]
+						#{87} ['astypelate]
+						#{a8} ['bitand]
+						#{97} ['bitnot]
+						#{a9} ['bitor]
+						#{aa} ['bitxor]
+						#{41} ['call]
+						#{43} ['callmethod]
+						#{46} ['callproperty]
+						#{4c} ['callproplex]
+						#{4f} ['callpropvoid]
+						#{44} ['callstatic]
+						#{45} ['callsuper]
+						#{4e} ['callsupervoid]
+						#{78} ['checkfilter]
+						#{80} ['coerce]
+						#{82} ['coerce_a]
+						#{85} ['coerce_s]
+						#{42} ['construct]
+						#{4a} ['constructprop]
+						#{49} ['constructsuper]
+						#{76} ['convert_b]
+						#{75} ['convert_d]
+						#{73} ['convert_i]
+						#{77} ['convert_o]
+						#{70} ['convert_s]
+						#{74} ['convert_u]
+						#{ef} ['debug]
+						#{f1} ['debugfile]
+						#{f0} ['debugline]
+						#{94} ['declocal]
+						#{c3} ['declocal_i]
+						#{93} ['decrement]
+						#{c1} ['decrement_i]
+						#{6a} ['deleteproperty]
+						#{a3} ['divide]
+						#{2a} ['dup]
+						#{06} ['dxns]
+						#{07} ['dxnslate]
+						#{ab} ['equals]
+						#{72} ['esc_xattr]
+						#{71} ['esc_xelem]
+						#{5e} ['findproperty]
+						#{5d} ['findpropstrict]
+						#{59} ['getdescendants]
+						#{64} ['getglobalscope]
+						#{6e} ['getglobalslot]
+						#{60} ['getlex]
+						#{62} ['getlocal]
+						#{d0} ['getlocal_0]
+						#{d1} ['getlocal_1]
+						#{d2} ['getlocal_2]
+						#{d3} ['getlocal_3]
+						#{66} ['getproperty]
+						#{65} ['getscopeobject]
+						#{6c} ['getslot]
+						#{04} ['getsuper]
+						#{b0} ['greaterthan]
+						#{af} ['greaterthan]
+						#{1f} ['hasnext]
+						#{32} ['hasnext2]
+						#{13} ['ifeq]
+						#{12} ['iffalse]
+						#{18} ['ifge]
+						#{17} ['ifgt]
+						#{16} ['ifle]
+						#{15} ['iflt]
+						#{14} ['ifne]
+						#{0f} ['ifnge]
+						#{0e} ['ifngt]
+						#{0d} ['ifnle]
+						#{0c} ['ifnlt]
+						#{19} ['ifstricteq]
+						#{1a} ['ifstrictne]
+						#{11} ['iftrue]
+						#{b4} ['in]
+						#{92} ['inclocal]
+						#{c2} ['inclocal_i]
+						#{91} ['increment]
+						#{c0} ['increment_i]
+						#{68} ['initproperty]
+						#{b1} ['instanceof]
+						#{b2} ['istype]
+						#{b3} ['istypelate]
+						#{10} ['jump]
+						#{08} ['kill]
+						#{09} ['label]
+						#{ae} ['lessequals]
+						#{ad} ['lessthan]
+						#{38} ['lf32]
+						#{35} ['lf64]
+						#{36} ['li16]
+						#{37} ['li32]
+						#{35} ['li8]
+						#{1b} ['lookupswitch]
+						#{a5} ['lshift]
+						#{a4} ['modulo]
+						#{a2} ['multiply]
+						#{c7} ['multiply_i]
+						#{90} ['negate]
+						#{c4} ['negate_i]
+						#{57} ['newactivation]
+						#{56} ['newarray]
+						#{5a} ['newcatch]
+						#{58} ['newclass]
+						#{40} ['newfunction]
+						#{55} ['newobject]
+						#{1e} ['nextname]
+						#{23} ['nextvalue]
+						#{02} ['nop]
+						#{96} ['not]
+						#{29} ['pop]
+						#{1d} ['popscope]
+						#{24} ['pushbyte]
+						#{2f} ['pushdouble]
+						#{27} ['pushfalse]
+						#{2d} ['pushint]
+						#{31} ['pushnamespace]
+						#{28} ['pushnan]
+						#{20} ['pushnull]
+						#{30} ['pushscope]
+						#{25} ['pushshort]
+						#{2c} ['pushstring]
+						#{26} ['pushtrue]
+						#{2e} ['pushuint]
+						#{21} ['pushundefined]
+						#{1c} ['pushwith]
+						#{48} ['returnvalue]
+						#{47} ['returnvoid]
+						#{a6} ['rshift]
+						#{6f} ['setglobalslot]
+						#{63} ['setlocal]
+						#{d4} ['setlocal_0]
+						#{d5} ['setlocal_1]
+						#{d6} ['setlocal_2]
+						#{d7} ['setlocal_3]
+						#{61} ['setproperty]
+						#{6d} ['setslot]
+						#{05} ['setsuper]
+						#{3d} ['sf32]
+						#{3d} ['sf32]
+						#{3b} ['si16]
+						#{3c} ['si32]
+						#{3a} ['si8]
+						#{ac} ['strictequals]
+						#{c6} ['subtract_i]
+						#{2b} ['swap]
+						#{50} ['sxi_1]
+						#{52} ['sxi_16]
+						#{51} ['sxi_8]
+						#{03} ['throw]
+						#{95} ['typeof]
+						#{a7} ['urshift]
+					]["unknown!!!!!"]
+				] true
+				if args: switch op [
+					#{86} [ABC/Cpool/multiname/(readUI30)] ;astype
+					#{41} [readUI30] ;call - arg_count
+					#{43} [[readUI30 readUI30]] ;callmethod - index, arg_count
+					#{46} [[readUI30 readUI30]] ;callproperty - index, arg_count
+					#{4c} [[readUI30 readUI30]] ;callproplex - index, arg_count
+					#{4f} [[readUI30 readUI30]] ;callpropvoid - index, arg_count
+					#{44} [[readUI30 readUI30]] ;callstatic - index, arg_count
+					#{45} [[readUI30 readUI30]] ;callsuper - index, arg_count
+					#{4e} [[readUI30 readUI30]] ;callsupervoid - index, arg_count
+					#{80} [ABC/Cpool/multiname/(readUI30)] ;coerce
+					#{42} [readUI30] ;construct - arg_count
+					#{4a} [[readUI30 readUI30]] ;constructprop - index, arg_count
+					#{49} [readUI30] ;constructsuper - arg_count
+					#{ef} [context [type: readUI8 name: ABC/Cpool/string/(readUI30) register: readUI8 extra: readUI30]] ;debug
+					#{f1} [ABC/Cpool/string/(readUI30)] ;debugfile
+					#{f0} [readUI30] ;debugline
+					#{94} [readUI30] ;declocal - index
+					#{c3} [readUI30] ;declocal_i - index
+					#{6a} [ABC/Cpool/multiname/(readUI30)] ;deleteproperty
+					#{06} [ABC/Cpool/string/(readUI30)] ;dxns
+					#{5e} [ABC/Cpool/multiname/(readUI30)] ;findproperty
+					#{5d} [ABC/Cpool/multiname/(readUI30)] ;findpropstrict
+					#{59} [ABC/Cpool/multiname/(readUI30)] ;getdescendants
+					#{6e} [readUI30] ;getglobalslot - slotindex
+					#{60} [ABC/Cpool/multiname/(readUI30)] ;getlex
+					#{62} [readUI30] ;getlocal - local register
+					#{66} [ABC/Cpool/multiname/(readUI30)] ;getproperty
+					#{65} [readUI30] ;getscopeobject - index
+					#{6c} [readUI30] ;getslot - slotindex
+					#{04} [ABC/Cpool/multiname/(readUI30)] ;getsuper
+					#{32} [[readUI30 readUI30]] ;hasnext2
+					#{13} [readS24] ;ifeq - offset
+					#{12} [readS24] ;iffalse - offset
+					#{18} [readS24] ;ifge - offset
+					#{17} [readS24] ;ifgt
+					#{16} [readS24] ;ifle
+					#{15} [readS24] ;iflt
+					#{14} [readS24] ;ifne
+					#{0f} [readS24] ;ifnge
+					#{0e} [readS24] ;ifngt
+					#{0d} [readS24] ;ifnle
+					#{0c} [readS24] ;ifnlt
+					#{19} [readS24] ;ifstricteq
+					#{1a} [readS24] ;ifstrictne
+					#{11} [readS24] ;iftrue - offset
+					#{92} [readUI30] ;inclocal
+					#{c2} [readUI30] ;inclocal_i
+					#{68} [ABC/Cpool/multiname/(readUI30)] ;initproperty
+					#{b2} [ABC/Cpool/multiname/(readUI30)] ;istype
+					#{10} [readS24] ;jump
+					#{08} [readUI30] ;kill
+					#{1b} [context [default_offset: readS24 offsets: readLookupOffsets]] ;lookupswitch
+					#{56} [readUI30] ;newarray - arg_count
+					#{5a} [readUI30] ;newcatch - index is a u30 that must be an index of an exception_info
+					#{58} [ABC/ClassInfo/(readUI30)] ;newclass
+					#{40} [ABC/MethodInfo/(readUI30)] ;newfunction
+					#{55} [readUI30] ;newobject - arg_count
+					#{24} [readUI8] ;pushbyte - byte_value
+					#{2f} [ABC/Cpool/double/(readUI30)] ;pushdouble
+					#{2d} [ABC/Cpool/integer/(readUI30)] ;pushint
+					#{31} [ABC/Cpool/namespace/(readUI30)] ;pushnamespace
+					#{25} [readUI30] ;pushshort
+					#{2c} [ABC/Cpool/string/(readUI30)] ;pushstring
+					#{2e} [ABC/Cpool/integer/(readUI30)] ;pushuint
+					#{6f} [readUI30] ;setglobalslot - slotindex
+					#{63} [readUI30] ;setlocal
+					#{61} [ABC/Cpool/multiname/(readUI30)] ;setproperty
+					#{6d} [readUI30] ;setslot
+					#{05} [ABC/Cpool/multiname/(readUI30)] ;setsuper
+				][
+					result: insert/only result args
+				]
+				
+			]
+			clear head inBuffer
+		]
+		head result
 	]
 
 	ABC: context [
