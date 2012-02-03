@@ -5,22 +5,20 @@ REBOL [
 	Date:		20-Jan-2010
 	Version:	2.17.0
 	Author:		"oldes"
-	Email:		oliva.david@seznam.cz
-	Owner:		none
+	Email:		oldes@amanita-design.net
+	License: "BSD-3 - https://github.com/Oldes/rs/blob/master/BSD-3-License.txt"
 	Rights:		{
-REBOL is a Trademark of REBOL Technologies
-Macromedia(r) and Flash(tm) are trademarks or registered trademarks
-of Macromedia, Inc. in the United States and/or other countries.
+Copyright (C) 2000-2012 David 'Oldes' Oliva.
 
-Rebol and Macromedia as anybody else do not sponsor this product.
-You can freely use it (but not sell it), just let me know if you
-improve something and maybe if you use it for some interesting thing.}
+REBOL is a Trademark of REBOL Technologies
+Adobe(r) Flash(r) is a Trademark of Adobe Systems Incorporated}
+
 	Needs:		none
 	Tabs:		none
 	Language:	none
 	Type:		none
 	Content:	none
-	Home:		[http://oldes.multimedia.cz http://box.lebeda.ws/~hmm/]
+	Home:		http://rebol.desajn.net/rswf/
 	Purpose: {
 To create Flash file (SWF) using own Rebol dialect
 which is specified by the 'action and 'tag parsing rules.}
@@ -37,7 +35,7 @@ There are these methods how to make the swf file:
 		if the dialect is in special file... rate and size are in the header...
 		make-swf %flash-file.rswf
 	For examples of the dialect see:
-	http://box.lebeda.ws/~hmm/rswf/
+	http://rebol.desajn.net/rswf/
 }
 	Category:	[file util 4]
 	Comment:	{
@@ -185,7 +183,7 @@ the other values as I don't need them at this moment.}
 		rs-project 'ajoin
 		rs-project 'acompiler 'new ; 0.6.0 ;'new
 		rs-project 'swf-parser
-		rs-project 'imagick 'minimal
+		;rs-project 'imagick 'minimal ;TEMP REMOVE!!
 	]
 	preprocess: true
 ]
@@ -193,8 +191,8 @@ the other values as I don't need them at this moment.}
 ;change rs/was-dir 
 set 'rswf-project-dir what-dir
 set 'rswf-root-dir what-dir
-if error? try [rswf-web-url][
-	set 'rswf-web-url http://box.lebeda.ws/~hmm/rswf/
+unless value? 'rswf-web-url [
+	set 'rswf-web-url http://rebol.desajn.net/rswf/
 ]
 system/options/quiet: true
 
