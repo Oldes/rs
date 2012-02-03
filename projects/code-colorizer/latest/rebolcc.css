@@ -1,0 +1,70 @@
+BODY {
+	font-size : 9pt; font-family: Arial, sans-serif;
+}
+OL.index {
+	border: 1px dotted #a0a0a0; font-family: Verdana, Arial, sans-serif; font-size: 110%; background-color: #F7F7F7; margin: 10px; line-height: 118%; padding: 2px;color: #000000; font-style: normal;padding-left: 40px;
+}
+OL.index LI {
+	padding-left: 0px;
+}
+OL.index a {font-style: normal; text-decoration: none;}
+OL.index a:link  {color: #006;}
+OL.index a:hover {color: #600;}
+OL.index a.a1 {font-weight: bold; text-decoration: underline;}
+OL.index a.a2 {font-weight: normal;}
+H1 {
+	margin: 0px; padding: 0px;font-family: Arial, sans-serif;
+}
+DIV.header {margin-left:10px;}
+DIV.footer {margin-left:10px;}
+.rebol i {font-style: normal;}
+.rebol .de1, .rebol .de2 {color: #000060; font-weight: normal;}
+.rebol  {border: 1px dotted #a0a0a0; font-family: 'Courier New', Courier, monospace; font-size: 110%; background-color: #f0f0f0; margin: 10px; line-height: 118%; padding: 2px 5px 2px 5px;color: #000055;}
+.rebol a:link {color: #006;}
+.rebol a:hover {background-color: #d6d6e6;}
+.rebol .head {font-family: Verdana, Arial, sans-serif; color: #808080; font-size: 70%; font-weight: bold; background-color: #f0f0ff; border-bottom: 1px solid #d0d0d0; padding: 2px;}
+.rebol .foot {font-family: Verdana, Arial, sans-serif; color: #808080; font-size: 70%; font-weight: bold; background-color: #f0f0ff; border-top: 1px solid #d0d0d0; padding: 2px;}
+.rebol .imp {font-weight: bold; color: red;}
+.rebol li {font-family: 'Courier New', Courier, monospace; color: #000060; background-color: #e0e0e0; padding-bottom: 2px;}
+.rebol li.li2 {font-weight: bold; color: #000090; line-height: 90%}
+
+.rebol .kw1 {color: #b1b100;}
+.rebol .kw2 {color: #000000; font-weight: bold;}
+.rebol .kw3 {color: #000066;}
+.rebol .kw4 {color: #FF0000;}
+.rebol .kw5 {color: #000066;}
+.rebol .kw6 {color: #369084;}
+.rebol .kw7 {color: #000066;}
+.rebol .kw8 {color: #000066;}
+.rebol .kw9 {color: #71522D;}
+.rebol .kw10 {color: #000066;}
+.rebol .kw11 {color: #000066;}
+.rebol .kw12 {color: #000066;}
+.rebol .kw13 {color: #000066;}
+/* basic datatypes */
+.rebol .t1 {color: #aa55aa;} /*pair*/
+.rebol .sw {color: #000; font-weight: bold;} /* set-word */
+.rebol .lw {color: #4C4A47; font-weight: bold;} /* lit-word */
+.rebol .iss {color: #ff0000} /*issue!*/
+.rebol .dt {color: #10786B;} /* datatype! */
+.rebol .ch {color: green;} /* char! */
+.rebol .fl  {color: #8C3F10;font-weight:bold;text-decoration: underline;} /* file! or url! */
+.rebol .co1,.co2,.co3,.co4,.co5,.co6 {color: #808080; font-style: italic;}
+.rebol .co2 {font-family: Verdana, Arial, sans-serif; color: #000;font-style: bold;font-size: 1.4em;line-height: 1.6em;}
+.rebol .co3 {font-family: Arial, sans-serif; color: #4E764D;font-weight: bold;font-size: 1.3em;line-height: 1.3em;}
+.rebol .co4 {font-family: Arial, sans-serif; color: #4E764D;font-weight: normal;}
+.rebol .co5 {font-family: Verdana, Arial, sans-serif; color: #4E764D;}
+.rebol .co6 {font-style:italic;}
+.rebol .coMULTI {color: #808080; font-style: italic;font-style: normal;}
+.rebol .es0 {color: #000099; font-weight: bold;font-weight: normal;}
+.rebol .br0 {font-weight: bold} /* () [] */
+.rebol .br1 {color: green;font-weight:bold;} /*string brackets*/
+.rebol .st0 {color: green;}
+.rebol .se  {font-style: italic;}
+.rebol .bi0 {color: #aa0000;}
+.rebol .nu0 {color: #cc66cc;}
+.rebol .me1 {color: #006600;}
+.rebol .me2 {color: #006600;}
+.rebol .me {1}
+.rebol .re0 {color: #0000ff;}
+.rebol .re1 {color: #ff0000}

@@ -1,0 +1,662 @@
+<html><head><LINK rel="stylesheet" href="http://rebol.desajn.net/css/rebolcc.css"/><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1250"><title>Rebol Code Colorizer</title></head>
+<body bgcolor="#ffffff"><div class=header><h1>Rebol Code Colorizer</h1>Source: <b><a href="code-colorizer.r">code-colorizer.r</a></b> modified: <b>2-Feb-2009/2:59:18+1:00</b></div>
+<ol class=index><li class=co2><a href="#m_ajoin" class=a1>ajoin</a><li class=co2><a href="#m_seo-name" class=a1>Seo-name</a><li class=co2><a href="#m_code-colorizer" class=a1>Code-colorizer</a>
+<a href="#s_default-settings" class=a2>Default settings</a>,
+<a href="#s_basic-charsets" class=a2>Basic charsets</a>,
+<a href="#s_rules-used-for-parsing" class=a2>Rules used for parsing</a>,
+<a href="#s_escape-html" class=a2>escape-html</a>,
+<a href="#s_emit" class=a2>emit</a>,
+<a href="#s_add-index-comment" class=a2>add-index-comment</a>,
+<a href="#s_colorize" class=a2>colorize</a><li class=co2><a href="#m_test-code" class=a1>Test code</a></ol><pre class=rebol><a href="http://www.rebol.com">REBOL</a> <i class=br0>[</i>
+    <i class=sw>Title:</i>   <i class=st0>"Rebol Code colorizer"</i>
+    <i class=sw>Date:</i>    <i class=nu0>2-Feb-2009/2:47:10+1:00</i>
+    <i class=sw>Name:</i>    <i class=st0>"Rebol Code colorizer"</i>
+    <i class=sw>Version:</i> <i class=nu0>0.9.6</i>
+    <i class=sw>File:</i>    <i class=fl>%code-colorizer.r</i>
+    <i class=sw>Author:</i>  <i class=st0>"David 'Oldes' Oliva"</i>
+    <i class=sw>Email:</i>   oliva.david@seznam.cz
+    <i class=sw>Home:</i>    <i class=fl>http://rebol.desajn.net/</i>
+    <i class=sw>Owner:</i>   <i class=kw6>none</i>
+    <i class=sw>Rights:</i>  <i class=kw6>none</i>
+    <i class=sw>Needs:</i>   <i class=kw6>none</i>
+    <i class=sw>Tabs:</i>    <i class=kw6>none</i>
+    <i class=sw>encoding:</i> <i class=lw>'cp1250</i>
+    <i class=sw>Usage:</i>   <i class=br0>[</i>
+        <i class=sw>code-colorizer/remove-parens?:</i> <i class=kw6>off</i>
+        <i class=sw>code-colorizer/footer-final:</i> <i class=br1>{</i><i class=st0>
+        &lt;script src="http://www.google-analytics.com/urchin.js" type="text/javascript"&gt;&lt;/script&gt;
+        &lt;script type="text/javascript"&gt;_uacct = "UA-1886645-1";urchinTracker();&lt;/script&gt;</i><i class=br1>}</i>
+        
+        colorize/save/title
+            <i class=fl>%code-colorizer.r</i>
+            <i class=fl>%code-colorizer.html</i>
+            <i class=st0>"Rebol Code Colorizer"</i>
+    <i class=br0>]</i>
+    <i class=sw>Purpose:</i> <i class=br1>{</i><i class=st0>To convert Rebol script into html with colorized code. Using string based parsing.</i><i class=br1>}</i>
+    <i class=sw>Comment:</i> <i class=br1>{</i><i class=st0>
+        To change colors, download this CSS style: http://rebol.desajn.net/css/rebolcc.css
+        modify it and use it (change code-colorizer/css-file to your new version)
+    </i><i class=br1>}</i>
+    <i class=sw>History:</i> <i class=br0>[</i>
+        <i class=nu0>0.9.6</i> <i class=nu0>2-Feb-2009</i> <i class=br1>{</i><i class=st0>
+            - Fixed bug with escape inside multiline string
+            - Replaced 'rejoin with faster R3's 'ajoin
+        </i><i class=br1>}</i>
+        <i class=nu0>0.9.5</i> <i class=nu0>20-Jan-2009</i> <i class=br1>{</i><i class=st0>
+            - Using hash! table to get word's classes instead of parse rules
+            - Using &lt;i&gt; tags instead of &lt;span&gt;
+            - Updated 'seo-name function
+            - Fixed special char! notation like #"^(60)"
+        </i><i class=br1>}</i>
+        <i class=nu0>0.9.2</i> <i class=nu0>12-Mar-2008</i> <i class=br1>{</i><i class=st0>
+            - Fixed bug with single escape character in string ( "^^" )
+        </i><i class=br1>}</i>
+        <i class=nu0>0.9.1</i> <i class=nu0>8-Mar-2008</i> <i class=br1>{</i><i class=st0>
+            - Fixed bug with conversion of &lt;a href="http://www.rebol.com"&gt;REBOL&lt;/a&gt; word to url
+            - Added new color class .iss for issue! datatype.
+        </i><i class=br1>}</i>
+        <i class=nu0>0.9.0</i> <i class=nu0>28-Sep-2007</i> <i class=br1>{</i><i class=st0>
+            Complete remake of the script using string based parsing (besause of recursions limits in the old code)</i><i class=br1>}</i>
+        <i class=nu0>0.0.1</i> <i class=nu0>29-Oct-2003</i> <i class=br1>{</i><i class=st0>
+            %colorize-rswf.r script inspired by Carl's %color-code.r file but was designed
+            to colorize using CSS classes instead of font tags
+        </i><i class=br1>}</i>
+    <i class=br0>]</i>
+    <i class=sw>Language:</i> <i class=kw6>none</i>
+    <i class=sw>Type:</i>     <i class=kw6>none</i>
+    <i class=sw>Content:</i>  <i class=kw6>none</i>
+    <i class=sw>library:</i> <i class=br0>[</i>
+        <i class=sw>level:</i>        <i class=lw>'intermediate</i>
+        <i class=sw>platform:</i>     <i class=lw>'all</i>
+        <i class=sw>type:</i>         <i class=br0>[</i>tool<i class=br0>]</i>
+        <i class=sw>domain:</i>       <i class=br0>[</i>html <i class=kw9>parse</i> text-processing visualization web<i class=br0>]</i>
+        <i class=sw>tested-under:</i> <i class=kw6>none</i>
+        <i class=sw>support:</i>      <i class=kw6>none</i>
+        <i class=sw>license:</i>      <i class=lw>'public-domain</i>
+        <i class=sw>see-also:</i>     <i class=kw6>none</i>
+    <i class=br0>]</i>
+<i class=br0>]</i>
+
+<a name="m_ajoin"></a><i class=co2>;ajoin</i>
+<i class=kw5>comment</i> <i class=br1>{</i><i class=st0>
+#### RS include: %ajoin.r
+#### Title:   "ajoin"
+----</i><i class=br1>}</i> 
+unless <i class=kw3>value?</i> <i class=lw>'ajoin</i> <i class=br0>[</i>
+    <i class=sw>ajoin:</i> <i class=kw4>func</i><i class=br0>[</i>
+        <i class=st0>"Faster way how to create string from a block (in R3 it's native!)"</i>
+        block <i class=br0>[</i><i class=dt>block!</i><i class=br0>]</i>
+    <i class=br0>]</i><i class=br0>[</i><i class=kw13>make</i> <i class=dt>string!</i> <i class=kw4>reduce</i> block<i class=br0>]</i>
+<i class=br0>]</i>
+<i class=kw5>comment</i> <i class=st0>"---- end of RS include %ajoin.r ----"</i> 
+
+<a name="m_seo-name"></a><i class=co2>;Seo-name</i>
+<i class=kw5>comment</i> <i class=br1>{</i><i class=st0>
+#### RS include: %seo-name.r
+#### Title:   "seo-name"
+----</i><i class=br1>}</i> 
+unless <i class=kw3>value?</i> <i class=lw>'seo-name</i> <i class=br0>[</i>
+    <i class=sw>seo-name:</i> <i class=kw4>func</i> <i class=br0>[</i>
+        <i class=st0>"Creates SEO friendly version of string with diacritics"</i>
+        str
+        /local new normal-chars trans-chars other-char pos pos2
+    <i class=br0>]</i><i class=br0>[</i>
+        <i class=sw>was-type?:</i> <i class=kw13>type?</i> str
+        <i class=sw>new:</i> <i class=kw11>lowercase</i> <i class=kw9>copy</i> as-string str 
+        <i class=sw>normal-chars:</i> <i class=kw10>charset</i> <i class=br0>[</i><i class=ch>#"A"</i> <i class=kw7>-</i> <i class=ch>#"Z"</i> <i class=ch>#"a"</i> <i class=kw7>-</i> <i class=ch>#"z"</i> <i class=ch>#"0"</i> <i class=kw7>-</i> <i class=ch>#"9"</i> <i class=ch>#"_"</i> <i class=ch>#"."</i><i class=br0>]</i> 
+        <i class=sw>trans-chars:</i>  <i class=kw10>charset</i> <i class=st0>"ěéëšśčćřŕžźýáäíéóöďťňúůüç"</i>
+        <i class=sw>other-char:</i> <i class=kw6>complement</i> <i class=br0>(</i><i class=kw9>union</i> normal-chars trans-chars<i class=br0>)</i>
+        parse/all new <i class=br0>[</i>
+        some <i class=br0>[</i>
+            some normal-chars 
+            | some <i class=br0>[</i>
+            <i class=sw>pos:</i> <i class=br0>[</i>
+                  <i class=br0>[</i><i class=st0>"ě"</i> | <i class=st0>"é"</i> | <i class=st0>"ë"</i><i class=br0>]</i> <i class=br0>(</i><i class=kw9>change</i> pos <i class=st0>"e"</i><i class=br0>)</i> 
+                | <i class=br0>[</i><i class=st0>"š"</i> | <i class=st0>"ś"</i><i class=br0>]</i>       <i class=br0>(</i><i class=kw9>change</i> pos <i class=st0>"s"</i><i class=br0>)</i> 
+                | <i class=br0>[</i><i class=st0>"č"</i> | <i class=st0>"ć"</i> | <i class=st0>"ç"</i><i class=br0>]</i> <i class=br0>(</i><i class=kw9>change</i> pos <i class=st0>"c"</i><i class=br0>)</i> 
+                | <i class=br0>[</i><i class=st0>"ř"</i> | <i class=st0>"ŕ"</i><i class=br0>]</i>       <i class=br0>(</i><i class=kw9>change</i> pos <i class=st0>"r"</i><i class=br0>)</i> 
+                | <i class=br0>[</i><i class=st0>"ž"</i> | <i class=st0>"ź"</i><i class=br0>]</i>       <i class=br0>(</i><i class=kw9>change</i> pos <i class=st0>"z"</i><i class=br0>)</i> 
+                | <i class=st0>"ý"</i>               <i class=br0>(</i><i class=kw9>change</i> pos <i class=st0>"y"</i><i class=br0>)</i> 
+                | <i class=st0>"í"</i>               <i class=br0>(</i><i class=kw9>change</i> pos <i class=st0>"i"</i><i class=br0>)</i> 
+                | <i class=br0>[</i><i class=st0>"ó"</i> | <i class=st0>"ö"</i><i class=br0>]</i>       <i class=br0>(</i><i class=kw9>change</i> pos <i class=st0>"o"</i><i class=br0>)</i> 
+                | <i class=br0>[</i><i class=st0>"á"</i> | <i class=st0>"ä"</i><i class=br0>]</i>       <i class=br0>(</i><i class=kw9>change</i> pos <i class=st0>"a"</i><i class=br0>)</i> 
+                | <i class=br0>[</i><i class=st0>"ů"</i> | <i class=st0>"ú"</i> | <i class=st0>"ü"</i><i class=br0>]</i> <i class=br0>(</i><i class=kw9>change</i> pos <i class=st0>"u"</i><i class=br0>)</i> 
+                | <i class=st0>"ď"</i>               <i class=br0>(</i><i class=kw9>change</i> pos <i class=st0>"d"</i><i class=br0>)</i> 
+                | <i class=st0>"ť"</i>               <i class=br0>(</i><i class=kw9>change</i> pos <i class=st0>"t"</i><i class=br0>)</i> 
+                | <i class=st0>"ň"</i>               <i class=br0>(</i><i class=kw9>change</i> pos <i class=st0>"n"</i><i class=br0>)</i>
+            <i class=br0>]</i>
+            <i class=br0>]</i> 
+            | some other-char <i class=sw>pos2:</i> <i class=br0>(</i><i class=sw>pos2:</i> change/part pos <i class=st0>"-"</i> pos2<i class=br0>)</i> :pos2
+        <i class=br0>]</i>
+        <i class=br0>]</i> 
+        <i class=kw13>to</i> was-type? <i class=kw9>head</i> new
+    <i class=br0>]</i> 
+<i class=br0>]</i>
+<i class=kw5>comment</i> <i class=st0>"---- end of RS include %seo-name.r ----"</i> 
+
+<a name="m_code-colorizer"></a><i class=co2>;Code-colorizer</i>
+
+<i class=sw>code-colorizer:</i> <i class=kw3>context</i> <i class=br0>[</i>
+
+<a name="s_default-settings"></a><i class=co3>;Default settings</i>
+    <i class=sw>remove-parens?:</i> <i class=kw6>off</i> <i class=co1>;removes parens from code (used to document big parsing rules)</i>
+    <i class=sw>remove-newline-comments?:</i> <i class=kw6>on</i> <i class=co1>;removes all comments which start at newline</i>
+    <i class=sw>index-comments?:</i> <i class=kw6>on</i> <i class=co1>;creates index from special comments</i>
+    <i class=sw>break-on-error?:</i> <i class=kw6>on</i> <i class=co1>;stops parsing if founds invalid code</i>
+
+    <i class=sw>out:</i> <i class=sw>str:</i> <i class=sw>x:</i>   <i class=kw6>none</i>
+    <i class=sw>output?:</i>       <i class=kw6>true</i>
+    <i class=sw>level-block:</i>  
+    <i class=sw>level-paren:</i>  
+    <i class=sw>level-string:</i>  <i class=nu0>0</i>
+    <i class=sw>string-type:</i>   <i class=kw6>none</i>
+    <i class=sw>string-buffer:</i> <i class=kw13>make</i> <i class=dt>string!</i> <i class=nu0>10000</i>
+    <i class=sw>index-html:</i>    <i class=kw13>make</i> <i class=dt>string!</i> <i class=nu0>1000</i>
+    <i class=sw>index-type:</i>    <i class=kw6>none</i>
+    <i class=sw>css-file:</i>      <i class=fl>http://rebol.desajn.net/css/rebolcc.css</i>
+    <i class=sw>footer-final:</i>  <i class=kw6>none</i> <i class=co1>;using this to add final note (for example counter) on HTML page</i>
+    
+<a name="s_basic-charsets"></a><i class=co3>;Basic charsets</i>
+<i class=co4>; These charsets are used in string based parse in Colorize function</i>
+
+    <i class=sw>ch_word-dividers:</i> <i class=kw10>charset</i> <i class=st0>" ^-^/^M{}[]()^"^^;"</i>
+    <i class=sw>ch_newlines:</i>      <i class=kw10>charset</i> <i class=st0>"^/^M"</i>
+    <i class=sw>ch_space:</i>         <i class=kw10>charset</i> <i class=st0>" ^-"</i>
+    <i class=sw>ch_spaces:</i>        <i class=kw10>charset</i> <i class=st0>" ^-^/^M"</i>
+    <i class=sw>ch_numbers:</i>       <i class=kw10>charset</i> <i class=st0>"0123456789"</i>
+    <i class=sw>ch_binary2:</i>       <i class=kw10>charset</i> <i class=st0>"01"</i>
+    <i class=sw>ch_alpha:</i>         <i class=kw10>charset</i> <i class=br0>[</i><i class=ch>#"a"</i> <i class=kw7>-</i> <i class=ch>#"z"</i> <i class=ch>#"A"</i> <i class=kw7>-</i> <i class=ch>#"Z"</i><i class=br0>]</i>
+    <i class=sw>ch_hexadecimal:</i>   <i class=kw10>charset</i> <i class=br0>[</i><i class=ch>#"a"</i> <i class=kw7>-</i> <i class=ch>#"f"</i> <i class=ch>#"A"</i> <i class=kw7>-</i> <i class=ch>#"F"</i> <i class=st0>"0123456789"</i><i class=br0>]</i>
+    <i class=sw>ch_tonewline:</i>     <i class=kw6>complement</i> ch_newlines
+    <i class=sw>ch_word:</i>          <i class=kw6>complement</i> ch_word-dividers
+    <i class=sw>ch_anychar:</i>       <i class=kw6>complement</i> <i class=kw10>charset</i> <i class=st0>""</i>
+    <i class=sw>ch_alphanum:</i> <i class=kw9>union</i> ch_alpha ch_numbers
+    <i class=sw>ch_base64:</i>   <i class=kw9>union</i> ch_alphanum <i class=kw9>union</i> <i class=kw10>charset</i> <i class=st0>"+/="</i> ch_spaces
+
+<a name="s_rules-used-for-parsing"></a><i class=co3>;Rules used for parsing</i>
+    <i class=sw>rl_integer:</i>   <i class=br0>[</i>some ch_numbers<i class=br0>]</i>
+    <i class=sw>rl_word:</i>      <i class=br0>[</i>some ch_word<i class=br0>]</i>
+    <i class=sw>rl_binary2:</i>   <i class=br0>[</i> <i class=st0>"2#{"</i> <i class=kw4>any</i> <i class=br0>[</i><i class=nu0>8</i> <i class=br0>[</i>ch_binary2  <i class=kw4>any</i> ch_spaces<i class=br0>]</i><i class=br0>]</i> <i class=st0>"}"</i><i class=br0>]</i>
+    <i class=sw>rl_binary32:</i>  <i class=br0>[</i>  <i class=st0>"#{"</i> <i class=kw4>any</i> <i class=br0>[</i><i class=nu0>2</i> <i class=br0>[</i>ch_alphanum <i class=kw4>any</i> ch_spaces<i class=br0>]</i><i class=br0>]</i> <i class=st0>"}"</i><i class=br0>]</i>
+    <i class=sw>rl_binary64:</i>  <i class=br0>[</i><i class=st0>"64#{"</i> <i class=kw4>any</i> ch_base64 <i class=st0>"}"</i><i class=br0>]</i>
+    <i class=sw>rl_binary:</i> <i class=br0>[</i>
+          rl_binary2
+        | rl_binary32
+        | rl_binary64
+        | <i class=br0>[</i><i class=st0>"#{"</i> | <i class=st0>"2#{"</i> | <i class=st0>"64#{"</i><i class=br0>]</i> <i class=br0>(</i>
+            <i class=kw4>if</i> level-string <i class=kw2>=</i> <i class=nu0>0</i> <i class=br0>[</i>
+                <i class=kw8>print</i> <i class=br0>[</i><i class=st0>"!!! Invalid binary --"</i> copy/part str <i class=nu0>20</i><i class=br0>]</i>
+                <i class=kw8>print</i> <i class=br0>[</i>level-string level-block level-paren<i class=br0>]</i>
+                <i class=kw4>if</i> break-on-error? <i class=br0>[</i><i class=kw4>break</i><i class=br0>]</i>
+            <i class=br0>]</i>
+        <i class=br0>)</i>
+    <i class=br0>]</i>
+    <i class=sw>rl_pair:</i> <i class=br0>[</i>some ch_numbers <i class=ch>#"x"</i> some ch_numbers<i class=br0>]</i>
+    <i class=sw>rl_char:</i> <i class=br0>[</i>
+        <i class=br1>{</i><i class=st0>#"</i><i class=br1>}</i> <i class=br0>[</i><i class=st0>"^^("</i> <i class=nu0>2</i> ch_hexadecimal <i class=ch>#")"</i> | <i class=ch>#"^^"</i> <i class=nu0>1</i> ch_anychar | <i class=nu0>1</i> ch_anychar <i class=br0>]</i> <i class=br1>{</i><i class=st0>"</i><i class=br1>}</i>
+    <i class=br0>]</i>
+    
+<i class=co4>; These are groups with words used in Rebol</i>
+
+    <i class=sw>rl_comparison:</i> <i class=br0>[</i>
+        <i class=st0>"&lt;="</i>  <i class=st0>"&lt;&gt;"</i>  <i class=st0>"&lt;"</i>  <i class=st0>"=="</i>  <i class=st0>"=?"</i>  <i class=st0>"="</i>  <i class=st0>"&gt;"</i>  <i class=st0>"&gt;="</i>  <i class=st0>"equal?"</i>  <i class=st0>"greater-or-equal?"</i> 
+        <i class=st0>"greater?"</i>  <i class=st0>"lesser-or-equal?"</i>  <i class=st0>"lesser?"</i>  <i class=st0>"maximum-of"</i>  <i class=st0>"minimum-of"</i> 
+        <i class=st0>"not-equal?"</i>  <i class=st0>"same?"</i>  <i class=st0>"sign?"</i>  <i class=st0>"strict-equal?"</i>  <i class=st0>"strict-not-equal?"</i>
+    <i class=br0>]</i>
+    <i class=sw>rl_context:</i> <i class=br0>[</i><i class=st0>"alias"</i>  <i class=st0>"bind"</i>  <i class=st0>"context"</i>  <i class=st0>"get"</i>  <i class=st0>"in"</i>  <i class=st0>"set"</i>  <i class=st0>"unset"</i>  <i class=st0>"use"</i>  <i class=st0>"value?"</i><i class=br0>]</i>
+    <i class=sw>rl_control:</i> <i class=br0>[</i>
+        <i class=st0>"all"</i>  <i class=st0>"any"</i>  <i class=st0>"opt"</i>  <i class=st0>"attempt"</i>  <i class=st0>"break"</i>  <i class=st0>"catch"</i>  <i class=st0>"compose"</i>  <i class=st0>"disarm"</i>  <i class=st0>"dispatch"</i> 
+        <i class=st0>"do-events"</i>  <i class=st0>"does"</i>  <i class=st0>"either"</i>  <i class=st0>"else"</i>  <i class=st0>"exit"</i>  <i class=st0>"forall"</i>  <i class=st0>"foreach"</i>  <i class=st0>"for"</i>  
+        <i class=st0>"forever"</i>  <i class=st0>"forskip"</i>  <i class=st0>"func"</i>  <i class=st0>"function"</i>  <i class=st0>"halt"</i>  <i class=st0>"has"</i>  <i class=st0>"if"</i>  <i class=st0>"launch"</i>  <i class=st0>"loop"</i> 
+        <i class=st0>"next"</i>  <i class=st0>"quit"</i>  <i class=st0>"reduce"</i>  <i class=st0>"remove-each"</i>  <i class=st0>"repeat"</i>  <i class=st0>"return"</i>  <i class=st0>"secure"</i>  <i class=st0>"switch"</i> 
+        <i class=st0>"throw"</i>  <i class=st0>"try"</i>  <i class=st0>"until"</i>  <i class=st0>"wait"</i>  <i class=st0>"while"</i>  <i class=st0>"do"</i>
+    <i class=br0>]</i>
+    <i class=sw>rl_help:</i> <i class=br0>[</i>
+        <i class=st0>"?"</i>  <i class=st0>"??"</i>  <i class=st0>"about"</i>  <i class=st0>"comment"</i>  <i class=st0>"dump-face"</i>  <i class=st0>"dump-obj"</i>  <i class=st0>"help"</i> 
+        <i class=st0>"license"</i>  <i class=st0>"probe"</i>  <i class=st0>"source"</i>  <i class=st0>"trace"</i>  <i class=st0>"usage"</i>  <i class=st0>"what"</i>
+    <i class=br0>]</i>
+    <i class=sw>rl_logic:</i> <i class=br0>[</i>
+        <i class=st0>"all"</i>  <i class=st0>"and"</i>  <i class=st0>"any"</i>  <i class=st0>"complement"</i>  <i class=st0>"found?"</i>  <i class=st0>"not"</i>  <i class=st0>"or"</i>  <i class=st0>"random"</i>  <i class=st0>"xor"</i> 
+        <i class=st0>"on"</i>  <i class=st0>"off"</i>  <i class=st0>"true"</i>  <i class=st0>"false"</i>  <i class=st0>"none"</i>
+    <i class=br0>]</i>
+    <i class=sw>rl_math:</i> <i class=br0>[</i>
+        <i class=st0>"**"</i>  <i class=st0>"*"</i>  <i class=st0>"+"</i>  <i class=st0>"-"</i>  <i class=st0>"//"</i>  <i class=st0>"/"</i>  <i class=st0>"abs"</i>  <i class=st0>"absolute"</i>  <i class=st0>"add"</i>  <i class=st0>"and"</i>  <i class=st0>"arccosine"</i> 
+        <i class=st0>"arcsine"</i>  <i class=st0>"arctangent"</i>  <i class=st0>"complement"</i>  <i class=st0>"cosine"</i>  <i class=st0>"divide"</i>  <i class=st0>"even?"</i>  <i class=st0>"exp"</i> 
+        <i class=st0>"log-10"</i>  <i class=st0>"log-2"</i>  <i class=st0>"log-e"</i>  <i class=st0>"maximum-of"</i>  <i class=st0>"maximum"</i>  <i class=st0>"max"</i>   <i class=st0>"min"</i>  <i class=st0>"minimum"</i> 
+        <i class=st0>"minimum-of"</i>  <i class=st0>"multiply"</i>  <i class=st0>"negate"</i>  <i class=st0>"negative?"</i>  <i class=st0>"not"</i>  <i class=st0>"odd?"</i>  <i class=st0>"or"</i> 
+        <i class=st0>"positive?"</i>  <i class=st0>"power"</i>  <i class=st0>"random"</i>  <i class=st0>"remainder"</i>  <i class=st0>"sign?"</i>  <i class=st0>"sine"</i>  <i class=st0>"square-root"</i> 
+        <i class=st0>"subtract"</i>  <i class=st0>"tangent"</i>  <i class=st0>"xor"</i>  <i class=st0>"zero?"</i>
+    <i class=br0>]</i>
+    <i class=sw>rl_io:</i> <i class=br0>[</i>
+        <i class=st0>"ask"</i>  <i class=st0>"change-dir"</i>  <i class=st0>"clean-path"</i>  <i class=st0>"close"</i>  <i class=st0>"confirm"</i>  <i class=st0>"connected?"</i> 
+        <i class=st0>"delete"</i>  <i class=st0>"dir?"</i>  <i class=st0>"dirize"</i>  <i class=st0>"dispatch"</i>  <i class=st0>"do"</i>  <i class=st0>"echo"</i>  <i class=st0>"exists?"</i>  <i class=st0>"get-modes"</i> 
+        <i class=st0>"info?"</i>  <i class=st0>"input"</i>  <i class=st0>"input?"</i>  <i class=st0>"list-dir"</i>  <i class=st0>"load"</i>  <i class=st0>"make-dir"</i>  <i class=st0>"modified?"</i> 
+        <i class=st0>"open"</i>  <i class=st0>"pick"</i>  <i class=st0>"poke"</i>  <i class=st0>"prin"</i>  <i class=st0>"print"</i>  <i class=st0>"query"</i>  <i class=st0>"read"</i>  <i class=st0>"read-io"</i>  <i class=st0>"rename"</i> 
+        <i class=st0>"resend"</i>  <i class=st0>"save"</i>  <i class=st0>"script?"</i>  <i class=st0>"secure"</i>  <i class=st0>"send"</i>  <i class=st0>"set-modes"</i>  <i class=st0>"set-net"</i>  <i class=st0>"size?"</i> 
+        <i class=st0>"split-path"</i>  <i class=st0>"suffix?"</i>  <i class=st0>"to-local-file"</i>  <i class=st0>"to-rebol-file"</i>  <i class=st0>"update"</i>  <i class=st0>"wait"</i> 
+        <i class=st0>"what-dir"</i>  <i class=st0>"write-io"</i>  <i class=st0>"write"</i> 
+    <i class=br0>]</i>
+    <i class=sw>rl_series:</i> <i class=br0>[</i>
+        <i class=st0>"alter"</i>  <i class=st0>"append"</i>  <i class=st0>"array"</i>  <i class=st0>"at"</i>  <i class=st0>"back"</i>  <i class=st0>"change"</i>  <i class=st0>"clear"</i>  <i class=st0>"copy"</i>  <i class=st0>"difference"</i> 
+        <i class=st0>"ajoin"</i> <i class=st0>"empty?"</i>  <i class=st0>"exclude"</i>  <i class=st0>"extract"</i>  <i class=st0>"fifth"</i>  <i class=st0>"find"</i>  <i class=st0>"first"</i>  <i class=st0>"found?"</i>  <i class=st0>"fourth"</i> 
+        <i class=st0>"free"</i>  <i class=st0>"head?"</i>  <i class=st0>"head"</i>  <i class=st0>"index?"</i>  <i class=st0>"insert"</i>  <i class=st0>"intersect"</i>  <i class=st0>"join"</i>  <i class=st0>"last"</i>  <i class=st0>"length?"</i> 
+        <i class=st0>"load"</i>  <i class=st0>"maximum-of"</i>  <i class=st0>"minimum-of"</i>  <i class=st0>"offset?"</i>  <i class=st0>"parse"</i>  <i class=st0>"pick"</i>  <i class=st0>"poke"</i>  <i class=st0>"random"</i> 
+        <i class=st0>"rejoin"</i>  <i class=st0>"remove"</i>  <i class=st0>"remove-each"</i>  <i class=st0>"repend"</i>  <i class=st0>"replace"</i>  <i class=st0>"reverse"</i>  <i class=st0>"second"</i> 
+        <i class=st0>"select"</i>  <i class=st0>"skip"</i>  <i class=st0>"sort"</i>  <i class=st0>"switch"</i>  <i class=st0>"tail?"</i>  <i class=st0>"tail"</i>  <i class=st0>"third"</i>  <i class=st0>"union"</i>  <i class=st0>"unique"</i>
+    <i class=br0>]</i>
+    <i class=sw>rl_dataset:</i> <i class=br0>[</i>
+        <i class=st0>"alter"</i>  <i class=st0>"charset"</i>  <i class=st0>"difference"</i>  <i class=st0>"exclude"</i>  <i class=st0>"extract"</i>  <i class=st0>"intersect"</i>  <i class=st0>"union"</i>  <i class=st0>"unique"</i>
+    <i class=br0>]</i>
+    <i class=sw>rl_specialstring:</i> <i class=br0>[</i>
+        <i class=st0>"build-tag"</i>  <i class=st0>"checksum"</i>  <i class=st0>"clean-path"</i>  <i class=st0>"compress"</i>  <i class=st0>"debase"</i>  <i class=st0>"decode-cgi"</i>  <i class=st0>"decompress"</i> 
+        <i class=st0>"dehex"</i>  <i class=st0>"detab"</i>  <i class=st0>"dirize"</i>  <i class=st0>"enbase"</i>  <i class=st0>"entab"</i>  <i class=st0>"find"</i>  <i class=st0>"form"</i>  <i class=st0>"import-email"</i>  <i class=st0>"lowercase"</i> 
+        <i class=st0>"mold"</i>  <i class=st0>"parse-xml"</i>  <i class=st0>"reform"</i>  <i class=st0>"remold"</i>  <i class=st0>"split-path"</i>  <i class=st0>"suffix?"</i>  <i class=st0>"trim"</i>  <i class=st0>"uppercase"</i>
+    <i class=br0>]</i>
+    <i class=sw>rl_system:</i> <i class=br0>[</i>
+        <i class=st0>"browse"</i>  <i class=st0>"component?"</i>  <i class=st0>"link?"</i>  <i class=st0>"now"</i>  <i class=st0>"protect"</i>  <i class=st0>"protect-system"</i>  <i class=st0>"recycle"</i> 
+        <i class=st0>"unprotect"</i>  <i class=st0>"upgrade"</i>
+    <i class=br0>]</i>
+    <i class=sw>rl_datatype:</i> <i class=br0>[</i>
+        <i class=st0>"any-block?"</i>  <i class=st0>"any-function?"</i>  <i class=st0>"any-string?"</i>  <i class=st0>"any-type?"</i>  <i class=st0>"any-word?"</i>  <i class=st0>"as-pair"</i> 
+        <i class=st0>"binary?"</i>  <i class=st0>"bitset?"</i>  <i class=st0>"block?"</i>  <i class=st0>"char?"</i>  <i class=st0>"construct"</i>  <i class=st0>"datatype?"</i>  <i class=st0>"date?"</i>  <i class=st0>"decimal?"</i> 
+        <i class=st0>"dump-obj"</i>  <i class=st0>"email?"</i>  <i class=st0>"error?"</i>  <i class=st0>"event?"</i>  <i class=st0>"file?"</i>  <i class=st0>"function?"</i>  <i class=st0>"get-word?"</i>  <i class=st0>"hash?"</i> 
+        <i class=st0>"image?"</i>  <i class=st0>"integer?"</i>  <i class=st0>"issue?"</i>  <i class=st0>"library?"</i>  <i class=st0>"list?"</i>  <i class=st0>"lit-path?"</i>  <i class=st0>"lit-word?"</i>  <i class=st0>"logic?"</i> 
+        <i class=st0>"make"</i>  <i class=st0>"money?"</i>  <i class=st0>"native?"</i>  <i class=st0>"none?"</i>  <i class=st0>"number?"</i>  <i class=st0>"object?"</i>  <i class=st0>"op?"</i>  <i class=st0>"pair?"</i>  <i class=st0>"paren?"</i> 
+        <i class=st0>"path?"</i>  <i class=st0>"port?"</i>  <i class=st0>"refinement?"</i>  <i class=st0>"routine?"</i>  <i class=st0>"series?"</i>  <i class=st0>"set-path?"</i>  <i class=st0>"set-word?"</i> 
+        <i class=st0>"string?"</i>  <i class=st0>"struct?"</i>  <i class=st0>"tag?"</i>  <i class=st0>"time?"</i>  <i class=st0>"to-binary"</i>  <i class=st0>"to-bitset"</i>  <i class=st0>"to-block"</i> 
+        <i class=st0>"to-char"</i>  <i class=st0>"to-date"</i>  <i class=st0>"to-decimal"</i>  <i class=st0>"to-email"</i>  <i class=st0>"to-file"</i>  <i class=st0>"to-get-word"</i>  <i class=st0>"to-hash"</i> 
+        <i class=st0>"to-hex"</i>  <i class=st0>"to-idate"</i>  <i class=st0>"to-image"</i>  <i class=st0>"to-integer"</i>  <i class=st0>"to-issue"</i>  <i class=st0>"to-list"</i>  <i class=st0>"to-lit-path"</i> 
+        <i class=st0>"to-lit-word"</i>  <i class=st0>"to-logic"</i>  <i class=st0>"to-money"</i>  <i class=st0>"to-pair"</i>  <i class=st0>"to-paren"</i>  <i class=st0>"to-path"</i>  <i class=st0>"to-refinement"</i> 
+        <i class=st0>"to-set-path"</i>  <i class=st0>"to-set-word"</i>  <i class=st0>"to-string"</i>  <i class=st0>"to-tag"</i>  <i class=st0>"to-time"</i>  <i class=st0>"to-tuple"</i>  <i class=st0>"to-url"</i> 
+        <i class=st0>"to-word"</i>  <i class=st0>"tuple?"</i>  <i class=st0>"type?"</i>  <i class=st0>"unset?"</i>  <i class=st0>"url?"</i>  <i class=st0>"word?"</i>  <i class=st0>"to"</i> 
+    <i class=br0>]</i>
+    <i class=sw>rl_view:</i> <i class=br0>[</i>
+        <i class=st0>"alert"</i>  <i class=st0>"as-pair"</i>  <i class=st0>"brightness?"</i>  <i class=st0>"caret-to-offset"</i>  <i class=st0>"center-face"</i>  <i class=st0>"choose"</i>  <i class=st0>"clear-fields"</i> 
+        <i class=st0>"do-events"</i>  <i class=st0>"dump-face"</i>  <i class=st0>"flash"</i>  <i class=st0>"focus"</i>  <i class=st0>"hide-popup"</i>  <i class=st0>"hide"</i>  <i class=st0>"in-window?"</i>  <i class=st0>"inform"</i> 
+        <i class=st0>"layout"</i>  <i class=st0>"link?"</i>  <i class=st0>"load-image"</i>  <i class=st0>"make-face"</i>  <i class=st0>"offset-to-caret"</i>  <i class=st0>"request-color"</i>  <i class=st0>"request"</i> 
+        <i class=st0>"request-date"</i>  <i class=st0>"request-download"</i>  <i class=st0>"request-file"</i>  <i class=st0>"request-list"</i>  <i class=st0>"request-pass"</i>  <i class=st0>"request-text"</i> 
+        <i class=st0>"show-popup"</i>  <i class=st0>"show"</i>  <i class=st0>"size-text"</i>  <i class=st0>"span?"</i>  <i class=st0>"stylize"</i>  <i class=st0>"unfocus"</i>  <i class=st0>"unview"</i>  <i class=st0>"viewed?"</i>  <i class=st0>"view"</i>  <i class=st0>"within?"</i>
+    <i class=br0>]</i>
+    <i class=sw>word-classes:</i> <i class=kw9>copy</i> <i class=br0>[</i><i class=br0>]</i>
+    <i class=kw4>foreach</i> <i class=br0>[</i>group class<i class=br0>]</i> <i class=kw4>reduce</i> <i class=br0>[</i>
+        rl_comparison <i class=lw>'kw2</i>
+        rl_context    <i class=lw>'kw3</i>
+        rl_control    <i class=lw>'kw4</i>
+        rl_help       <i class=lw>'kw5</i>
+        rl_logic      <i class=lw>'kw6</i>
+        rl_math       <i class=lw>'kw7</i>
+        rl_io         <i class=lw>'kw8</i>
+        rl_series     <i class=lw>'kw9</i>
+        rl_dataset    <i class=lw>'kw10</i>
+        rl_specialstring <i class=lw>'kw11</i>
+        rl_system     <i class=lw>'kw12</i>
+        rl_datatype   <i class=lw>'kw13</i>
+        rl_view       <i class=lw>'kw14</i>
+    <i class=br0>]</i><i class=br0>[</i>  <i class=kw4>foreach</i> word group <i class=br0>[</i><i class=kw9>repend</i> word-classes <i class=br0>[</i>word class<i class=br0>]</i> <i class=br0>]</i> <i class=br0>]</i>
+    <i class=sw>word-classes:</i> <i class=kw13>make</i> <i class=dt>hash!</i> word-classes
+
+<a name="s_escape-html"></a><i class=co3>;escape-html</i>
+    <i class=sw>escape-html:</i> <i class=kw4>func</i><i class=br0>[</i>data<i class=br0>]</i><i class=br0>[</i>
+        <i class=sw>data:</i> <i class=kw13>to</i> <i class=dt>string!</i> <i class=kw4>reduce</i> data
+        <i class=kw4>foreach</i> <i class=br0>[</i>from <i class=kw13>to</i><i class=br0>]</i> <i class=br0>[</i> <i class=st0>"&amp;"</i> <i class=st0>"&amp;amp;"</i> <i class=st0>"&lt;"</i> <i class=st0>"&amp;lt;"</i> <i class=st0>"&gt;"</i> <i class=st0>"&amp;gt;"</i><i class=br0>]</i><i class=br0>[</i>
+            replace/all data from <i class=kw13>to</i>
+        <i class=br0>]</i>
+        data
+    <i class=br0>]</i>
+<a name="s_emit"></a><i class=co3>;emit</i>
+    <i class=sw>emit:</i> <i class=kw4>func</i> <i class=br0>[</i>data /class cl /html<i class=br0>]</i> <i class=br0>[</i>
+        case <i class=br0>[</i>
+            level-string <i class=kw2>&gt;</i> <i class=nu0>0</i> <i class=br0>[</i>
+                <i class=kw9>append</i> string-buffer data
+            <i class=br0>]</i>
+            output? <i class=br0>[</i>
+                <i class=kw9>repend</i> out <i class=kw4>either</i> class <i class=br0>[</i>
+                    <i class=br0>[</i>
+                        <i class=br1>{</i><i class=st0>&lt;i class=</i><i class=br1>}</i> cl <i class=br1>{</i><i class=st0>&gt;</i><i class=br1>}</i>
+                        escape-html data
+                        <i class=st0>"&lt;/i&gt;"</i>
+                    <i class=br0>]</i>
+                <i class=br0>]</i><i class=br0>[</i>
+                    <i class=kw4>either</i> html <i class=br0>[</i>data<i class=br0>]</i><i class=br0>[</i> escape-html data <i class=br0>]</i>
+                <i class=br0>]</i>
+            <i class=br0>]</i>
+        <i class=br0>]</i>
+    <i class=br0>]</i>
+
+<a name="s_add-index-comment"></a><i class=co3>;add-index-comment</i>
+    <i class=sw>add-index-comment:</i> <i class=kw4>func</i><i class=br0>[</i>x /local st n<i class=br0>]</i><i class=br0>[</i>
+        parse/all x <i class=br0>[</i>
+            <i class=br0>[</i>
+                  <i class=st0>"###"</i> <i class=br0>(</i><i class=sw>st:</i> <i class=lw>'co2</i><i class=br0>)</i>
+                | <i class=st0>"##"</i>  <i class=br0>(</i><i class=sw>st:</i> <i class=lw>'co3</i><i class=br0>)</i>
+                | <i class=st0>"**"</i>  <i class=br0>(</i><i class=sw>st:</i> <i class=lw>'co4</i><i class=br0>)</i>
+                | <i class=st0>"*"</i>   <i class=br0>(</i><i class=sw>st:</i> <i class=lw>'co5</i><i class=br0>)</i>
+                | <i class=st0>"-"</i>   <i class=br0>(</i><i class=sw>st:</i> <i class=lw>'co6</i><i class=br0>)</i>
+            <i class=br0>]</i> <i class=kw9>copy</i> x some ch_tonewline <i class=br0>(</i>
+                <i class=kw4>if</i> st <i class=kw2>=</i> <i class=lw>'co3</i> <i class=br0>[</i>
+                    <i class=co1>;use only content to paren</i>
+                    parse/all x <i class=br0>[</i><i class=kw9>copy</i> x <i class=kw13>to</i> <i class=st0>"("</i> <i class=kw13>to</i> end<i class=br0>]</i>
+                <i class=br0>]</i>
+                
+                case <i class=br0>[</i>
+                    st <i class=kw2>=</i> <i class=lw>'co2</i> <i class=br0>[</i>
+                        
+                        <i class=kw9>append</i> index-html <i class=kw9>ajoin</i> <i class=br0>[</i>
+                            case <i class=br0>[</i>
+                                <i class=kw13>none?</i> index-type <i class=br0>[</i><i class=st0>"&lt;ol class=index&gt;"</i><i class=br0>]</i>
+                                <i class=co1>;index-type &lt;&gt; 'co2 ["&lt;/ol&gt;^/"]</i>
+                                <i class=kw4>all</i> <i class=br0>[</i>
+                                    <i class=kw6>not</i> <i class=kw9>empty?</i> index-html
+                                    <i class=ch>#","</i> <i class=kw2>=</i> <i class=kw9>last</i> index-html
+                                <i class=br0>]</i><i class=br0>[</i> <i class=kw9>remove</i> <i class=kw9>back</i> <i class=kw9>tail</i> index-html<i class=br0>]</i>
+                                <i class=kw6>true</i> <i class=br0>[</i><i class=st0>""</i><i class=br0>]</i>
+                            <i class=br0>]</i>
+                            <i class=br1>{</i><i class=st0>&lt;li class=co2&gt;&lt;a href="#m_</i><i class=br1>}</i> <i class=sw>n:</i> seo-name <i class=sw>x:</i> trim/head/tail x <i class=br1>{</i><i class=st0>" class=a1&gt;</i><i class=br1>}</i> x <i class=br1>{</i><i class=st0>&lt;/a&gt;</i><i class=br1>}</i>
+                        <i class=br0>]</i>
+                        <i class=kw9>append</i> out <i class=kw9>ajoin</i> <i class=br0>[</i><i class=br1>{</i><i class=st0>&lt;a name="m_</i><i class=br1>}</i> n <i class=br1>{</i><i class=st0>"&gt;&lt;/a&gt;</i><i class=br1>}</i><i class=br0>]</i>
+                        <i class=sw>index-type:</i> <i class=lw>'co2</i>
+                    <i class=br0>]</i>
+                    st <i class=kw2>=</i> <i class=lw>'co3</i> <i class=br0>[</i>
+                        <i class=kw9>append</i> index-html <i class=kw9>ajoin</i> <i class=br0>[</i>
+                            <i class=co1>;either index-type = 'co2 ["^/&lt;ol class=co3&gt;^/"][""]</i>
+                            <i class=co1>;{^-&lt;li class=co3&gt;&lt;a href="#s_} n: seo-name x {"&gt;} x {&lt;/a&gt;}</i>
+                            <i class=br1>{</i><i class=st0>^/&lt;a href="#s_</i><i class=br1>}</i> <i class=sw>n:</i> seo-name <i class=sw>x:</i> trim/head/tail x <i class=br1>{</i><i class=st0>" class=a2&gt;</i><i class=br1>}</i> x <i class=br1>{</i><i class=st0>&lt;/a&gt;,</i><i class=br1>}</i>
+                        <i class=br0>]</i>
+                        <i class=kw9>append</i> out <i class=kw9>ajoin</i> <i class=br0>[</i><i class=br1>{</i><i class=st0>&lt;a name="s_</i><i class=br1>}</i> n <i class=br1>{</i><i class=st0>"&gt;&lt;/a&gt;</i><i class=br1>}</i><i class=br0>]</i>
+                        <i class=sw>index-type:</i> <i class=lw>'co3</i>
+                    <i class=br0>]</i>
+                    
+                <i class=br0>]</i>
+                emit/class <i class=kw9>join</i> <i class=st0>";"</i> x st
+            <i class=br0>)</i>
+        <i class=br0>]</i>
+    <i class=br0>]</i>
+
+<a name="s_colorize"></a><i class=co3>;colorize</i>
+    <i class=kw3>set</i> <i class=lw>'colorize</i> <i class=kw4>func</i><i class=br0>[</i><i class=kw5>source</i> /save outfile /title ttl /local source-file text x tmp<i class=br0>]</i><i class=br0>[</i>
+        <i class=sw>text:</i> <i class=kw4>either</i> <i class=kw4>any</i> <i class=br0>[</i><i class=kw13>file?</i> <i class=kw5>source</i> <i class=kw13>url?</i> <i class=kw5>source</i><i class=br0>]</i><i class=br0>[</i>
+            <i class=sw>source-file:</i> <i class=kw5>source</i>
+            read/binary  <i class=kw5>source</i>
+        <i class=br0>]</i><i class=br0>[</i>  <i class=kw5>source</i> <i class=br0>]</i>
+        <i class=sw>out:</i> <i class=kw13>make</i> <i class=dt>string!</i> <i class=nu0>3</i> <i class=kw7>*</i> <i class=kw9>length?</i> text
+
+        <i class=sw>level-block:</i>  
+        <i class=sw>level-paren:</i>  
+        <i class=sw>level-string:</i> <i class=nu0>0</i>
+        <i class=sw>string-type:</i> <i class=sw>index-type:</i> <i class=kw6>none</i>
+        <i class=kw9>clear</i> string-buffer
+        <i class=kw9>clear</i> index-html
+        
+        <i class=kw4>loop</i> <i class=nu0>1</i> <i class=br0>[</i> <i class=co1>;&lt;-- to be able break parsing</i>
+            parse/all <i class=kw11>detab</i> text <i class=br0>[</i>
+                <i class=kw4>any</i> <i class=br0>[</i>
+                    <i class=sw>str:</i> <i class=co1>;(print ["&gt;&gt;&gt;" mold copy/part str 10])</i>
+                      <i class=ch>#"^^"</i> <i class=br0>[</i>
+                        <i class=ch>#"("</i> some ch_hexadecimal <i class=ch>#")"</i> <i class=sw>x:</i> <i class=br0>(</i>
+                            emit/class copy/part str x <i class=lw>'se</i>
+                        <i class=br0>)</i>
+                        |
+                        <i class=kw9>copy</i> x <i class=nu0>1</i> <i class=kw9>skip</i> <i class=br0>(</i>emit/class <i class=kw9>join</i> <i class=st0>"^^"</i> x <i class=lw>'se</i><i class=br0>)</i>
+                        |
+                        <i class=ch>#"{"</i> <i class=br0>(</i>
+                            case <i class=br0>[</i>
+                                level-string <i class=kw2>=</i> <i class=nu0>0</i> <i class=br0>[</i>
+                                    emit <i class=ch>#"^^"</i>
+                                    <i class=sw>string-type:</i> <i class=ch>#"{"</i>
+                                    <i class=sw>level-string:</i> <i class=nu0>1</i>
+                                    emit <i class=ch>#"{"</i>
+                                <i class=br0>]</i>
+                                <i class=kw6>true</i> <i class=br0>[</i>
+                                    emit/class <i class=st0>"^^{"</i> <i class=lw>'se</i>
+                                <i class=br0>]</i>
+                            <i class=br0>]</i>
+                        <i class=br0>)</i>
+                        | <i class=ch>#"^""</i> <i class=br0>(</i>
+                            case <i class=br0>[</i>
+                                level-string <i class=kw2>=</i> <i class=nu0>0</i> <i class=br0>[</i>
+                                    emit <i class=ch>#"^^"</i>
+                                    <i class=sw>string-type:</i> <i class=ch>#"^""</i>
+                                    <i class=sw>level-string:</i> <i class=nu0>1</i>
+                                    emit <i class=br1>{</i><i class=st0>"</i><i class=br1>}</i>
+                                <i class=br0>]</i>
+                                <i class=kw6>true</i> <i class=br0>[</i>
+                                    emit/class <i class=br1>{</i><i class=st0>^^"</i><i class=br1>}</i> <i class=lw>'se</i>
+                                <i class=br0>]</i>
+                            <i class=br0>]</i>
+                        <i class=br0>)</i>
+                        | <i class=kw9>copy</i> x <i class=nu0>1</i> <i class=kw9>skip</i> <i class=br0>(</i>emit/class <i class=kw9>join</i> <i class=st0>"^^"</i> x <i class=lw>'se</i><i class=br0>)</i>
+                    <i class=br0>]</i>
+                    | <i class=kw9>copy</i> x rl_char     <i class=br0>(</i>emit/class x <i class=lw>'ch</i> <i class=br0>)</i>
+                    | <i class=br1>{</i><i class=st0>"</i><i class=br1>}</i>  <i class=br0>(</i>
+                        <i class=kw4>either</i> level-string <i class=kw2>=</i> <i class=nu0>0</i> <i class=br0>[</i>
+                            <i class=sw>string-type:</i> <i class=ch>#"^""</i>
+                            <i class=sw>level-string:</i> level-string <i class=kw7>+</i> <i class=nu0>1</i> emit <i class=br1>{</i><i class=st0>"</i><i class=br1>}</i>
+                        <i class=br0>]</i><i class=br0>[</i>
+                            emit <i class=br1>{</i><i class=st0>"</i><i class=br1>}</i>
+                            <i class=kw4>if</i> string-type <i class=kw2>=</i> <i class=ch>#"^""</i> <i class=br0>[</i>
+                                <i class=sw>level-string:</i> <i class=nu0>0</i>
+                                <i class=sw>string-type:</i> <i class=kw6>none</i>
+                                emit/class string-buffer <i class=lw>'st0</i>
+                                <i class=kw9>clear</i> string-buffer
+                            <i class=br0>]</i>
+                        <i class=br0>]</i> 
+                    <i class=br0>)</i>
+                    | <i class=kw9>copy</i> x rl_binary   <i class=br0>(</i>emit/class x <i class=lw>'bi0</i><i class=br0>)</i>
+                    
+                    | <i class=kw9>copy</i> x rl_word     <i class=br0>(</i>
+                        case <i class=br0>[</i>
+                            <i class=ch>#":"</i> <i class=kw2>=</i> <i class=kw9>last</i> x <i class=br0>[</i>emit/class x <i class=lw>'sw</i><i class=br0>]</i>
+                            <i class=ch>#"!"</i> <i class=kw2>=</i> <i class=kw9>last</i> x <i class=br0>[</i>emit/class x <i class=lw>'dt</i><i class=br0>]</i>
+                            parse/case x <i class=br0>[</i><i class=st0>"&lt;a href="http://www.rebol.com"&gt;REBOL&lt;/a&gt;"</i><i class=br0>]</i><i class=br0>[</i> emit/html <i class=br1>{</i><i class=st0>&lt;a href="http://www.rebol.com"&gt;REBOL&lt;/a&gt;</i><i class=br1>}</i> <i class=br0>]</i>
+                            <i class=kw6>true</i> <i class=br0>[</i>
+                                <i class=co1>;probe x</i>
+                                <i class=kw4>either</i> <i class=sw>tmp:</i> <i class=kw9>select</i> word-classes x <i class=br0>[</i>
+                                    emit/class x tmp
+                                <i class=br0>]</i><i class=br0>[</i>
+                                    <i class=kw9>parse</i> x <i class=br0>[</i>
+                                          rl_pair <i class=br0>(</i>emit/class x <i class=lw>'t1</i><i class=br0>)</i>
+                                        | some ch_numbers <i class=br0>(</i>emit/class x <i class=lw>'nu0</i><i class=br0>)</i>
+                                        | <i class=ch>#"#"</i> <i class=kw13>to</i> end  <i class=br0>(</i>emit/class x <i class=lw>'iss</i><i class=br0>)</i>
+                                        | <i class=br0>[</i><i class=ch>#"%"</i> | <i class=st0>"http://"</i> | <i class=st0>"ftp://"</i> | <i class=st0>"https://"</i><i class=br0>]</i> <i class=kw13>to</i> end <i class=br0>(</i>emit/class x <i class=lw>'fl</i><i class=br0>)</i>
+                                        | <i class=ch>#"'"</i> <i class=kw13>to</i> end <i class=br0>(</i>emit/class x <i class=lw>'lw</i><i class=br0>)</i>
+                                        | <i class=br0>(</i>emit x<i class=br0>)</i>
+                                    <i class=br0>]</i>
+                                <i class=br0>]</i>
+                                
+                            <i class=br0>]</i>
+                        <i class=br0>]</i>
+                    <i class=br0>)</i>
+                    | <i class=ch>#"["</i> <i class=br0>(</i>
+                        <i class=sw>level-block:</i>  level-block  <i class=kw7>+</i> <i class=nu0>1</i>
+                        <i class=kw4>either</i> level-string <i class=kw2>&gt;</i> <i class=nu0>0</i> <i class=br0>[</i>
+                            emit <i class=ch>#"["</i>
+                        <i class=br0>]</i><i class=br0>[</i>  emit/class <i class=ch>#"["</i> <i class=lw>'br0</i> <i class=br0>]</i>
+                    <i class=br0>)</i>
+                    | <i class=ch>#"]"</i> <i class=br0>(</i>
+                        <i class=sw>level-block:</i>  level-block  <i class=kw7>-</i> <i class=nu0>1</i>
+                        <i class=kw4>either</i> level-string <i class=kw2>&gt;</i> <i class=nu0>0</i> <i class=br0>[</i>
+                            emit <i class=ch>#"]"</i>
+                        <i class=br0>]</i><i class=br0>[</i>  emit/class <i class=ch>#"]"</i> <i class=lw>'br0</i> <i class=br0>]</i>
+                    <i class=br0>)</i>
+                    | <i class=ch>#"("</i> <i class=br0>(</i>
+                        <i class=kw4>if</i> remove-parens? <i class=br0>[</i> <i class=sw>output?:</i> <i class=kw6>off</i> <i class=br0>]</i>
+                        <i class=sw>level-paren:</i>  level-paren  <i class=kw7>+</i> <i class=nu0>1</i>
+                        <i class=kw4>either</i> level-string <i class=kw2>&gt;</i> <i class=nu0>0</i> <i class=br0>[</i>
+                            emit <i class=ch>#"("</i>
+                        <i class=br0>]</i><i class=br0>[</i>  emit/class <i class=ch>#"("</i> <i class=lw>'br0</i> <i class=br0>]</i>
+                    <i class=br0>)</i>
+                    | <i class=ch>#")"</i> <i class=br0>(</i>
+                        <i class=kw4>either</i> level-string <i class=kw2>&gt;</i> <i class=nu0>0</i> <i class=br0>[</i>
+                            emit <i class=ch>#")"</i>
+                        <i class=br0>]</i><i class=br0>[</i>  emit/class <i class=ch>#")"</i> <i class=lw>'br0</i> <i class=br0>]</i>
+                        <i class=kw4>if</i> <i class=nu0>0</i> <i class=kw2>=</i> <i class=br0>(</i><i class=sw>level-paren:</i>  level-paren  <i class=kw7>-</i> <i class=nu0>1</i><i class=br0>)</i> <i class=br0>[</i><i class=sw>output?:</i> <i class=kw6>on</i><i class=br0>]</i>
+                        
+                    <i class=br0>)</i>
+
+                    | <i class=ch>#"{"</i> <i class=br0>(</i>
+                        <i class=kw4>either</i> level-string <i class=kw2>=</i> <i class=nu0>0</i> <i class=br0>[</i>
+                            emit/class <i class=ch>#"{"</i> <i class=lw>'br1</i>
+                            <i class=sw>string-type:</i> <i class=ch>#"{"</i>
+                        <i class=br0>]</i><i class=br0>[</i>
+                            emit <i class=ch>#"{"</i>
+                        <i class=br0>]</i>
+                        
+                        <i class=kw4>if</i> string-type <i class=kw2>=</i> <i class=ch>#"{"</i> <i class=br0>[</i>
+                            <i class=sw>level-string:</i> level-string <i class=kw7>+</i> <i class=nu0>1</i>
+                        <i class=br0>]</i>
+                        
+                    <i class=br0>)</i>
+                    | <i class=ch>#"}"</i> <i class=br0>(</i>
+                        <i class=kw4>either</i> string-type <i class=kw2>=</i> <i class=ch>#"{"</i> <i class=br0>[</i>
+                            <i class=sw>level-string:</i> level-string <i class=kw7>-</i> <i class=nu0>1</i>
+                            <i class=kw4>either</i> level-string <i class=kw2>=</i> <i class=nu0>0</i> <i class=br0>[</i>
+                                emit/class string-buffer <i class=lw>'st0</i>
+                                emit/class <i class=ch>#"}"</i> <i class=lw>'br1</i>
+                                <i class=sw>string-type:</i> <i class=kw6>none</i>
+                                <i class=kw9>clear</i> string-buffer
+                            <i class=br0>]</i><i class=br0>[</i>
+                                emit <i class=ch>#"}"</i>
+                            <i class=br0>]</i>
+                        <i class=br0>]</i><i class=br0>[</i>
+                            emit <i class=ch>#"}"</i>
+                        <i class=br0>]</i>
+                    <i class=br0>)</i>
+                    | <i class=ch>#";"</i> <i class=kw9>copy</i> x <i class=br0>[</i><i class=kw4>any</i> ch_space <i class=kw4>any</i> ch_tonewline<i class=br0>]</i> <i class=sw>new:</i> <i class=br0>(</i>
+                        <i class=kw4>if</i> <i class=kw13>none?</i> x <i class=br0>[</i><i class=sw>x:</i> <i class=st0>""</i><i class=br0>]</i>
+                        <i class=kw4>either</i> level-string <i class=kw2>=</i> <i class=nu0>0</i> <i class=br0>[</i>
+                            case <i class=br0>[</i>
+                                <i class=kw4>all</i> <i class=br0>[</i>
+                                    index-comments?
+                                    add-index-comment x
+                                <i class=br0>]</i> <i class=kw6>none</i>
+                                
+                                <i class=kw4>all</i> <i class=br0>[</i>remove-newline-comments? <i class=br0>(</i><i class=kw9>find</i> ch_newlines <i class=kw9>first</i> <i class=kw9>back</i> str<i class=br0>)</i><i class=br0>]</i><i class=br0>[</i>
+                                    <i class=co1>;remove this comment from output with the newline as well</i>
+                                    parse/all new <i class=br0>[</i>some ch_newlines <i class=sw>new:</i> <i class=kw13>to</i> end<i class=br0>]</i>
+                                <i class=br0>]</i>
+                                
+                                <i class=kw6>true</i> <i class=br0>[</i>
+                                    emit/class <i class=kw9>join</i> <i class=st0>";"</i> x <i class=lw>'co1</i>
+                                <i class=br0>]</i>
+                            <i class=br0>]</i>
+                        <i class=br0>]</i><i class=br0>[</i>
+                            emit <i class=ch>#";"</i>
+                            <i class=sw>new:</i> <i class=kw4>next</i> str
+                        <i class=br0>]</i>
+                    <i class=br0>)</i> :new
+                    | <i class=kw9>copy</i> x some ch_newlines <i class=br0>(</i>
+                        <i class=kw4>either</i> string-type <i class=kw2>=</i> <i class=ch>#"^""</i> <i class=br0>[</i>
+                            <i class=kw8>print</i> <i class=br0>[</i><i class=st0>"!!! Invalid string --"</i> <i class=kw11>mold</i> copy/part string-buffer <i class=nu0>20</i><i class=br0>]</i>
+                            <i class=kw4>if</i> break-on-error? <i class=br0>[</i><i class=kw4>break</i><i class=br0>]</i>
+                        <i class=br0>]</i><i class=br0>[</i>  emit x <i class=br0>]</i>
+                    <i class=br0>)</i>
+                    | <i class=kw9>copy</i> x some ch_spaces <i class=br0>(</i>emit x<i class=br0>)</i>
+                    
+                    <i class=br0>(</i><i class=br0>)</i>
+                <i class=br0>]</i>
+                <i class=br0>(</i>
+                    <i class=kw4>if</i> level-string <i class=kw2>&gt;</i> <i class=nu0>0</i> <i class=br0>[</i><i class=kw8>print</i> <i class=br0>[</i><i class=st0>"!!! Invalid string!"</i> level-string <i class=kw11>mold</i> string-type<i class=br0>]</i> <i class=br0>]</i>
+                    <i class=kw4>if</i> break-on-error? <i class=br0>[</i><i class=kw4>break</i><i class=br0>]</i>
+                <i class=br0>)</i>
+            <i class=br0>]</i>
+        <i class=br0>]</i>
+        
+        <i class=kw4>if</i> <i class=kw6>not</i> <i class=kw9>empty?</i> index-html <i class=br0>[</i><i class=kw9>append</i> index-html <i class=st0>"&lt;/ol&gt;"</i><i class=br0>]</i>
+        <i class=kw4>if</i> <i class=kw8>save</i> <i class=br0>[</i>
+
+            write/binary outfile <i class=kw9>ajoin</i> <i class=br0>[</i>
+                <i class=br1>{</i><i class=st0>&lt;html&gt;&lt;head&gt;</i><i class=br1>}</i>
+                <i class=br1>{</i><i class=st0>&lt;LINK rel="stylesheet" href="</i><i class=br1>}</i> css-file <i class=br1>{</i><i class=st0>"/&gt;</i><i class=br1>}</i>
+                <i class=br1>{</i><i class=st0>&lt;META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1250"&gt;</i><i class=br1>}</i>
+                <i class=br1>{</i><i class=st0>&lt;title&gt;</i><i class=br1>}</i> <i class=kw4>any</i> <i class=br0>[</i>ttl <i class=st0>"a Rebol code"</i><i class=br0>]</i> <i class=br1>{</i><i class=st0>&lt;/title&gt;</i><i class=br1>}</i>
+                <i class=br1>{</i><i class=st0>&lt;/head&gt;^/</i><i class=br1>}</i>
+                <i class=br1>{</i><i class=st0>&lt;body bgcolor="#ffffff"&gt;</i><i class=br1>}</i>
+                <i class=br1>{</i><i class=st0>&lt;div class=header&gt;</i><i class=br1>}</i>
+                <i class=kw4>either</i> title <i class=br0>[</i><i class=kw9>ajoin</i> <i class=br0>[</i><i class=st0>"&lt;h1&gt;"</i> ttl <i class=st0>"&lt;/h1&gt;"</i><i class=br0>]</i><i class=br0>]</i><i class=br0>[</i><i class=st0>""</i><i class=br0>]</i>
+                <i class=kw4>either</i> <i class=kw13>none?</i> source-file <i class=br0>[</i><i class=st0>""</i><i class=br0>]</i><i class=br0>[</i>
+                    <i class=kw9>ajoin</i> <i class=br0>[</i>
+                        <i class=br1>{</i><i class=st0>Source: &lt;b&gt;&lt;a href="</i><i class=br1>}</i> source-file <i class=br1>{</i><i class=st0>"&gt;</i><i class=br1>}</i> <i class=kw9>last</i> <i class=kw8>split-path</i> source-file <i class=br1>{</i><i class=st0>&lt;/a&gt;&lt;/b&gt; modified: &lt;b&gt;</i><i class=br1>}</i> <i class=kw8>modified?</i> source-file <i class=br1>{</i><i class=st0>&lt;/b&gt;</i><i class=br1>}</i>
+                    <i class=br0>]</i>
+                <i class=br0>]</i>
+                <i class=kw4>either</i> remove-parens? <i class=br0>[</i><i class=st0>"&lt;div style='color:#F00;'&gt;Parens were removed from the source!&lt;/div&gt;"</i><i class=br0>]</i><i class=br0>[</i><i class=st0>""</i><i class=br0>]</i>
+                <i class=br1>{</i><i class=st0>&lt;/div&gt;^/</i><i class=br1>}</i>
+                index-html
+                <i class=br1>{</i><i class=st0>&lt;pre class=rebol&gt;</i><i class=br1>}</i>
+                out
+                <i class=br1>{</i><i class=st0>&lt;/pre&gt;^/</i><i class=br1>}</i>
+                <i class=br1>{</i><i class=st0>&lt;div class=footer&gt;Generated </i><i class=br1>}</i> <i class=kw12>now</i>
+                <i class=br1>{</i><i class=st0> by &lt;a href="http://rebol.desajn.net/script/code-colorizer.r"&gt;%code-colorizer.r&lt;/a&gt; Rebol script&lt;/div&gt;</i><i class=br1>}</i>
+                <i class=kw4>any</i> <i class=br0>[</i>footer-final <i class=st0>""</i><i class=br0>]</i>
+                <i class=br1>{</i><i class=st0>&lt;/body&gt;&lt;/html&gt;</i><i class=br1>}</i>
+            <i class=br0>]</i>
+        <i class=br0>]</i>
+        out
+    <i class=br0>]</i>
+    
+    
+<i class=br0>]</i>
+
+<a name="m_test-code"></a><i class=co2>;Test code</i>
+<i class=kw5>comment</i> <i class=br0>[</i>
+    <i class=co1>;some code to test if it works</i>
+    <i class=br1>{</i><i class=st0>str{nasted} and escaped ^{</i><i class=br1>}</i>
+    <i class=st0>"^^"</i> <i class=st0>"^(1f)"</i> 
+    <i class=sw>multilined-string:</i> <i class=br1>{</i><i class=st0>
+        some text
+        on more
+        lines
+        with code inside:
+        x: sine 1 + 2
+    </i><i class=br1>}</i>
+    
+    <i class=sw>x:</i> <i class=kw7>sine</i> <i class=nu0>1</i> <i class=kw7>+</i> <i class=nu0>2</i>
+    
+    <i class=co1>;pair datatype:</i>
+    <i class=t1>320x240</i>
+    
+    <i class=co1>;char! datatype:</i>
+    <i class=ch>#"A"</i>
+    <i class=co1>;with escape:</i>
+    <i class=ch>#"^-"</i> <i class=kw2>=</i> tab
+    
+    <i class=co1>;tuple! datatype:</i>
+    <i class=sw>red:</i> <i class=nu0>255.0.0</i>
+    
+    <i class=co1>;tag!:</i>
+    <i class=br0>[</i>&lt;tag&gt; <i class=lw>'hello</i> &lt;/tag&gt;<i class=br0>]</i>
+    
+    <i class=co1>;valid word with escape char</i>
+    word<i class=se>^s</i>
+    <i class=st0>"string escaped^" char "</i>
+    <i class=co1>;test</i>
+    <i class=kw13>to</i> <i class=dt>image!</i>
+    <i class=bi0>#{}</i>
+    <i class=bi0>#{1
+    2}</i>
+    <i class=bi0>64#{Eg==}</i>
+    <i class=bi0>2#{00000000}</i>
+    
+    <i class=co1>;issue</i>
+    <i class=iss>#FF0000</i> <i class=co1>;red</i>
+    
+    <i class=sw>table:</i> <i class=br0>[</i>
+        <i class=sw>q0:</i> <i class=st0>"# # L"</i> q0
+            <i class=st0>"1 1 L"</i> q0
+            <i class=st0>"+ 1 R"</i> q1
+        <i class=sw>q1:</i> <i class=st0>"1 1 R"</i> q1
+            <i class=st0>"# # L"</i> q2
+        <i class=sw>q2:</i> <i class=st0>"1 # L"</i> q3
+        <i class=sw>q3:</i> <i class=st0>"1 1 L"</i> q3
+            <i class=st0>"+ 1 R"</i> q1
+            <i class=st0>"# # R"</i> q4
+        <i class=sw>q4:</i> <i class=st0>"1 1 R"</i> q4
+            <i class=st0>"# # R"</i> q5
+        <i class=sw>q5:</i> <i class=st0>"# # L"</i> stop
+    <i class=br0>]</i>
+    
+    
+<i class=br0>]</i>
+</pre>
+<div class=footer>Generated 2-Feb-2009/2:59:45+1:00 by <a href="http://rebol.desajn.net/script/code-colorizer.r">%code-colorizer.r</a> Rebol script</div>
+		<script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script>
+		<script type="text/javascript">_uacct = "UA-1886645-1";urchinTracker();</script></body></html>
