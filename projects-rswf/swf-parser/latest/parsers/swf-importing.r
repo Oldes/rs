@@ -23,11 +23,12 @@ set 'import-swf-tag func[tagId tagData /local err action st st2][
 		]
 		;head inBuffer
 		;print ["IMP<" index? inBuffer length? head inBuffer]
-		;either inBuffer [
+		either inBuffer [
 			form-tag tagId head inBuffer
-		;][
-		;	copy #{}
-		;]
+		] [
+			copy #{}
+		]
+
 	]
 	
 ]
@@ -87,7 +88,7 @@ changeID: func[ /local id new-id idbin newbin][
 		new-id: 1 + (last used-ids)
 		insert tail used-ids new-id
 		newbin: int-to-ui16 new-id
-		append replaced-ids reduce [idbin newbin]
+		repend replaced-ids [idbin newbin]
 		;print [" ### replacing:" id "=>" new-id]
 		inBuffer: change inBuffer newbin
 		new-id
@@ -105,13 +106,12 @@ import-or-reuse: func[
 	"Imports a new tag or uses already existing"
 	/local idbin sum usedid
 ][
-	changeID
-	comment {
+	;return changeID
 	
 	idbin: copy/part inBuffer 2
 	;print ["import-or-reuse" mold idbin]
 	;print ["tag-checksums:" mold tag-checksums]
-	sum: checksum skip inBuffer 2
+	sum: checksum/secure skip inBuffer 2
 	;ask ""
 	either usedid: select tag-checksums sum [
 		print ["reusing..." mold usedid]
@@ -121,7 +121,6 @@ import-or-reuse: func[
 	][
 		repend tag-checksums [sum int-to-ui16 changeID]
 	]
-	}
 ]
 	
 	
