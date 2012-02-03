@@ -1,9 +1,9 @@
 rebol [
-	title: "SWF sprites and movie clip related parse functions"
-	purpose: "Functions for parsing sprites and movie clip related tags in SWF files"
+	title: "SWF importing"
+	purpose: "Functions for importing SWF files (SWF joining) - reusing bitmap and sound assets"
 ]
 
-RemoveFilters: [1]
+RemoveFilters: [1] ;removing blur filters!!! - good for mobile devices
 
 set 'import-swf-tag func[tagId tagData /local err action st st2][
 	reduce either none? action: select parseActions tagId [
@@ -28,9 +28,7 @@ set 'import-swf-tag func[tagId tagData /local err action st st2][
 		] [
 			copy #{}
 		]
-
 	]
-	
 ]
 
 

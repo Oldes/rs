@@ -12,13 +12,10 @@ Copyright (C) 2000-2012 David 'Oldes' Oliva.
 
 REBOL is a Trademark of REBOL Technologies
 Adobe(r) Flash(r) is a Trademark of Adobe Systems Incorporated}
-
-	Needs:		none
-	Tabs:		none
-	Language:	none
-	Type:		none
-	Content:	none
-	Home:		http://rebol.desajn.net/rswf/
+	Home:		[
+		https://github.com/Oldes/rs/tree/master/projects-rswf
+		http://rebol.desajn.net/rswf/
+	]
 	Purpose: {
 To create Flash file (SWF) using own Rebol dialect
 which is specified by the 'action and 'tag parsing rules.}
