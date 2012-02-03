@@ -917,14 +917,14 @@ set 'make-swf func[
 		probe disarm err
 		return none
 	]
-	recycle	print ["1)====" stats]
+	recycle	;print ["1)====" stats]
 	if all [
 		not error? try [data/1/preprocess]
 		data/1/preprocess
 	][
 		process-source data 0
 	]
-	recycle	print ["2)====" stats]	
+	recycle	;print ["2)====" stats]	
 	if not integer? swf-version: data/1/type [
 		if none? swf-version: select [
 			swf  4
@@ -945,21 +945,21 @@ set 'make-swf func[
 	]
 	error? try [compressed: data/1/compressed]
 	frames: 0
-	recycle	print ["3)====" stats]	
+	recycle ;print ["3)====" stats]	
 	bin: create-swf/rate/version/compressed data/1/size next data data/1/rate swf-version compressed
-	recycle	print ["3b)====" stats]	
+	recycle	;print ["3b)====" stats]	
 	if all [data/1/file save][
 		write/binary swf-file: either to [out-file][data/1/file] bin
 		if html [
 			html-file: append (copy/part swf-file ((length? swf-file) - 3)) "html"
 			write/binary html-file make-html (last parse swf-file "/") data/1/size data/1/background
 		]
-		recycle	print ["4)====" stats]	
+		recycle	;print ["4)====" stats]	
 		clear bin
 		bin: none
 	]
 	change-dir was-dir
-	recycle	print ["5)====" stats]	
+	recycle	;print ["5)====" stats]	
 	bin
 	
 ]
