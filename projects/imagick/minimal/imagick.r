@@ -1,7 +1,7 @@
 REBOL [
-	;require: [
-	;	rs-project 'memory-tools
-	;]
+	require: [
+		rs-project 'utf8-cp1250
+	]
 	note: {To find libmagickwand.so location on linux: find / -iname libmagickwand*}
 ]
 
@@ -9,28 +9,70 @@ unless value? 'with [
 	with: func[obj body][do bind body obj]
 ]
 
-unless any [
-	all [value? 'dir_imagemagick exists? dir_imagemagick]
-	all [value? 'rs exists? dir_imagemagick: dirize rs/home/lib]
-	exists? dir_imagemagick: %/c/utils/imagemagick/
-	exists? dir_imagemagick: %"/c/Program Files/ImageMagick/"
-][
-	print "Set imagick/dir_imagemagick variable to directory where is CONVERT exe!"
-]
-
-
-
 ctx-imagick: context [
 	unless value? 'debug [
 		debug: func[msg /print][system/words/print msg]
 	]
-	if error? system/words/try [
-		lib_ImageMagickWand: load/library either system/version/4 = 3 [
-			dir_imagemagick/CORE_RL_wand_.dll
-		][	%/usr/lib/libMagickWand.so ]
-	][
-		debug/print "IMAGICK: Unable to load the library!"
-	]
+	
+	;routine placeholders:
+	MagickWandGenesis:
+	MagickWandTerminus:
+	NewMagickWand:
+	MagickSetOption:
+	MagickQueryConfigureOptions:
+	MagickQueryFonts:
+	MagickPingImage:
+	MagickPingImageBlob:
+	MagickReadImage:
+	MagickReadImageBlob:
+	MagickAddImage:
+	MagickResizeImage:
+	MagickCropImage:
+	MagickWriteImage:
+	MagickWriteImages:
+	ClearMagickWand:
+	CloneMagickWand:
+	DestroyMagickWand:
+	MagickGetException:
+	MagickRelinquishMemory:
+	MagickNewImage:
+	MagickUnsharpMaskImage:
+	MagickSharpenImage:
+	MagickBlurImage:
+	MagickCharcoalImage:
+	MagickTrimImage:
+	MagickGetImageHeight:
+	MagickGetImageWidth:
+	MagickGetImageFormat:
+	MagickSetImageFormat:
+	MagickIdentifyImage:
+	MagickMergeImageLayers:
+	MagickImportImagePixels:
+	MagickExportImagePixels:
+	MagickSetImageCompression:
+	MagickSetImageCompressionQuality:
+	MagickGetImageType:
+	MagickSetImageType:
+	MagickSetImageMatte:
+	MagickSetImageMatteColor:
+	MagickSetImageDepth:
+	MagickGetImageDepth:
+	MagickSetImageBackgroundColor:
+	MagickGetImageBackgroundColor:
+	ClearPixelWand:
+	DestroyPixelWand:
+	NewPixelWand:
+	PixelSetAlpha:
+	PixelGetAlpha:
+	PixelSetColor:
+	PixelSetBlack:
+	PixelGetBlack:
+	PixelGetColorAsString:
+	MagickSetImagePage: none
+	
+	lib_ImageMagickWand: none
+	
+
 	
 	RedChannel:	GrayChannel: CyanChannel: 1
   	GreenChannel: MagentaChannel: 2
@@ -63,342 +105,361 @@ ctx-imagick: context [
 	ilm_FlattenLayer: 14
 	
 	
-
-	make-routine: func[routine specs /local r][
-		either error? system/words/try [
-			r: make routine! bind specs '*wand lib_ImageMagickWand routine
+	init-routines: has [make-routine try][
+		print ["INIT iMagick!"]
+		try: get in system/words 'try
+		either system/version/4 = 3 [
+			any [
+				not error? try [lib_ImageMagickWand: load/library dir_imagemagick/CORE_RL_wand_.dll]
+				not error? try [lib_ImageMagickWand: load/library %CORE_RL_wand_.dll]
+			]
 		][
-			debug/print ["IMAGICK: Cannot create routine:" routine]
-			none
-		][  :r ]
+			any [
+				not error? try [lib_ImageMagickWand: load/library dir_imagemagick/libMagickWand.so]
+				not error? try [lib_ImageMagickWand: load/library %/usr/lib/libMagickWand.so]
+			]
+		]
+		if none? lib_ImageMagickWand [
+			make error! "IMAGICK: Unable to load the library!"
+		]
+		
+		make-routine: func[routine specs /local r][
+			either error? try [
+				r: make routine! bind specs '*wand lib_ImageMagickWand routine
+			][
+				debug/print ["IMAGICK: Cannot create routine:" routine]
+				none
+			][  :r ]
+		]
+		MagickWandGenesis: make-routine "MagickWandGenesis" [
+			"Initializes the MagickWand environment"
+		]
+		MagickWandTerminus: make-routine "MagickWandTerminus" [
+			"Terminates the MagickWand environment"
+		]
+		NewMagickWand: make-routine "NewMagickWand" [
+			{Returns a wand required for all other methods in the API.} 
+			return: [integer!]
+		]
+		MagickSetOption: make-routine "MagickSetOption" [
+			{associates one or options with the wand (.e.g MagickSetOption wand "jpeg:perserve" "yes").}
+			*wand [integer!] 
+			*key    [string!] 
+			*value  [string!] 
+			return: [integer!]
+		]
+		MagickQueryConfigureOptions: make-routine "MagickQueryConfigureOptions" [
+			{returns any configure options that match the specified pattern (e.g. "*" for all)} 
+			*pattern [string!] 
+			*number_options [integer!] 
+			return: [string!]
+		]
+		MagickQueryFonts: make-routine "MagickQueryFonts" [
+			{returns any font that match the specified pattern (e.g. "*" for all).} 
+			*pattern [string!] 
+			*number_options [integer!] 
+			return: [string!]
+		]
+		MagickPingImage: make-routine "MagickPingImage" [
+			"Returns the image width, height, size, and format." 
+			*wand [integer!] 
+			filename [string!] 
+			return: [integer!]
+		]
+		MagickPingImageBlob: make-routine "MagickPingImageBlob" [
+			"pings an image or image sequence from a blob." 
+			*wand [integer!] 
+			*blob [integer!] 
+			length [integer!] 
+			return: [integer!]
+		]
+		MagickReadImage: make-routine "MagickReadImage" [
+			"Reads an image or image sequence." 
+			*wand [integer!] 
+			filename [string!] 
+			return: [integer!]
+		]
+		MagickReadImageBlob: make-routine "MagickReadImageBlob" [
+			"reads an image or image sequence from a blob." 
+			*wand [integer!] 
+			*blob [integer!] 
+			length [integer!] 
+			return: [integer!]
+		]
+		MagickAddImage: make-routine "MagickAddImage" [
+			"adds the specified images at the current image location" 
+			*wand [integer!] 
+			*add_wand [integer!] 
+			return: [integer!]
+		]
+		MagickResizeImage: make-routine "MagickResizeImage" [
+			{Associates the next image in the image list with a magick wand.} 
+			*wand [integer!] 
+			width [integer!] 
+			height [integer!] 
+			filter [integer!] 
+			blur [decimal!] "the blur factor where > 1 is blurry, < 1 is sharp." 
+			return: [integer!]
+		]
+		MagickCropImage: make-routine "MagickCropImage" [
+			"extracts a region of the image" 
+			*wand [integer!] 
+			width [integer!] 
+			height [integer!] 
+			x [integer!] 
+			y [integer!] 
+			return: [integer!]
+		]
+		MagickWriteImage: make-routine "MagickWriteImage" [
+			"Writes an image to the specified filename." 
+			*wand [integer!] 
+			filename [string!] 
+			return: [integer!]
+		]
+		MagickWriteImages: make-routine "MagickWriteImages" [
+			"Writes an image to the specified filename." 
+			*wand [integer!] 
+			filename [string!] 
+			return: [integer!]
+		]
+		ClearMagickWand: make-routine "ClearMagickWand" [
+			"Clears resources associated with the wand." 
+			*wand [integer!]
+		]
+		CloneMagickWand: make-routine "CloneMagickWand" [
+			"Makes an exact copy of the specified wand." 
+			*wand [integer!] 
+			return: [integer!]
+		]
+		DestroyMagickWand: make-routine "DestroyMagickWand" [
+			"Deallocates memory associated with an MagickWand." 
+			*wand [integer!]
+		]
+		MagickGetException: make-routine "MagickGetException" [
+			*wand [integer!] 
+			*severity [struct! [i [int]]] 
+			return: [integer!]
+		]
+		MagickRelinquishMemory: make-routine "MagickRelinquishMemory" [
+			"Relinquishes memory resources" 
+			*resource [integer!] 
+			return: [long]
+		]
+		MagickNewImage: make-routine "MagickNewImage" [
+			{Adds a blank image canvas of the specified size and background color to the wand.} 
+			*wand [integer!] 
+			columns [integer!] 
+			rows [integer!] 
+			*pixelWand [integer!] 
+			return: [integer!]
+		]
+		MagickUnsharpMaskImage: make-routine "MagickUnsharpMaskImage" [
+			{sharpens an image. We convolve the image with a Gaussian operator of the given radius and standard deviation (sigma). For reasonable results, radius should be larger than sigma. Use a radius of 0 and UnsharpMaskImage() selects a suitable radius for you.} 
+			*wand [integer!] 
+			radius [decimal!] {of the Gaussian, in pixels, not counting the center pixel.} 
+			sigma [decimal!] "the standard deviation of the Gaussian, in pixels." 
+			amount [decimal!] {the percentage of the difference between the original and the blur image that is added back into the original.} 
+			threshold [decimal!] {the threshold in pixels needed to apply the diffence amount.} 
+			return: [integer!]
+		]
+		MagickSharpenImage: make-routine "MagickSharpenImage" [
+			"sharpens an image." 
+			*wand [integer!] 
+			radius [decimal!] {of the Gaussian, in pixels, not counting the center pixel.} 
+			sigma [decimal!] "the standard deviation of the Gaussian, in pixels." 
+			return: [integer!]
+		]
+		MagickBlurImage: make-routine "MagickBlurImage" [
+			"blurs an image." 
+			*wand [integer!] 
+			radius [decimal!] {of the Gaussian, in pixels, not counting the center pixel.} 
+			sigma [decimal!] "the standard deviation of the Gaussian, in pixels." 
+			return: [integer!]
+		]
+		MagickCharcoalImage: make-routine "MagickCharcoalImage" [
+			"Simulates a charcoal drawing." 
+			*wand [integer!] 
+			radius [double] {of the Gaussian, in pixels, not counting the center pixel.} 
+			sigma [double] "the standard deviation of the Gaussian, in pixels." 
+			return: [integer!]
+		]
+		MagickTrimImage: make-routine "MagickTrimImage" [
+			"remove edges that are the background color from the image"
+			*wand [integer!] 
+			fuzz [double] "defines how much tolerance is acceptable to consider two colors as the same"
+			return: [integer!] "*background_color PixelWand"
+		]
+		MagickGetImageHeight: make-routine "MagickGetImageHeight" [
+			"Returns the image height." 
+			*wand [integer!] 
+			return: [integer!]
+		]
+		MagickGetImageWidth: make-routine "MagickGetImageWidth" [
+			"Returns the image width." 
+			*wand [integer!] 
+			return: [integer!]
+		]
+		MagickGetImageFormat: make-routine "MagickGetImageFormat" [
+			{Returns the format of a particular image in a sequence.} 
+			*wand [integer!] 
+			return: [string!]
+		]
+		MagickSetImageFormat: make-routine "MagickSetImageFormat" [
+			{sets the format of a particular image in a sequence} 
+			*wand [integer!] 
+			format [string!]
+			return: [integer!]
+		]
+		MagickIdentifyImage: make-routine "MagickIdentifyImage" [
+			*wand [integer!] 
+			return: [string!]
+		]
+		MagickMergeImageLayers: make-routine "MagickMergeImageLayers" [
+			{composes all the image layers from the current given image onward to produce a single image of the merged layers.}
+			*wand [integer!] 
+			method [integer!]
+			return: [integer!]
+		]
+		MagickImportImagePixels: make-routine "MagickImportImagePixels" [
+			*wand [integer!] 
+			x [integer!] 
+			y [integer!] 
+			columns [integer!] 
+			rows [integer!] 
+			map [string!] 
+			storage [integer!] 
+			*pixels [integer!] 
+			return: [integer!]
+		]
+		MagickExportImagePixels: make-routine "MagickExportImagePixels" [
+			{extracts pixel data from an image and returns it to you} 
+			*wand [integer!] 
+			x [integer!] 
+			y [integer!] 
+			columns [integer!] 
+			rows [integer!] 
+			map [string!] 
+			storage [integer!] 
+			*pixels [integer!] 
+			return: [integer!]
+		]
+		MagickSetImageCompression: make-routine "MagickSetImageCompression" [
+			"sets the image compression type" 
+			*wand [integer!] 
+			type  [integer!] 
+			return: [integer!]
+		]
+		MagickSetImageCompressionQuality: make-routine "MagickSetImageCompressionQuality" [
+			"sets the image compression quality" 
+			*wand [integer!] 
+			quality [integer!] 
+			return: [integer!]
+		]
+		MagickGetImageType: make-routine "MagickGetImageType" [
+			"gets the image type"
+			*wand [integer!]
+			return: [integer!]
+		]
+		MagickSetImageType: make-routine "MagickSetImageType" [
+			"sets the image type" 
+			*wand [integer!] 
+			image_type [integer!] "the image type: UndefinedType, BilevelType, GrayscaleType, GrayscaleMatteType, PaletteType, PaletteMatteType, TrueColorType, TrueColorMatteType, ColorSeparationType, ColorSeparationMatteType, or OptimizeType" 
+			return: [integer!]
+		]
+		MagickSetImageMatte: make-routine "MagickSetImageMatte" [
+			"sets the image matte channel" 
+			*wand  [integer!] 
+			*matte [integer!] "(1/0) - Set to MagickTrue to enable the image matte channel otherwise MagickFalse." 
+			return: [integer!]
+		]
+		MagickSetImageMatteColor: make-routine "MagickSetImageMatteColor" [
+			"sets the image matte color" 
+			*wand  [integer!] 
+			*matte [integer!] "matte pixel wand" 
+			return: [integer!]
+		]
+		MagickSetImageDepth: make-routine "MagickSetImageDepth" [
+			"sets the image depth" 
+			*wand [integer!] 
+			depth [integer!] "the image depth in bits: 8, 16, or 32." 
+			return: [integer!]
+		]
+		MagickGetImageDepth: make-routine "MagickGetImageDepth" [
+			"gets the image depth."
+			*wand [integer!] 
+			return: [integer!]
+		]
+		MagickSetImageBackgroundColor: make-routine "MagickSetImageBackgroundColor" [
+			"sets the image background color"
+			*wand [integer!] 
+			*background_color [integer!] "the background pixel wand."
+			return: [integer!] "*background_color PixelWand"
+		]
+
+		MagickGetImageBackgroundColor: make-routine "MagickGetImageBackgroundColor" [
+			"returns the image background color"
+			*wand [integer!] 
+			return: [integer!] "*background_color PixelWand"
+		]
+
+		ClearPixelWand: make-routine "ClearPixelWand" [
+			"clears resources associated with the wand." 
+			*PixelWand [integer!]
+		]
+		DestroyPixelWand: make-routine "DestroyPixelWand" [
+			"makes an exact copy of the specified wand." 
+			*PixelWand [integer!] 
+			return: [integer!]
+		]
+		NewPixelWand: make-routine "NewPixelWand" [
+			"returns a new pixel wand." 
+			return: [integer!]
+		]
+		PixelSetAlpha:  make-routine "PixelSetAlpha" [
+			"sets the normalized alpha color of the pixel wand" 
+			*PixelWand [integer!] 
+			alpha   [decimal!] "level of transparency: 1.0 is fully opaque and 0.0 is fully transparent"
+		]
+		PixelGetAlpha: make-routine "PixelSetAlpha" [
+			"returns the normalized alpha color of the pixel wand" 
+			*PixelWand [integer!] 
+			return: [decimal!]
+		]
+		PixelSetColor: make-routine "PixelSetColor" [
+			{sets the color of the pixel wand with a string (e.g. "blue", "#0000ff", "rgb(0,0,255)", "cmyk(100,100,100,10)", etc.)} 
+			*PixelWand [integer!] 
+			color   [string!] "pixel wand color"
+			return: [integer!]
+		]
+		PixelSetBlack: make-routine "PixelGetBlack" [
+			{sets the normalized black color of the pixel wand} 
+			*PixelWand [integer!] 
+			black   [double]
+		]
+		PixelGetBlack: make-routine "PixelGetBlack" [
+			{returns the normalized black color of the pixel wand} 
+			*PixelWand [integer!] 
+			return: [double]
+		]
+		PixelGetColorAsString: make-routine "PixelGetBlack" [
+			{returnsd the color of the pixel wand as a string.} 
+			*PixelWand [integer!] 
+			return: [string!]
+		]
+		MagickSetImagePage: make-routine "MagickSetImagePage" [
+			"sets the page geometry of the image."
+			*wand   [integer!]
+			width   [integer!]
+			height  [integer!]
+			x       [integer!]
+			y       [integer!]
+			return: [integer!]
+		]
+		remove second get in ctx-imagick 'start
+		ctx-imagick/init-routines: none
+		unset 'make-routine
 	]
-MagickWandGenesis: make-routine "MagickWandGenesis" [
-    "Initializes the MagickWand environment"
-]
-MagickWandTerminus: make-routine "MagickWandTerminus" [
-    "Terminates the MagickWand environment"
-]
-NewMagickWand: make-routine "NewMagickWand" [
-    {Returns a wand required for all other methods in the API.} 
-    return: [integer!]
-]
-MagickSetOption: make-routine "MagickSetOption" [
-    {associates one or options with the wand (.e.g MagickSetOption wand "jpeg:perserve" "yes").}
-    *wand [integer!] 
-    *key    [string!] 
-    *value  [string!] 
-    return: [integer!]
-]
-MagickQueryConfigureOptions: make-routine "MagickQueryConfigureOptions" [
-    {returns any configure options that match the specified pattern (e.g. "*" for all)} 
-    *pattern [string!] 
-    *number_options [integer!] 
-    return: [string!]
-]
-MagickQueryFonts: make-routine "MagickQueryFonts" [
-    {returns any font that match the specified pattern (e.g. "*" for all).} 
-    *pattern [string!] 
-    *number_options [integer!] 
-    return: [string!]
-]
-MagickPingImage: make-routine "MagickPingImage" [
-    "Returns the image width, height, size, and format." 
-    *wand [integer!] 
-    filename [string!] 
-    return: [integer!]
-]
-MagickPingImageBlob: make-routine "MagickPingImageBlob" [
-    "pings an image or image sequence from a blob." 
-    *wand [integer!] 
-    *blob [integer!] 
-    length [integer!] 
-    return: [integer!]
-]
-MagickReadImage: make-routine "MagickReadImage" [
-    "Reads an image or image sequence." 
-    *wand [integer!] 
-    filename [string!] 
-    return: [integer!]
-]
-MagickReadImageBlob: make-routine "MagickReadImageBlob" [
-    "reads an image or image sequence from a blob." 
-    *wand [integer!] 
-    *blob [integer!] 
-    length [integer!] 
-    return: [integer!]
-]
-MagickAddImage: make-routine "MagickAddImage" [
-    "adds the specified images at the current image location" 
-    *wand [integer!] 
-    *add_wand [integer!] 
-    return: [integer!]
-]
-MagickResizeImage: make-routine "MagickResizeImage" [
-    {Associates the next image in the image list with a magick wand.} 
-    *wand [integer!] 
-    width [integer!] 
-    height [integer!] 
-    filter [integer!] 
-    blur [decimal!] "the blur factor where > 1 is blurry, < 1 is sharp." 
-    return: [integer!]
-]
-MagickCropImage: make-routine "MagickCropImage" [
-    "extracts a region of the image" 
-    *wand [integer!] 
-    width [integer!] 
-    height [integer!] 
-    x [integer!] 
-    y [integer!] 
-    return: [integer!]
-]
-MagickWriteImage: make-routine "MagickWriteImage" [
-    "Writes an image to the specified filename." 
-    *wand [integer!] 
-    filename [string!] 
-    return: [integer!]
-]
-MagickWriteImages: make-routine "MagickWriteImages" [
-    "Writes an image to the specified filename." 
-    *wand [integer!] 
-    filename [string!] 
-    return: [integer!]
-]
-ClearMagickWand: make-routine "ClearMagickWand" [
-    "Clears resources associated with the wand." 
-    *wand [integer!]
-]
-CloneMagickWand: make-routine "CloneMagickWand" [
-    "Makes an exact copy of the specified wand." 
-    *wand [integer!] 
-    return: [integer!]
-]
-DestroyMagickWand: make-routine "DestroyMagickWand" [
-    "Deallocates memory associated with an MagickWand." 
-    *wand [integer!]
-]
-MagickGetException: make-routine "MagickGetException" [
-    *wand [integer!] 
-    *severity [struct! [i [int]]] 
-    return: [integer!]
-]
-MagickRelinquishMemory: make-routine "MagickRelinquishMemory" [
-    "Relinquishes memory resources" 
-    *resource [integer!] 
-    return: [long]
-]
-MagickNewImage: make-routine "MagickNewImage" [
-    {Adds a blank image canvas of the specified size and background color to the wand.} 
-    *wand [integer!] 
-    columns [integer!] 
-    rows [integer!] 
-    *pixelWand [integer!] 
-    return: [integer!]
-]
-MagickUnsharpMaskImage: make-routine "MagickUnsharpMaskImage" [
-    {sharpens an image. We convolve the image with a Gaussian operator of the given radius and standard deviation (sigma). For reasonable results, radius should be larger than sigma. Use a radius of 0 and UnsharpMaskImage() selects a suitable radius for you.} 
-    *wand [integer!] 
-    radius [decimal!] {of the Gaussian, in pixels, not counting the center pixel.} 
-    sigma [decimal!] "the standard deviation of the Gaussian, in pixels." 
-    amount [decimal!] {the percentage of the difference between the original and the blur image that is added back into the original.} 
-    threshold [decimal!] {the threshold in pixels needed to apply the diffence amount.} 
-    return: [integer!]
-]
-MagickSharpenImage: make-routine "MagickSharpenImage" [
-    "sharpens an image." 
-    *wand [integer!] 
-    radius [decimal!] {of the Gaussian, in pixels, not counting the center pixel.} 
-    sigma [decimal!] "the standard deviation of the Gaussian, in pixels." 
-    return: [integer!]
-]
-MagickBlurImage: make-routine "MagickBlurImage" [
-    "blurs an image." 
-    *wand [integer!] 
-    radius [decimal!] {of the Gaussian, in pixels, not counting the center pixel.} 
-    sigma [decimal!] "the standard deviation of the Gaussian, in pixels." 
-    return: [integer!]
-]
-MagickCharcoalImage: make-routine "MagickCharcoalImage" [
-    "Simulates a charcoal drawing." 
-    *wand [integer!] 
-    radius [double] {of the Gaussian, in pixels, not counting the center pixel.} 
-    sigma [double] "the standard deviation of the Gaussian, in pixels." 
-    return: [integer!]
-]
-MagickTrimImage: make-routine "MagickTrimImage" [
-	"remove edges that are the background color from the image"
-	*wand [integer!] 
-	fuzz [double] "defines how much tolerance is acceptable to consider two colors as the same"
-    return: [integer!] "*background_color PixelWand"
-]
-MagickGetImageHeight: make-routine "MagickGetImageHeight" [
-    "Returns the image height." 
-    *wand [integer!] 
-    return: [integer!]
-]
-MagickGetImageWidth: make-routine "MagickGetImageWidth" [
-    "Returns the image width." 
-    *wand [integer!] 
-    return: [integer!]
-]
-MagickGetImageFormat: make-routine "MagickGetImageFormat" [
-    {Returns the format of a particular image in a sequence.} 
-    *wand [integer!] 
-    return: [string!]
-]
-MagickSetImageFormat: make-routine "MagickSetImageFormat" [
-    {sets the format of a particular image in a sequence} 
-    *wand [integer!] 
-    format [string!]
-    return: [integer!]
-]
-MagickIdentifyImage: make-routine "MagickIdentifyImage" [
-    *wand [integer!] 
-    return: [string!]
-]
-MagickMergeImageLayers: make-routine "MagickMergeImageLayers" [
-	{composes all the image layers from the current given image onward to produce a single image of the merged layers.}
-    *wand [integer!] 
-    method [integer!]
-    return: [integer!]
-]
-MagickImportImagePixels: make-routine "MagickImportImagePixels" [
-    *wand [integer!] 
-    x [integer!] 
-    y [integer!] 
-    columns [integer!] 
-    rows [integer!] 
-    map [string!] 
-    storage [integer!] 
-    *pixels [integer!] 
-    return: [integer!]
-]
-MagickExportImagePixels: make-routine "MagickExportImagePixels" [
-    {extracts pixel data from an image and returns it to you} 
-    *wand [integer!] 
-    x [integer!] 
-    y [integer!] 
-    columns [integer!] 
-    rows [integer!] 
-    map [string!] 
-    storage [integer!] 
-    *pixels [integer!] 
-    return: [integer!]
-]
-MagickSetImageCompression: make-routine "MagickSetImageCompression" [
-    "sets the image compression type" 
-    *wand [integer!] 
-    type  [integer!] 
-    return: [integer!]
-]
-MagickSetImageCompressionQuality: make-routine "MagickSetImageCompressionQuality" [
-    "sets the image compression quality" 
-    *wand [integer!] 
-    quality [integer!] 
-    return: [integer!]
-]
-MagickGetImageType: make-routine "MagickGetImageType" [
-	"gets the image type"
-	*wand [integer!]
-	return: [integer!]
-]
-MagickSetImageType: make-routine "MagickSetImageType" [
-    "sets the image type" 
-    *wand [integer!] 
-    image_type [integer!] "the image type: UndefinedType, BilevelType, GrayscaleType, GrayscaleMatteType, PaletteType, PaletteMatteType, TrueColorType, TrueColorMatteType, ColorSeparationType, ColorSeparationMatteType, or OptimizeType" 
-    return: [integer!]
-]
-MagickSetImageMatte: make-routine "MagickSetImageMatte" [
-    "sets the image matte channel" 
-    *wand  [integer!] 
-    *matte [integer!] "(1/0) - Set to MagickTrue to enable the image matte channel otherwise MagickFalse." 
-    return: [integer!]
-]
-MagickSetImageMatteColor: make-routine "MagickSetImageMatteColor" [
-    "sets the image matte color" 
-    *wand  [integer!] 
-    *matte [integer!] "matte pixel wand" 
-    return: [integer!]
-]
-MagickSetImageDepth: make-routine "MagickSetImageDepth" [
-    "sets the image depth" 
-    *wand [integer!] 
-    depth [integer!] "the image depth in bits: 8, 16, or 32." 
-    return: [integer!]
-]
-MagickGetImageDepth: make-routine "MagickGetImageDepth" [
-	"gets the image depth."
-	*wand [integer!] 
-    return: [integer!]
-]
-MagickSetImageBackgroundColor: make-routine "MagickSetImageBackgroundColor" [
-	"sets the image background color"
-	*wand [integer!] 
-	*background_color [integer!] "the background pixel wand."
-    return: [integer!] "*background_color PixelWand"
-]
 
-MagickGetImageBackgroundColor: make-routine "MagickGetImageBackgroundColor" [
-	"returns the image background color"
-	*wand [integer!] 
-    return: [integer!] "*background_color PixelWand"
-]
-
-ClearPixelWand: make-routine "ClearPixelWand" [
-    "clears resources associated with the wand." 
-    *PixelWand [integer!]
-]
-DestroyPixelWand: make-routine "DestroyPixelWand" [
-    "makes an exact copy of the specified wand." 
-    *PixelWand [integer!] 
-    return: [integer!]
-]
-NewPixelWand: make-routine "NewPixelWand" [
-    "returns a new pixel wand." 
-    return: [integer!]
-]
-PixelSetAlpha:  make-routine "PixelSetAlpha" [
-    "sets the normalized alpha color of the pixel wand" 
-    *PixelWand [integer!] 
-    alpha   [decimal!] "level of transparency: 1.0 is fully opaque and 0.0 is fully transparent"
-]
-PixelGetAlpha: make-routine "PixelSetAlpha" [
-    "returns the normalized alpha color of the pixel wand" 
-    *PixelWand [integer!] 
-    return: [decimal!]
-]
-PixelSetColor: make-routine "PixelSetColor" [
-    {sets the color of the pixel wand with a string (e.g. "blue", "#0000ff", "rgb(0,0,255)", "cmyk(100,100,100,10)", etc.)} 
-    *PixelWand [integer!] 
-    color   [string!] "pixel wand color"
-    return: [integer!]
-]
-PixelSetBlack: make-routine "PixelGetBlack" [
-    {sets the normalized black color of the pixel wand} 
-    *PixelWand [integer!] 
-    black   [double]
-]
-PixelGetBlack: make-routine "PixelGetBlack" [
-    {returns the normalized black color of the pixel wand} 
-    *PixelWand [integer!] 
-    return: [double]
-]
-PixelGetColorAsString: make-routine "PixelGetBlack" [
-    {returnsd the color of the pixel wand as a string.} 
-    *PixelWand [integer!] 
-    return: [string!]
-]
-MagickSetImagePage: make-routine "MagickSetImagePage" [
-	"sets the page geometry of the image."
-	*wand   [integer!]
-	width   [integer!]
-	height  [integer!]
-	x       [integer!]
-	y       [integer!]
-	return: [integer!]
-]
-
-
-	unset 'make-routine
 	
 	;## Helper functions
 	Exception: make struct! [Severity [integer!]] none
@@ -664,6 +725,7 @@ MagickSetImagePage: make-routine "MagickSetImagePage" [
 	]
 	
 	start: does [
+		init-routines
 		if none? *wand [
 			MagickWandGenesis
 			*wand:  NewMagickWand
