@@ -1,17 +1,17 @@
 REBOL [
-    Title: "Zlib"
-    Date: 6-Sep-2005/10:07:43+2:00
-    Name: none
-    Version: 1.0.3
-    File: none
-    Home: none
-    Author: "Oldes"
-    Owner: none
-    Rights: none
-    Needs: none
-    Tabs: none
-    Usage: [
-    	print ["ZLIB" zlib/version]
+	Title: "Zlib"
+	Date: 6-Sep-2005/10:07:43+2:00
+	Name: none
+	Version: 1.0.3
+	File: none
+	Home: none
+	Author: "Oldes"
+	Owner: none
+	Rights: none
+	Needs: none
+	Tabs: none
+	Usage: [
+		print ["ZLIB" zlib/version]
 
 		probe zlib/crc32   "test"
 		probe zlib/adler32 "test"
@@ -25,19 +25,19 @@ REBOL [
 
 		;free zlib/zlib.dll
 	]
-    Purpose: none
-    Comment: none
-    History: [
-    	1.0.3 "implemented late routine initialisation"
-    	1.0.2 "used compress2 instead of just compress so it's possible to set a level of compression (0-9)"
-    	1.0.1 "increased automatic length of output buffer for decompress (5x source, if the length is not specified)"
-    	1.0.0 "history starts"
+	Purpose: none
+	Comment: none
+	History: [
+		1.0.3 "implemented late routine initialisation"
+		1.0.2 "used compress2 instead of just compress so it's possible to set a level of compression (0-9)"
+		1.0.1 "increased automatic length of output buffer for decompress (5x source, if the length is not specified)"
+		1.0.0 "history starts"
 	]
-    Language: none
-    Type: none
-    Content: none
-    Email: oliva.david@seznam.cz
-    require: [
+	Language: none
+	Type: none
+	Content: none
+	Email: oliva.david@seznam.cz
+	require: [
 		rs-project %memory-tools
 		library    %lib/zlib1.dll
 	]
@@ -57,20 +57,20 @@ zlib: context [
 	r_adler32: none
 
 	z_stream: make struct! [
-    	*next_in [integer!] ;  /* next input byte */
-    	avail_in [integer!] ;  /* number of bytes available at next_in */
-        total_in [long]     ;/* total nb of input bytes read so far */
-        *next_out [integer!] ; /* next output byte should be put there */
-        avail_out [integer!] ; /* remaining free space at next_out */
-        total_out [long]     ; /* total nb of bytes output so far */
-        *msg      [integer!] ;      /* last error message, NULL if no error */
-        *state    [integer!] ; /* not visible by applications */
-        zalloc    [integer!] ;  /* used to allocate the internal state */
-        zfree     [integer!] ;   /* used to free the internal state */
-        opaque    [integer!] ;  /* private data object passed to zalloc and zfree */
-        data_type [integer!] ;  /* best guess about the data type: binary or text */
-        adler     [long] ;      /* adler32 value of the uncompressed data */
-        reserved  [long];   /* reserved for future use */
+		*next_in  [integer!] ;  /* next input byte */
+		avail_in  [integer!] ;  /* number of bytes available at next_in */
+		total_in  [long]     ;/* total nb of input bytes read so far */
+		*next_out [integer!] ; /* next output byte should be put there */
+		avail_out [integer!] ; /* remaining free space at next_out */
+		total_out [long]     ; /* total nb of bytes output so far */
+		*msg      [integer!] ;      /* last error message, NULL if no error */
+		*state    [integer!] ; /* not visible by applications */
+		zalloc    [integer!] ;  /* used to allocate the internal state */
+		zfree     [integer!] ;   /* used to free the internal state */
+		opaque    [integer!] ;  /* private data object passed to zalloc and zfree */
+		data_type [integer!] ;  /* best guess about the data type: binary or text */
+		adler     [long] ;      /* adler32 value of the uncompressed data */
+		reserved  [long];   /* reserved for future use */
 	] none
 
 	init-routines: does [
@@ -82,62 +82,62 @@ zlib: context [
 			make error! "Cannot load zlib1.dll"
 		][
 			r_version: make routine! [
-				return: [string!]
+				return:      [string!]
 			] zlib.dll "zlibVersion"
 
 			r_inflateInit: make routine! [
 				z_streamp    [integer!]
 				zlib_version [string!]
 				zstreamsz    [integer!]
-				return: [int]
+				return:      [int]
 			] zlib.dll "inflateInit_"
 			
 			r_inflate: make routine! [
 				z_streamp    [integer!]
 				flush        [int]
-				return: [int]
+				return:      [int]
 			] zlib.dll "inflate"
 
 			comment {
 			;not needed... used r_compr2
 			r_compr: make routine! [
-				dest	  [integer!]
+				dest      [integer!]
 				destLen   [integer!]
-				source	  [integer!]
+				source    [integer!]
 				sourceLen [integer!]
 				return: [integer!]
 			] zlib.dll "compress"
 			}
 
 			r_compr2: make routine! [
-				dest	  [integer!]
+				dest      [integer!]
 				destLen   [integer!]
-				source	  [integer!]
+				source    [integer!]
 				sourceLen [integer!]
 				level     [integer!]
-				return: [integer!]
+				return:   [integer!]
 			] zlib.dll "compress2"
 
 			r_decompr: make routine! [
-				dest	  [integer!]
+				dest      [integer!]
 				destLen   [integer!]
-				source	  [integer!]
+				source    [integer!]
 				sourceLen [integer!]
-				return: [integer!]
+				return:   [integer!]
 			] zlib.dll "uncompress"
 
 			r_crc32: make routine! [
-				crc	[integer!]
-				buf [integer!]
-				len [integer!]
-				return: [integer!]
+				crc       [integer!]
+				buf       [integer!]
+				len       [integer!]
+				return:   [integer!]
 			] zlib.dll "crc32"
 
 			r_adler32: make routine! [
-				adler [integer!]
-				buf   [integer!]
-				len   [integer!]
-				return: [integer!]
+				adler     [integer!]
+				buf       [integer!]
+				len       [integer!]
+				return:   [integer!]
 			] zlib.dll "adler32"
 		]
 		;Remove this init function so it's called only once:
