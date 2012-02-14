@@ -20,7 +20,7 @@ REBOL [
     Email: oliva.david@seznam.cz
     require: [
 		rs-project 'r2-forward
-    	rs-project 'stream-io 'write
+    	rs-project 'stream-io
     	rs-project 'ajoin
     	rs-project 'binary-conversions
 	]

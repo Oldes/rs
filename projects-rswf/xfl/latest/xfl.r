@@ -20,7 +20,7 @@ REBOL [
     Email: none
     require: [
     	rs-require 'ajoin
-    	rs-project 'stream-io 'write
+    	rs-project 'stream-io
     	rs-project 'imagick 'minimal
     	rs-project 'xml-dom
     	rs-project 'utf8-cp1250

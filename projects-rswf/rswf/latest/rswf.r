@@ -167,7 +167,7 @@ the other values as I don't need them at this moment.}
 	0.0.3 [21-11-2001 "oldes" "First release" ]
 	]
 	require: [
-		rs-project 'stream-io 'write
+		rs-project 'stream-io
 		rs-project 'read-stripped-jpg
 		rs-project 'binary-conversions
 		rs-project 'ImageCore
