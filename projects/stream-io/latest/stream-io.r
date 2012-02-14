@@ -888,6 +888,7 @@ stream-io: context [
 	carryString: does [writeString readString]
 ]
 
+comment {
 system/options/binary-base: 2
 
 s: make stream-io []
@@ -901,7 +902,7 @@ with s [
 	probe enbase/base x 16
 ]
 
-comment {
+
 s: make stream-io []
 s/outSetStreamBuffer x: copy #{}
 with s [
