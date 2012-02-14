@@ -10,7 +10,8 @@ cd: :change-dir
 
 dir_lib:         join what-dir %lib/     ;used to store external libraries
 
-;Change this variable to your location:
+
+;Change this variable to your ImageMagick installation location if needed
 dir_imagemagick: %"/c/Program Files (x86)/ImageMagick-6.7.5-Q16/"
 ;It's used by imagick to load MagickWand's dll or the convert app
 
