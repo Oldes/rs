@@ -7,9 +7,9 @@ REBOL [
 		rs-project 'rectangle-pack
 	]
 	usage: [
-		;xfl-combine-bmps %tests/merge-one/   %tests/merge-one-result/
-		;xfl-combine-bmps %tests/merge-multi/ %tests/merge-multi-result/
-		xfl-combine-bmps %tests/pes/ %tests/pes-result/
+		;xfl-combine-bmps %/d/test/XFL/merge-one/   %/d/test/XFL/merge-one-result/
+		;xfl-combine-bmps %/d/test/XFL/merge-multi/ %/d/test/XFL/merge-multi-result/
+		xfl-combine-bmps %/d/test/XFL/pes/ %/d/test/XFL/pes-result/
 	]
 	preprocess: true
 ]
