@@ -9,7 +9,7 @@ REBOL [
 	usage: [
 		;xfl-combine-bmps %/d/test/XFL/merge-one/   %/d/test/XFL/merge-one-result/
 		;xfl-combine-bmps %/d/test/XFL/merge-multi/ %/d/test/XFL/merge-multi-result/
-		xfl-combine-bmps %/d/test/XFL/pes/ %/d/test/XFL/pes-result/
+		xfl-combine-bmps %/d/test/XFL/t15/ %/d/test/XFL/t15-result/
 	]
 	preprocess: true
 ]
@@ -147,6 +147,9 @@ with ctx-XFL [
 			imgspec: select images-to-replace atts/("bitmapPath")
 		][
 			atts/("bitmapPath"): rejoin ["combined_" imgspec/3]
+			if none? node/3 [
+				node/3: to-DOM {<matrix><Matrix tx="0" ty="0"/></matrix>}
+			]
 			matrix: get-node reduce [node] %BitmapFill/matrix/Matrix
 			
 			;writeSBPair reduce [
@@ -161,6 +164,8 @@ with ctx-XFL [
 		
 			nx: imgspec/1/x
 			ny: imgspec/1/y
+			unless find matrix/2 "tx" [repend matrix/2 ["tx" 0]]
+			unless find matrix/2 "ty" [repend matrix/2 ["ty" 0]]
 			matrix/2/("tx"): (to-decimal matrix/2/("tx")) - (((nx * a) + (ny * c)) / 20) 
 			matrix/2/("ty"): (to-decimal matrix/2/("ty")) - (((nx * b) + (ny * d)) / 20)
 		]
@@ -172,10 +177,16 @@ with ctx-XFL [
 			imgspec: select images-to-replace atts/("libraryItemName")
 		][
 			print ["REPLACING:" atts/("libraryItemName") imgspec]
+			if none? node/3 [
+				node/3: to-DOM {<matrix><Matrix tx="0" ty="0"/></matrix>}
+			]
 			matrix: get-node reduce [node] %DOMBitmapInstance/matrix/Matrix
 
-			tx: to-decimal any [select matrix/2 "tx" 0]
-			ty: to-decimal any [select matrix/2 "ty" 0]
+			unless find matrix/2 "tx" [repend matrix/2 ["tx" 0]]
+			unless find matrix/2 "ty" [repend matrix/2 ["ty" 0]]
+			
+			tx: to-decimal matrix/2/("tx")
+			ty: to-decimal matrix/2/("ty")
 			
 			w: imgspec/2/x
 			h: imgspec/2/y
@@ -184,7 +195,6 @@ with ctx-XFL [
 			either v: select matrix/2 "d" [matrix/2/("d"): 20 * d: to-decimal v][ d: 1 insert matrix/2 ["d" "20"]]
 			either v: select matrix/2 "b" [matrix/2/("b"): 20 * b: to-decimal v][ b: 0 ]
 			either v: select matrix/2 "c" [matrix/2/("c"): 20 * c: to-decimal v][ c: 0 ]
-			
 
 			matrix/2/("tx"): tx - imgspec/1/x
 			matrix/2/("ty"): ty - imgspec/1/y
