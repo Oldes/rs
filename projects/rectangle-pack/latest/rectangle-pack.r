@@ -42,7 +42,9 @@ REBOL [
 ]
 
 ctx-rectangle-pack: context [
-	round-to-pow2: func[v /local p][ repeat i 12 [if v <= (p: 2 ** i) [return p]] none]
+	padding: 0x0
+	
+	round-to-pow2: func[v /local p][ repeat i 14 [if v <= (p: 2 ** i) [return p]] none]
 	
 	max-pow2-size: func[data /local maxpair ][
 		maxpair:  0x0
@@ -197,8 +199,8 @@ ctx-rectangle-pack: context [
 			placed?: false
 			while [not tail? free-bins][
 				set [rw rh rx ry] free-bins
-				width:  size/x + 2
-				height: size/y + 2
+				width:  size/x + padding/x
+				height: size/y + padding/y
 				either all [
 					width <= rw
 					height <= rh
