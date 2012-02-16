@@ -39,7 +39,7 @@ ctx-XFL: context [
 	Shape-bounds:     copy []
 	BmpFills:         copy []
 	Media-to-remove:  copy []
-	shape-counter:    copy []
+	Shape-counter:    copy []
 	Media-counter:    copy []
 	Symbol-counter:   copy []
 	files-to-parse:   copy []
@@ -47,7 +47,7 @@ ctx-XFL: context [
 	scale-x: 
 	scale-y: 1
 	
-	verbose: 2
+	verbose: 1
 	
 	num-imported: 0 ;imported media files counter
 	
