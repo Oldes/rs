@@ -1,0 +1,567 @@
+<html><head><LINK rel="stylesheet" href="http://rebol.desajn.net/css/rebolcc.css"/><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1250"><title>Rebol/Flash Dialect (RSWF) main rules</title></head>
+<body bgcolor="#ffffff"><div class=header><h1>Rebol/Flash Dialect (RSWF) main rules</h1>Source: <b><a href="swf-tag-rules_enczes.rb">swf-tag-rules_enczes.rb</a></b> modified: <b>29-Nov-2010/22:38:28+1:00</b><div style='color:#F00;'>Parens were removed from the source!</div></div>
+<ol class=index><li class=co2><a href="#m_display-list" class=a1>Display list</a>
+<a href="#s_showframe" class=a2>ShowFrame</a>,
+<a href="#s_show-number-frames" class=a2>Show number! frames</a>,
+<a href="#s_end" class=a2>End</a>,
+<a href="#s_place" class=a2>Place</a>,
+<a href="#s_movedepth" class=a2>MoveDepth</a>,
+<a href="#s_remove" class=a2>Remove</a>,
+<a href="#s_removedepth" class=a2>RemoveDepth</a>,
+<a href="#s_layout" class=a2>Layout</a><li class=co2><a href="#m_sprite" class=a1>Sprite</a>
+<a href="#s_sprite" class=a2>Sprite</a>,
+<a href="#s_emptysprite" class=a2>EmptySprite</a>,
+<a href="#s_image-stream" class=a2>Image stream</a><li class=co2><a href="#m_shapes" class=a1>Shapes</a>
+<a href="#s_shape" class=a2>Shape</a>,
+<a href="#s_image" class=a2>Image</a>,
+<a href="#s_multi-image" class=a2>Multi-image</a><li class=co2><a href="#m_bitmaps" class=a1>Bitmaps</a>
+<a href="#s_bitmap" class=a2>Bitmap</a>,
+<a href="#s_alpha-bitmap" class=a2>Alpha bitmap</a>,
+<a href="#s_jpeg" class=a2>JPEG</a>,
+<a href="#s_bitmaps" class=a2>Bitmaps</a>,
+<a href="#s_bitmap-layout" class=a2>Bitmap layout</a><li class=co2><a href="#m_fonts-and-text" class=a1>Fonts and text</a>
+<a href="#s_font" class=a2>Font</a>,
+<a href="#s_font3" class=a2>Font3</a>,
+<a href="#s_antialiasing" class=a2>AntiAliasing</a>,
+<a href="#s_edittext" class=a2>EditText</a><li class=co2><a href="#m_buttons" class=a1>Buttons</a>
+<a href="#s_button" class=a2>Button</a><li class=co2><a href="#m_actions" class=a1>Actions</a>
+<a href="#s_actions" class=a2>Actions</a>,
+<a href="#s_initaction" class=a2>InitAction</a>,
+<a href="#s_class" class=a2>Class</a>,
+<a href="#s_extends" class=a2>Extends</a>,
+<a href="#s_doaction3" class=a2>DoAction3</a>,
+<a href="#s_stop" class=a2>Stop</a><li class=co2><a href="#m_sound" class=a1>Sound</a>
+<a href="#s_sound" class=a2>Sound</a>,
+<a href="#s_sounds" class=a2>Sounds</a>,
+<a href="#s_startsound" class=a2>StartSound</a>,
+<a href="#s_stopsound" class=a2>StopSound</a>,
+<a href="#s_mp3stream" class=a2>MP3Stream</a>,
+<a href="#s_finish-stream" class=a2>Finish stream</a><li class=co2><a href="#m_video" class=a1>Video</a>
+<a href="#s_video" class=a2>Video</a><li class=co2><a href="#m_control" class=a1>Control</a>
+<a href="#s_background" class=a2>Background</a>,
+<a href="#s_rebol" class=a2>Rebol</a>,
+<a href="#s_include" class=a2>Include</a>,
+<a href="#s_require" class=a2>Require</a>,
+<a href="#s_export" class=a2>Export</a>,
+<a href="#s_import" class=a2>Import</a>,
+<a href="#s_import-swf" class=a2>Import-swf</a>,
+<a href="#s_label" class=a2>Label</a><li class=co2><a href="#m_special" class=a1>Special</a>
+<a href="#s_set-word-" class=a2>Set-word!</a>,
+<a href="#s_get-word-" class=a2>Get-word!</a>,
+<a href="#s_comment" class=a2>Comment</a>,
+<a href="#s_swftag" class=a2>SWFTag</a>,
+<a href="#s_metadata" class=a2>MetaData</a>,
+<a href="#s_fileattributes" class=a2>FileAttributes</a>,
+<a href="#s_usenetwork" class=a2>UseNetwork</a>,
+<a href="#s_scriptlimits" class=a2>ScriptLimits</a>,
+<a href="#s_serialnumber" class=a2>SerialNumber</a>,
+<a href="#s_units" class=a2>Units</a><li class=co2><a href="#m_undocumented-or-obsolete" class=a1>Undocumented or obsolete</a></ol><pre class=rebol><a href="http://www.rebol.com">REBOL</a> <i class=br0>[</i>
+    <i class=sw>title:</i> <i class=st0>"Rebol/Flash Dialect (RSWF) main rules"</i>
+    <i class=sw>author:</i> <i class=st0>"Oldes"</i>
+    <i class=sw>email:</i> oliva.david@seznam.cz
+<i class=br0>]</i>
+
+<i class=kw4>any</i> <i class=br0>[</i>
+
+<a name="m_display-list"></a><i class=co2>;Display list</i>
+
+    <a name="s_showframe"></a><i class=co3>;ShowFrame</i>
+    <i class=co4>; Inserts ShowFrame tag which instructs Flash Player to display the contents of the display list.</i>
+    <i class=lw>'showFrame</i>
+    
+    |
+    <a name="s_show-number-frames"></a><i class=co3>;Show number! frames</i>
+    <i class=co4>; Inserts one or more ShowFrame tags which instructs Flash Player to display the contents of the display list.</i>
+    <i class=lw>'show</i> <i class=kw3>set</i> arg1 <i class=kw4>opt</i> <i class=br0>[</i><i class=dt>integer!</i> | <i class=kw6>none</i><i class=br0>]</i> <i class=br0>[</i><i class=lw>'frames</i> | <i class=lw>'frame</i><i class=br0>]</i>
+    
+    |
+    <a name="s_end"></a><i class=co3>;End</i>
+    <i class=co4>; End of SWF file or sprite</i>
+    <i class=lw>'end</i>
+    
+    |
+    <a name="s_place"></a><i class=co3>;Place</i>
+    <i class=co4>; Adds character to the display list, or modifies the attributes of a character that is already on the display list.</i>
+    <i class=br0>[</i><i class=lw>'Place</i> | <i class=lw>'PlaceObject2</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>integer!</i> | <i class=dt>word!</i> | <i class=dt>block!</i><i class=br0>]</i> <i class=co5>; ID or block with IDs of a character/s</i>
+        <i class=br0>[</i>
+              <i class=lw>'at</i> <i class=kw3>set</i> arg2 <i class=dt>pair!</i>           <i class=co5>; Position</i>
+            | <i class=kw3>set</i> arg2 <i class=kw4>opt</i> <i class=br0>[</i><i class=dt>block!</i> | <i class=kw6>none</i><i class=br0>]</i> <i class=co5>; or block with position and transform spec.</i>
+            <i class=co6>; position spec can contain:</i>
+            <i class=co6>;   at pair!   - new position</i>
+            <i class=co6>;   multiply [integer! | tuple! | block!] - Multiplication Transforms</i>
+            <i class=co6>;   add      [integer! | tuple! | block!] - Addition Transforms</i>
+            <i class=co6>;   rotate   [number! | pair | block!]    - Rotation</i>
+            <i class=co6>;   scale    [number! | pair | block!]    - Scale</i>
+            <i class=co6>;   skew     [number! | pair | block!]    - Skew</i>
+            <i class=co6>;   reflect  [number! | pair | block!]    - Reflect</i>
+            <i class=co6>;   blend [</i>
+            <i class=co6>;        Normal</i>
+            <i class=co6>;      | Layer</i>
+            <i class=co6>;      | Darken</i>
+            <i class=co6>;      | Multiply</i>
+            <i class=co6>;      | Lighten</i>
+            <i class=co6>;      | Screen</i>
+            <i class=co6>;      | Overlay </i>
+            <i class=co6>;      | HardLight</i>
+            <i class=co6>;      | Add </i>
+            <i class=co6>;      | Subtract</i>
+            <i class=co6>;      | Diference"</i>
+            <i class=co6>;      | Invert</i>
+            <i class=co6>;      | Alpha</i>
+            <i class=co6>;      | Erase</i>
+            <i class=co6>;   ]</i>
+            <i class=co6>;  actions block!    - block with clip event actions</i>
+        <i class=br0>]</i>
+    
+    |
+    <a name="s_movedepth"></a><i class=co3>;MoveDepth</i>
+    <i class=co4>; Moves character on specified depth to new position</i>
+    <i class=lw>'MoveDepth</i>
+        <i class=kw3>set</i> arg1 <i class=kw4>opt</i> <i class=br0>[</i><i class=dt>integer!</i><i class=br0>]</i>             <i class=co5>; Depth</i>
+        <i class=br0>[</i>
+              <i class=lw>'at</i> <i class=kw3>set</i> arg2 <i class=dt>pair!</i>            <i class=co5>; New position</i>
+            | <i class=kw3>set</i> arg2 <i class=kw4>opt</i> <i class=br0>[</i><i class=dt>block!</i> | <i class=kw6>none</i><i class=br0>]</i>  <i class=co5>; Or block with position spec.</i>
+            <i class=co6>; position spac can contain:</i>
+            <i class=co6>;   at pair!   - new position</i>
+            <i class=co6>;   multiply [integer! | tuple! | block!] - Multiplication Transforms</i>
+            <i class=co6>;   add      [integer! | tuple! | block!] - Addition Transforms</i>
+            <i class=co6>;   rotate   [number! | pair | block!]    - Rotation</i>
+            <i class=co6>;   scale    [number! | pair | block!]    - Scale</i>
+            <i class=co6>;   skew     [number! | pair | block!]    - Skew</i>
+            <i class=co6>;   reflect  [number! | pair | block!]    - Reflect</i>
+        <i class=br0>]</i> 
+    
+    |
+    <a name="s_remove"></a><i class=co3>;Remove</i>
+    <i class=co4>; Removes the specified character (at the specified depth) from the display list.</i>
+    <i class=br0>[</i><i class=lw>'remove</i> | <i class=lw>'RemoveObject</i> | <i class=lw>'odstranit</i> | <i class=lw>'odstraň</i> | <i class=lw>'destituir</i> | <i class=lw>'liquidar</i><i class=br0>]</i>
+     some <i class=br0>[</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>integer!</i> | <i class=dt>word!</i><i class=br0>]</i> <i class=co5>; ID of character to remove</i>
+        <i class=kw3>set</i> arg2 <i class=dt>integer!</i>           <i class=co5>; Depth of character</i>
+        
+    <i class=br0>]</i>
+    |
+    <a name="s_removedepth"></a><i class=co3>;RemoveDepth</i>
+    <i class=co4>; Removes the character at the specified depth from the display list. </i>
+    <i class=br0>[</i><i class=lw>'RemoveDepth</i> | <i class=lw>'RemoveDepths</i><i class=br0>]</i>
+        <i class=br0>[</i><i class=kw3>set</i> arg1 <i class=dt>block!</i> | <i class=kw9>copy</i> arg1 some <i class=br0>[</i><i class=dt>integer!</i><i class=br0>]</i><i class=br0>]</i> <i class=co5>; Depths to remove (block or integer list)</i>
+    
+    |
+    <a name="s_layout"></a><i class=co3>;Layout</i>
+    <i class=co4>; Places one or more GUI objects on stage</i>
+    <i class=lw>'Layout</i>
+        <i class=kw3>set</i> arg1 <i class=dt>block!</i>  <i class=co5>; Block with layout dialect</i>
+    
+    |
+
+<a name="m_sprite"></a><i class=co2>;Sprite</i>
+
+    <a name="s_sprite"></a><i class=co3>;Sprite</i>
+    <i class=co4>; Defines a sprite character  </i>
+    <i class=br0>[</i><i class=lw>'sprite</i> | <i class=lw>'sprajt</i> | <i class=lw>'DefineSprite</i> | <i class=lw>'MovieClip</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=kw4>opt</i> <i class=br0>[</i><i class=dt>integer!</i> | <i class=kw6>none</i><i class=br0>]</i>            <i class=co5>; Optional sprite ID</i>
+        <i class=kw3>set</i> arg2 <i class=br0>[</i>
+              <i class=dt>binary!</i>                             <i class=co5>; Precompiled binary data</i>
+            | <i class=dt>block!</i>                              <i class=co5>; Block with sprite content</i>
+            | <i class=dt>word!</i>                               <i class=co5>; Existing shape which will be placed to the first sprite frame</i>
+            | <i class=dt>file!</i>                               <i class=co5>; Imports another SWF file as a sprite</i>
+            | <i class=dt>url!</i>                                <i class=co5>; Imports another SWF file as a sprite</i>
+        <i class=br0>]</i>
+        <i class=kw4>opt</i> <i class=br0>[</i><i class=lw>'init</i><i class=br0>]</i> <i class=kw3>set</i> arg3 <i class=kw4>opt</i> <i class=br0>[</i><i class=dt>block!</i> | <i class=kw6>none</i><i class=br0>]</i>  <i class=co5>; Optional Init actions for new sprite</i>
+    
+    |
+    <a name="s_emptysprite"></a><i class=co3>;EmptySprite</i>
+    <i class=co4>; Creates empty sprite</i>
+    <i class=br0>[</i><i class=lw>'EmptySprite</i> | <i class=lw>'prázdný</i> <i class=lw>'sprajt</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>integer!</i> | <i class=kw6>none</i><i class=br0>]</i> <i class=co5>; Optional ID of the new sprite</i>
+    
+    |
+    <a name="s_image-stream"></a><i class=co3>;Image stream</i>
+    <i class=co4>; Creates a Sprite with sequence of images on each frame</i>
+    <i class=lw>'ImageStream</i>
+        <i class=kw3>set</i> arg1  <i class=br0>[</i><i class=dt>integer!</i> | <i class=kw6>none</i><i class=br0>]</i>   <i class=co5>; Optional ID of the new sprite</i>
+        <i class=kw3>set</i> arg2 <i class=kw4>opt</i> <i class=br0>[</i><i class=dt>file!</i> | <i class=dt>block!</i><i class=br0>]</i> <i class=co5>; Image file, directory with images or block with image files or urls</i>
+        <i class=kw3>set</i> arg3 <i class=kw4>opt</i> <i class=br0>[</i><i class=dt>pair!</i> | <i class=kw6>none</i><i class=br0>]</i>   <i class=co5>; Specify size for all images so the size will not be auto detected (slower)</i>
+                                      <i class=co6>; note that there is no resizing done on images is the size is different</i>
+        <i class=kw3>set</i> arg4 <i class=kw4>opt</i> <i class=br0>[</i><i class=dt>block!</i> | <i class=kw6>none</i><i class=br0>]</i>  <i class=co5>; now with 'onFirstFrame, 'onEachFrame and 'onLastFrame action's blocks,</i>
+                                      <i class=co5>; 'name and 'noPlace ('exportOnly) directive</i>
+                                      <i class=co6>; for example: [onLastFrame [stop()]]</i>
+    
+    |
+<a name="m_shapes"></a><i class=co2>;Shapes</i>
+
+    <a name="s_shape"></a><i class=co3>;Shape</i>
+    <i class=co4>; Defines a shape character</i>
+    <i class=br0>[</i><i class=lw>'Shape</i> | <i class=lw>'tvar</i> | <i class=lw>'DefineShape</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=kw4>opt</i> <i class=br0>[</i><i class=dt>integer!</i> | <i class=kw6>none</i><i class=br0>]</i> <i class=co5>; Shape id</i>
+        <i class=kw3>set</i> arg2 <i class=dt>block!</i> <i class=co5>; Block with ShapeDialect</i>
+    
+    |
+        
+    <a name="s_image"></a><i class=co3>;Image</i>
+    <i class=co4>; Defines a shape character from an existing bitmap</i>
+    <i class=br0>[</i><i class=lw>'image</i> | <i class=lw>'bitmap-to-image</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>word!</i> | <i class=dt>file!</i> | <i class=dt>url!</i><i class=br0>]</i> <i class=co5>; ID of the existing bitmap character or image file</i>
+    
+    |
+    <a name="s_multi-image"></a><i class=co3>;Multi-image</i>
+    <i class=co4>; Defines multiple shapes from an existing bitmap</i>
+    <i class=lw>'multi-image</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>integer!</i> | <i class=dt>word!</i><i class=br0>]</i> <i class=co5>; ID of the existing bitmap character</i>
+        <i class=kw3>set</i> arg2 <i class=dt>block!</i>             <i class=co5>; Specifications of new shapes</i>
+        <i class=co6>; The spec can be:</i>
+        <i class=co6>;   clipped [on | off | true | false]  - Sets if the image fill should be clipped</i>
+        <i class=co6>;   [no smoothing | smoothing off]     - turns off bitmap smoothing</i>
+        <i class=co6>;   smoothing opt [on]                 - turns on bitmap smoothing</i>
+        <i class=co6>;   set-word! pair! pair! opt [pair!]  - id of the new image,</i>
+        <i class=co6>;                                        ofset to image position in bitmap</i>
+        <i class=co6>;                                        size of the new image</i>
+        <i class=co6>;                                        optional final size</i>
+    
+    |
+    
+<a name="m_bitmaps"></a><i class=co2>;Bitmaps</i>
+    
+    <a name="s_bitmap"></a><i class=co3>;Bitmap</i>
+    <i class=co4>; Defines a bitmap character from image file</i>
+    <i class=br0>[</i><i class=lw>'bitmap</i> | <i class=lw>'bitmapa</i> | <i class=lw>'DefineBits</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=kw4>opt</i> <i class=br0>[</i><i class=dt>integer!</i> | <i class=kw6>none</i><i class=br0>]</i>          <i class=co5>; The result bitmap ID</i>
+        <i class=kw3>set</i> arg2 <i class=br0>[</i><i class=dt>file!</i> | <i class=dt>url!</i><i class=br0>]</i>                 <i class=co5>; Image file to use</i>
+         <i class=kw4>opt</i> <i class=br0>[</i><i class=lw>'size</i> <i class=kw3>set</i> arg3 <i class=dt>pair!</i><i class=br0>]</i> <i class=co5>; Optional image size if needed</i>
+    
+    |
+    <a name="s_alpha-bitmap"></a><i class=co3>;Alpha bitmap</i>
+    <i class=co4>; Defines bitmap with support for transparency (alpha values) </i>
+    <i class=br0>[</i><i class=lw>'alpha</i> <i class=lw>'bitmap</i> | <i class=lw>'DefineBitsLossless2</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=kw4>opt</i> <i class=br0>[</i><i class=dt>integer!</i> | <i class=kw6>none</i><i class=br0>]</i> <i class=co5>; Bitmap id</i>
+        <i class=kw3>set</i> arg2     <i class=br0>[</i><i class=dt>file!</i>    | <i class=dt>url!</i><i class=br0>]</i> <i class=co5>; Image file to use</i>
+    
+    |
+    <a name="s_jpeg"></a><i class=co3>;JPEG</i>
+    <i class=co4>; Defines a bitmap character with JPEG compression adding alpha channel (opacity) data.</i>
+    <i class=lw>'JPEG</i>
+        <i class=kw3>set</i> arg1 <i class=kw4>opt</i> <i class=br0>[</i><i class=dt>integer!</i> | <i class=kw6>none</i><i class=br0>]</i> <i class=co5>; Bitmap id</i>
+        <i class=kw3>set</i> arg2     <i class=br0>[</i><i class=dt>file!</i>    | <i class=dt>url!</i><i class=br0>]</i> <i class=co5>; Image file to use</i>
+    
+    |
+    <a name="s_bitmaps"></a><i class=co3>;Bitmaps</i>
+    <i class=co4>; Defines multiple bitmaps</i>
+    <i class=br0>[</i><i class=lw>'bitmaps</i> | <i class=lw>'bitmapy</i><i class=br0>]</i>
+        <i class=kw3>set</i> tmp <i class=kw4>opt</i> <i class=br0>[</i><i class=lw>'images</i> | <i class=lw>'obrázky</i> | <i class=kw6>none</i><i class=br0>]</i> <i class=co5>; Creates equivalent shapes as well</i>
+        <i class=kw3>set</i> arg1 <i class=dt>block!</i>                         <i class=co5>; Bitmaps minidialect code:</i>
+        <i class=co6>; from [file! | url!] - specifies base dir for files</i>
+        <i class=co6>; key  tuple!         - color which should be used as transparent</i>
+        <i class=co6>; no key              - turns key color off</i>
+        <i class=co6>; make sprites        - creates not only shapes but sprites as well</i>
+        <i class=co6>; precise             - creates bitmaps with one pixel transparent edge</i>
+        <i class=co6>; [smoothing | smoothing on]     - turns bitmap smoothing on</i>
+        <i class=co6>; [no smoothing | smoothing off] - turns bitmap smoothing off</i>
+        <i class=co6>; opt [word! | set-word! | none] [file! | url!] - optional bitmap id and source file </i>
+    
+    |
+    <a name="s_bitmap-layout"></a><i class=co3>;Bitmap layout</i>
+    <i class=co4>; Creates bitmap using Rebol's LAYOUT function</i>
+    <i class=br0>[</i><i class=lw>'bitmap</i> <i class=lw>'layout</i> | <i class=lw>'bitmapové</i> <i class=lw>'rozložení</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=kw4>opt</i> <i class=br0>[</i><i class=dt>integer!</i> | <i class=kw6>none</i><i class=br0>]</i> <i class=co5>; The result bitmap ID</i>
+        <i class=kw3>set</i> arg2 <i class=dt>block!</i>                <i class=co5>; Block with Rebol's layout code</i>
+        <i class=kw3>set</i> arg3 <i class=kw4>opt</i> <i class=br0>[</i><i class=dt>block!</i>   | <i class=kw6>none</i><i class=br0>]</i> <i class=co5>; Create-img args [key tuple!]</i>
+    
+    |
+<a name="m_fonts-and-text"></a><i class=co2>;Fonts and text</i>
+
+    <a name="s_font"></a><i class=co3>;Font</i>
+    <i class=co4>; Defines the shape outlines of each glyph used in a particular font.</i>
+    <i class=br0>[</i><i class=lw>'Font</i> | <i class=lw>'DefineFont2</i><i class=br0>]</i>
+        
+        <i class=kw3>set</i> arg1 <i class=br0>[</i>
+              <i class=dt>block!</i>      <i class=co5>; Block with font specification (system font = no outlines)</i>
+              <i class=co6>; possible args in font spec are:</i>
+              <i class=co6>;  name string!  - Name of the font, default "_sans"</i>
+              <i class=co6>;  italic        - Font is italic</i>
+              <i class=co6>;  bold          - Font is bold</i>
+              <i class=co6>;  small         - Font is small. Character glyphs are aligned on pixel boundaries for dynamic and input text.</i>
+              <i class=co6>;  encoding [ShiftJIS | Unicode | ANSI] ;Used encoding (not needed for SWF6 and later), default ANSI</i>
+            | <i class=dt>string!</i>     <i class=co5>; Name of the system font (no outlines)</i>
+            | <i class=br0>[</i>
+                  <i class=dt>binary!</i> <i class=co5>; Binary data with font specification</i>
+                | <i class=dt>file!</i>   <i class=co5>; Binaty data with font specification in external file</i>
+                | <i class=dt>url!</i>    <i class=co5>; --//--</i>
+            <i class=br0>]</i>
+                <i class=kw4>opt</i> <i class=lw>'as</i> <i class=kw3>set</i> arg2 <i class=kw4>opt</i> <i class=br0>[</i><i class=dt>string!</i> | <i class=kw6>none</i><i class=br0>]</i> <i class=co5>; Optional way how to change font name before import</i>
+                <i class=kw9>copy</i> arg3 <i class=kw4>any</i> <i class=br0>[</i><i class=co5>; OPTIONS:</i>
+                      <i class=lw>'bold</i>    <i class=co5>; Sets the BOLD flag</i>
+                    | <i class=lw>'italic</i>  <i class=co5>; Sets the ITALIC flag</i>
+                    | <i class=lw>'normal</i>  <i class=co5>; Resets both BOLD and ITALIC flags to zero</i>
+                    | <i class=lw>'pixel</i>   <i class=co5>; Sets SmallText flag - glyphs are aligned on pixel boundaries for dynamic and input text.</i>
+                    | <i class=lw>'noAlign</i> <i class=co5>; Included font file doesn't have alignZones part</i>
+                               <i class=co6>; if omitted, the compiler tries to find the .align file for this font</i>
+                <i class=br0>]</i>
+        <i class=br0>]</i>
+    
+    |
+    <a name="s_font3"></a><i class=co3>;Font3</i>
+    <i class=co4>; Defines the shape outlines of each glyph used in a particular font using align zones data.</i>
+    <i class=br0>[</i><i class=lw>'Font3</i> | <i class=lw>'DefineFont3</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>binary!</i> | <i class=dt>file!</i> | <i class=dt>url!</i><i class=br0>]</i>                  <i class=co5>; Precompiled binary data of the font3 tag</i>
+        
+        <i class=kw4>opt</i> <i class=br0>[</i><i class=lw>'alignZone</i> <i class=kw3>set</i> arg2 <i class=br0>[</i><i class=dt>binary!</i> | <i class=dt>file!</i> | <i class=dt>url!</i><i class=br0>]</i><i class=br0>]</i> <i class=co5>; Precompiled binary data of align zones </i>
+    
+    |
+    <a name="s_antialiasing"></a><i class=co3>;AntiAliasing</i>
+    <i class=co4>; Defines continuous stroke modulation (CSM) settings for existing font</i>
+    <i class=br0>[</i><i class=lw>'AntiAliasing</i> | <i class=lw>'CSMTextSettings</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>integer!</i> | <i class=dt>word!</i><i class=br0>]</i>            <i class=co5>; Font ID to use settings with</i>
+        <i class=kw3>set</i> arg2 <i class=kw4>opt</i> <i class=br0>[</i><i class=dt>block!</i> | <i class=dt>binary!</i> | <i class=kw6>none</i><i class=br0>]</i> <i class=co5>;CSM settings in binary format</i>
+    
+    |
+    <a name="s_edittext"></a><i class=co3>;EditText</i>
+    <i class=co4>; defines a dynamic text object, or text field.</i>
+    <i class=br0>[</i><i class=lw>'EditText</i> | <i class=lw>'Text</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=kw4>opt</i> <i class=br0>[</i><i class=dt>string!</i> | <i class=dt>word!</i> | <i class=dt>lit-word!</i> | <i class=kw6>none</i><i class=br0>]</i> <i class=co5>; Name of the variable where the contents of the text field are stored.</i>
+        <i class=kw3>set</i> arg2 <i class=dt>pair!</i>  <i class=co5>; Size of the text field</i>
+        <i class=kw3>set</i> arg3 <i class=dt>block!</i> <i class=co5>; EditText specification.</i>
+        <i class=co6>; the spec can contain:</i>
+        <i class=co6>;   maxLength integer!                           - maximum length of string</i>
+        <i class=co6>;   color [tuple! | issue!]                      - color of the text</i>
+        <i class=co6>;   font [[integer! | word! | string!] integer!] - existing font ID and font height</i>
+        <i class=co6>;   wordWrap       - text will wrap automatically when the end of line is reached</i>
+        <i class=co6>;   multiline      - text field is multi-line and will scroll automatically</i>
+        <i class=co6>;   password       - all characters are displayed as an asterisk</i>
+        <i class=co6>;   readOnly       - text editing is disabled</i>
+        <i class=co6>;   noSelect       - disables interactive text selection</i>
+        <i class=co6>;   border         - causes a border to be drawn around the text field</i>
+        <i class=co6>;   HTML           - HTML content</i>
+        <i class=co6>;   useOutlines    - use glyph font</i>
+    
+    |
+    
+<a name="m_buttons"></a><i class=co2>;Buttons</i>
+    
+    <a name="s_button"></a><i class=co3>;Button</i>
+    <i class=co4>; Defines button character</i>
+    <i class=br0>[</i><i class=lw>'Button</i> | <i class=lw>'DefineButton2</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=dt>block!</i> <i class=co5>; Button definition block</i>
+    
+    |
+
+<a name="m_actions"></a><i class=co2>;Actions</i>
+
+    <a name="s_actions"></a><i class=co3>;Actions</i>
+    <i class=co4>; Instructs Flash Player to perform a list of actions when the current frame is complete.</i>
+    <i class=br0>[</i><i class=lw>'Actions</i> | <i class=lw>'DoAction</i> | <i class=lw>'DoActions</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>block!</i> | <i class=dt>binary!</i> | <i class=dt>file!</i> | <i class=dt>url!</i><i class=br0>]</i> <i class=co5>; Block with actions or precompiled binary</i>
+    
+    |
+    <a name="s_initaction"></a><i class=co3>;InitAction</i>
+    <i class=co4>; Same like Actions but these actions are executed earlier, and are executed only once</i>
+    <i class=br0>[</i><i class=lw>'InitAction</i> | <i class=lw>'InitActions</i> | <i class=lw>'DoInitAction</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>word!</i> | <i class=dt>integer!</i><i class=br0>]</i> <i class=co5>; ID of sprite to which these actions apply</i>
+        <i class=kw3>set</i> arg2 <i class=br0>[</i><i class=dt>block!</i> | <i class=dt>binary!</i><i class=br0>]</i> <i class=co5>; block of actions to parse or precompiled actions</i>
+    
+    |
+    <a name="s_class"></a><i class=co3>;Class</i>
+    <i class=co4>; Defines a custom class, which lets you instantiate objects that share methods and properties that you define.</i>
+    <i class=lw>'Class</i> 
+        <i class=kw4>opt</i> <i class=br0>[</i><i class=lw>'extends</i> <i class=kw3>set</i> arg2 <i class=dt>word!</i><i class=br0>]</i> <i class=co5>; Name of existing super class</i>
+        <i class=kw3>set</i> arg1 <i class=dt>block!</i>               <i class=co5>; Block with methods and properties of the new class</i>
+                                      <i class=co6>; use 'init' function as a constructor</i>
+        <i class=kw4>opt</i> <i class=br0>[</i><i class=lw>'with</i> <i class=kw3>set</i> arg3 <i class=dt>block!</i><i class=br0>]</i>   <i class=co5>; Additional actions to provide after init (not part of class)</i>
+    
+    |
+    <a name="s_extends"></a><i class=co3>;Extends</i>
+    <i class=co4>; Just a shortcut for Class definition</i>
+    <i class=lw>'Extends</i> 
+        <i class=kw3>set</i> arg2 <i class=dt>word!</i>              <i class=co5>; Name of existing super class</i>
+        <i class=kw3>set</i> arg1 <i class=dt>block!</i>             <i class=co5>; Block with methods and properties of the new class</i>
+        <i class=kw4>opt</i> <i class=br0>[</i><i class=lw>'with</i> <i class=kw3>set</i> arg3 <i class=dt>block!</i><i class=br0>]</i> <i class=co5>; Additional actions to provide after init (not part of class)</i>
+    
+    |
+    <a name="s_doaction3"></a><i class=co3>;DoAction3</i>
+    <i class=co4>; Compiles ActionScript3 file using Flex compiler (!! just for a testing !!)</i>
+    <i class=br0>[</i><i class=lw>'Actions3</i> | <i class=lw>'DoAction3</i> | <i class=lw>'DoActions3</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>file!</i> | <i class=dt>url!</i><i class=br0>]</i> <i class=co5>; ActionScript3 source file</i>
+    
+    |
+    <a name="s_stop"></a><i class=co3>;Stop</i>
+    <i class=co4>; Just a shortcut for DoAction [stop] (inserts Stop action)</i>
+    <i class=lw>'stop</i>
+        <i class=kw3>set</i> arg1 <i class=kw4>opt</i> <i class=br0>[</i><i class=lw>'end</i><i class=br0>]</i> <i class=co5>;And optionaly ends the movie</i>
+    
+    |
+
+<a name="m_sound"></a><i class=co2>;Sound</i>
+    
+    <a name="s_sound"></a><i class=co3>;Sound</i>
+    <i class=co4>; Defines sound</i>
+    <i class=br0>[</i><i class=lw>'sound</i> | <i class=lw>'defineSound</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>file!</i> | <i class=dt>url!</i><i class=br0>]</i>  <i class=co5>; Sound file to use</i>
+    
+    |
+    <a name="s_sounds"></a><i class=co3>;Sounds</i>
+    <i class=co4>; Defines multiple sounds</i>
+    <i class=lw>'sounds</i>
+        <i class=kw3>set</i> arg1 <i class=dt>block!</i> <i class=co5>; Block with sound files to use</i>
+    
+    |
+    <a name="s_startsound"></a><i class=co3>;StartSound</i>
+    <i class=co4>; Starts (or stops) playing a sound defined by DefineSound.</i>
+    <i class=br0>[</i><i class=lw>'StartSound</i> | <i class=lw>'play</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>word!</i> | <i class=dt>integer!</i> | <i class=dt>string!</i><i class=br0>]</i> <i class=co5>; Sound ID to play</i>
+        <i class=kw3>set</i> arg2 <i class=kw4>opt</i> <i class=br0>[</i><i class=dt>block!</i><i class=br0>]</i>                 <i class=co5>; Sound options</i>
+          <i class=co6>; Sound options can be:</i>
+          <i class=co6>;   noMultiple    - Don’t start the sound if already playing</i>
+          <i class=co6>;   loop          - How many times it loops</i>
+    
+    |
+    <a name="s_stopsound"></a><i class=co3>;StopSound</i>
+    <i class=co4>; Stops playing the specified sound</i>
+    <i class=lw>'StopSound</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>word!</i> | <i class=dt>integer!</i><i class=br0>]</i> <i class=co5>; Sound ID to stop playing</i>
+    
+    |
+    <a name="s_mp3stream"></a><i class=co3>;MP3Stream</i>
+    <i class=co4>; Starts inserting MP3 file as a stream, (on each ShowFrame is inserted part of the MP3 file)</i>
+    <i class=lw>'mp3Stream</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>file!</i> | <i class=dt>url!</i><i class=br0>]</i> <i class=co5>; Path to MP3 file</i>
+    
+    |
+    <a name="s_finish-stream"></a><i class=co3>;Finish stream</i>
+    <i class=co4>; Inserts frames until the end of the MP3 file started with MP3Stream</i>
+    <i class=lw>'finish</i> <i class=lw>'stream</i> 
+    |
+    
+<a name="m_video"></a><i class=co2>;Video</i>
+    
+    <a name="s_video"></a><i class=co3>;Video</i>
+    <i class=co4>; Creates VIDEO object    </i>
+    <i class=lw>'video</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>integer!</i> | <i class=kw6>none</i><i class=br0>]</i> <i class=co5>; Optional ID of the video object</i>
+    
+    |
+    
+<a name="m_control"></a><i class=co2>;Control</i>
+    
+    <a name="s_background"></a><i class=co3>;Background</i>
+    <i class=co4>; Sets the background color of the display.</i>
+    <i class=br0>[</i><i class=lw>'background</i> | <i class=lw>'pozadí</i> | <i class=lw>'fondo</i> | <i class=lw>'SetBackgroundColor</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>tuple!</i> | <i class=dt>issue!</i><i class=br0>]</i> <i class=co5>; Color of the movie background</i>
+    
+    |
+    <a name="s_rebol"></a><i class=co3>;Rebol</i>
+    <i class=co4>; Evaluates Rebol code</i>
+    <i class=lw>'Rebol</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>block!</i> | <i class=dt>file!</i> | <i class=dt>url!</i><i class=br0>]</i> <i class=co5>; Rebol code to evaluate</i>
+    
+    |
+    <a name="s_include"></a><i class=co3>;Include</i>
+    <i class=co4>; Includes and evaluates other RSWF script    </i>
+    <i class=br0>[</i><i class=lw>'Include</i> | <i class=lw>'zahrnout</i> | <i class=lw>'obsahuje</i> | <i class=lw>'incluir</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>file!</i> | <i class=dt>url!</i> | <i class=dt>block!</i><i class=br0>]</i> <i class=co5>; RSWF file to include</i>
+    
+    |
+    <a name="s_require"></a><i class=co3>;Require</i>
+    <i class=co4>; Includes and evaluates other RSWF script but only once</i>
+    <i class=br0>[</i><i class=lw>'require</i> | <i class=lw>'needs</i> | <i class=lw>'vyžaduje</i> | <i class=lw>'požaduje</i> | <i class=lw>'requise</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>file!</i> | <i class=dt>url!</i> | <i class=dt>block!</i><i class=br0>]</i> <i class=co5>; RSWF file to include</i>
+    
+    |
+    <a name="s_export"></a><i class=co3>;Export</i>
+    <i class=co4>; Makes portions of a SWF file available for import by other SWF files</i>
+    <i class=br0>[</i><i class=lw>'Export</i> | <i class=lw>'ExportAssets</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=dt>block!</i> <i class=co5>; Block with one or more id and name pairs to export</i>
+    
+    |
+    <a name="s_import"></a><i class=co3>;Import</i>
+    <i class=co4>; Imports exported characters from another SWF file (while runtime).</i>
+    <i class=br0>[</i><i class=lw>'Import</i> | <i class=lw>'ImportAssets</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=dt>block!</i> <i class=co5>; Block with one or more id and name pairs to import</i>
+        <i class=kw4>opt</i> <i class=br0>[</i><i class=lw>'from</i><i class=br0>]</i> <i class=kw3>set</i> arg2 <i class=br0>[</i><i class=dt>url!</i> | <i class=dt>path!</i> | <i class=dt>word!</i> | <i class=dt>string!</i> | <i class=dt>file!</i><i class=br0>]</i> <i class=co5>; path to the exporting SWF</i>
+    
+    |
+    <a name="s_import-swf"></a><i class=co3>;Import-swf</i>
+    <i class=co4>; Inserts almost all SWFtags from other SWF file (recounting used IDs)</i>
+    <i class=co4>; NOTE: this is not complete yet so there may be a problem with some files</i>
+    <i class=lw>'import-swf</i>
+        
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>file!</i> | <i class=dt>url!</i><i class=br0>]</i>    <i class=co5>; SWF file to insert</i>
+        <i class=kw4>opt</i> <i class=br0>[</i><i class=lw>'no</i> <i class=kw3>set</i> arg2 <i class=br0>[</i><i class=lw>'end</i> | <i class=lw>'show</i><i class=br0>]</i><i class=br0>]</i> <i class=co5>; Used if to set that END tag should not be included</i>
+    
+    |
+    <a name="s_label"></a><i class=co3>;Label</i>
+    <i class=co4>; Gives the specified Name to the current frame. This name is used by ActionGoToLabel to identify the frame.</i>
+    <i class=br0>[</i><i class=lw>'label</i> | <i class=lw>'FrameLabel</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>string!</i> | <i class=dt>word!</i> | <i class=dt>lit-word!</i><i class=br0>]</i> <i class=co5>; Name of the label</i>
+    
+    |
+
+<a name="m_special"></a><i class=co2>;Special</i>
+
+    <a name="s_set-word-"></a><i class=co3>;Set-word!</i>
+    <i class=co4>; Stores set-word for use with named IDs</i>
+    <i class=kw3>set</i> arg1 <i class=dt>set-word!</i>
+    
+    |
+    <a name="s_get-word-"></a><i class=co3>;Get-word!</i>
+    <i class=co4>; Used with set-word! to give another name to existing character ID</i>
+    <i class=kw3>set</i> arg1 <i class=dt>get-word!</i> 
+    |
+    <a name="s_comment"></a><i class=co3>;Comment</i>
+    <i class=co4>; Ignores the argument value (used to insert large comments or comment out block of code)</i>
+    <i class=lw>'comment</i>
+        <i class=kw3>set</i> arg <i class=dt>any-type!</i> <i class=co5>; Argument values which is not evaluated</i>
+    |
+    <a name="s_swftag"></a><i class=co3>;SWFTag</i>
+    <i class=co4>; Inserts any precompiled SWF tag</i>
+    <i class=br0>[</i><i class=lw>'SWFtag</i> | <i class=lw>'prepared</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=dt>integer!</i>  <i class=co5>; SWF tag ID</i>
+        <i class=kw3>set</i> arg2 <i class=dt>binary!</i>   <i class=co5>; Precompiled binary data</i>
+    
+    |
+    <a name="s_metadata"></a><i class=co3>;MetaData</i>
+    <i class=co4>; Inserts MetaData in XML format into file</i>
+    <i class=lw>'MetaData</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>string!</i> | <i class=dt>block!</i><i class=br0>]</i> <i class=co5>; metadata</i>
+    
+    |
+    <a name="s_fileattributes"></a><i class=co3>;FileAttributes</i>
+    <i class=co4>; NOTE: to be done, now just used with binary</i>
+    <i class=lw>'FileAttributes</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=dt>binary!</i> | <i class=dt>integer!</i><i class=br0>]</i> <i class=co5>; 8Bytes or integer with FileAttributes</i>
+    
+    |
+    <a name="s_usenetwork"></a><i class=co3>;UseNetwork</i>
+    <i class=co4>; Sets file attributes to enable networking on local or not</i>
+    <i class=br0>[</i><i class=lw>'UseNetwork</i> | <i class=lw>'network</i> <i class=lw>'privileges</i> | <i class=lw>'local-with-networking</i> | <i class=lw>'allow</i> <i class=lw>'networking</i><i class=br0>]</i>
+        <i class=kw3>set</i> arg1 <i class=br0>[</i><i class=lw>'off</i> | <i class=lw>'false</i> | <i class=lw>'on</i> | <i class=lw>'off</i> | <i class=kw6>none</i><i class=br0>]</i>
+    
+    |
+    <a name="s_scriptlimits"></a><i class=co3>;ScriptLimits</i>
+    <i class=co4>; Overrides the default settings for maximum recursion depth and Actions time-out</i>
+    <i class=lw>'ScriptLimits</i>
+        <i class=kw3>set</i> arg1 <i class=dt>integer!</i>   <i class=co5>; maximum recursion (default probably 256)</i>
+        <i class=kw3>set</i> arg2 <i class=dt>integer!</i>   <i class=co5>; Actions time-out in seconds (default is between 15 to 20 seconds)</i>
+    
+    |
+    <a name="s_serialnumber"></a><i class=co3>;SerialNumber</i>
+    <i class=co4>; Sets info about compiler (do not use it if you don't know what it does)</i>
+    <i class=lw>'SerialNumber</i>
+    <i class=kw3>set</i> arg1 <i class=kw4>opt</i> <i class=br0>[</i><i class=dt>binary!</i> | <i class=kw6>none</i><i class=br0>]</i> <i class=co5>; 26Bytes of binary data as a serialNumber</i>
+    
+    |
+    
+    <a name="s_units"></a><i class=co3>;Units</i>
+    <i class=co4>; Sets if used position units are in twips or pixels</i>
+    <i class=lw>'Units</i> <i class=br0>[</i><i class=lw>'twips</i>  | <i class=lw>'pixels</i> <i class=br0>]</i>
+    |
+    
+
+<a name="m_undocumented-or-obsolete"></a><i class=co2>;Undocumented or obsolete</i>
+
+    <i class=lw>'animation</i> <i class=kw3>set</i> arg1 <i class=dt>block!</i> 
+
+    | <i class=sw>arg1:</i> <i class=dt>any-type!</i> 
+<i class=br0>]</i>
+<i class=kw13>to</i> end
+</pre>
+<div class=footer>Generated 3-Feb-2012/23:31:18+1:00 by <a href="http://rebol.desajn.net/script/code-colorizer.r">%code-colorizer.r</a> Rebol script</div></body></html>
