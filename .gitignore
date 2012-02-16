@@ -1,0 +1,5 @@
+*.bll
+*.36
+*.20
+builds/*
+tmp.abc
