@@ -13,7 +13,7 @@
 "amp"	#{26}
 "and"	#{E288A7}
 "ang"	#{E288A0}
-"apos"	#{39} ;<-- xhtml1
+"apos"	#{27} ;<-- xhtml1
 "Aring"	#{C385}
 "aring"	#{C3A5}
 "asymp"	#{E28988}
