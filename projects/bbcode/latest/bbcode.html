@@ -1,0 +1,271 @@
+<html><head><LINK rel="stylesheet" href="http://rebol.desajn.net/css/rebolcc.css"/><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1250"><title>REBOL BBCode implementation</title></head>
+<body bgcolor="#ffffff"><div class=header><h1>REBOL BBCode implementation</h1>Source: <b><a href="bbcode.r">bbcode.r</a></b> modified: <b>5-Jan-2009/2:04:02+1:00</b></div>
+<pre class=rebol><a href="http://www.rebol.com">REBOL</a> <span class=br0>[</span>
+    <span class=sw>Title:</span> <span class=st0>"BBcode"</span>
+    <span class=sw>Date:</span> <span class=nu0>5-Jan-2009/1:06:26+1:00</span>
+    <span class=sw>Name:</span> <span class=lw>'bbcode</span>
+    <span class=sw>Version:</span> <span class=nu0>0.1.0</span>
+    <span class=sw>File:</span>    <span class=fl>%bbcode.r</span>
+    <span class=sw>Author:</span>  <span class=st0>"David 'Oldes' Oliva"</span>
+    <span class=sw>Email:</span>   oliva.david@seznam.cz
+    <span class=sw>Home:</span>    <span class=fl>http://box.lebeda.ws/~hmm/</span>
+    <span class=sw>Owner:</span> <span class=kw6>none</span>
+    <span class=sw>Rights:</span> <span class=kw6>none</span>
+    <span class=sw>Needs:</span> <span class=kw6>none</span>
+    <span class=sw>Tabs:</span> <span class=nu0>4</span>
+    <span class=sw>Usage:</span> <span class=br0>[</span>
+        <span class=sw>test-cases:</span> <span class=br0>[</span>
+            <span class=br1>{</span><span class=st0>text [b]bold[/b] abc</span><span class=br1>}</span>  <span class=br1>{</span><span class=st0>text &lt;b&gt;bold&lt;/b&gt; abc</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>text [b]bold [i]italic[/b]</span><span class=br1>}</span>  <span class=br1>{</span><span class=st0>text &lt;b&gt;bold &lt;i&gt;italic&lt;/i&gt;&lt;/b&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>[s]strikethrough text[/s]</span><span class=br1>}</span>  <span class=br1>{</span><span class=st0>&lt;s&gt;strikethrough text&lt;/s&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>[url]http://example.org[/url]</span><span class=br1>}</span>  <span class=br1>{</span><span class=st0>&lt;a href="http://example.org"&gt;http://example.org&lt;/a&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>[url=http://example.com]Example[/url]</span><span class=br1>}</span>  <span class=br1>{</span><span class=st0>&lt;a href="http://example.com"&gt;Example&lt;/a&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>[url=http://example.com][b]Example[/url]</span><span class=br1>}</span>  <span class=br1>{</span><span class=st0>&lt;a href="http://example.com"&gt;&lt;b&gt;Example&lt;/b&gt;&lt;/a&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>[b][ul][li]Jenny[/li][li]Alex[/li][li]Beth[/li][/ul][/b]</span><span class=br1>}</span>  <span class=br1>{</span><span class=st0>&lt;b&gt;&lt;ul&gt;&lt;li&gt;Jenny&lt;/li&gt;&lt;li&gt;Alex&lt;/li&gt;&lt;li&gt;Beth&lt;/li&gt;&lt;/ul&gt;&lt;/b&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>[ul][li]bla[li]bla</span><span class=br1>}</span>  <span class=br1>{</span><span class=st0>&lt;ul&gt;&lt;li&gt;bla&lt;/li&gt;&lt;li&gt;bla&lt;/li&gt;&lt;/ul&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>[ul][li][b]bla[li]bla</span><span class=br1>}</span>  <span class=br1>{</span><span class=st0>&lt;ul&gt;&lt;li&gt;&lt;b&gt;bla&lt;/b&gt;&lt;/li&gt;&lt;li&gt;bla&lt;/li&gt;&lt;/ul&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>[ul][li]bla[li][ol][li]bla[/ol]</span><span class=br1>}</span>  <span class=br1>{</span><span class=st0>&lt;ul&gt;&lt;li&gt;bla&lt;/li&gt;&lt;li&gt;&lt;ol&gt;&lt;li&gt;bla&lt;/li&gt;&lt;/ol&gt;&lt;/li&gt;&lt;/ul&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>[code]xx[b]yy[/b]zz[/code]</span><span class=br1>}</span>  <span class=br1>{</span><span class=st0>&lt;code&gt;xx[b]yy[/b]zz&lt;/code&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>[list][*]aaa[*]bbb[/list]</span><span class=br1>}</span>  <span class=br1>{</span><span class=st0>&lt;ul&gt;&lt;li&gt;aaa&lt;/li&gt;&lt;li&gt;bbb&lt;/li&gt;&lt;/ul&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>[list=a][*]aaa[*]bbb[/list]</span><span class=br1>}</span>  <span class=br1>{</span><span class=st0>&lt;ol style="list-style-type: lower-alpha;"&gt;&lt;li&gt;aaa&lt;/li&gt;&lt;li&gt;bbb&lt;/li&gt;&lt;/ol&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>[list=A][*]aaa[*]bbb[/list]</span><span class=br1>}</span>  <span class=br1>{</span><span class=st0>&lt;ol style="list-style-type: upper-alpha;"&gt;&lt;li&gt;aaa&lt;/li&gt;&lt;li&gt;bbb&lt;/li&gt;&lt;/ol&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>[/b]</span><span class=br1>}</span> <span class=br1>{</span><span class=st0></span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>aa[b="]bb</span><span class=br1>}</span> <span class=br1>{</span><span class=st0>aa[b="]bb</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>[quote]blabla</span><span class=br1>}</span> <span class=br1>{</span><span class=st0>&lt;fieldset&gt;&lt;blockquote&gt;blabla&lt;/blockquote&gt;&lt;/fieldset&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>[quote=Carl]blabla</span><span class=br1>}</span> <span class=br1>{</span><span class=st0>&lt;fieldset&gt;&lt;legend&gt;Carl&lt;/legend&gt;&lt;blockquote&gt;blabla&lt;/blockquote&gt;&lt;/fieldset&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>[img]http://www.google.com/intl/en_ALL/images/logo.gif[/img]</span><span class=br1>}</span> <span class=br1>{</span><span class=st0>&lt;img src="http://www.google.com/intl/en_ALL/images/logo.gif" alt=""&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>[url=http://http://www.google.com/][img]http://www.google.com/intl/en_ALL/images/logo.gif[/url][/img]</span><span class=br1>}</span>
+             <span class=br1>{</span><span class=st0>&lt;a href="http://http://www.google.com/"&gt;&lt;img src="http://www.google.com/intl/en_ALL/images/logo.gif" alt=""&gt;&lt;/a&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>[img]1.gif [img]2.gif</span><span class=br1>}</span> <span class=br1>{</span><span class=st0>&lt;img src="1.gif" alt=""&gt; &lt;img src="2.gif" alt=""&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>text [size=tiny]tiny</span><span class=br1>}</span> <span class=br1>{</span><span class=st0>text &lt;span style="font-size: xx-small;"&gt;tiny&lt;/span&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>[h1]header[/h1]</span><span class=br1>}</span> <span class=br1>{</span><span class=st0>&lt;h1&gt;header&lt;/h1&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>[color]ee[/color][color=#F00]red[color=#00FF00]green</span><span class=br1>}</span> <span class=br1>{</span><span class=st0>ee&lt;span style="color: #F00;"&gt;red&lt;span style="color: #00FF00;"&gt;green&lt;/span&gt;&lt;/span&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>&lt;a&gt;</span><span class=br1>}</span>  <span class=br1>{</span><span class=st0>&amp;lt;a&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>multi^/line</span><span class=br1>}</span>  <span class=br1>{</span><span class=st0>multi^/&lt;br&gt;line</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>invalid [size]size[/size]</span><span class=br1>}</span>  <span class=br1>{</span><span class=st0>invalid &lt;span&gt;size&lt;/span&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>[align=right]right</span><span class=br1>}</span>  <span class=br1>{</span><span class=st0>&lt;div style="text-align: right;"&gt;right&lt;/div&gt;</span><span class=br1>}</span>
+            <span class=br1>{</span><span class=st0>[email]x@x.cz[/email] [email=x@x.cz]email [b]me[/email]</span><span class=br1>}</span>  <span class=br1>{</span><span class=st0>&lt;a href="mailto:x@x.cz"&gt;x@x.cz&lt;/a&gt; &lt;a href="mailto:x@x.cz"&gt;email &lt;b&gt;me&lt;/b&gt;&lt;/a&gt;</span><span class=br1>}</span>
+        <span class=br0>]</span>
+        foreach <span class=br0>[</span>src result<span class=br0>]</span> test-cases <span class=br0>[</span>
+            print <span class=br0>[</span><span class=st0>"&lt;=="</span> src<span class=br0>]</span>
+            print <span class=br0>[</span><span class=st0>"==&gt;"</span> <span class=sw>tmp:</span> bbcode src<span class=br0>]</span>
+            print <span class=kw4>either</span> tmp <span class=kw2>=</span> result <span class=br0>[</span><span class=st0>"OK"</span><span class=br0>]</span><span class=br0>[</span><span class=kw9>join</span> <span class=st0>"ERR "</span> result<span class=br0>]</span>
+            print <span class=st0>"---"</span>
+        <span class=br0>]</span>
+    <span class=br0>]</span>
+    <span class=sw>Purpose:</span> <span class=br1>{</span><span class=st0>Basic BBCode implementation. For more info about BBCode check http://en.wikipedia.org/wiki/BBCode</span><span class=br1>}</span>
+    <span class=sw>Comment:</span> <span class=kw6>none</span>
+    <span class=sw>History:</span> <span class=br0>[</span>
+        <span class=nu0>0.1.0</span> <span class=nu0>5-Jan-2009</span> <span class=st0>"Initial version"</span>
+    <span class=br0>]</span>
+    <span class=sw>Type:</span> <span class=br0>[</span>tool dialect function<span class=br0>]</span>
+    <span class=sw>Library:</span> <span class=br0>[</span>
+        <span class=sw>level:</span>    <span class=lw>'advanced</span>
+        <span class=sw>platform:</span> <span class=lw>'all</span>
+        <span class=sw>type:</span>     <span class=br0>[</span>tool dialect function<span class=br0>]</span>
+        <span class=sw>domain:</span>   <span class=br0>[</span>dialects files html markup <span class=kw9>parse</span> text text-processing web<span class=br0>]</span>
+    <span class=br0>]</span>
+
+    <span class=sw>Content:</span> <span class=kw6>none</span>
+<span class=br0>]</span>
+
+<span class=sw>ctx-bbcode:</span> <span class=kw3>context</span> <span class=br0>[</span>
+    <span class=sw>ch-normal:</span>    <span class=kw6>complement</span> <span class=kw10>charset</span> <span class=st0>"[&lt;^/"</span>
+    <span class=sw>ch-attribute:</span> <span class=kw6>complement</span> <span class=kw10>charset</span> <span class=br1>{</span><span class=st0>"'&lt;&gt;]</span><span class=br1>}</span>
+    <span class=sw>ch-hexa:</span> <span class=kw10>charset</span> <span class=br0>[</span><span class=ch>#"a"</span> <span class=kw7>-</span> <span class=ch>#"f"</span> <span class=ch>#"A"</span> <span class=kw7>-</span> <span class=ch>#"F"</span> <span class=ch>#"0"</span> <span class=kw7>-</span> <span class=ch>#"9"</span><span class=br0>]</span>
+    <span class=sw>ch-name:</span> <span class=kw10>charset</span> <span class=br0>[</span><span class=ch>#"a"</span> <span class=kw7>-</span> <span class=ch>#"z"</span> <span class=ch>#"A"</span> <span class=kw7>-</span> <span class=ch>#"Z"</span> <span class=ch>#"*"</span> <span class=ch>#"0"</span> <span class=kw7>-</span> <span class=ch>#"9"</span><span class=br0>]</span>
+    <span class=sw>ch-url:</span>  <span class=kw10>charset</span> <span class=br0>[</span><span class=ch>#"a"</span> <span class=kw7>-</span> <span class=ch>#"z"</span> <span class=ch>#"A"</span> <span class=kw7>-</span> <span class=ch>#"Z"</span> <span class=ch>#"0"</span> <span class=kw7>-</span> <span class=ch>#"9"</span> <span class=st0>"./:~+-%#\_=&amp;?@"</span><span class=br0>]</span>
+    <span class=sw>opened-tags:</span> <span class=kw9>copy</span> <span class=br0>[</span><span class=br0>]</span>
+    <span class=sw>rl-attribute:</span> <span class=br0>[</span><span class=ch>#"="</span> <span class=kw9>copy</span> attr <span class=kw4>any</span> ch-attribute<span class=br0>]</span>
+
+    <span class=sw>allow-html-tags?:</span> <span class=kw6>false</span>
+    <span class=sw>attr:</span> <span class=kw6>none</span>
+    <span class=sw>html:</span> <span class=kw9>copy</span> <span class=st0>""</span>
+            
+    <span class=sw>close-tags:</span> <span class=kw4>func</span><span class=br0>[</span>tags <span class=br0>[</span><span class=dt>block!</span><span class=br0>]</span><span class=br0>]</span><span class=br0>[</span>
+        foreach tag <span class=kw9>head</span> <span class=kw9>reverse</span> tags <span class=br0>[</span>
+            <span class=kw9>append</span> html case <span class=br0>[</span>
+                tag <span class=kw2>=</span> <span class=st0>"url"</span> <span class=br0>[</span><span class=st0>"&lt;/a&gt;"</span><span class=br0>]</span>
+                <span class=kw9>find</span> <span class=br0>[</span><span class=st0>"list"</span> <span class=st0>"color"</span> <span class=st0>"quote"</span> <span class=st0>"size"</span> <span class=st0>"align"</span> <span class=st0>"email"</span><span class=br0>]</span> tag <span class=br0>[</span><span class=st0>""</span><span class=br0>]</span>
+                
+                <span class=kw6>true</span> <span class=br0>[</span>
+                    <span class=kw9>rejoin</span> <span class=br0>[</span><span class=st0>"&lt;/"</span> tag <span class=st0>"&gt;"</span><span class=br0>]</span>
+                <span class=br0>]</span>
+            <span class=br0>]</span>
+        <span class=br0>]</span>
+    <span class=br0>]</span>
+    
+    <span class=sw>enabled-tags:</span> <span class=br0>[</span>
+        <span class=st0>"b"</span> <span class=st0>"i"</span> <span class=st0>"s"</span> <span class=st0>"u"</span> <span class=st0>"del"</span> <span class=st0>"h1"</span> <span class=st0>"h2"</span> <span class=st0>"h3"</span> <span class=st0>"h4"</span> <span class=st0>"h5"</span>
+        <span class=st0>"ins"</span> <span class=st0>"dd"</span> <span class=st0>"dt"</span> <span class=st0>"ol"</span> <span class=st0>"ul"</span> <span class=st0>"li"</span> <span class=st0>"url"</span> <span class=st0>"list"</span> <span class=st0>"*"</span>
+        <span class=st0>"color"</span> <span class=st0>"quote"</span> <span class=st0>"img"</span> <span class=st0>"size"</span> <span class=st0>"rebol"</span> <span class=st0>"align"</span> <span class=st0>"email"</span>
+    <span class=br0>]</span>
+    
+    <span class=kw3>set</span> <span class=lw>'bbcode</span> <span class=kw4>func</span><span class=br0>[</span><span class=st0>"Converts BBCode markup into HTML"</span> code <span class=br0>[</span><span class=dt>string!</span> <span class=dt>binary!</span> <span class=dt>file!</span> <span class=dt>url!</span><span class=br0>]</span> <span class=st0>"Input with BBCode tags"</span> /local tmp tag<span class=br0>]</span><span class=br0>[</span>
+        <span class=kw9>clear</span> html
+        <span class=kw4>if</span> <span class=kw4>any</span> <span class=br0>[</span><span class=kw13>file?</span> code <span class=kw13>url?</span> code<span class=br0>]</span><span class=br0>[</span><span class=sw>code:</span> read/binary code<span class=br0>]</span>
+        parse/all code <span class=br0>[</span>
+            <span class=kw4>any</span> <span class=br0>[</span>
+                <span class=br0>(</span><span class=sw>attr:</span> <span class=kw6>none</span><span class=br0>)</span>
+                <span class=kw9>copy</span> tmp some ch-normal <span class=br0>(</span><span class=kw9>append</span> html tmp<span class=br0>)</span>
+                |
+                <span class=st0>"[url]"</span> <span class=kw9>copy</span> tmp some ch-url <span class=kw4>opt</span> <span class=st0>"[/url]"</span> <span class=br0>(</span>
+                    <span class=kw9>append</span> html <span class=kw9>rejoin</span> <span class=br0>[</span><span class=br1>{</span><span class=st0>&lt;a href="</span><span class=br1>}</span> tmp <span class=br1>{</span><span class=st0>"&gt;</span><span class=br1>}</span> tmp <span class=br1>{</span><span class=st0>&lt;/a&gt;</span><span class=br1>}</span><span class=br0>]</span>
+                <span class=br0>)</span>
+                |
+                <span class=st0>"[email]"</span> <span class=kw9>copy</span> tmp some ch-url <span class=kw4>opt</span> <span class=st0>"[/email]"</span> <span class=br0>(</span>
+                    <span class=kw9>append</span> html <span class=kw9>rejoin</span> <span class=br0>[</span><span class=br1>{</span><span class=st0>&lt;a href="mailto:</span><span class=br1>}</span> tmp <span class=br1>{</span><span class=st0>"&gt;</span><span class=br1>}</span> tmp <span class=br1>{</span><span class=st0>&lt;/a&gt;</span><span class=br1>}</span><span class=br0>]</span>
+                <span class=br0>)</span>
+                |
+                <span class=st0>"[img]"</span> <span class=kw9>copy</span> tmp some ch-url <span class=kw4>opt</span> <span class=st0>"[/img]"</span> <span class=br0>(</span>
+                    <span class=kw9>append</span> html <span class=kw9>rejoin</span> <span class=br0>[</span><span class=br1>{</span><span class=st0>&lt;img src="</span><span class=br1>}</span> tmp <span class=br1>{</span><span class=st0>" alt=""&gt;</span><span class=br1>}</span><span class=br0>]</span>
+                    
+                <span class=br0>)</span> 
+                |
+                <span class=st0>"[code]"</span> <span class=kw9>copy</span> tmp <span class=kw13>to</span> <span class=st0>"[/code]"</span> thru <span class=st0>"]"</span> <span class=br0>(</span>
+                    <span class=kw9>append</span> html <span class=kw9>rejoin</span> <span class=br0>[</span><span class=br1>{</span><span class=st0>&lt;code&gt;</span><span class=br1>}</span> tmp <span class=br1>{</span><span class=st0>&lt;/code&gt;</span><span class=br1>}</span><span class=br0>]</span>
+                <span class=br0>)</span>
+                |
+                <span class=st0>"[rebol]"</span> <span class=kw9>copy</span> tmp <span class=kw13>to</span> <span class=st0>"[/rebol]"</span> thru <span class=st0>"]"</span> <span class=br0>(</span>
+                    <span class=kw9>append</span> html <span class=kw9>rejoin</span> <span class=br0>[</span><span class=br1>{</span><span class=st0>&lt;code&gt;</span><span class=br1>}</span> tmp <span class=br1>{</span><span class=st0>&lt;/code&gt;</span><span class=br1>}</span><span class=br0>]</span>
+                    <span class=co1>;TODO: add REBOL code colorizer</span>
+                <span class=br0>)</span>
+                |
+                <span class=ch>#"["</span> <span class=br0>[</span>
+                    <span class=co1>;normal opening tags</span>
+                    <span class=kw9>copy</span> tag some ch-name <span class=kw4>opt</span> rl-attribute          
+                    <span class=ch>#"]"</span> <span class=br0>(</span>
+                        <span class=kw4>if</span> tag <span class=kw2>=</span> <span class=st0>"*"</span> <span class=br0>[</span><span class=sw>tag:</span> <span class=st0>"li"</span><span class=br0>]</span>
+                        <span class=kw9>append</span> html <span class=kw4>either</span> <span class=kw9>find</span> enabled-tags tag <span class=br0>[</span>
+                            <span class=kw4>if</span> <span class=kw9>find</span> <span class=br0>[</span><span class=st0>"li"</span><span class=br0>]</span> tag <span class=br0>[</span>
+                                <span class=co1>;closed already opened tag</span>
+                                <span class=kw4>if</span> <span class=kw4>all</span> <span class=br0>[</span>
+                                    <span class=sw>tmp:</span> find/last opened-tags tag 
+                                    <span class=kw13>none?</span> <span class=kw9>find</span> tmp <span class=st0>"ol"</span>
+                                    <span class=kw13>none?</span> <span class=kw9>find</span> tmp <span class=st0>"ul"</span>
+                                <span class=br0>]</span><span class=br0>[</span>
+                                    close-tags <span class=kw9>copy</span> tmp
+                                    <span class=kw9>clear</span> tmp
+                                <span class=br0>]</span>
+                            <span class=br0>]</span>
+                            <span class=kw9>append</span> opened-tags tag
+                            switch/default tag <span class=br0>[</span>
+                                <span class=st0>"url"</span>  <span class=br0>[</span><span class=kw9>rejoin</span> <span class=br0>[</span><span class=br1>{</span><span class=st0>&lt;a href="</span><span class=br1>}</span> attr <span class=br1>{</span><span class=st0>"&gt;</span><span class=br1>}</span><span class=br0>]</span><span class=br0>]</span>
+                                <span class=st0>"color"</span> <span class=br0>[</span>
+                                    <span class=kw4>either</span> <span class=kw4>all</span> <span class=br0>[</span>attr <span class=kw9>parse</span> attr <span class=br0>[</span>
+                                        <span class=ch>#"#"</span> <span class=br0>[</span><span class=nu0>6</span> ch-hexa | <span class=nu0>3</span> ch-hexa<span class=br0>]</span>
+                                    <span class=br0>]</span><span class=br0>]</span><span class=br0>[</span>
+                                        <span class=kw9>append</span> opened-tags <span class=st0>"span"</span>
+                                        <span class=kw9>rejoin</span> <span class=br0>[</span><span class=br1>{</span><span class=st0>&lt;span style="color: </span><span class=br1>}</span> attr <span class=br1>{</span><span class=st0>;"&gt;</span><span class=br1>}</span><span class=br0>]</span>
+                                    <span class=br0>]</span><span class=br0>[</span>
+                                        <span class=co1>;;Should the invalid tag be visible?</span>
+                                        <span class=co1>;rejoin either attr [</span>
+                                        <span class=co1>;   ["[" tag "=" attr "]"]</span>
+                                        <span class=co1>;][ ["[" tag "]"] ]</span>
+                                        <span class=st0>""</span>
+                                    <span class=br0>]</span>
+                                <span class=br0>]</span>
+                                <span class=st0>"quote"</span> <span class=br0>[</span>
+                                    <span class=kw9>append</span> opened-tags <span class=br0>[</span><span class=st0>"fieldset"</span> <span class=st0>"blockquote"</span><span class=br0>]</span>
+                                    <span class=kw4>either</span> attr <span class=br0>[</span>
+                                        <span class=kw9>rejoin</span> <span class=br0>[</span><span class=br1>{</span><span class=st0>&lt;fieldset&gt;&lt;legend&gt;</span><span class=br1>}</span> attr <span class=br1>{</span><span class=st0>&lt;/legend&gt;&lt;blockquote&gt;</span><span class=br1>}</span><span class=br0>]</span>
+                                    <span class=br0>]</span><span class=br0>[</span>
+                                        <span class=br1>{</span><span class=st0>&lt;fieldset&gt;&lt;blockquote&gt;</span><span class=br1>}</span>
+                                    <span class=br0>]</span>
+                                <span class=br0>]</span>
+                                <span class=st0>"list"</span> <span class=br0>[</span>
+                                    <span class=kw4>if</span> <span class=kw13>none?</span> attr <span class=br0>[</span><span class=sw>attr:</span> <span class=st0>""</span><span class=br0>]</span>
+                                    parse/case attr <span class=br0>[</span>
+                                        <span class=br0>[</span>
+                                              <span class=st0>"a"</span> <span class=br0>(</span><span class=sw>tmp:</span> <span class=br1>{</span><span class=st0>&lt;ol style="list-style-type: lower-alpha;"&gt;</span><span class=br1>}</span><span class=br0>)</span>
+                                            | <span class=st0>"A"</span> <span class=br0>(</span><span class=sw>tmp:</span> <span class=br1>{</span><span class=st0>&lt;ol style="list-style-type: upper-alpha;"&gt;</span><span class=br1>}</span><span class=br0>)</span>
+                                            | <span class=st0>"i"</span> <span class=br0>(</span><span class=sw>tmp:</span> <span class=br1>{</span><span class=st0>&lt;ol style="list-style-type: lower-roman;"&gt;</span><span class=br1>}</span><span class=br0>)</span>
+                                            | <span class=st0>"I"</span> <span class=br0>(</span><span class=sw>tmp:</span> <span class=br1>{</span><span class=st0>&lt;ol style="list-style-type: upper-roman;"&gt;</span><span class=br1>}</span><span class=br0>)</span>
+                                            | <span class=st0>"1"</span> <span class=br0>(</span><span class=sw>tmp:</span> <span class=br1>{</span><span class=st0>&lt;ol style="list-style-type: decimal;"&gt;</span><span class=br1>}</span><span class=br0>)</span>
+                                        <span class=br0>]</span> <span class=br0>(</span><span class=kw9>append</span> opened-tags <span class=st0>"ol"</span><span class=br0>)</span>
+                                        | <span class=br0>(</span><span class=kw9>append</span> opened-tags <span class=st0>"ul"</span> <span class=sw>tmp:</span> <span class=br1>{</span><span class=st0>&lt;ul&gt;</span><span class=br1>}</span><span class=br0>)</span>
+                                    <span class=br0>]</span>
+                                    tmp
+                                <span class=br0>]</span>
+                                <span class=st0>"size"</span> <span class=br0>[</span>
+                                    <span class=kw4>if</span> <span class=kw13>none?</span> attr <span class=br0>[</span><span class=sw>attr:</span> <span class=st0>""</span><span class=br0>]</span>
+                                    <span class=kw9>parse</span> attr <span class=br0>[</span>
+                                        <span class=br0>[</span>
+                                              <span class=br0>[</span><span class=st0>"tiny"</span> | <span class=st0>"xx-small"</span> | <span class=st0>"-2"</span><span class=br0>]</span> <span class=br0>(</span><span class=sw>tmp:</span> <span class=br1>{</span><span class=st0>&lt;span style="font-size: xx-small;"&gt;</span><span class=br1>}</span><span class=br0>)</span>
+                                            | <span class=br0>[</span><span class=st0>"x-small"</span> | <span class=st0>"-1"</span><span class=br0>]</span>         <span class=br0>(</span><span class=sw>tmp:</span> <span class=br1>{</span><span class=st0>&lt;span style="font-size: x-small;"&gt;</span><span class=br1>}</span><span class=br0>)</span>
+                                            | <span class=br0>[</span><span class=st0>"small"</span> | <span class=st0>"normal"</span> | <span class=st0>"0"</span><span class=br0>]</span> <span class=br0>(</span><span class=sw>tmp:</span> <span class=br1>{</span><span class=st0>&lt;span style="font-size: small;"&gt;</span><span class=br1>}</span><span class=br0>)</span>
+                                            | <span class=br0>[</span><span class=st0>"medium"</span> | <span class=st0>"1"</span><span class=br0>]</span>           <span class=br0>(</span><span class=sw>tmp:</span> <span class=br1>{</span><span class=st0>&lt;span style="font-size: medium;"&gt;</span><span class=br1>}</span><span class=br0>)</span>
+                                            | <span class=br0>[</span><span class=st0>"large"</span>  | <span class=st0>"2"</span><span class=br0>]</span>           <span class=br0>(</span><span class=sw>tmp:</span> <span class=br1>{</span><span class=st0>&lt;span style="font-size: large;"&gt;</span><span class=br1>}</span><span class=br0>)</span>
+                                            | <span class=br0>[</span><span class=st0>"x-large"</span> | <span class=st0>"huge"</span> | <span class=st0>"3"</span><span class=br0>]</span> <span class=br0>(</span><span class=sw>tmp:</span> <span class=br1>{</span><span class=st0>&lt;span style="font-size: x-large;"&gt;</span><span class=br1>}</span><span class=br0>)</span>
+                                            | <span class=br0>[</span><span class=st0>"xx-large"</span> | <span class=st0>"4"</span><span class=br0>]</span>         <span class=br0>(</span><span class=sw>tmp:</span> <span class=br1>{</span><span class=st0>&lt;span style="font-size: xx-large;"&gt;</span><span class=br1>}</span><span class=br0>)</span>
+                                            
+                                        <span class=br0>]</span> end
+                                        <span class=co1>;TODO: other number values (pt,px,em)?</span>
+                                        | <span class=kw13>to</span> end <span class=br0>(</span><span class=sw>tmp:</span> <span class=br1>{</span><span class=st0>&lt;span&gt;</span><span class=br1>}</span><span class=br0>)</span>
+                                    <span class=br0>]</span>
+                                    <span class=kw9>append</span> opened-tags <span class=st0>"span"</span>
+                                    tmp
+                                <span class=br0>]</span>
+                                <span class=st0>"align"</span> <span class=br0>[</span>
+                                    <span class=kw4>if</span> <span class=kw13>none?</span> attr <span class=br0>[</span><span class=sw>attr:</span> <span class=st0>""</span><span class=br0>]</span>
+                                    <span class=kw9>parse</span> attr <span class=br0>[</span>
+                                        <span class=br0>[</span>
+                                              <span class=br0>[</span><span class=st0>"right"</span>   | <span class=st0>"r"</span><span class=br0>]</span> <span class=br0>(</span><span class=sw>tmp:</span> <span class=br1>{</span><span class=st0>&lt;div style="text-align: right;"&gt;</span><span class=br1>}</span><span class=br0>)</span>
+                                            | <span class=br0>[</span><span class=st0>"left"</span>    | <span class=st0>"l"</span><span class=br0>]</span> <span class=br0>(</span><span class=sw>tmp:</span> <span class=br1>{</span><span class=st0>&lt;div style="text-align: left;"&gt;</span><span class=br1>}</span><span class=br0>)</span>
+                                            | <span class=br0>[</span><span class=st0>"center"</span>  | <span class=st0>"c"</span><span class=br0>]</span> <span class=br0>(</span><span class=sw>tmp:</span> <span class=br1>{</span><span class=st0>&lt;div style="text-align: center;"&gt;</span><span class=br1>}</span><span class=br0>)</span>
+                                            | <span class=br0>[</span><span class=st0>"justify"</span> | <span class=st0>"j"</span><span class=br0>]</span> <span class=br0>(</span><span class=sw>tmp:</span> <span class=br1>{</span><span class=st0>&lt;div style="text-align: justify;"&gt;</span><span class=br1>}</span><span class=br0>)</span>
+                                        <span class=br0>]</span> end
+                                        | <span class=kw13>to</span> end <span class=br0>(</span><span class=sw>tmp:</span> <span class=br1>{</span><span class=st0>&lt;div&gt;</span><span class=br1>}</span><span class=br0>)</span>
+                                    <span class=br0>]</span>
+                                    <span class=kw9>append</span> opened-tags <span class=st0>"div"</span>
+                                    tmp
+                                <span class=br0>]</span>
+                                <span class=st0>"email"</span> <span class=br0>[</span>
+                                    <span class=kw4>either</span> <span class=kw13>error?</span> <span class=kw4>try</span> <span class=br0>[</span><span class=sw>tmp:</span> to-email attr<span class=br0>]</span><span class=br0>[</span><span class=st0>""</span><span class=br0>]</span><span class=br0>[</span>
+                                        <span class=kw9>append</span> opened-tags <span class=st0>"a"</span>
+                                        <span class=kw9>rejoin</span> <span class=br0>[</span><span class=br1>{</span><span class=st0>&lt;a href="mailto:</span><span class=br1>}</span> tmp <span class=br1>{</span><span class=st0>"&gt;</span><span class=br1>}</span><span class=br0>]</span>
+                                    <span class=br0>]</span>
+                                <span class=br0>]</span>
+                            <span class=br0>]</span><span class=br0>[</span>
+                                <span class=kw9>rejoin</span> <span class=br0>[</span><span class=st0>"&lt;"</span> tag <span class=st0>"&gt;"</span><span class=br0>]</span>
+                            <span class=br0>]</span>
+                            
+                        <span class=br0>]</span><span class=br0>[</span>
+                            <span class=kw9>rejoin</span> <span class=br0>[</span><span class=st0>"["</span> tag <span class=st0>"]"</span><span class=br0>]</span>
+                        <span class=br0>]</span>
+                    <span class=br0>)</span>
+                    
+                    |
+                    <span class=co1>;closing tags</span>
+                    <span class=ch>#"/"</span> 
+                    <span class=kw9>copy</span> tag some ch-name
+                    <span class=ch>#"]"</span> <span class=br0>(</span>
+                        <span class=kw4>either</span> <span class=sw>tmp:</span> find/last opened-tags tag <span class=br0>[</span>
+                            close-tags <span class=kw9>copy</span> tmp
+                            <span class=kw9>clear</span> tmp
+                        <span class=br0>]</span><span class=br0>[</span>
+                            <span class=co1>;;unopened tag, hidden by default, uncomment next line if you don't want to hide it</span>
+                            <span class=co1>;append html rejoin [{[/} tag {]}] </span>
+                        <span class=br0>]</span>
+                    <span class=br0>)</span>
+                    | <span class=br0>(</span><span class=kw9>append</span> html <span class=st0>"["</span><span class=br0>)</span>
+                <span class=br0>]</span>
+                |
+                <span class=ch>#"&lt;"</span> <span class=br0>(</span><span class=kw9>append</span> html <span class=kw4>either</span> allow-html-tags? <span class=br0>[</span><span class=st0>"&lt;"</span><span class=br0>]</span><span class=br0>[</span><span class=st0>"&amp;lt;"</span><span class=br0>]</span><span class=br0>)</span>
+                |
+                <span class=ch>#"^/"</span> <span class=br0>(</span><span class=kw9>append</span> html <span class=st0>"^/&lt;br&gt;"</span><span class=br0>)</span>
+            <span class=br0>]</span>
+        <span class=br0>]</span>
+        unless <span class=kw9>empty?</span> opened-tags <span class=br0>[</span>
+            close-tags opened-tags
+            <span class=kw9>clear</span> opened-tags
+        <span class=br0>]</span>
+        <span class=kw9>copy</span> html
+    <span class=br0>]</span>
+<span class=br0>]</span>
+
+
+</pre>
+<div class=footer>Generated 5-Jan-2009/2:04:08+1:00 by <a href="http://rebol.desajn.net/code-colorizer.r">%code-colorizer.r</a> Rebol script</div>
+		<script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script>
+		<script type="text/javascript">_uacct = "UA-1886645-1";urchinTracker();</script></body></html>
