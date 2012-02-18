@@ -1,8 +1,12 @@
 REBOL [
 	require: [
 		rs-project 'utf8-cp1250
+		rs-project 'memory-tools
 	]
 	note: {To find libmagickwand.so location on linux: find / -iname libmagickwand*}
+	usage: [
+		probe get-image-size %/d/testx.jpg
+	]
 ]
 
 unless value? 'with [
@@ -455,9 +459,9 @@ ctx-imagick: context [
 			y       [integer!]
 			return: [integer!]
 		]
-		remove second get in ctx-imagick 'start
-		ctx-imagick/init-routines: none
+
 		unset 'make-routine
+		ctx-imagick/init-routines: none
 	]
 
 	

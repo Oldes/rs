@@ -141,9 +141,9 @@ zlib: context [
 			] zlib.dll "adler32"
 		]
 		;Remove this init function so it's called only once:
-		foreach fce [version compress decompress crc32 adler32][
-			remove second get in zlib fce
-		]
+		;foreach fce [version compress decompress crc32 adler32][
+		;	remove second get in zlib fce
+		;]
 		zlib/init-routines: none
 	]
 
