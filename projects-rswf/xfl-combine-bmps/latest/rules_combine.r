@@ -17,7 +17,7 @@ insert XFL-action-rules [
 		"DOMBitmapItem" |
 		"DOMCompiledClipItem" |
 		"Include" (
-			append files-to-parse atts/("href")
+			add-file-to-parse current-node
 		)|
 		
 		"media" |
@@ -72,6 +72,7 @@ insert XFL-action-rules [
 		"DOMStaticText" |
 		"DOMInputText"	|
 		"DOMSymbolInstance" (
+			add-file-to-parse current-node
 			parse-xfl content
 		) |
 		"DOMBitmapInstance" (

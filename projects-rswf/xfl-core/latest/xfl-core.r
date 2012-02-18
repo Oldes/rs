@@ -13,7 +13,9 @@ REBOL [
 		rs-project 'xml-parse
 		;used for binary image manipulations:
 		rs-project 'imagick 'minimal
-		rs-project 'imageCore
+		rs-project 'premultiply
+		rs-project 'binary-conversions
+		;rs-project 'imageCore
 		rs-project 'stream-io
 		rs-project 'zlib
 	]
@@ -301,7 +303,18 @@ ctx-XFL: context [
 		result
 	]
 	
-
+	add-file-to-parse: func[node /local href atts][
+		if atts: node/2 [
+			either href: select atts "libraryItemName" [
+				href: join href ".xml"
+			][	href: select atts "href" ]
+			if none? find head files-to-parse href [
+				if verbose > 0 [print ["ADDING FILE to parse:" mold to-file href]]
+				append files-to-parse href
+			]
+		]
+	]
+	
 	shape-to-symbol: func[
 		"Converts existing shape into new symbol"
 		shp [block!]  "Shape's DOM"
@@ -335,7 +348,7 @@ ctx-XFL: context [
 		;probe shpNode
 		repend/only dom-symbols compose/deep ["Include" ["href" ( join name %.xml ) "itemIcon" "1" "loadImmediate" "false"] none]
 		;ask ""
-		write/binary file: xfl-target-dir/LIBRARY/(join decode-filename name %.xml) form-xml symbol
+		write/binary file: xfl-target-dir/LIBRARY/(join encode-filename name %.xml) form-xml symbol
 		
 		append files-to-parse file                    
 		name
@@ -361,7 +374,7 @@ ctx-XFL: context [
 			print ["SYMBOLNAME:" name]
 			if all [
 				0 = n: Symbol-counter/(name)
-				exists? tmp: xfl-source-dir/LIBRARY/(decode-filename name)
+				exists? tmp: xfl-source-dir/LIBRARY/(encode-filename name)
 			][
 				append files-to-parse name 
 			]
@@ -373,7 +386,7 @@ ctx-XFL: context [
 	
 	remove-atts: func[atts att-rule-to-remove /local _s][
 		if atts [
-			print ["remove-atts:" mold atts mold att-rule-to-remove]
+			if verbose > 1 [print ["remove-atts:" mold atts mold att-rule-to-remove]]
 			parse atts [
 				any [
 					_s:
@@ -508,7 +521,7 @@ ctx-XFL: context [
 		]
 	]
 	opt-updateBmpMATRIX: func[mat bmpdata /local v a b c d tx ty][
-		print ["UPDMAT:" mold mat lf mold bmpdata]
+		if verbose > 2 [print ["UPDMAT:" mold mat lf mold bmpdata]]
 		a:  either a:  select mat "a"  [(to decimal! a) / 20][0]
 		b:  either b:  select mat "b"  [(to decimal! b) / 20][0]
 		c:  either c:  select mat "c"  [(to decimal! c) / 20][0]
@@ -558,22 +571,78 @@ ctx-XFL: context [
 		src: to-local-file dirize src
 		target: to-local-file dirize target
 		;probe call/wait probe rejoin [{RD /S /Q "} target {"}]
-		probe call/wait probe rejoin [{XCOPY "} src {\*.*" "}  target {\*.*" /S /E /C /Y}]
+		call/wait probe rejoin [{XCOPY "} src {\*.*" "}  target {\*.*" /S /E /C /Y}]
 	]
 
-	ch_forbidden-file-chars: charset "~#%&*{}\:<>?/|^""
+	ch_forbidden-file-chars: charset "*:<>?|^""
 	ch_safe-file-chars: complement ch_forbidden-file-chars
-	decode-filename: func[name [any-string!] /local _s _e char][
-		parse/all utf8/decode copy name [
+	ch_safe-name-chars: complement charset {&<>'"}
+	ch_not-amp: complement charset "&"
+	
+	encode-entities: func[str [any-string!] /local][
+		result: copy ""
+		parse/all str [
+			any [
+				pos: ;(probe pos)
+				[ 
+					#"&" (append result "&amp;") |
+					#"<" (append result "&lt;") |
+					#">" (append result "&gt;") |
+					#"'" (append result "&apos;") |
+					#"^"" (append result "&quot;")
+					;1 skip (ask reform ["invalid entity:" mold copy/part s 10])
+				]
+				|
+				copy tmp some ch_safe-name-chars (append result tmp)
+			]
+		]
+		result
+	]
+	decode-entities: func[str [any-string!] /local result pos tmp][
+		;print ["decode-entities <--" mold str]
+		result: copy ""
+		parse/all str [
+			any [
+				pos: ;(probe pos)
+				[ 
+					"&amp;#" copy tmp 3 ch_digits (append result  to-char to-integer tmp) |
+					"&#" copy tmp 3 ch_digits (append result  to-char to-integer tmp) |
+					"&lt;"   (append result "<") |
+					"&gt;"   (append result ">") |
+					"&quot;" (append result {"}) |
+					"&apos;" (append result "'") |
+					"&amp;"  (append result "&")
+					;1 skip (ask reform ["invalid entity:" mold copy/part s 10])
+				]
+				|
+				copy tmp some ch_not-amp (append result tmp)
+			]
+		]
+		;print ["decode-entities -->" mold result]
+		result
+	]
+	decode-filename: func[name [any-string!]][
+		decode-entities name
+	]
+	encode-filename: func[name [any-string!] /as-utf8 /local _s _e char][
+		;print ["encode-filename <--" mold name]
+		name: decode-entities name
+		unless as-utf8 [name: as-string utf8/decode name]
+		
+		parse/all name [
 			any [
 				some ch_safe-file-chars |
 				_s: copy char 1 skip _e: (
-					_e: change/part _s (join "&#0" to-integer to-char char) _e
+					_e: change/part _s (
+						char: to-integer to-char char
+						if char < 100 [char: join "0" char]
+						join "&#" char
+					) _e
 				) :_e
 			]
 		]
-		replace/all name "&amp;" "&"
-		as-string name
+		;print ["encode-filename -->" mold name]
+		name
 	]
 	
 ]

@@ -9,7 +9,7 @@ REBOL [
 	usage: [
 		;xfl-combine-bmps %/d/test/XFL/merge-one/   %/d/test/XFL/merge-one-result/
 		;xfl-combine-bmps %/d/test/XFL/merge-multi/ %/d/test/XFL/merge-multi-result/
-		xfl-combine-bmps %/d/test/XFL/t15/ %/d/test/XFL/t15-result/
+		xfl-combine-bmps %/d/test/XFL/combine-bmps/ %/d/test/XFL/combine-bmps-result/
 	]
 	preprocess: true
 ]
@@ -17,6 +17,9 @@ REBOL [
 unless value? 'useSquareOnlyBitmaps? [useSquareOnlyBitmaps?: false]
 
 with ctx-XFL [
+	verbose: 1
+	#include %rules_combine.r
+	
 	get-comp-size: func[data /local maxpair maxi][
 		maxpair:  0x0
 		foreach [size id] data [
@@ -41,7 +44,7 @@ with ctx-XFL [
 			][
 				pow2-rectangle-pack/method images i
 			]
-			print ["possible result size:" result/1 "for method:" i]
+			if verbose > 1 [print ["possible result size:" result/1 "for method:" i]]
 			if any [
 				none? minResult
 				result/2/3 < minArea
@@ -51,14 +54,14 @@ with ctx-XFL [
 			]
 			
 		]
-		print ["POW2-RESULT:" mold minResult]
+		if verbose > 1 [print ["POW2-RESULT:" mold minResult]]
 		minResult
 	]
 
 
 
 	combine-files: func[files size into /local tmp png? *wand2 *pixel][
-		if verbose > 0 [print ["COMBINE to size:" size "INTO:" into]]
+		if verbose > 0 [print ["COMBINE to size:" size "INTO:" mold to-local-file into]]
 		with ctx-imagick [
 			start
 					*pixel: NewPixelWand
@@ -137,9 +140,6 @@ with ctx-XFL [
 		]
 	]       
 
-	verbose: 1
-	#include %rules_combine.r
-	
 	combine-BitmapFill: func[node /local v atts matrix nx ny][
 		atts: node/2
 		if all [
@@ -176,7 +176,8 @@ with ctx-XFL [
 			block? atts
 			imgspec: select images-to-replace atts/("libraryItemName")
 		][
-			print ["REPLACING:" atts/("libraryItemName") imgspec]
+			if verbose > 0 [print ["REPLACING:" atts/("libraryItemName")]]
+			if verbose > 1 [probe imgspec]
 			if none? node/3 [
 				node/3: to-DOM {<matrix><Matrix tx="0" ty="0"/></matrix>}
 			]
@@ -196,9 +197,12 @@ with ctx-XFL [
 			either v: select matrix/2 "b" [matrix/2/("b"): 20 * b: to-decimal v][ b: 0 ]
 			either v: select matrix/2 "c" [matrix/2/("c"): 20 * c: to-decimal v][ c: 0 ]
 
-			matrix/2/("tx"): tx - imgspec/1/x
-			matrix/2/("ty"): ty - imgspec/1/y
-
+			;matrix/2/("tx"): tx - imgspec/1/x
+			;matrix/2/("ty"): ty - imgspec/1/y
+			nx: imgspec/1/x
+			ny: imgspec/1/y
+			matrix/2/("tx"): tx - ((nx * a) + (ny * c))
+			matrix/2/("ty"): ty - ((nx * b) + (ny * d)) 
 			dom: to-DOM [
 	{       <DOMGroup>
 			  <members>
@@ -222,6 +226,13 @@ with ctx-XFL [
 		]
 	]
 	set 'xfl-combine-bmps func[src trg][
+		if verbose > 0 [
+			print "^/=================================================="
+			print   "=== COMBINE BMPs in XFL =========================="
+			print  ["=== source:" src]
+			print  ["=== target:" trg lf lf]
+		]
+		
 		init/into-dir src trg
 
 		ctx-iMagick/init-routines
@@ -243,7 +254,7 @@ with ctx-XFL [
 							append/only append images-to-combine groupName images: copy []
 						]
 						if imgFile: export-media-item/overwrite/into-file item/2 (
-							rejoin [%./LIBRARY/ to-file checksum item/2/("name") %.png]
+							rejoin [%./LIBRARY/ to-file (enbase/base checksum/secure item/2/("name") 16) %.png]
 						) [
 							repend/only append images get-image-size imgFile [name imgFile]
 							new-line images true
@@ -258,36 +269,13 @@ with ctx-XFL [
 
 			
 			new-line/skip images true 2
-			if verbose > 0 [probe reduce [group images]]
+			if verbose > 1 [probe reduce [group images]]
 			
-			comment {
-			size: 8x8
-			data-to-process: copy images
-			
-			while [
-				not empty? second result: rectangle-pack data-to-process size
-			][
-				either size/x > size/y [
-					size/y: size/y * 2
-				][  size/x: size/x * 2 ]
-				if any [
-					size/x > 1024
-					size/y > 1024
-				][  
-					print ["Coumponed bitmap would be too large! Excluding bitmap.." copy/part data-to-process 2]
-					remove/part data-to-process 2
-					size: get-comp-size images-to-compact/jpeg3
-					size/x: min 1024 size/x
-					size/y: min 1024 size/y
-
-				]
-				print reform ["retry with size:" size]
-			]}
 			set [size result] get-best-pow2-result images
 			
-			print  ["FINAL SIZE:" size] 
+			if verbose > 0 [print  ["FINAL POW2 SIZE :" size "for:" group]] 
 					
-			combine-files result/1 size combinedImg: rejoin [xfl-target-dir %Library/combined_ group %.png]
+			combine-files result/1 size combinedImg: rejoin [xfl-target-dir %Library/combined_ encode-filename/as-utf8 group %.png]
 			foreach [p1 p2 file] result/1 [
 				repend/only append images-to-replace file/1 [p1 p2 group]
 				attempt [delete file/2]
@@ -309,31 +297,36 @@ with ctx-XFL [
 		]
 		mediaItems: head mediaItems
 
-		either block? files-to-parse [
-			clear files-to-parse
-		][  files-to-parse: copy [] ]
+		files-to-parse: either block? files-to-parse [
+			clear head files-to-parse
+		][  copy [] ]
 		
 		parse-xfl/act xmldom 'DOMDocument-combine
 		
-		foreach file files-to-parse [
+		files-to-parse: head files-to-parse
+		while [not tail? files-to-parse] [
+			file: files-to-parse/1
+			files-to-parse: next files-to-parse
 			recycle
 			current-symbol: either file? file [
 				current-symbol: form last split-path file 
 				copy/part current-symbol find/last current-symbol "."
 			][  copy/part file find/last file "." ]
-			print ["UPDATING:" file mold current-symbol stats]
+			if verbose > 0 [print ["UPDATING:" mold to-file file]]
 
 			either file? file [
 				dom: to-DOM as-string read/binary file
 				new-file: file
 			][
-				dom: to-DOM as-string read/binary xfl-source-dir/LIBRARY/(decode-filename file)
-				new-file: join xfl-target-dir ["LIBRARY/" decode-filename file]
+				dom: to-DOM as-string read/binary xfl-source-dir/LIBRARY/(encode-filename file)
+				new-file: join xfl-target-dir ["LIBRARY/" encode-filename file]
 			]
 			parse-xfl/act dom 'DOMSymbolItem-combine
 			write new-file form-xml dom
 		]
+
 		write xfl-target-dir/DOMDocument.xml form-xml xmldom
+		if verbose > 0 [print "^/--------------------------------------------------^/"]
 		images-to-combine
 	]
 	

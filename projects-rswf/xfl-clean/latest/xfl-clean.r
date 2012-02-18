@@ -7,16 +7,13 @@ REBOL [
 		rs-project 'xfl-core
 	]
 	Usage: [
-		xfl-clean %/d/test/XFL/clean/ %/d/test/XFL/clean-result/
+		xfl-clean %/d/test/XFL/combine-bmps/ %/d/test/XFL/combine-bmps-clean/
 	]
 	Preprocess: true
 ]
 
 with ctx-XFL [
 	#include %rules_clean.r
-	
-	folders-to-check:  copy []
-	items-to-check:    copy []
 	
 	add-item-to-check: func[node /local atts name][
 		atts: node/2
@@ -36,26 +33,32 @@ with ctx-XFL [
 			append/only items-to-check node
 		]
 	]
+
+	same-names?: func[name1 name2][
+		all [
+			not none? name1
+			not none? name2
+			(decode-entities name1) = (decode-entities name2)
+		]
+	]
 	check-item: func[node /local atts name item-name href][
 		atts: node/2
+
 		name: any [
+			select atts "libraryItemName"
 			select atts "name"
 			select atts "soundName"
-			select atts "libraryItemName"
 			select atts "bitmapPath"
 		]
 		if node/1 = "DOMSymbolInstance" [
-			href: join atts/("libraryItemName") ".xml"
-			if none? find head files-to-parse href [
-				append files-to-parse href
-			]
+			add-file-to-parse node
 		]
 		if name [
 			print ["CHECK-ITEM:" name]
 			forall items-to-check [
 				if any [
-					(select items-to-check/1/2 "name") = name
-					(select items-to-check/1/2 "href") = join name %.xml
+					same-names? name select items-to-check/1/2 "name"
+					same-names? (select items-to-check/1/2 "href") (join name %.xml)
 				][
 					remove items-to-check
 					break
@@ -68,6 +71,9 @@ with ctx-XFL [
 	
 	set 'xfl-clean func[src trg /local item file][
 	
+		folders-to-check:  copy []
+		items-to-check:    copy []
+		files-to-parse:    clear head files-to-parse
 		if verbose > 0 [
 			print "^/=================================================="
 			print   "=== CLEANING XFL ================================="
@@ -78,9 +84,11 @@ with ctx-XFL [
 		init/into-dir src trg		
 		
 		parse-xfl/act xmldom 'DOMDocument-clean
-
+		
+		files-to-parse: head files-to-parse
 		while [not tail? files-to-parse] [
 			file: files-to-parse/1
+			files-to-parse: next files-to-parse
 			recycle
 			current-symbol: either file? file [
 				current-symbol: form last split-path file 
@@ -92,17 +100,19 @@ with ctx-XFL [
 				dom: to-DOM as-string read/binary file
 				new-file: file
 			][
-				dom: to-DOM as-string read/binary xfl-source-dir/LIBRARY/(decode-filename file)
-				new-file: join xfl-target-dir ["LIBRARY/" decode-filename file]
+				dom: to-DOM as-string read/binary xfl-source-dir/LIBRARY/(encode-filename file)
+				new-file: join xfl-target-dir ["LIBRARY/" encode-filename file]
 			]
 			parse-xfl/act dom 'DOMSymbolItem-clean
 			;write new-file form-xml dom
-			files-to-parse: next files-to-parse
+			
 		]
+		folders-to-check: head folders-to-check
 		forall folders-to-check [
 			print ["REMOVING FOLDER:" folders-to-check/1/2/("name")]
 			clear folders-to-check/1
 		]
+		items-to-check: head items-to-check
 		forall items-to-check [
 			item: items-to-check/1
 			switch item/1 [
@@ -124,6 +134,6 @@ with ctx-XFL [
 		]
 
 		write xfl-target-dir/DOMDocument.xml form-xml xmldom
-		print "^/--------------------------------------------------^/"
+		if verbose > 0 [print "^/--------------------------------------------------^/"]
 	]
 ]

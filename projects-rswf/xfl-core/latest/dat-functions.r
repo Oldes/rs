@@ -30,27 +30,40 @@ rebol []
 		/smoothing smVal
 		/local imgFormat width height ARGB buf name tmp
 	][
-		print ["IMPORTING DOMBitmapItem::" source-file]
+		if verbose > 0 [print ["IMPORTING DOMBitmapItem::" mold source-file]]
 		source-file: to-rebol-file source-file
 		if #"/" <> first source-file [insert source-file what-dir]
 		unless as [dat-file: rejoin [%My " 1 " checksum source-file %.dat]]
 		with ctx-imagick [
 			start
-			unless zero? MagickReadImage *wand utf8/encode probe to-local-file source-file [
+			unless zero? MagickReadImage *wand to-local-file source-file [
 
 				either find ["JPG" "JPEG"] imgFormat: MagickGetImageFormat *wand [
 					write/binary xfl-source-dir/bin/:dat-file read/binary source-file
 				][
-					img: imageCore/load source-file
-					ARGB: img/bARGB
-					width: img/size/x
-					height: img/size/y
+					;img: imageCore/load source-file
+					;ARGB: img/bARGB
+					;width: img/size/x
+					;height: img/size/y
 
-					;width:  MagickGetImageWidth  *wand
-					;height: MagickGetImageHeight *wand
-					;ARGB: make binary! (width * height * 4)
-					;insert/dup ARGB #{00} (width * height * 4)
-					;try MagickExportImagePixels *wand 0 0 width height "ARGB" 1 address? ARGB
+					width:  MagickGetImageWidth  *wand
+					height: MagickGetImageHeight *wand
+					ARGB: make binary! (width * height * 4)
+					insert/dup ARGB #{00} (width * height * 4)
+					try MagickExportImagePixels *wand 0 0 width height "ARGB" 1 address? ARGB
+					
+					premultiply ARGB
+					comment {
+					while [not tail? ARGB][
+						a: ARGB/1
+						ARGB: next ARGB
+						ARGB: change ARGB to char! ((a * ARGB/1) / 255)
+						ARGB: change ARGB to char! ((a * ARGB/1) / 255)
+						ARGB: change ARGB to char! ((a * ARGB/1) / 255)
+					]
+					ARGB: head ARGB
+					}
+					
 					;write/binary probe to-file join source-file %.argb argb
 					with dat-io [
 						clearOutBuffer
@@ -78,7 +91,7 @@ rebol []
 						write/binary xfl-target-dir/bin/:dat-file head outBuffer
 					]
 					if dom [
-						name: form last split-path source-file
+						name: encode-entities decode-filename form last split-path source-file
 						if find name #"." [name: head clear find/last name #"."]
 						unless find Media name [
 							;print "---"
@@ -118,10 +131,10 @@ rebol []
 		item
 		/into-file item-file
 		/overwrite
-		/local  len-decompressed width height argb chunk-length *pixel ext-file errmsg dat-id
+		/local  len-decompressed width height argb chunk-length *pixel ext-file errmsg dat-id a
 	][
-		print "^/EXPORT-MEDIA-ITEM"
-		probe item
+		if verbose > 0 [print ["EXPORTING MediaItem::" mold item-file]]
+		if verbose > 1 [probe item]
 		
 		unless into-file [
 			item-file: join "./LIBRARY/" last parse/all any [
@@ -129,17 +142,13 @@ rebol []
 				item/("href")
 			] "/\"
 		]
-		
-		
+
 		unless find ["png" "jpg"] last parse item-file "." [append item-file %.png]
-		print ["^/export-media-item" mold item-file mold item]
 		
 		item/("sourceExternalFilepath"):	item/("href"): item-file
 		
-		;ask ""
 		if all [
 			exists? xfl-source-dir/bin/(item/("bitmapDataHRef"))
-
 			any [
 				(
 					ext-file: join xfl-target-dir to-rebol-file item-file
@@ -152,7 +161,7 @@ rebol []
 				setStreamBuffer read/binary xfl-source-dir/bin/(item/("bitmapDataHRef"))
 				switch/default dat-id: readBytes 2 [;bitmap identifier?
 					#{FFD8} [;jpeg
-						print ["Exporting JPEG" item-file]
+						if verbose > 1 [print ["as JPEG"]]
 						inBuffer: head inBuffer
 						with ctx-imagick [
 							start
@@ -173,7 +182,7 @@ rebol []
 						;write/binary ext-file head inBuffer
 					]
 					#{0303} [;???
-						print ["Exporting IMG?" item-file]
+						print ["Exporting unknown IMG?" item-file]
 						probe len-decompressed: readUI16
 						width:  readUI16
 						height: readUI16
@@ -189,37 +198,30 @@ rebol []
 						ask ""
 					]
 					#{0305} [;raw image
-						print ["Exporting IMG" item-file]
+						if verbose > 1 [print ["as RAW"]]
 						len-decompressed: readUI16
 						width:  readUI16
 						height: readUI16
-						print ["size:" as-pair width height]
+						if verbose > 1 [print ["size:" as-pair width height]]
 						xx: readBytes 17 ;???
 						argb: none
 						switch/default readBytes 1 [
 							#{00} [
-								;probe xx
-								;either #{00000000 00000000} = copy/part inBuffer 8 [
-								;	argb: skip readRest 6
-								;][
-									argb: readRest
-								;]
-								;ask "unc img?"
+								argb: readRest
 							]
 							#{01} [
 								argb: make binary! (width * height * 4)
 								while [0 < chunk-length: readUI16][
 									insert tail argb readBytes chunk-length 
 								]
-								argb: as-binary zlib-decompress argb (width * height * 4)
+								argb: as-binary zlib/decompress/l argb (width * height * 4)
+								
 							]
 						][
 							ask "!!! UNKNOWN DAT IMG STRUCT !!!"
 						]
 						
 						if argb [
-							;probe argb
-							;comment {
 							if (length? argb) <> (width * height * 4) [
 								ask ["Inbalid ARGB length?" (length? argb) "<>" (width * height * 4)]
 							]
@@ -240,28 +242,11 @@ rebol []
 								]
 							]
 							argb: head argb
-							;}
-							
-							;probe what-dir
-							;write/binary probe to-file join item/("sourceExternalFilepath") %.argb argb
-							;print "...exporting//"
-							;write/binary ext-file ImageCore/ARGB2PNG context compose [bARGB: (argb) size: (as-pair width height)]
-							
-							;save/png ext-file ARGB-to-img argb as-pair width height
-							;write/binary join ext-file %.argb argb
-							;comment {
+
 							with ctx-imagick [
 								start
 									*pixel: NewPixelWand
-									
-									;PixelSetColor *pixel "#ff8899"
-									;PixelSetAlpha *pixel  0.5
-									;probe PixelGetBlack *pixel
-									;probe PixelGetAlpha *pixel
-									;probe PixelGetColorAsString *pixel
 									unless all [
-										
-										
 										not zero? MagickNewImage *wand width height *pixel
 										not zero? MagickSetImageBackgroundColor *wand *pixel
 										
@@ -284,7 +269,6 @@ rebol []
 									]
 								end
 							]
-							;}
 						]
 					]
 				][
@@ -369,73 +353,3 @@ rebol []
 		]
 	]
 	
-	
-	
-	test-dat: func[dat [binary!]][
-		with dat-io [
-					setStreamBuffer dat
-					switch/default probe dat-id: readBytes 2 [;bitmap identifier?
-						#{FFD8} [;jpeg
-							print "jpeg"
-						]
-						#{0305} [;raw image
-							print ["Exporting IMG" ]
-							len-decompressed: readUI16
-							width:  readUI16
-							height: readUI16
-							print ["size:" as-pair width height]
-							probe readBytes 17 ;???
-							argb: none
-							switch/default probe readBytes 1 [
-								#{00} [
-									probe length? inBuffer
-									either #{00000000 00000000} = probe copy/part inBuffer 8 [
-										argb: skip readRest 6
-									][
-										argb: readRest
-									]
-								]
-								#{01} [
-									argb: make binary! (width * height * 4)
-									while [0 < chunk-length: readUI16][
-										insert tail argb readBytes chunk-length 
-									]
-									argb: zlib-decompress argb (width * height * 4)
-								]
-							][
-								ask "!!! UNKNOWN DAT IMG STRUCT !!!"
-							]
-							if argb [
-								;probe what-dir
-								;write/binary probe to-file join item/("sourceExternalFilepath") %.argb argb
-								;print "...exporting//"
-								with ctx-imagick [
-									start
-										*pixel: NewPixelWand
-										unless all [
-											not zero? MagickNewImage *wand width height *pixel
-											not zero? MagickImportImagePixels *wand 0 0 width height "ARGB" 1 address? ARGB
-											not zero? MagickSetImageDepth *wand 8
-											not zero? MagickWriteImages *wand probe to-local-file join what-dir "test.png"
-										][
-											errmsg: reform [
-												Exception/Severity "="
-												ptr-to-string desc: MagickGetException *wand Exception
-											]
-											MagickRelinquishMemory desc
-											end
-											make error! errmsg
-										]
-										ClearPixelWand    *pixel
-										DestroyPixelWand  *pixel
-									end
-								]
-							]
-						]
-					][
-						print ["UNKNOWN DAT TYPE:" dat-id (item/("bitmapDataHRef"))]
-					]
-				]
-			]	
-			
-			
