@@ -43,6 +43,7 @@ REBOL [
 
 ctx-rectangle-pack: context [
 	padding: 0x0
+	verbose: 0
 	
 	round-to-pow2: func[v /local p][ repeat i 14 [if v <= (p: 2 ** i) [return p]] none]
 	
@@ -149,7 +150,7 @@ ctx-rectangle-pack: context [
 		/method sort-method 
 		/local placed skiped free-bins free-area placed? rw rh rx ry width height
 	][
-		print ["RECTPACK to size:" target-area]
+		if verbose > 0 [print ["RECTPACK to size:" target-area]]
 		sort/compare/skip size-data func[a b /local oa ob][
 			switch/default sort-method [
 				2 [
