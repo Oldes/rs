@@ -36,7 +36,7 @@ ctx-form-xml: context [
 		foreach node dom [
 			either string? node [
 				if tabs [clear skip out negate length? tabs]
-				out: insert tail out node ;;There was: join node #" " ;;I'm not sure why;;
+				out: insert tail out node
 			][	
 				foreach [ name atts content ] node [
 					out: insert out ajoin [{<} name #" "]
@@ -64,8 +64,9 @@ ctx-form-xml: context [
 							out: insert tail out rejoin [{<![CDATA[} content {]]>}]
 						][
 							emitxml content
-							if tabs [remove back tail out]
-							
+							if all [tabs #"^-" = out/(-1)] [
+								remove back tail out
+							]
 						]
 						if tabs [remove back tail tabs]
 						
