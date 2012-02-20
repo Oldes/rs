@@ -24,7 +24,7 @@ comment {
 #### Title:   "Prebol - Official REBOL Preprocessor"
 #### Author:  ["Carl Sassenrath" "Holger Kruse" "Oldes"]
 ----} 
-system/options/binary-base: 64 
+system/options/binary-base: 32
 error: func [[catch] msg] [throw make error! reform msg] 
 process-source-comment?: true 
 process-source: func [
