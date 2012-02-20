@@ -203,7 +203,7 @@ rebol []
 						width:  readUI16
 						height: readUI16
 						if verbose > 1 [print ["size:" as-pair width height]]
-						xx: readBytes 17 ;???
+						readBytes 17 ;???
 						argb: none
 						switch/default readBytes 1 [
 							#{00} [
@@ -225,23 +225,8 @@ rebol []
 							if (length? argb) <> (width * height * 4) [
 								ask ["Inbalid ARGB length?" (length? argb) "<>" (width * height * 4)]
 							]
-							loop (width * height) [
-								either 0 = a: first argb [
-									argb: skip argb 4
-								][
-									if error? try [
-										a: a * 256
-										argb: next argb
-										argb: change argb to char! min 255 to integer! (shift/left first argb 16) / a
-										argb: change argb to char! min 255 to integer! (shift/left first argb 16) / a
-										argb: change argb to char! min 255 to integer! (shift/left first argb 16) / a
-									][
-										print ["ERR:" a mold copy/part argb 4]
-										halt
-									]
-								]
-							]
-							argb: head argb
+
+							demultiply argb
 
 							with ctx-imagick [
 								start
