@@ -579,7 +579,7 @@ ctx-XFL: context [
 	ch_safe-name-chars: complement charset {&<>'"}
 	ch_not-amp: complement charset "&"
 	
-	encode-entities: func[str [any-string!] /local][
+	encode-entities: func[str [any-string!] /local result tmp][
 		result: copy ""
 		parse/all str [
 			any [
