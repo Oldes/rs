@@ -9,7 +9,7 @@ REBOL [
 	usage: [
 		;xfl-combine-bmps %/d/test/XFL/merge-one/   %/d/test/XFL/merge-one-result/
 		;xfl-combine-bmps %/d/test/XFL/merge-multi/ %/d/test/XFL/merge-multi-result/
-		xfl-combine-bmps %/d/test/XFL/combine-bmps/ %/d/test/XFL/combine-bmps-result/
+		xfl-combine-bmps %/d/test/XFL/t78/ %/d/test/XFL/t78-result/
 	]
 	preprocess: true
 ]
@@ -18,7 +18,11 @@ unless value? 'useSquareOnlyBitmaps? [useSquareOnlyBitmaps?: false]
 
 with ctx-XFL [
 	verbose: 1
+	current-shapeMatrix: none
+	current-shapeIMatrix: none
+	
 	#include %rules_combine.r
+	
 	
 	get-comp-size: func[data /local maxpair maxi][
 		maxpair:  0x0
@@ -139,35 +143,134 @@ with ctx-XFL [
 			"!" x1 " " y1   "|" x2 " " y2
 		]
 	]       
+	remove-wrapped-transform: func[m [block!] sx sy ][
+		;remove twips
+		a: a / 20
+		b: b / 20
+		c: c / 20
+		d: d / 20
+		;create inverse values
+		adbc:(a * d)-(b * c)
+		ia:   d / adbc
+		ib: - b / adbc
+		ic: - c / adbc
+		id:   a / adbc
+		itx:  ((c * ty) - (d * tx)) / adbc
+		ity: -((a * ty) - (b * tx)) / adbc
+		;
+		reduce [ia * 20 ib * 20 ic * 20 id * 20 itx ity]
+	]
+	get-matrix: func[matrixNode /twips /local m v][
+		m: matrixNode/2
+		r: reduce [
+			any [all [v: select m "a" to-decimal v] 20]
+			any [all [v: select m "b" to-decimal v]  0]
+			any [all [v: select m "c" to-decimal v]  0]
+			any [all [v: select m "d" to-decimal v] 20]
+			any [all [v: select m "tx" to-decimal v] 0]
+			any [all [v: select m "ty" to-decimal v] 0]
+		]
+		unless twips [
+			r/1: r/1 / 20
+			r/2: r/2 / 20
+			r/3: r/3 / 20
+			r/4: r/4 / 20
+		]
+		r
+	]
+	form-matrix: func[matrixNode matrix /local r][
+		r: copy []
+		repend r ["a" matrix/1 * 20]
+		if matrix/2 <> 0 [repend r ["b" matrix/2 * 20]]
+		if matrix/3 <> 0 [repend r ["c" matrix/3 * 20]]
+		repend r ["d" matrix/4 * 20]
+		if matrix/5 <> 0 [repend r ["tx" round/to matrix/5 0.05]]
+		if matrix/6 <> 0 [repend r ["ty" round/to matrix/6 0.05]]
 
-	combine-BitmapFill: func[node /local v atts matrix nx ny][
+		matrixNode/2: r
+	]
+	matrix-inverse: func[m [block!] /local a b c d tx ty adbc ia ib ic id itx ity][
+		set [a b c d tx ty] m
+		adbc:(a * d)-(b * c)
+		ia:   d / adbc
+		ib: - b / adbc
+		ic: - c / adbc
+		id:   a / adbc
+		itx:  ((c * ty) - (d * tx)) / adbc
+		ity: -((a * ty) - (b * tx)) / adbc
+		reduce [ia ib ic id itx ity]
+	]
+	matrix-apply: func[p [block!] m [block!] /local a b c d tx ty][
+		set [a b c d tx ty] m
+		px: p/1
+		py: p/2
+		npx: (px * a) + (py * c) + tx
+		npy: (px * b) + (py * d) + ty
+		reduce [npx npy]
+	]
+	matrix-concat: func[
+		m1 [block!]
+		m2 [block!]
+		/local
+			a1 b1 c1 d1 tx1 ty1
+			a2 b2 c2 d2 tx2 ty2
+	][
+		set [a1 b1 c1 d1 tx1 ty1] m1
+		set [a2 b2 c2 d2 tx2 ty2] m2
+		reduce [
+			(a1 * a2) + (b1 * c2)
+			(a1 * b2) + (b1 * d2)
+			(c1 * a2) + (d1 * c2)
+			(c1 * b2) + (d1 * d2)
+			(tx1 * a2) + (ty1 * c2) + tx2
+			(tx1 * b2) + (ty1 * d2) + ty2
+		]
+	]
+	combine-BitmapFill: func[node /local v atts matrix nx ny tx ty][
 		atts: node/2
 		if all [
 			block? atts
 			imgspec: select images-to-replace atts/("bitmapPath")
 		][
+			if verbose > 2 [
+				print ["combine-BitmapFill:" mold atts/("bitmapPath") "-->" imgspec/3]
+			]
 			atts/("bitmapPath"): rejoin ["combined_" imgspec/3]
 			if none? node/3 [
 				node/3: to-DOM {<matrix><Matrix tx="0" ty="0"/></matrix>}
 			]
-			matrix: get-node reduce [node] %BitmapFill/matrix/Matrix
+			;get fill matrix:
+			matrix: get-matrix matrixNode: get-node reduce [node] %BitmapFill/matrix/Matrix
 			
-			;writeSBPair reduce [
-			;   round (pos/1 + ((size/5 * sc/1) + (size/6 * ro/2)))
-			;   round (pos/2 + ((size/6 * sc/2) + (size/5 * ro/1))) ;- 30 ;((pos/2 / sc/2) * 20)
-			;]
-			
-			either v: select matrix/2 "a" [a: to-decimal v][ a: 1]
-			either v: select matrix/2 "d" [d: to-decimal v][ d: 1]
-			either v: select matrix/2 "b" [b: to-decimal v][ b: 0 ]
-			either v: select matrix/2 "c" [c: to-decimal v][ c: 0 ]
+			if current-shapeMatrix [
+				;create inverse shape matrix if does not exists
+				unless current-shapeIMatrix [
+					current-shapeIMatrix: matrix-inverse current-shapeMatrix
+				]
 		
+				;get matrix in the shape context
+				matrix: matrix-concat matrix current-shapeMatrix
+			]
+			;remove translation wrap:
+			xx: imgspec/2/x
+			xy: imgspec/2/y
+			xx: (imgspec/2/x * matrix/1) + (imgspec/2/x * matrix/3)
+			xy: (imgspec/2/y * matrix/2) + (imgspec/2/y * matrix/4)
+			
+			matrix/5: matrix/5 // xx
+			matrix/6: matrix/6 // xy
+			
+			;revert the shapeMatrix if exists
+			if current-shapeMatrix [
+				matrix: matrix-concat matrix current-shapeIMatrix
+			]
+			;use new bitmap position:
 			nx: imgspec/1/x
 			ny: imgspec/1/y
-			unless find matrix/2 "tx" [repend matrix/2 ["tx" 0]]
-			unless find matrix/2 "ty" [repend matrix/2 ["ty" 0]]
-			matrix/2/("tx"): (to-decimal matrix/2/("tx")) - (((nx * a) + (ny * c)) / 20) 
-			matrix/2/("ty"): (to-decimal matrix/2/("ty")) - (((nx * b) + (ny * d)) / 20)
+			matrix/5: matrix/5 - ((nx * matrix/1) + (ny * matrix/3))
+			matrix/6: matrix/6 - ((nx * matrix/2) + (ny * matrix/4))
+			
+			form-matrix matrixNode matrix
 		]
 	]
 	combine-DOMBitmapInstance: func[node /local atts imgspec tx ty w h v a b c d dom matrix][
@@ -278,7 +381,7 @@ with ctx-XFL [
 			combine-files result/1 size combinedImg: rejoin [xfl-target-dir %Library/combined_ encode-filename/as-utf8 group %.png]
 			foreach [p1 p2 file] result/1 [
 				repend/only append images-to-replace file/1 [p1 p2 group]
-				attempt [delete file/2]
+				;attempt [delete file/2]
 			]
 			import-media-img/dom/smoothing combinedImg true
 			

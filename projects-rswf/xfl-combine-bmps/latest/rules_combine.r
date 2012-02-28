@@ -67,6 +67,8 @@ insert XFL-action-rules [
 		) |
 		"DOMShape" (
 			;remove-atts atts ["selected"]
+			current-shapeMatrix:
+			current-shapeIMatrix: none
 			parse-xfl/act content 'DOMShape-combine
 		) |
 		"DOMStaticText" |
@@ -145,7 +147,10 @@ insert XFL-action-rules [
 				]
 			]
 		) |
-		"Matrix" |
+		"Matrix" (
+			current-shapeMatrix:  get-matrix current-node
+			current-shapeIMatrix: none
+		)|
 		"Point" |
 		"GradientEntry" |
 		"SolidColor" |
