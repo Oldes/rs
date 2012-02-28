@@ -68,6 +68,7 @@ REBOL [
 			{par 1^/^/par 2}                   {<p>par 1</p>^/^/<p>par 2</p>}
 			{[script][/script]}                {<p>[script]</p>}
 			{[url=http://][h1=]bla}            {<p><a href="http://"><h1>bla</h1></a></p>}
+			{[ul][*][url]http://test[*]foo[/]} {<ul><li><a href="http://test">http://test</a></li><li>foo</li></ul>}
 		]
 		xtest-cases: [
 			
@@ -103,9 +104,10 @@ ctx-bbcode: context [
 	ch_attribute1: complement charset {'<>]}
 	ch_attribute2: complement charset {"<>]}
 	ch_attribute3: union complement ch_space ch_attribute
-	ch_hexa:  charset [#"a" - #"f" #"A" - #"F" #"0" - #"9"]
-	ch_name:  charset [#"a" - #"z" #"A" - #"Z" #"*" #"0" - #"9"]
-	ch_url:   charset [#"a" - #"z" #"A" - #"Z" #"0" - #"9" "./:~+-%#\_=&?@"]
+	ch_digits: charset [#"0" - #"9"]
+	ch_hexa:   charset [#"a" - #"f" #"A" - #"F" #"0" - #"9"]
+	ch_name:   charset [#"a" - #"z" #"A" - #"Z" #"*" #"0" - #"9"]
+	ch_url:    charset [#"a" - #"z" #"A" - #"Z" #"0" - #"9" "./:~+-%#\_=&?@"]
 	ch_safe-value-chars: complement charset {'"}
 	
 	opened-tags: copy []
@@ -135,7 +137,15 @@ ctx-bbcode: context [
 	attributes: make hash! 20
 	html: copy ""
 	
-	get-attribute: func[name /local tmp][all [tmp: select/skip attributes name 2 encode-value first tmp]]
+	get-attribute: func[name /default value /local tmp][
+		all [
+			tmp: select/skip attributes name 2
+			tmp: encode-value first tmp
+			default
+			error? try [tmp: to type? value tmp]
+		]
+		any [tmp value]	
+	]
 	encode-value: func[value [any-string!] /local out tmp][
 		out: copy ""
 		parse/all value [
@@ -213,7 +223,7 @@ ctx-bbcode: context [
 	]
 	
 	close-p-if-possible: func[ /local p] [
-		if "p" = probe last opened-tags [
+		if "p" = last opened-tags [
 			close-tags/only "p"
 			if "<p></p>" = p: skip tail html -7 [
 				clear p
@@ -227,10 +237,99 @@ ctx-bbcode: context [
 	emit-tag: func[tag][
 		insert tail html either block? tag [rejoin tag][tag]
 	]
+
+	emit-tag-images-row: func[row /local numImagesOnRow images rowSpace padx imgw imgh imgsize src sizeArgs minh][
+		numImagesOnRow: length? images: row/Images
+		either 1 = numImagesOnRow [
+			set [imgw imgh imgsize src] images/1
+			emit-tag [{<img src="} src {" width=} maxWidth { height=} to-integer (imgh * (maxWidth / imgw)) { alt="} row/alt {">^/}]
+		][
+			minh: 9999990
+			foreach img images [minh: min minh img/3/2]
+			rowSpace: maxWidth - row/widthImages
+			forall images [
+				set [imgw imgh imgsize src] images/1
+				sizeArgs:  rejoin [{ width=} imgsize/x { height=} imgsize/y] 
+				either tail? next images [
+					emit-tag [{<div class=imgBg style=width:} imgsize/x {px;height:} minh {px;"><img src="} src {"} sizeArgs { alt="} row/alt {"></div>^/}]
+				][
+					numImagesOnRow: numImagesOnRow - 1
+					padx: round (rowSpace / numImagesOnRow)
+					emit-tag [{<div class=imgBg style="margin-right:} padx {px;width:} imgsize/x {px;height:} minh {px;"><img src="} src {"} sizeArgs { alt="} row/alt {"></div>}]
+					rowSpace: rowSpace - padx
+					
+				]
+				
+			]
+		]
+		emit-tag [{<br>^/<div style="height:} row/space/y {px;"></div>^/}]
+		row/widthSpaces: 0
+		row/Images: clear head row/Images
+	]
+	emit-tag-images: func[/local dir size images cols space width height col w imgw imgh imgsize src padx row][
+		if attr [repend attributes ["dir" attr]]
+		cols:     get-attribute/default "cols"  2
+		space:    get-attribute/default "space" 5x5
+		maxWidth: get-attribute/default "maxWidth" 680
+		;height: 335
+		width:  220 ; (maxWidth - ((cols - 1) * space/x)) / cols
+		;probe reduce[cols space cols width]
+		
+		
+		emit-tag {^/<div class=images>^/}
+		if all [
+			dir: get-attribute "dir"
+			exists? dir: to-rebol-file dir
+		][
+			images: copy []
+			foreach file read dir [
+				if all [
+					;do not use files with names like:
+					;	photo_150x.jpg or photo_x150.jpg or photo_150x150.jpg  
+					not parse any [find/last file #"_" ""][
+						#"_" any ch_digits #"x" any ch_digits #"." to end
+					]
+					;only if it's possible to get image size
+					not error? try [size: get-image-size dir/:file]
+				][
+					repend images [size/x size/y dir/:file]
+				]
+			]
+			;probe sort/skip/compare/reverse images 3 1
+			;probe images
+			row: context compose [
+				Images: copy []
+				widthImages:  0
+				widthSpaces:  0
+				maxWidth: (maxWidth)
+				space:    (space)
+				alt: (get-attribute/default "alt" "")
+			]
+			foreach [imgw imgh src] images [
+				imgsize: as-pair width to-integer (imgh * (width / imgw))
+				either (row/widthImages + row/widthSpaces + imgsize/x) >= maxWidth [
+					emit-tag-images-row row
+					row/widthImages: imgsize/x
+				][
+					row/widthImages: row/widthImages + imgsize/x
+				]
+				row/widthSpaces: row/widthSpaces + space/x
+				repend/only row/Images [imgw imgh imgsize src]
+				
+			;	emit-tag ["<br>" mold rowWidth]
+				
+				;emit-tag [{<img src="} src {"} form-size { alt="">}]
+			]
+			if row/widthImages > 0 [
+				emit-tag-images-row row
+			]
+		]
+		emit-tag {^/</div>^/}
+	]
 	
 	enabled-tags: [
-		"b" "i" "s" "u" "del" "h1" "h2" "h3" "h4" "h5"
-		"ins" "dd" "dt" "ol" "ul" "li" "url" "list" "*"
+		"b" "i" "s" "u" "del" "h1" "h2" "h3" "h4" "h5" "span"
+		"ins" "dd" "dt" "ol" "ul" "li" "url" "list" "*" "br"
 		"color" "quote" "img" "size" "rebol" "align" "email"
 	]
 	
@@ -267,6 +366,10 @@ ctx-bbcode: context [
 				"[/]" (
 					close-tags
 				)
+				|
+				"[br]" (emit-tag "<br>")
+				|
+				"[images" opt rl_attributes #"]" (emit-tag-images)
 				|
 				#"[" [
 					;normal opening tags
