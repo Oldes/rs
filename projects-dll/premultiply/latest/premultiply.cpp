@@ -25,10 +25,12 @@ extern "C" __declspec(dllexport)
 		unsigned int n;
 
 		for (n = 0; n < len; n++) {
-			if(buf[n]==0){
-				n+=3;
+			a = buf[n]; n++;
+			if(a==0){
+				n++;
+				n++;
 			} else {
-				a = buf[n] << 8; n++;
+				a = a << 8;
 				buf[n] = asChar((buf[n] << 16) / a); n++;
 				buf[n] = asChar((buf[n] << 16) / a); n++;
 				buf[n] = asChar((buf[n] << 16) / a);
