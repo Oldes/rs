@@ -9,7 +9,7 @@ REBOL [
 	usage: [
 		;xfl-combine-bmps %/d/test/XFL/merge-one/   %/d/test/XFL/merge-one-result/
 		;xfl-combine-bmps %/d/test/XFL/merge-multi/ %/d/test/XFL/merge-multi-result/
-		xfl-combine-bmps %/d/test/XFL/t78/ %/d/test/XFL/t78-result/
+		xfl-combine-bmps %/d/test/XFL/t76/ %/d/test/XFL/t76-result/
 	]
 	preprocess: true
 ]
@@ -226,7 +226,7 @@ with ctx-XFL [
 			(tx1 * b2) + (ty1 * d2) + ty2
 		]
 	]
-	combine-BitmapFill: func[node /local v atts matrix nx ny tx ty][
+	combine-BitmapFill: func[node /local v atts matrix matrix2 nx ny tx ty trans][
 		atts: node/2
 		if all [
 			block? atts
@@ -247,19 +247,19 @@ with ctx-XFL [
 				unless current-shapeIMatrix [
 					current-shapeIMatrix: matrix-inverse current-shapeMatrix
 				]
-		
 				;get matrix in the shape context
 				matrix: matrix-concat matrix current-shapeMatrix
 			]
 			;remove translation wrap:
-			xx: imgspec/2/x
-			xy: imgspec/2/y
-			xx: (imgspec/2/x * matrix/1) + (imgspec/2/x * matrix/3)
-			xy: (imgspec/2/y * matrix/2) + (imgspec/2/y * matrix/4)
-			
-			matrix/5: matrix/5 // xx
-			matrix/6: matrix/6 // xy
-			
+			matrix2: copy matrix
+			matrix2/5: matrix2/6: 0
+			trans: matrix-apply reduce [matrix/5 matrix/6] matrix-inverse matrix2
+			trans/1: trans/1 // imgspec/2/x
+			trans/2: trans/2 // imgspec/2/y
+			trans: matrix-apply trans matrix2
+			matrix/5: trans/1
+			matrix/6: trans/2
+
 			;revert the shapeMatrix if exists
 			if current-shapeMatrix [
 				matrix: matrix-concat matrix current-shapeIMatrix
