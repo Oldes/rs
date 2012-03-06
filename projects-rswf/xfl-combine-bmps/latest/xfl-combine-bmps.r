@@ -8,8 +8,8 @@ REBOL [
 	]
 	usage: [
 		;xfl-combine-bmps %/d/test/XFL/merge-one/   %/d/test/XFL/merge-one-result/
-		;xfl-combine-bmps %/d/test/XFL/merge-multi/ %/d/test/XFL/merge-multi-result/
-		xfl-combine-bmps %/d/test/XFL/t76/ %/d/test/XFL/t76-result/
+		xfl-combine-bmps %/d/test/XFL/merge-multi2/ %/d/test/XFL/merge-multi2-result/
+		;xfl-combine-bmps %/d/test/XFL/t89/ %/d/test/XFL/t89-result/
 	]
 	preprocess: true
 ]
@@ -119,12 +119,13 @@ with ctx-XFL [
 		]
 	]               
 			
-	combine-edges-bb: func[x y w h  a b c d /local xw yh x1 y1 x2 y2][
+	combine-edges-bb: func[x y w h  a b c d /local xw yh x1 y1 x2 y2 fs s][
 		xt1: 0
 		xt2: w
 		yt1: 0
 		yt2: h
 		
+		;print ["combine-edges-bb:" x y w h "M:" a b c d]
 		x1: to-integer 20 * round/to ((xt1  * a) + (yt1  * c) + x) 0.05
 		y1: to-integer 20 * round/to ((xt1  * b) + (yt1  * d) + y) 0.05
 		
@@ -136,11 +137,18 @@ with ctx-XFL [
 		
 		x4: to-integer 20 * round/to ((xt1 * a) + (yt2 * c) + x) 0.05
 		y4: to-integer 20 * round/to ((xt1 * b) + (yt2 * d) + y) 0.05
+		
+		either a < 0 [
+			fs: 0 s: 1
+		][	fs: 1 s: 2]
+		
 		rejoin [
-			"!" x2 " " y2 "S2|" x3 " " y3
+			{<Edge fillStyle} fs {="1" edges="}
+			"!" x2 " " y2 "S" s "|" x3 " " y3
 			"!" x3 " " y3   "|" x4 " " y4
 			"!" x4 " " y4   "|" x1 " " y1
 			"!" x1 " " y1   "|" x2 " " y2
+			{"/>}
 		]
 	]       
 	remove-wrapped-transform: func[m [block!] sx sy ][
@@ -241,8 +249,8 @@ with ctx-XFL [
 			]
 			;get fill matrix:
 			matrix: get-matrix matrixNode: get-node reduce [node] %BitmapFill/matrix/Matrix
-			
 			if current-shapeMatrix [
+				;print ["current-shapeMatrix:" mold current-shapeMatrix]
 				;create inverse shape matrix if does not exists
 				unless current-shapeIMatrix [
 					current-shapeIMatrix: matrix-inverse current-shapeMatrix
@@ -254,8 +262,9 @@ with ctx-XFL [
 			matrix2: copy matrix
 			matrix2/5: matrix2/6: 0
 			trans: matrix-apply reduce [matrix/5 matrix/6] matrix-inverse matrix2
-			trans/1: trans/1 // imgspec/2/x
-			trans/2: trans/2 // imgspec/2/y
+		;THIS IS NOT SAFE:/ so I remove it again
+		;	trans/1: trans/1 // imgspec/2/x
+		;	trans/2: trans/2 // imgspec/2/y
 			trans: matrix-apply trans matrix2
 			matrix/5: trans/1
 			matrix/6: trans/2
@@ -304,8 +313,8 @@ with ctx-XFL [
 			;matrix/2/("ty"): ty - imgspec/1/y
 			nx: imgspec/1/x
 			ny: imgspec/1/y
-			matrix/2/("tx"): tx - ((nx * a) + (ny * c))
-			matrix/2/("ty"): ty - ((nx * b) + (ny * d)) 
+			matrix/2/("tx"): round/to (tx - ((nx * a) + (ny * c))) 0.05
+			matrix/2/("ty"): round/to (ty - ((nx * b) + (ny * d))) 0.05 
 			dom: to-DOM [
 	{       <DOMGroup>
 			  <members>
@@ -313,12 +322,12 @@ with ctx-XFL [
 				  <fills>
 					<FillStyle index="1">
 					  <BitmapFill bitmapPath="combined_} imgspec/3 {" bitmapIsClipped="false">
-}                       form-xml reduce [get-node reduce [node] %DOMBitmapInstance/matrix ]{
+}                       form-xfl reduce [get-node reduce [node] %DOMBitmapInstance/matrix ]{
 					  </BitmapFill>
 					</FillStyle>
 				  </fills>
 				  <edges>
-					<Edge fillStyle1="1" edges="} combine-edges-bb tx ty w h a b c d {"/>
+					} combine-edges-bb tx ty w h a b c d {
 				  </edges>
 				</DOMShape>
 			  </members>
@@ -344,9 +353,12 @@ with ctx-XFL [
 		images-to-replace: copy []
 		
 		mediaItems: Media-content: get-node-content xmldom %DOMDocument/media
-		if mediaItems [
-			foreach item mediaItems [
-				if item/1 = "DOMBitmapItem" [
+		either mediaItems [
+			while [not tail? mediaItems] [
+				if all [
+					block? item: mediaItems/1
+					item/1 = "DOMBitmapItem"
+				][
 					item-file: copy any [
 						select item/2 "sourceExternalFilepath"
 						join "./LIBRARY/" item/2/("href")
@@ -364,14 +376,13 @@ with ctx-XFL [
 						]
 					]
 				]
+				mediaItems: next mediaItems
 			]
-		]
+		][	mediaItems: copy [] ]
 		
 		foreach [group images] images-to-combine [
 			new-line/skip images true 2
 
-			
-			new-line/skip images true 2
 			if verbose > 1 [probe reduce [group images]]
 			
 			set [size result] get-best-pow2-result images
@@ -391,10 +402,10 @@ with ctx-XFL [
 		;probe images-to-replace
 		
 		while [not tail? mediaItems] [
-			item: mediaItems/1
-			;probe item/2
-			mediaItems: either find images-to-replace item/2/("name") [
-				;print "----------------------" 
+			mediaItems: either all [
+				block? item: mediaItems/1
+				find images-to-replace item/2/("name")
+			][
 				remove mediaItems
 			][  next   mediaItems ]
 		]
@@ -425,10 +436,10 @@ with ctx-XFL [
 				new-file: join xfl-target-dir ["LIBRARY/" encode-filename file]
 			]
 			parse-xfl/act dom 'DOMSymbolItem-combine
-			write new-file form-xml dom
+			write new-file form-xfl dom
 		]
 
-		write xfl-target-dir/DOMDocument.xml form-xml xmldom
+		write xfl-target-dir/DOMDocument.xml form-xfl xmldom
 		if verbose > 0 [print "^/--------------------------------------------------^/"]
 		images-to-combine
 	]

@@ -104,7 +104,7 @@ with ctx-XFL [
 				new-file: join xfl-target-dir ["LIBRARY/" encode-filename file]
 			]
 			parse-xfl/act dom 'DOMSymbolItem-clean
-			;write new-file form-xml dom
+			;write new-file form-xfl dom
 			
 		]
 		folders-to-check: head folders-to-check
@@ -133,7 +133,7 @@ with ctx-XFL [
 			clear items-to-check/1
 		]
 
-		write xfl-target-dir/DOMDocument.xml form-xml xmldom
+		write xfl-target-dir/DOMDocument.xml form-xfl xmldom
 		if verbose > 0 [print "^/--------------------------------------------------^/"]
 	]
 ]

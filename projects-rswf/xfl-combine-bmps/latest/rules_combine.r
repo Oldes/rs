@@ -70,6 +70,8 @@ insert XFL-action-rules [
 			current-shapeMatrix:
 			current-shapeIMatrix: none
 			parse-xfl/act content 'DOMShape-combine
+			current-shapeMatrix:
+			current-shapeIMatrix: none
 		) |
 		"DOMStaticText" |
 		"DOMInputText"	|
@@ -103,6 +105,7 @@ insert XFL-action-rules [
 		"DOMDynamicText" (
 			parse-xfl content
 		) |
+		"DOMTLFText" |
 		"DOMTextAttrs" |	
 		"SoundEnvelope" |
 		"tweens" |

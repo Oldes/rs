@@ -9,7 +9,7 @@ REBOL [
 	]
 	require: [
 		rs-project 'utf8-cp1250
-		rs-project 'form-xml
+		rs-project 'form-xfl
 		rs-project 'xml-parse
 		;used for binary image manipulations:
 		rs-project 'imagick 'minimal
@@ -84,7 +84,7 @@ ctx-XFL: context [
 	]
 	
 	to-DOM: func[str [string! block!]][
-		third parse-xml+/trim either block? str [rejoin str][str]
+		third parse-xml+ either block? str [rejoin str][str]
 	]
 
 	#include %dat-functions.r
@@ -348,7 +348,7 @@ ctx-XFL: context [
 		;probe shpNode
 		repend/only dom-symbols compose/deep ["Include" ["href" ( join name %.xml ) "itemIcon" "1" "loadImmediate" "false"] none]
 		;ask ""
-		write/binary file: xfl-target-dir/LIBRARY/(join encode-filename name %.xml) form-xml symbol
+		write/binary file: xfl-target-dir/LIBRARY/(join encode-filename name %.xml) form-xfl symbol
 		
 		append files-to-parse file                    
 		name

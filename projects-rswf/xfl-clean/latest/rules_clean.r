@@ -72,6 +72,7 @@ insert XFL-action-rules [
 		"Matrix" |
 		"DOMDynamicText" |
 		"DOMInputText" |
+		"DOMTLFText" |
 		"MorphShape" |
 		"SoundEnvelope" |
 		"tweens" |
