@@ -1,5 +1,6 @@
 *.bll
 *.36
 *.20
+*.o
 builds/*
 tmp.abc
