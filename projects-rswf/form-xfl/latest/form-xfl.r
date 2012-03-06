@@ -18,7 +18,7 @@ REBOL [
 ]
 
 ctx-form-xfl: context [
-	out:  make string! 20048
+	out:  make string! 20480
 
 	emitxfl: func[
 		dom [block!] "XML DOM block"
