@@ -244,7 +244,7 @@ rebol [
 		;probe inBuffer
 		reduce [
 			readID   ;shapeID
-			probe readRect ;shape bounds
+			readRect ;shape bounds
 			either tagId >= 67 [
 				;probe copy/part inBuffer 10
 				reduce [

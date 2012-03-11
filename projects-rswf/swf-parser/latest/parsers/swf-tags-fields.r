@@ -3,7 +3,7 @@ rebol [title: "swfTags - Fields"]
 pad: func[val num][head insert/dup tail val: form val #" " num - length? val]
 
 formatFillStyle: func[data /local ][
-	print ["formatFillStyle:" mold data]
+	;print ["formatFillStyle:" mold data]
 	if none? data [
 		;print "formatFillStyle none??"
 		return ""
