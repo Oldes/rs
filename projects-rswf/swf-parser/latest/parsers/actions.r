@@ -634,7 +634,7 @@ comment {
 		MethodBodies: none
 	]
 	parse-DoABC: has[class_count tmp][
-		write %tmp.abc probe inBuffer
+		write %tmp.abc inBuffer
 		ABC/Version: reduce [readUI16 readUI16] 
 		ABC/Cpool/integer:   (readS32array)
 		ABC/Cpool/uinteger:  (readU32array)
