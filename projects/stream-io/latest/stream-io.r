@@ -424,7 +424,7 @@ stream-io: context [
 		
 	readUI30: has[r b s][
 		b: first inBuffer inBuffer: next inBuffer
-		if b < 128 [return to-integer b]
+		if b < 128 [return to integer! b]
 		r: b and 127
 		s: 128
 		while [b: first inBuffer inBuffer: next inBuffer][
@@ -432,6 +432,46 @@ stream-io: context [
 			if 128 > b [return r]
 			s: s + 128
 		]
+	]
+	readU32: has[r b s][
+		r: b: first inBuffer inBuffer: next inBuffer
+		if r < 128   [return r]
+		ask "x"
+		b: first inBuffer inBuffer: next inBuffer
+		r: (r and 127) or ( shift/left b 7 )
+		if r < 16384 [probe r ask "2" return r]
+		
+		b: first inBuffer inBuffer: next inBuffer
+		r: (r and 16383) or ( shift/left b 14 )
+		if r < 2097152 [return r]
+		
+		b: first inBuffer inBuffer: next inBuffer
+		r: (r and 2097151) or ( shift/left b 21 )
+		if r < 268435456 [return r]
+
+		b: first inBuffer inBuffer: next inBuffer
+		r: (r and 268435455) or ( shift/left b 28 )
+		r
+	]
+	readS32: has[r b][
+		r: b: first inBuffer inBuffer: next inBuffer
+		if r < 128   [return r]
+		
+		b: first inBuffer inBuffer: next inBuffer
+		r: (r and 127) or ( shift/left b 7 )
+		if r < 16384 [return 2 * r]
+		
+		b: first inBuffer inBuffer: next inBuffer
+		r: (r and 16383) or ( shift/left b 14 )
+		if r < 2097152 [return 2 * r]
+		
+		b: first inBuffer inBuffer: next inBuffer
+		r: (r and 2097151) or ( shift/left b 21 )
+		if r < 268435456 [return 2 * r]
+
+		b: first inBuffer inBuffer: next inBuffer
+		r: (r and 268435455) or ( shift/left b 28 )
+		2 * r
 	]
 	
 	readD64: does [
@@ -497,6 +537,22 @@ stream-io: context [
 		either count >= 0 [
 			result: make block! count
 			loop count [ append result readUI32 ]
+			result
+		][ none ]
+	]
+	readU32array: func[/local count result][
+		count: readUI30 - 1
+		either count >= 0 [
+			result: make block! count
+			loop count [ append result readU32 ]
+			result
+		][ none ]
+	]
+	readS32array: func[/local count result][
+		count: readUI30 - 1
+		either count >= 0 [
+			result: make block! count
+			loop count [ append result readS32 ]
 			result
 		][ none ]
 	]
