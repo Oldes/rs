@@ -538,13 +538,13 @@ comment {
 				if args: switch op [
 					#{86} [ABC/Cpool/multiname/(readUI30)] ;astype
 					#{41} [readUI30] ;call - arg_count
-					#{43} [[readUI30 readUI30]] ;callmethod - index, arg_count
-					#{46} [[readUI30 readUI30]] ;callproperty - index, arg_count
-					#{4c} [[readUI30 readUI30]] ;callproplex - index, arg_count
-					#{4f} [[readUI30 readUI30]] ;callpropvoid - index, arg_count
-					#{44} [[readUI30 readUI30]] ;callstatic - index, arg_count
-					#{45} [[readUI30 readUI30]] ;callsuper - index, arg_count
-					#{4e} [[readUI30 readUI30]] ;callsupervoid - index, arg_count
+					#{43} [reduce [readUI30 readUI30]] ;callmethod - index, arg_count
+					#{46} [reduce [readUI30 readUI30]] ;callproperty - index, arg_count
+					#{4c} [reduce [readUI30 readUI30]] ;callproplex - index, arg_count
+					#{4f} [reduce [readUI30 readUI30]] ;callpropvoid - index, arg_count
+					#{44} [reduce [readUI30 readUI30]] ;callstatic - index, arg_count
+					#{45} [reduce [readUI30 readUI30]] ;callsuper - index, arg_count
+					#{4e} [reduce [readUI30 readUI30]] ;callsupervoid - index, arg_count
 					#{80} [ABC/Cpool/multiname/(readUI30)] ;coerce
 					#{42} [readUI30] ;construct - arg_count
 					#{4a} [[readUI30 readUI30]] ;constructprop - index, arg_count
@@ -634,11 +634,12 @@ comment {
 		MethodBodies: none
 	]
 	parse-DoABC: has[class_count tmp][
-		write %tmp.abc inBuffer
-		ABC/Version: readBytesRev 4
-		ABC/Cpool/integer:   (readSI32array)
-		ABC/Cpool/uinteger:  (readUI32array)
-		ABC/Cpool/double:    (readD64array ) 
+		write %tmp.abc probe inBuffer
+		ABC/Version: reduce [readUI16 readUI16] 
+		ABC/Cpool/integer:   (readS32array)
+		ABC/Cpool/uinteger:  (readU32array)
+		ABC/Cpool/double:    (readD64array )
+	
 		ABC/Cpool/string:    (readStringInfoArray)
 		ABC/Cpool/namespace: (readNamespaceArray)
 		ABC/Cpool/nsset:     (readNSsetArray)
@@ -687,8 +688,8 @@ comment {
 		ABC
 	]
 
-	parse-DoABC2: does [reduce [
-		readSI32   ;skip
+	parse-DoABC2: does [probe as-string inBuffer reduce [
+		readSI32   ;Flags
 		to-string readString ;frame
 		parse-DoABC
 	]]
