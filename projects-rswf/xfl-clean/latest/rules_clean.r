@@ -18,7 +18,18 @@ insert XFL-action-rules [
 			append/only folders-to-check current-node
 		) |
 		"Include" (
-			add-item-to-check current-node
+			use [dom node][
+				add-item-to-check current-node
+			
+				;I must load the file to get info if it's exported
+				dom: to-DOM as-string read/binary xfl-source-dir/LIBRARY/(encode-filename select atts "href")
+				node: get-node dom %DOMSymbolItem
+
+				if "true" = select node/2 "linkageExportForAS" [
+					remove back tail items-to-check ;removes the item from clean check
+					add-file-to-parse current-node  ;add this node into the parsing query
+				]
+			]
 		) |
 		[
 			"DOMBitmapItem" |
@@ -115,6 +126,8 @@ insert XFL-action-rules [
 			check-item current-node
 		) |
 		"LinearGradient" |
-		"DottedStroke"
+		"DottedStroke" |
+		"DashedStroke" |
+		"RaggedStroke"
 	]
 ]

@@ -86,6 +86,7 @@ with ctx-XFL [
 		parse-xfl/act xmldom 'DOMDocument-clean
 		
 		files-to-parse: head files-to-parse
+
 		while [not tail? files-to-parse] [
 			file: files-to-parse/1
 			files-to-parse: next files-to-parse
@@ -98,10 +99,8 @@ with ctx-XFL [
 
 			either file? file [
 				dom: to-DOM as-string read/binary file
-				new-file: file
 			][
 				dom: to-DOM as-string read/binary xfl-source-dir/LIBRARY/(encode-filename file)
-				new-file: join xfl-target-dir ["LIBRARY/" encode-filename file]
 			]
 			parse-xfl/act dom 'DOMSymbolItem-clean
 			;write new-file form-xfl dom
@@ -133,7 +132,7 @@ with ctx-XFL [
 			clear items-to-check/1
 		]
 
-		write xfl-target-dir/DOMDocument.xml form-xfl xmldom
+		write/binary xfl-target-dir/DOMDocument.xml form-xfl xmldom
 		if verbose > 0 [print "^/--------------------------------------------------^/"]
 	]
 ]
