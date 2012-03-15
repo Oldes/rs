@@ -8,8 +8,8 @@ REBOL [
 	]
 	usage: [
 		;xfl-combine-bmps %/d/test/XFL/merge-one/   %/d/test/XFL/merge-one-result/
-		xfl-combine-bmps %/d/test/XFL/merge-multi2/ %/d/test/XFL/merge-multi2-result/
-		;xfl-combine-bmps %/d/test/XFL/t89/ %/d/test/XFL/t89-result/
+		;xfl-combine-bmps %/d/test/XFL/merge-multi2/ %/d/test/XFL/merge-multi2-result/
+		xfl-combine-bmps %/d/test/XFL/duplicated-bmps2/ %/d/test/XFL/duplicated-bmps2-result/
 	]
 	preprocess: true
 ]
@@ -18,11 +18,11 @@ unless value? 'useSquareOnlyBitmaps? [useSquareOnlyBitmaps?: false]
 
 with ctx-XFL [
 	verbose: 1
+	unwrap?: true
 	current-shapeMatrix: none
 	current-shapeIMatrix: none
 	
 	#include %rules_combine.r
-	
 	
 	get-comp-size: func[data /local maxpair maxi][
 		maxpair:  0x0
@@ -262,9 +262,12 @@ with ctx-XFL [
 			matrix2: copy matrix
 			matrix2/5: matrix2/6: 0
 			trans: matrix-apply reduce [matrix/5 matrix/6] matrix-inverse matrix2
-		;THIS IS NOT SAFE:/ so I remove it again
-		;	trans/1: trans/1 // imgspec/2/x
-		;	trans/2: trans/2 // imgspec/2/y
+			if unwrap? [
+			;THIS IS NOT SAFE:/ so I remove it again
+				ask reform ["??????" mold trans mold imgspec]
+				trans/1: trans/1 // imgspec/2/x
+				trans/2: trans/2 // imgspec/2/y
+			]
 			trans: matrix-apply trans matrix2
 			matrix/5: trans/1
 			matrix/6: trans/2
@@ -284,6 +287,10 @@ with ctx-XFL [
 	]
 	combine-DOMBitmapInstance: func[node /local atts imgspec tx ty w h v a b c d dom matrix][
 		atts: node/2
+		if dupName: select bitmap-duplicates atts/("libraryItemName") [
+			if verbose > 0 [print ["replacing DOMBitmapInstance:" mold atts/("libraryItemName") "->" mold dupName]]
+			atts/("libraryItemName"): to-string dupName
+		]
 		if all [
 			block? atts
 			imgspec: select images-to-replace atts/("libraryItemName")
@@ -337,7 +344,23 @@ with ctx-XFL [
 			insert node dom/1
 		]
 	]
-	set 'xfl-combine-bmps func[src trg][
+	
+	bitmap-hashes: make hash! 1000
+	bitmap-duplicates: make hash! 100 
+	store-bitmap-hash: func[node /local hash file bmpNode name][
+		name: node/2/("name")
+		if verbose > 2 [print ["store-bitmap-hash -->" mold name]]
+		hash: checksum/secure read/binary file: rejoin [xfl-target-dir %bin/ select node/2 "bitmapDataHRef"]
+		either bmpNode: select bitmap-hashes hash [
+			if verbose > 0 [print ["BITMAP DUPLICATE FOUND" mold name]]
+			repend bitmap-duplicates [name to-file to-file bmpNode/2/("name")]
+			clear node
+			delete file
+		][
+			repend bitmap-hashes [hash node]
+		]
+	]
+	set 'xfl-combine-bmps func[src trg /local node item name mediaItems tmp][
 		if verbose > 0 [
 			print "^/=================================================="
 			print   "=== COMBINE BMPs in XFL =========================="
@@ -352,6 +375,9 @@ with ctx-XFL [
 		images-to-combine: copy []
 		images-to-replace: copy []
 		
+		clear bitmap-hashes
+		clear bitmap-duplicates
+		
 		mediaItems: Media-content: get-node-content xmldom %DOMDocument/media
 		either mediaItems [
 			while [not tail? mediaItems] [
@@ -359,26 +385,32 @@ with ctx-XFL [
 					block? item: mediaItems/1
 					item/1 = "DOMBitmapItem"
 				][
-					item-file: copy any [
-						select item/2 "sourceExternalFilepath"
-						join "./LIBRARY/" item/2/("href")
-					]
-					name: item/2/("name")
-					if parse name ["_MERGE_" copy groupName to "/" to end][
-						unless images: select images-to-combine groupName [
-							append/only append images-to-combine groupName images: copy []
+					store-bitmap-hash item
+					unless empty? item [
+						item-file: copy any [
+							select item/2 "sourceExternalFilepath"
+							join "./LIBRARY/" item/2/("href")
 						]
-						if imgFile: export-media-item/overwrite/into-file item/2 (
-							rejoin [%./LIBRARY/ to-file (enbase/base checksum/secure item/2/("name") 16) %.png]
-						) [
-							repend/only append images get-image-size imgFile [name imgFile]
-							new-line images true
+						name: item/2/("name")
+						if parse name ["_MERGE_" copy groupName to "/" to end][
+							unless images: select images-to-combine groupName [
+								append/only append images-to-combine groupName images: copy []
+							]
+							if imgFile: export-media-item/overwrite/into-file item/2 (
+								rejoin [%./LIBRARY/ to-file (enbase/base checksum/secure item/2/("name") 16) %.png]
+							) [
+								repend/only append images get-image-size imgFile [name imgFile]
+								new-line images true
+							]
 						]
 					]
 				]
 				mediaItems: next mediaItems
 			]
+			mediaItems: head mediaItems
 		][	mediaItems: copy [] ]
+		
+		remove-each item mediaItems [all [block? item empty? item]]
 		
 		foreach [group images] images-to-combine [
 			new-line/skip images true 2
@@ -394,8 +426,11 @@ with ctx-XFL [
 				repend/only append images-to-replace file/1 [p1 p2 group]
 				;attempt [delete file/2]
 			]
-			import-media-img/dom/smoothing combinedImg true
-			
+			if node: import-media-img/dom/smoothing combinedImg true [
+				;use JPG compression for the combined bitmap:
+				if tmp: find node/2 "useImportedJPEGData" [remove/part tmp 2]
+				if tmp: find node/2 "compressionType" [remove/part tmp 2]
+			]
 			mediaItems
 		]
 		
@@ -436,10 +471,38 @@ with ctx-XFL [
 				new-file: join xfl-target-dir ["LIBRARY/" encode-filename file]
 			]
 			parse-xfl/act dom 'DOMSymbolItem-combine
-			write new-file form-xfl dom
+			write/binary new-file form-xfl dom
 		]
+		
+		;--- remove empty folders...
+		folders-to-check: get-node-content xmldom %DOMDocument/folders
+		mediaItems: head mediaItems
+		while [not tail? mediaItems] [
+			if block? item: mediaItems/1 [
+				tmp: any [
+					select item/2 "name"
+					select item/2 "href"
+				]
+				forall folders-to-check [
+					if block? folders-to-check/1 [
+						if parse tmp compose[(folders-to-check/1/2/("name")) #"/" to end][
+							remove folders-to-check
+						]
+					]
+				]
+				folders-to-check: head folders-to-check
+			]
+			mediaItems: next mediaItems
+		]
+		forall folders-to-check [
+			if block? folders-to-check/1 [
+				print ["REMOVING FOLDER:" folders-to-check/1/2/("name")]
+				clear folders-to-check/1
+			]
+		]
+		;--- removing folders finished ---
 
-		write xfl-target-dir/DOMDocument.xml form-xfl xmldom
+		write/binary xfl-target-dir/DOMDocument.xml form-xfl xmldom
 		if verbose > 0 [print "^/--------------------------------------------------^/"]
 		images-to-combine
 	]

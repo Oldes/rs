@@ -28,7 +28,7 @@ rebol []
 		/dom "updates DOMDocument.xml file as well"
 		/as dat-file
 		/smoothing smVal
-		/local imgFormat width height ARGB buf name tmp
+		/local node imgFormat width height ARGB buf name tmp
 	][
 		if verbose > 0 [print ["IMPORTING DOMBitmapItem::" mold source-file]]
 		source-file: to-rebol-file source-file
@@ -95,7 +95,7 @@ rebol []
 						if find name #"." [name: head clear find/last name #"."]
 						unless find Media name [
 							;print "---"
-							insert/only Media-content reduce [
+							insert/only Media-content node: reduce [
 								"DOMBitmapItem" tmp: reduce [
 									"name" name
 									"itemID" make-id 
@@ -124,6 +124,7 @@ rebol []
 			]
 			end
 		]
+		node
 	]
 	
 	export-media-item: func[

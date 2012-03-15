@@ -14,7 +14,9 @@ insert XFL-action-rules [
 		"DOMTimeline" (
 			parse-xfl/act content 'DOMTimeline-combine
 		) |
-		"DOMBitmapItem" |
+		"DOMBitmapItem" (
+			store-bitmap-hash current-node
+		)|
 		"DOMCompiledClipItem" |
 		"Include" (
 			add-file-to-parse current-node
@@ -129,7 +131,7 @@ insert XFL-action-rules [
 			"RadialGradient" |
 			"LinearGradient" |
 			
-			"SolidStroke" | "StippleStroke" | "RaggedStroke" |
+			"SolidStroke" | "StippleStroke" | "RaggedStroke" | "DashedStroke" | "DottedStroke" |
 			"StrokeStyle"
 		] (
 			parse-xfl content
@@ -156,7 +158,6 @@ insert XFL-action-rules [
 		)|
 		"Point" |
 		"GradientEntry" |
-		"SolidColor" |
-		"DottedStroke"
+		"SolidColor"
 	]
 ]
