@@ -61,14 +61,12 @@ rebol [
 		]
 	]
 	parse-DefineButton2: does [
-		print "---------"
-		probe inBuffer
 		reduce [
-			probe readID
+			readID
 			(
-				probe readUI8  ;flags
-				probe readUI16 ;ActionOffset
-				probe readBUTTONRECORDs
+				readUI8  ;flags
+				readUI16 ;ActionOffset
+				readBUTTONRECORDs
 			)
 			readBUTTONCONDACTIONs
 		]
