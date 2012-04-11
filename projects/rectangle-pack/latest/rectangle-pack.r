@@ -42,7 +42,8 @@ REBOL [
 ]
 
 ctx-rectangle-pack: context [
-	padding: 0x0
+	padding: 1x1
+	max-size: 8192x8192
 	verbose: 0
 	
 	round-to-pow2: func[v /local p][ repeat i 14 [if v <= (p: 2 ** i) [return p]] none]
@@ -125,7 +126,7 @@ ctx-rectangle-pack: context [
 				;print ["?X" area minArea]
 				not all [
 					area < minArea
-					size/x <= 8192
+					size/x <= max-size/x
 				]
 			]
 			size/y: size/y * 2
@@ -134,12 +135,15 @@ ctx-rectangle-pack: context [
 			;print ["?Y" area minArea size/y]
 			not all [
 				area <= minArea
-				size/y <= 8192
+				size/y <= max-size/y
 			]
 		]
 		
 		;print "-----------"
 		;probe minArea
+		unless minResult [
+			probe result
+		]
 		minResult
 	]
 
