@@ -383,13 +383,17 @@ import-DefineButtonSound: has[id] [
 import-BUTTONRECORDs: has[reserved states] [
 	until [
 		byteAlign
-		reserved: readUB 4
-		states:   readUB 4
+		reserved:      readUB 2
+		hasBlendMode:  readBitLogic
+		hasFilterList: readBitLogic
+		states:        readUB 4
 		either all [reserved = 0 states = 0] [true][;end
 			replacedID
 			skipUI16 ;PlaceDepth
 			skipMATRIX
-			either tagId = 34 [skipCXFORMa][none]
+			if tagId = 34 [skipCXFORMa]
+			if all [hasFilterList tagId = 34][readFILTERS] ;NOTE: filters should be removed here if wanted! 
+			if all [hasBlendMode  tagId = 34][skipUI8]
 			false ;continue
 		]
 	]
@@ -434,7 +438,6 @@ import-PlaceObject2: has[flags1 flags2 atFiltersBufer filters][
 			if all [1 = filters/1 2 = length? filters][
 				;IF THERE IS ONLY ONE FILTER (blur), REMOVE IT! - just a fix hack, should be improved
 				remove/part atFiltersBufer ((index? inBuffer) - (index? atFiltersBufer))
-				
 				atFlags2Buffer/1: to-char (flags2 and 254) ;removing PlaceFlagHasFilterList flag
 			]
 		]

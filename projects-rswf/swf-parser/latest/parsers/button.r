@@ -3,22 +3,23 @@ rebol [
 	purpose: "Functions for parsing buttons related tags in SWF files"
 ]
 
-	readBUTTONRECORDs: has[records reserved states] [
+	readBUTTONRECORDs: has[records reserved states hasBlendMode hasFilterList] [
 		records: copy []
 		until [
 			byteAlign
-			reserved: readUB 4
-			states:   readUB 4
+			reserved:      readUB 2
+			hasBlendMode:  readBitLogic
+			hasFilterList: readBitLogic
+			states:        readUB 4
 			either all [reserved = 0 states = 0] [true][;end
 				repend/only records [
 					states
-
 						readUsedID
 						readUI16 ;PlaceDepth
 						readMATRIX
 						either tagId = 34 [readCXFORMa][none]
-
-				
+						either all [hasFilterList tagId = 34][readFILTERS][none]
+						either all [hasBlendMode  tagId = 34][readUI8][none]
 				]
 				false ;continue
 			]
@@ -60,12 +61,14 @@ rebol [
 		]
 	]
 	parse-DefineButton2: does [
+		print "---------"
+		probe inBuffer
 		reduce [
-			readID
+			probe readID
 			(
-				readUI8  ;flags
-				readUI16 ;ActionOffset
-				readBUTTONRECORDs
+				probe readUI8  ;flags
+				probe readUI16 ;ActionOffset
+				probe readBUTTONRECORDs
 			)
 			readBUTTONCONDACTIONs
 		]
