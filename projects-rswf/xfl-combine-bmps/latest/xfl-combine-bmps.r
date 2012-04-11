@@ -234,8 +234,12 @@ with ctx-XFL [
 			(tx1 * b2) + (ty1 * d2) + ty2
 		]
 	]
-	combine-BitmapFill: func[node /local v atts matrix matrix2 nx ny tx ty trans][
+	combine-BitmapFill: func[node /local v atts matrix matrix2 nx ny tx ty trans dupName][
 		atts: node/2
+		if dupName: select bitmap-duplicates atts/("bitmapPath") [
+			if verbose > 0 [print ["replacing DOMBitmapInstance:" mold atts/("bitmapPath") "->" mold dupName]]
+			atts/("bitmapPath"): to-string dupName
+		]
 		if all [
 			block? atts
 			imgspec: select images-to-replace atts/("bitmapPath")
@@ -353,12 +357,13 @@ with ctx-XFL [
 		hash: checksum/secure read/binary file: rejoin [xfl-target-dir %bin/ select node/2 "bitmapDataHRef"]
 		either bmpNode: select bitmap-hashes hash [
 			if verbose > 0 [print ["BITMAP DUPLICATE FOUND" mold name]]
-			repend bitmap-duplicates [name to-file to-file bmpNode/2/("name")]
+			repend bitmap-duplicates [name to-file bmpNode/2/("name")]
 			clear node
 			delete file
 		][
 			repend bitmap-hashes [hash node]
 		]
+		
 	]
 	set 'xfl-combine-bmps func[src trg /local node item name mediaItems tmp][
 		if verbose > 0 [
@@ -416,6 +421,7 @@ with ctx-XFL [
 			new-line/skip images true 2
 
 			if verbose > 1 [probe reduce [group images]]
+			if verbose > 0 [print ["FINDING POW2 for group:" mold group]]
 			
 			set [size result] get-best-pow2-result images
 			
