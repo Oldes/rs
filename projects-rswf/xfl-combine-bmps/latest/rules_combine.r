@@ -60,14 +60,18 @@ insert XFL-action-rules [
 			"morphSegments" |
 			"textRuns" |
 			"DOMTextRun" |
-			"textAttrs"	
+			"textAttrs"
 		]  (
 			parse-xfl content
 		) |
 		"DOMLayer" (
 			parse-xfl content
 		) |
-		"DOMShape" (
+		[
+			"DOMShape" |
+			"DOMRectangleObject" |
+			"DOMOvalObject"
+		](
 			;remove-atts atts ["selected"]
 			current-shapeMatrix:
 			current-shapeIMatrix: none

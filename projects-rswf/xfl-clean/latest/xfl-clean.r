@@ -46,9 +46,9 @@ with ctx-XFL [
 
 		name: any [
 			select atts "libraryItemName"
-			select atts "name"
 			select atts "soundName"
 			select atts "bitmapPath"
+			select atts "name"
 		]
 		if node/1 = "DOMSymbolInstance" [
 			add-file-to-parse node

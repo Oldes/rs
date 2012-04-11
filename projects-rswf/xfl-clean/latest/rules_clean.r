@@ -70,7 +70,11 @@ insert XFL-action-rules [
 			check-item current-node
 			parse-xfl content
 		) |
-		"DOMShape" (
+		[
+			"DOMShape" |
+			"DOMRectangleObject" |
+			"DOMOvalObject"
+		](
 			parse-xfl/act content 'DOMShape-clean
 		) |
 		"DOMSymbolInstance" (
