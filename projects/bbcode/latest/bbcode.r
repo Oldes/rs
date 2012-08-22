@@ -1,11 +1,12 @@
 REBOL [
     Title: "BBcode"
-    Date: 19-Feb-2012/13:00:39+1:00
+    Date: 22-Aug-2012/11:12:54+2:00
     Name: 'bbcode
-    Version: 0.1.0
+    Version: 0.2.1
 	History: [
 		0.1.0  5-Jan-2009 "initial version"
 		0.2.0 19-Feb-2012 "review"
+		0.2.1 22-Aug-2012 "added [hr] and [anchor]"
 	]
     File:    %bbcode.r
     Author:  "David 'Oldes' Oliva"
@@ -69,6 +70,10 @@ REBOL [
 			{[script][/script]}                {<p>[script]</p>}
 			{[url=http://][h1=]bla}            {<p><a href="http://"><h1>bla</h1></a></p>}
 			{[ul][*][url]http://test[*]foo[/]} {<ul><li><a href="http://test">http://test</a></li><li>foo</li></ul>}
+			{[hr]}                             {<p><hr></p>}
+			{[hr 10]}                          {<p><hr style="width:10"></p>}
+			{[hr10%]}                          {<p><hr style="width:10%"></p>}
+			{[anchor]foo[/anchor]}             {<p><a name="foo"></a></p>}
 		]
 		xtest-cases: [
 			
@@ -329,7 +334,7 @@ ctx-bbcode: context [
 	
 	enabled-tags: [
 		"b" "i" "s" "u" "del" "h1" "h2" "h3" "h4" "h5" "span"
-		"ins" "dd" "dt" "ol" "ul" "li" "url" "list" "*" "br"
+		"ins" "dd" "dt" "ol" "ul" "li" "url" "list" "*" "br" "hr"
 		"color" "quote" "img" "size" "rebol" "align" "email"
 	]
 	
@@ -344,6 +349,10 @@ ctx-bbcode: context [
 				|
 				"[url]" copy tmp some ch_url opt "[/url]" (
 					emit-tag [{<a href="} encode-value tmp {">} tmp {</a>}]
+				)
+				|
+				"[anchor]" copy tmp any ch_url opt "[/anchor]" (
+					emit-tag [{<a name="} encode-value tmp {"></a>}]
 				)
 				|
 				"[email]" copy tmp some ch_url opt "[/email]" (
@@ -368,6 +377,12 @@ ctx-bbcode: context [
 				)
 				|
 				"[br]" (emit-tag "<br>")
+				|
+				"[hr" any ch_space copy tmp [any ch_digits opt #"%"] any ch_space "]" (
+					emit-tag either tmp [
+						rejoin [{<hr style="width:} tmp {">}]
+					][	"<hr>"]
+				)
 				|
 				"[images" opt rl_attributes #"]" (emit-tag-images)
 				|
