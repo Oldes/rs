@@ -64,7 +64,14 @@ stream-io: context [
 		availableBits: 8
 		inBuffer: next inBuffer
 	]
-
+	clearBuffers: does [
+		if series? inBuffer [clear head inBuffer]
+		if series? outBuffer [clear head outBuffer]
+		availableBits: 0
+		bitBuffer: none
+		outBitMask:   0
+		outBitBuffer: none
+	]
 	readSB: func[nbits [integer!] /local result][
 		;xc1: xc1 + 1
 		if nbits = 0 [return 0]
@@ -392,6 +399,13 @@ stream-io: context [
 			]
 			i
 		]
+		readS24: has[i][
+			i: to integer! readBytesRev 3
+			if i > 8388607 [
+				i: (i and 8388607) - 8388608
+			]
+			i
+		]
 		readUI16le: :readUI16
 		readUI32le: :readUI32
 		readSI8le:  :readSI8
@@ -421,7 +435,10 @@ stream-io: context [
 		inBuffer: tail inBuffer
 		bytes
 	]
-		
+	readFloat: does[
+		change third float-struct readBytes 4
+		float-struct/value
+	]
 	readUI30: has[r b s][
 		b: first inBuffer inBuffer: next inBuffer
 		if b < 128 [return to integer! b]
@@ -512,6 +529,10 @@ stream-io: context [
 	readString: does[
 		head remove back tail copy/part inBuffer inBuffer: find/tail inBuffer #{00}
 	]
+	readUTF: does[
+		as-string readBytes readUI16
+	]
+	
 	readStringInfo: does [
 		as-string readBytes readUI30
 	]
@@ -745,6 +766,12 @@ stream-io: context [
 	
 	ui32-struct: make struct! [value [integer!]] none
 	ui16-struct: make struct! [value [short]] none
+	float-struct: make struct! [value [float]] none
+	
+	writeFloat: func[v [number!]][
+		float-struct/value: v
+		outBuffer: insert outBuffer third float-struct
+	]
 	writeUI32:  func[i][
 		ui32-struct/value: to integer! i
 		outBuffer: insert outBuffer copy third ui32-struct
@@ -758,9 +785,9 @@ stream-io: context [
 	]
 	writeUI30: func[i][
 		case [
-			l < 128   [writeUI8 i]
+			i < 128   [writeUI8 i]
 			true [make error! "Unsuported value for writeUI30"]
-			;l < 16384 []
+			;i < 16384 []
 		]
 	]
 	comment {			
@@ -898,6 +925,10 @@ stream-io: context [
 	]
 	
 	writeString: func[value][writeBytes join as-binary value #{00}]
+	writeUTF: func[value][
+		writeUI16 length? value
+		writeBytes value
+	]
 	
 	writePair: func[value [pair! block!] /local nBits][
 		v1: value/1
@@ -917,6 +948,11 @@ stream-io: context [
 		writeUB nBits 5
 		writeSB v1 nbits
 		writeSB v2 nbits
+	]
+	readLongFloat: func["reads 4 bytes and converts them to decimal!" /local tmp][
+		;prin "readLongFloat: "
+		readBytesRev 4
+		;from-ieee32 probe join (readBytesRev 3) (readBytes 1)
 	]
 	
 	writeCount: func[c][
