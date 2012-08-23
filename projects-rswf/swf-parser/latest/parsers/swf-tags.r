@@ -53,6 +53,7 @@ swfTagNames: make hash! [
 	60 "DefineVideoStream"
 	61 "VideoFrame"
 	62 "DefineFontInfo2"
+	63 "DebugID"
 	64 "ProtectDebug2"
 	65 "ScriptLimits"
 	66 "SetTabIndex"
@@ -127,6 +128,7 @@ swfTagParseActions: make hash! [
 	60 [parse-DefineVideoStream]
 	61 [parse-VideoFrame]
 	62 [parse-DefineFontInfo2]
+	63 [readRest] ;DebugID
 	64 [parse-EnableDebugger2]
 	65 [parse-ScriptLimits]
 	66 [parse-SetTabIndex]
