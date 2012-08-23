@@ -237,13 +237,16 @@ comment {
 	readMethodBodyArray: funct[][
 		count: readUI30
 		result: make block! count
+		;print "readMethodBodyArray..."
 		loop count [ append/only result readMethodBody ]
 		result
 	]
-	readTrait: has[vindex][
+	readTrait: has[vindex tmp count][
+		;print "readTrait..."
 		context [
 			name: ABC/Cpool/multiname/(readUI30)
-			kind: (readUI8 and 15)
+			kind: (tmp: readUI8  tmp and 15)
+			atts: (tmp and 240)
 			data: (
 				;print ["kind:" kind]
 				reduce switch/default kind [
@@ -285,17 +288,30 @@ comment {
 				]
 			)
 			metadata: (
-				either (kind and 240) = 64 [readMetadataArray][none]
+				either (atts and 64) = 64 [
+					count: readUI30
+					tmp: make block! count
+					loop count [ append/only tmp ABC/Metadata/(1 + readUI30)  ]
+					tmp
+				][none]
 			)
 		]
 	]
-
+	formInstanceFlags: func[flags /local result][
+		result: make block! 4
+		if #{01} = (flags and #{01}) [append result 'Sealed]
+		if #{02} = (flags and #{02}) [append result 'Final]
+		if #{04} = (flags and #{04}) [append result 'Interface]
+		if #{08} = (flags and #{08}) [append result 'ProtectedNS]
+		result
+	]
 	readInstance: has[blk count][
+		;prin "readInstance.. "
 		context [
 			name:        ABC/Cpool/multiname/(readUI30)
 			super_name:  ABC/Cpool/multiname/(readUI30)
-			flags:       readByte
-			protectedNs: either #{08} = (flags and #{08}) [ABC/Cpool/namespace/(readUI30)][none]
+			flags:       formInstanceFlags readByte
+			protectedNs: either find flags 'ProtectedNS [ABC/Cpool/namespace/(readUI30)][none]
 			interface:   (
 				blk: make block! count: readUI30
 				loop count [append blk readUI30]
@@ -304,13 +320,14 @@ comment {
 			iinit: ABC/MethodInfo/(1 + readUI30)
 			trait:   (
 				blk: make block! count: readUI30
-				;print "INSTANCE TRAITS.."
+				;print ["INSTANCE TRAITS.." count]
 				loop count [append blk readTrait]
 				blk
 			)
 		]
 	] 
 	readClass: has[blk count][
+		;print "readClass..."
 		context [
 			cinit:   readUI30
 			trait:   (
@@ -324,8 +341,9 @@ comment {
 		]
 	]
 	readScript: has[blk count][
+		;print "readScript..."
 		context [
-			init:    ABC/MethodInfo/(1 + readUI30)
+			init:   ABC/MethodInfo/(1 + readUI30)
 			trait:   (
 				blk: make block! count: readUI30
 				;print ["SCRIPT TRAITS.." count]
@@ -370,7 +388,8 @@ comment {
 	]
 	opcode-reader: make stream-io []
 	parse-ABC-code: funct[opcodes [binary!]][
-		;probe opcodes
+		;print ["parse-ABC-code:" mold opcodes mold as-string opcodes]
+		
 		result: copy []
 		with opcode-reader [
 			setStreamBuffer opcodes
@@ -525,6 +544,7 @@ comment {
 						#{3c} ['si32]
 						#{3a} ['si8]
 						#{ac} ['strictequals]
+						#{a1} ['subtract]
 						#{c6} ['subtract_i]
 						#{2b} ['swap]
 						#{50} ['sxi_1]
@@ -533,21 +553,21 @@ comment {
 						#{03} ['throw]
 						#{95} ['typeof]
 						#{a7} ['urshift]
-					]["unknown!!!!!"]
+					][ask ["!!!!!unknown op:" mold op]  none]
 				] true
 				if args: switch op [
 					#{86} [ABC/Cpool/multiname/(readUI30)] ;astype
 					#{41} [readUI30] ;call - arg_count
 					#{43} [reduce [readUI30 readUI30]] ;callmethod - index, arg_count
-					#{46} [reduce [readUI30 readUI30]] ;callproperty - index, arg_count
-					#{4c} [reduce [readUI30 readUI30]] ;callproplex - index, arg_count
-					#{4f} [reduce [readUI30 readUI30]] ;callpropvoid - index, arg_count
+					#{46} [reduce [ABC/Cpool/multiname/(readUI30) readUI30]] ;callproperty - index, arg_count
+					#{4c} [reduce [ABC/Cpool/multiname/(readUI30) readUI30]] ;callproplex - index, arg_count
+					#{4f} [reduce [ABC/Cpool/multiname/(readUI30) readUI30]] ;callpropvoid - index, arg_count
 					#{44} [reduce [readUI30 readUI30]] ;callstatic - index, arg_count
 					#{45} [reduce [readUI30 readUI30]] ;callsuper - index, arg_count
 					#{4e} [reduce [readUI30 readUI30]] ;callsupervoid - index, arg_count
 					#{80} [ABC/Cpool/multiname/(readUI30)] ;coerce
 					#{42} [readUI30] ;construct - arg_count
-					#{4a} [[readUI30 readUI30]] ;constructprop - index, arg_count
+					#{4a} [reduce [readUI30 readUI30]] ;constructprop - index, arg_count
 					#{49} [readUI30] ;constructsuper - arg_count
 					#{ef} [context [type: readUI8 name: ABC/Cpool/string/(readUI30) register: readUI8 extra: readUI30]] ;debug
 					#{f1} [ABC/Cpool/string/(readUI30)] ;debugfile
@@ -566,7 +586,7 @@ comment {
 					#{65} [readUI30] ;getscopeobject - index
 					#{6c} [readUI30] ;getslot - slotindex
 					#{04} [ABC/Cpool/multiname/(readUI30)] ;getsuper
-					#{32} [[readUI30 readUI30]] ;hasnext2
+					#{32} [reduce [readUI30 readUI30]] ;hasnext2
 					#{13} [readS24] ;ifeq - offset
 					#{12} [readS24] ;iffalse - offset
 					#{18} [readS24] ;ifge - offset
@@ -634,6 +654,7 @@ comment {
 		MethodBodies: none
 	]
 	parse-DoABC: has[class_count tmp][
+		;print ["parse-DoABC:" length? inBuffer mold inBuffer]
 		write %tmp.abc inBuffer
 		ABC/Version: reduce [readUI16 readUI16] 
 		ABC/Cpool/integer:   (readS32array)
@@ -667,6 +688,7 @@ comment {
 			readInstanceArray class_count
 		)
 
+		;probe ABC
 		;print ["class_count: " class_count]
 		;ask ""
 		ABC/ClassInfo:    readClassArray class_count
@@ -684,13 +706,19 @@ comment {
 			ScriptInfo
 			MethodBodies
 		][	new-line/all ABC/(tmp) true ]
-
+		
+		print ["DONE ABC" length? inBuffer]
+		if 0 < length? inBuffer [
+			print "!!!!!!! still data left !!!!!!!!!!"
+			ask ""
+		]
+	
 		ABC
 	]
 
-	parse-DoABC2: does [probe as-string inBuffer reduce [
+	parse-DoABC2: does [as-string inBuffer reduce [
 		readSI32   ;Flags
-		to-string readString ;frame
+		readString ;frame
 		parse-DoABC
 	]]
 	
