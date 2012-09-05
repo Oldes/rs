@@ -77,6 +77,7 @@ swfTagNames: make hash! [
 	89 "StartSound2"
 	90 "DefineBitsJPEG4"
 	91 "DefineFont4"
+	93 "Telemetry"
 	1023 "DefineBitsPtr"
 ]
 
@@ -151,6 +152,7 @@ swfTagParseActions: make hash! [
 	88 [parse-DefineFontName]
 	89 [parse-StartSound2]
 	90 [parse-DefineBitsJPEG4]
+	93 [tagData]
 	91 [parse-DefineFont4]
 	;1023 [readRest] ;DefineBitsPtr
 ]
