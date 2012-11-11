@@ -24,6 +24,7 @@ REBOL [
 			{[url]http://example.org[/url]}    {<p><a href="http://example.org">http://example.org</a></p>}
 			{[url=http://example]Test[/url]}   {<p><a href="http://example">Test</a></p>}
 			{[url=http://example][b]Test[/url]}{<p><a href="http://example"><b>Test</b></a></p>}
+			{[url='/bla/ bla.jpg' rel=images]} {<p><a href="/bla/ bla.jpg" rel="images"></a></p>}
 			{[b][ul][li]Jenny[/li][li]Alex[/li][li]Beth[/li][/ul][/b]}
                                                {<p><b><ul><li>Jenny</li><li>Alex</li><li>Beth</li></ul></b></p>}
 			{[ul][li]bla[li]bla}               {<ul><li>bla</li><li>bla</li></ul>}
@@ -37,7 +38,6 @@ REBOL [
 			{[list=a][*]aaa[*]bbb[/list]}      {<ol style="list-style-type: lower-alpha;"><li>aaa</li><li>bbb</li></ol>}
 			{[list=A][*]aaa[*]bbb[/list]}      {<ol style="list-style-type: upper-alpha;"><li>aaa</li><li>bbb</li></ol>}
 			{[/b]}                             {<p></p>}
-			{aa[b="]bb}                        {<p>aa[b="]bb</p>}
 			{[quote]blabla}                    {<p><fieldset><blockquote>blabla</blockquote></fieldset></p>}
 			{[quote=Carl]blabla}               {<p><fieldset><legend>Carl</legend><blockquote>blabla</blockquote></fieldset></p>}
 			{[img]http://www.google.com/intl/en_ALL/images/logo.gif[/img]}
@@ -57,8 +57,9 @@ REBOL [
                                                {<p><a href="mailto:x@x.cz">x@x.cz</a> <a href="mailto:x@x.cz">email <b>me</b></a></p>}
 
 			{[u]underlined[/u]}                {<p><u>underlined</u></p>}
-			{[h3=underline]Portréty [b]X}      {<h3 class="underline">Portréty <b>X</b></h3>}
+			{[h3=underline]PortrÃ©ty [b]X}      {<h3 class="underline">PortrÃ©ty <b>X</b></h3>}
 			{[img=680x300]pozvanka.jpg}        {<p><img width=680 height=300 src="pozvanka.jpg" alt=""></p>}
+			{[img=680x317 alt=images]pozvanka.jpg} {<p><img width=680 height=317 src="pozvanka.jpg" alt="images"></p>}
 			{[img size="680x300" alt='pozvanka na "vystavu"']pozvanka.jpg}
                                                {<p><img width=680 height=300 src="pozvanka.jpg" alt="pozvanka na &quot;vystavu&quot;"></p>}
 			{[img width="680" height="300" alt="pozvanka na vystavu"]pozvanka.jpg}
@@ -74,12 +75,33 @@ REBOL [
 			{[hr 10]}                          {<p><hr style="width:10"></p>}
 			{[hr10%]}                          {<p><hr style="width:10%"></p>}
 			{[anchor]foo[/anchor]}             {<p><a name="foo"></a></p>}
+			{[class=underline]foo}             {<p><span class="underline">foo</span></p>}
 		]
 		xtest-cases: [
-			
+		{[csv class=vysledky]
+name	number	position
+foo	1	2
+boo	2	1
+[/csv]} {<table class="vysledky">
+<tr><th>name</th><th>number</th><th>position</th></tr>
+<tr><td>foo</td><td>1</td><td>2</td></tr>
+<tr><td>boo</td><td>2</td><td>1</td></tr>
+</table>}
+
+{[csv divider=';' align='center' coltype='lcr' widths='100 20 *']
+name;number;position
+[/csv]
+}
+{<table>
+<col align="left">
+<col align="center">
+<col align="right">
+<tr><th>name</th><th>number</th><th>position</th></tr>
+</table>
+}
 		]
 		errors: copy []
-		foreach [src result] test-cases [
+		foreach [src result] xtest-cases [
 			print ["<==" src]
 			print ["==>" tmp: bbcode src]
 			print either tmp = result ["OK"][repend/only errors [src tmp] join "ERR " result]
@@ -109,6 +131,7 @@ ctx-bbcode: context [
 	ch_attribute1: complement charset {'<>]}
 	ch_attribute2: complement charset {"<>]}
 	ch_attribute3: union complement ch_space ch_attribute
+	ch_attribute4: complement charset { ]<>}
 	ch_digits: charset [#"0" - #"9"]
 	ch_hexa:   charset [#"a" - #"f" #"A" - #"F" #"0" - #"9"]
 	ch_name:   charset [#"a" - #"z" #"A" - #"Z" #"*" #"0" - #"9"]
@@ -117,19 +140,28 @@ ctx-bbcode: context [
 	
 	opened-tags: copy []
 	rl_newline: ["^M^/" | "^/"]
-	rl_attribute: [any ch_space #"=" copy attr any ch_attribute]
+	rl_attribute: [
+		(short-attr: none)
+		any ch_space #"=" any ch_space [
+			#"'" copy short-attr any ch_attribute1 #"'"
+			|
+			#"^"" copy short-attr any ch_attribute2 #"^""
+			|
+			copy short-attr any ch_attribute4
+		]
+		any ch_space
+	]
 	rl_attributes: [
-		rl_attribute
-		|
 		(clear attributes)
-		some [
+		opt rl_attribute
+		any [
 			any ch_space
 			copy tmp some ch_name any ch_space #"=" any ch_space [
 				#"^"" copy attr any ch_attribute2 #"^""
 				|
 				#"'"  copy attr any ch_attribute1 #"'"
 				|
-				copy attr any ch_attribute3
+				copy attr any ch_attribute4
 			] any ch_space
 			(
 				repend attributes [tmp attr]
@@ -138,6 +170,7 @@ ctx-bbcode: context [
 		]
 	]
 	allow-html-tags?: false
+	short-attr: none
 	attr: none
 	attributes: make hash! 20
 	html: copy ""
@@ -150,6 +183,13 @@ ctx-bbcode: context [
 			error? try [tmp: to type? value tmp]
 		]
 		any [tmp value]	
+	]
+	form-attribute: func[name /default value][
+		either value: either default [
+			get-attribute/default name value
+		][	get-attribute name ][
+			rejoin [#" " name {="} value {"}]
+		][	""]
 	]
 	encode-value: func[value [any-string!] /local out tmp][
 		out: copy ""
@@ -187,7 +227,7 @@ ctx-bbcode: context [
 		out: copy ""
 		case/all [
 			all [
-				none? attr
+				none? short-attr
 				empty? attributes
 			][	return out ]
 			
@@ -197,8 +237,8 @@ ctx-bbcode: context [
 					not error? try [size: to pair! size]
 				]
 				all [
-					attr
-					not error? try [size: to pair! attr]
+					short-attr
+					not error? try [size: to pair! short-attr]
 					size <> 0x0
 				]
 			][
@@ -228,7 +268,10 @@ ctx-bbcode: context [
 	]
 	
 	close-p-if-possible: func[ /local p] [
-		if "p" = last opened-tags [
+		if all[
+			not empty? opened-tags
+			"p" = last opened-tags
+		][
 			close-tags/only "p"
 			if "<p></p>" = p: skip tail html -7 [
 				clear p
@@ -254,13 +297,15 @@ ctx-bbcode: context [
 			rowSpace: maxWidth - row/widthImages
 			forall images [
 				set [imgw imgh imgsize src] images/1
+				file: none
+				if error? set/any 'err try [file: get-image-resized src imgsize/x imgsize/y][probe disarm err]
 				sizeArgs:  rejoin [{ width=} imgsize/x { height=} imgsize/y] 
 				either tail? next images [
-					emit-tag [{<div class=imgBg style=width:} imgsize/x {px;height:} minh {px;"><img src="} src {"} sizeArgs { alt="} row/alt {"></div>^/}]
+					emit-tag [{<div class=imgBg style=width:} imgsize/x {px;height:} minh {px;"><a href="} src {" alt="} row/alt {" rel="images"><img src="} file {"} sizeArgs { alt="} row/alt {"></a></div>^/}]
 				][
 					numImagesOnRow: numImagesOnRow - 1
 					padx: round (rowSpace / numImagesOnRow)
-					emit-tag [{<div class=imgBg style="margin-right:} padx {px;width:} imgsize/x {px;height:} minh {px;"><img src="} src {"} sizeArgs { alt="} row/alt {"></div>}]
+					emit-tag [{<div class=imgBg style="margin-right:} padx {px;width:} imgsize/x {px;height:} minh {px;"><a href="} src {" alt="} row/alt {" rel="images"><img src="} file {"} sizeArgs { alt="} row/alt {"></a></div>}]
 					rowSpace: rowSpace - padx
 					
 				]
@@ -272,7 +317,7 @@ ctx-bbcode: context [
 		row/Images: clear head row/Images
 	]
 	emit-tag-images: func[/local dir size images cols space width height col w imgw imgh imgsize src padx row][
-		if attr [repend attributes ["dir" attr]]
+		if attr [repend attributes ["dir" copy attr]]
 		cols:     get-attribute/default "cols"  2
 		space:    get-attribute/default "space" 5x5
 		maxWidth: get-attribute/default "maxWidth" 680
@@ -332,8 +377,72 @@ ctx-bbcode: context [
 		emit-tag {^/</div>^/}
 	]
 	
+	emit-tag-csv: func[spec [string!] /local ch_divider ch_notDivider row data rl_data datatag align tmp widths col-width rowNum colNum][
+		ch_divider: charset get-attribute/default "divider" "^-"
+		ch_notDivider: complement union ch_divider charset "^/^M"
+		row: copy ""
+		trim/head/tail spec
+		
+		close-p-if-possible
+		close-tags
+		emit-tag [{<table} form-attribute "class" form-attribute "align" form-attribute "style" {>^/}]
+		if widths: get-attribute "widths" [
+			error? try [widths: load widths]
+		]
+		if align: get-attribute "coltype" [
+			parse/all align [
+				some [
+					  #"c" (emit-tag {<col align="center">^/})
+					| #"l" (emit-tag {<col align="left">^/}) 
+					| #"r" (emit-tag {<col align="right">^/})
+					| #"j" (emit-tag {<col align="justify">^/})
+				]
+			]
+		]
+		rl_data: [
+			copy data any ch_notDivider
+		]
+		datatag: "th"
+		rowNum: 0
+		colNum: 0
+		get-col-width: does [
+			colNum: colNum + 1
+			either all [
+				rowNum = 1
+				block? widths
+				col-width: pick widths colNum
+				integer? col-width
+			][
+				rejoin [" width=" col-width]
+			][ "" ]
+]
+		parse/all spec [
+			some [
+				(
+					clear row
+					rowNum: rowNum + 1
+				)
+				any ch_space
+				some [
+					rl_data
+					1 ch_divider
+					(
+						append row rejoin [{<} datatag get-col-width {>} data {</} datatag {>}]
+					)
+				]
+				rl_data
+				[rl_newline | end](
+					append row rejoin [{<} datatag get-col-width {>} data {</} datatag {>}]
+					datatag: "td"
+					emit-tag ["<tr>" row "</tr>^/"]
+				)
+			]
+		]
+		emit-tag "</table>"
+	]
+	
 	enabled-tags: [
-		"b" "i" "s" "u" "del" "h1" "h2" "h3" "h4" "h5" "span"
+		"b" "i" "s" "u" "del" "h1" "h2" "h3" "h4" "h5" "span" "class"
 		"ins" "dd" "dt" "ol" "ul" "li" "url" "list" "*" "br" "hr"
 		"color" "quote" "img" "size" "rebol" "align" "email"
 	]
@@ -360,7 +469,7 @@ ctx-bbcode: context [
 				)
 				|
 				"[img" opt rl_attributes #"]" copy tmp some ch_url opt "[/img]" (
-					emit-tag [{<img} form-size { src="} encode-value tmp {" alt="} any [get-attribute "alt" ""] {">}]
+					emit-tag [{<img} form-size { src="} encode-value tmp {"} form-attribute/default "alt" ""  {>}]
 				) 
 				|
 				"[code]" copy tmp to "[/code]" thru "]" (
@@ -386,6 +495,8 @@ ctx-bbcode: context [
 				|
 				"[images" opt rl_attributes #"]" (emit-tag-images)
 				|
+				"[csv" opt rl_attributes #"]" copy tmp to "[/csv" (emit-tag-csv tmp)
+				|
 				#"[" [
 					;normal opening tags
 					copy tag some ch_name opt rl_attributes			
@@ -406,14 +517,14 @@ ctx-bbcode: context [
 							switch/default tag [
 								"url"  [
 									append opened-tags "a"
-									rejoin [{<a href="} encode-value attr {">}]
+									rejoin [{<a href="} encode-value short-attr {"} form-attribute "rel" {>}]
 								]
 								"color" [
-									either all [attr parse attr [
+									either all [short-attr parse short-attr [
 										#"#" [6 ch_hexa | 3 ch_hexa]
 									]][
 										append opened-tags "span"
-										rejoin [{<span style="color: } attr {;">}]
+										rejoin [{<span style="color: } short-attr {;">}]
 									][
 										;;Should the invalid tag be visible?
 										;rejoin either attr [
@@ -424,16 +535,16 @@ ctx-bbcode: context [
 								]
 								"quote" [
 									append opened-tags ["fieldset" "blockquote"]
-									either attr [
-										rejoin [{<fieldset><legend>} attr {</legend><blockquote>}]
+									either short-attr [
+										rejoin [{<fieldset><legend>} short-attr {</legend><blockquote>}]
 									][
 										{<fieldset><blockquote>}
 									]
 								]
 								"list" [
-									if none? attr [attr: ""]
+									if none? short-attr [short-attr: ""]
 									close-p-if-possible
-									parse/case attr [
+									parse/case short-attr [
 										[
 											  "a" (tmp: {<ol style="list-style-type: lower-alpha;">})
 											| "A" (tmp: {<ol style="list-style-type: upper-alpha;">})
@@ -446,8 +557,8 @@ ctx-bbcode: context [
 									tmp
 								]
 								"size" [
-									if none? attr [attr: ""]
-									parse attr [
+									if none? short-attr [short-attr: ""]
+									parse short-attr [
 										[
 											  ["tiny" | "xx-small" | "-2"] (tmp: {<span style="font-size: xx-small;">})
 											| ["x-small" | "-1"]         (tmp: {<span style="font-size: x-small;">})
@@ -465,8 +576,8 @@ ctx-bbcode: context [
 									tmp
 								]
 								"align" [
-									if none? attr [attr: ""]
-									parse attr [
+									if none? short-attr [short-attr: ""]
+									parse short-attr [
 										[
 											  ["right"   | "r"] (tmp: {<div style="text-align: right;">})
 											| ["left"    | "l"] (tmp: {<div style="text-align: left;">})
@@ -479,19 +590,25 @@ ctx-bbcode: context [
 									tmp
 								]
 								"email" [
-									either error? try [tmp: to-email attr][""][
+									either error? try [tmp: to-email short-attr][""][
 										append opened-tags "a"
 										rejoin [{<a href="mailto:} encode-value tmp {">}]
 									]
+								]
+								"class" [
+									if none? short-attr [short-attr: ""]
+									tmp: rejoin [{<span class="} short-attr {">}]
+									append opened-tags "span"
+									tmp
 								]
 							][
 								if find ["h1" "h2" "h3" "h4" "h5" "ul" "ol"] tag [
 									close-p-if-possible
 								]
 								append opened-tags tag
-								rejoin either none? attr [
+								rejoin either none? short-attr [
 									["<" tag ">"]
-								][	["<" tag { class="} encode-value attr {">}] ]
+								][	["<" tag { class="} encode-value short-attr {">}] ]
 							]
 							
 						][
