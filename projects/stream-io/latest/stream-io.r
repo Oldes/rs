@@ -772,7 +772,7 @@ stream-io: context [
 		float-struct/value: v
 		outBuffer: insert outBuffer third float-struct
 	]
-	writeUI32:  func[i][
+	writeUI32: writeUnsignedInt: func[i][
 		ui32-struct/value: to integer! i
 		outBuffer: insert outBuffer copy third ui32-struct
 	]
