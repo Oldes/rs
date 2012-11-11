@@ -53,7 +53,7 @@ swfTagToRSWFActions: make hash! [
 	45 [parse-SoundStreamHead] ;SoundStreamHead2
 	46 [parse-DefineMorphShape]
 	48 [parse-DefineFont2] ;DefineFont2
-	56 [parse-ExportAssets]
+	56 [convert-ExportAssets]
 	57 [parse-ImportAssets]
 	58 [parse-EnableDebugger]
 	59 [parse-DoInitAction]

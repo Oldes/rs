@@ -118,7 +118,7 @@ swfTagParseActions: make hash! [
 	40 [parse-SWT-CharacterName]
 	41 [parse-SerialNumber]
 	42 [parse-DefineTextFormat]
-	43 [probe readSTRING] ;FrameLabel
+	43 [probe as-string readSTRING] ;FrameLabel
 	45 [parse-SoundStreamHead] ;SoundStreamHead2
 	46 [parse-DefineMorphShape]
 	48 [parse-DefineFont2] ;DefineFont2

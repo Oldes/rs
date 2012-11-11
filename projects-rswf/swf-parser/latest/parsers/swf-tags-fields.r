@@ -638,10 +638,17 @@ tagFields: make hash! reduce [
 
 
 
-
+convert-ExportAssets: has[result][
+	result: copy "Assets [^/"
+	foreach [id name] parse-ExportAssets [
+		append result ajoin [tab id " " mold as-string name lf]
+	]
+	append result "]"
+	result
+]
 
 convert-DefineShape: has[shape result fillStyles lineStyles pos st dx dy tmp lineStyle fillStyle0 fillStyle1] [
-	shape: parse-DefineShape
+	probe shape: parse-DefineShape
 	fillStyles: shape/4/1
 	lineStyles: shape/4/2
 	lineStyle: fillStyle0: fillStyle1: none

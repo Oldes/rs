@@ -79,7 +79,7 @@ rebol [
 				
 			]
 		]
-		probe new-line/skip scenes true 2
+		new-line/skip scenes true 2
 		frameLabels: copy []
 		loop readUI8 [
 			insert tail frameLabels reduce [
@@ -87,7 +87,7 @@ rebol [
 				as-string readString
 			]
 		]
-		probe new-line/skip frameLabels true 2
+		new-line/skip frameLabels true 2
 		reduce [scenes frameLabels]
 	]
 	

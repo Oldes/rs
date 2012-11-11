@@ -21,7 +21,7 @@ swf-tag-parser: make stream-io [
 	set 'parse-swf-tag func[tagId tagData /local err action st st2][
 		;st: stats
 		;store: reduce [inBuffer availableBits bitBuffer]  ;store previous buffer for recursion
-	
+		swf-parser/tagId: tagId
 		either none? action: select parseActions tagId [
 			result: none
 		][

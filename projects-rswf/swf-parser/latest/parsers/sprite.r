@@ -22,7 +22,7 @@ rebol [
 		(
 			;print ["placeO2" mold inBuffer]
 			flags: readUI8
-			readUI16 ;depth
+			readUI16  ;depth
 		)
 		isSetBit? flags 1 ;Move?
 		either isSetBit? flags 2 [readUsedID ][none] ;HasCharacter
@@ -39,7 +39,7 @@ rebol [
 			;print "parse-PlaceObject3"
 			flags:  readUI8
 			flags2: readUI8
-			readUI16 ;depth
+			readUI16  ;depth
 		)
 		(
 		isSetBit? flags 1 ;Move?
@@ -47,11 +47,11 @@ rebol [
 		either isSetBit? flags 2 [readUsedID ][none] ;HasCharacter
 		either isSetBit? flags 3 [readMATRIX ][none] ;HasMatrix
 
-		either isSetBit? flags 4 [readCXFORMa][none] ;HasCxform
+		either isSetBit? flags 4 [byteAlign readCXFORMa][none] ;HasCxform
 
-		either isSetBit? flags 5 [readUI16   ][none] ;HasRatio
-		either isSetBit? flags 6 [readString ][none] ;HasName
-		either isSetBit? flags 7 [readUI16   ][none] ;HasClipDepth
+		either isSetBit? flags 5 [byteAlign readUI16   ][none] ;HasRatio
+		either isSetBit? flags 6 [byteAlign readString ][none] ;HasName
+		either isSetBit? flags 7 [byteAlign readUI16   ][none] ;HasClipDepth
 		
 		either isSetBit? flags2 1 [readFILTERS   ][none] ;HasFilters
 		either isSetBit? flags2 2 [readUI8       ][none] ;HasBlendMode
@@ -60,6 +60,7 @@ rebol [
 	]]
 	
 	readFILTERS: has[filters type columns rows][
+		;print "readFilters"
 		filters: copy []
 		loop readUI8 [
 			byteAlign

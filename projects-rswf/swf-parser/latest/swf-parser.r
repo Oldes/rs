@@ -27,7 +27,6 @@ REBOL [
 	preprocess: true
 ]
 
-
 swf-parser: make stream-io [
 	tagId: tagLength: tagData: upd: none
 	store?: false
@@ -262,7 +261,7 @@ swf-parser: make stream-io [
 			parse-swf-header
 			print "-------------------------"
 			probe swf/header
-			print stats
+			;print stats
 			swf-tag-parser/verbal?: not quiet ;all [not quiet not into]
 			swf-tag-parser/output-file: either into [out-file: open/new/write out-file][none]
 			swf-tag-parser/parseActions: either parseActions [pActions][swfTagParseActions]
