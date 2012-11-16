@@ -13,7 +13,7 @@ REBOL [
     Usage: none
     Purpose: {SWF parser which creates simplified timeline structure as a middle step for creating
 	data for my special timeline format used to render nested animations under Starling framework}
-    Comment: {This is still work in progress and earlu prototype. It can be change any time.}
+    Comment: {This is still work in progress and early prototype. It can be changed any time.}
     History: {
 		0.1.0 11-Nov-2012 {First public release}
 	}
