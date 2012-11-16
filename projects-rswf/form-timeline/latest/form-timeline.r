@@ -31,10 +31,13 @@ system/options/binary-base: 16
 ctx-form-timeline: context [
 	shapes:  copy []
 	bitmaps: copy []
+	sounds:  copy []
 	sprites: copy []
 	names:   copy [] ;used to store names of objects per ID
 	types:   copy [] ;used to store types of objects per ID
 	offsets: copy [] ;used to offset sprite images where registration point is not 0x0
+	replaced-sprites: copy []
+	sprite-images: copy []
 	usage-counter: copy []
 	
 	analyse-shape: func[
@@ -194,6 +197,9 @@ ctx-form-timeline: context [
 			switch/default tagId [
 				26 70 [;placeObject
 					set [depth move cid attributes colorAtts]  tagData
+					if tmp: find replaced-sprites cid [
+						cid: sprite-images/(index? tmp)
+					]
 					either tmp: find depths depth [
 						realDepth: index? tmp
 					][
@@ -287,6 +293,12 @@ ctx-form-timeline: context [
 					;frameLabel
 					result: insert result rejoin ["^-Label " mold as-string tagData "^/"]
 				]
+				45 [;SoundStreamHead2, not used
+				]
+				15 [;StartSound
+					result: insert result rejoin ["^-Sound " tagData/1 " " mold tagData/2 "^/"]
+					append usage-counter tagData/1
+				]
 				12 [
 					;actions
 				]
@@ -295,10 +307,34 @@ ctx-form-timeline: context [
 				ask reform ["Unknown tag" tagId "!"]
 			]
 		]
-		append usage-counter id
-		repend types [id 'object]
-		result: head result
-		repend sprites [id reduce [frames result]]
+		either all [
+		false
+			1 = frames
+			1 = length? depths
+			'image = (select types cid)
+			none? attributes/1
+			none? attributes/2
+			0 = attributes/3/1
+			0 = attributes/3/2
+			none? colorAtts
+		][
+			;name: select names cid
+			;repend names [id name]
+			;repend types [id 'image]
+			append replaced-sprites id
+			append sprite-images   cid
+			;if offset: select offsets tagData/3 [
+			;	repend/only repend offsets id offset
+			;]
+			
+			print ["^-Image instead of sprite:" id mold name cid]
+			;ask "?"
+		][
+			append usage-counter id
+			repend types [id 'object]
+			result: head result
+			repend sprites [id reduce [frames result]]
+		]
 	]
 	
 	set 'form-timeline func[
@@ -325,6 +361,7 @@ ctx-form-timeline: context [
 			39   ;defineSprite - this one is important!
 			;43   ;frameLabel
 			56   ;ExportAssets - used to get names of the used bitmaps and sprites
+			14   ;defineSound
 		]
 		
 		foreach [tagId tagData] tags [
@@ -357,6 +394,11 @@ ctx-form-timeline: context [
 				]
 				;70 [;PlaceObject3
 				;]
+				14 [;DefineSound
+					probe parsed
+					ask ""
+					repend types [parsed/1 'sound]
+				]
 			]
 		]
 		;probe new-line/skip names true 2
