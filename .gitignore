@@ -4,3 +4,6 @@
 *.o
 builds/*
 tmp.abc
+*.DS_Store
+desktop/*
+local/*
