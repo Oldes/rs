@@ -17,12 +17,18 @@ REBOL [
 with: func [obj body][do bind body obj]
 
 ctx-pack-assets: context [
-	;http://code.google.com/p/libgdx/wiki/TexturePacker
-	texturePacker: "c:\dev\GDX\libGDX\gdx.jar;c:\dev\GDX\libGDX\extensions\gdx-tools.jar com.badlogic.gdx.tools.imagepacker.TexturePacker2"
-	dirAssetsRoot: %.\Assets\
-	dirBinUtils:   %.\Utils\
-	dirPacks:      join dirAssetsRoot %Packs\
-	pngQuantExe:   "c:\UTILS\pngquant\pngquant.exe"
+	dirBinUtils:   %./Utils/
+	dirAssetsRoot: %./Assets/
+	dirPacks:      join dirAssetsRoot %Packs/
+	comment {
+		Required utils can be found here:
+			http://code.google.com/p/libgdx/wiki/TexturePacker
+			http://code.google.com/p/libgdx/downloads/list
+			http://pngquant.org/
+	}
+	texturePacker: "./Utils/gdx.jar:./Utils/gdx-tools.jar com.badlogic.gdx.tools.imagepacker.TexturePacker2"
+	pngQuantExe:   dirBinUtils/pngquant
+	if system/version/4 = 3 [append pngQuantExe %.exe]
 	
 	;charsets:
 		chNotSpace: complement charset "^/^- "
@@ -75,7 +81,7 @@ ctx-pack-assets: context [
 			bitmapName ;holds name of image being processed
 			imgFile partId x y xy size orig offset index var value ;local values used in parse
 	][
-		srcDir: rejoin [dirAssetsRoot %Bitmaps\ level #"\" name]
+		srcDir: rejoin [dirAssetsRoot %Bitmaps\ level #"/" name]
 		packFile: join name %.pack
 		
 		unless exists? dirPacks/:packFile [
@@ -237,7 +243,7 @@ ctx-pack-assets: context [
 			]
 		]
 	]
-	set 'make-packs func[
+	set 'make-packs func [
 		level [any-string!]   "Level's ID"
 		/atf atf-type         "ATF extension which could be used for bitmap compression (dxt or etc)"
 		/local
