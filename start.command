@@ -1,0 +1,1 @@
+/Applications/rebol -sq /Users/Oldes/Documents/GIT/RS/start.r
