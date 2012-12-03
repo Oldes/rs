@@ -1,0 +1,3954 @@
+<head>
+    <title>REBOL CheatSheet</title>
+    <link rel="stylesheet" type="text/css" charset="utf-8" href="http://www.rebol.com/wip3.css"/>
+    <link rel="stylesheet" href="http://www.rebol.com/r3/docs/docs.css" type="text/css" charset="utf-8">
+    <style type="text/css">
+        .args {display: none}
+        .funcDecription {position:absolute; display: none; background-color:#eee; padding:15px; width:600px; border: 4px solid #888;}  
+    </style>
+	<base href="http://www.rebol.com/">
+    <script type="text/javascript" src="http://rebol.desajn.net/js/jquery-1.3.2.min.js"></script>
+    <script type="text/javascript" src="http://rebol.desajn.net/js/main.js"></script>
+</head>
+<body>
+<div class=funcDecription></div><div class="main">
+<h1>REBOL Quick Reference Card</h1>
+<p><b>A sheet of basic R3 features and functions for new programmers. 
+(<a href="http://www.rebol.com/article/0483.html">blog note</a>) (<a href="http://www.rebol.net/wiki/Reference_Card_Ideas">suggestions?</a>)</b></p><table class=cardbase cellpadding=0 cellspacing=0><tr><td valign=top width="15%">
+<table class=refcard>
+<tr>
+<td class=refcard-area>Syntax, Datatypes</td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/guide/code-words.html" class=ttt>word</a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/guide/code-words.html" class=ttt>variable: </a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/datatypes/path.html" class=ttt>path/refinement</a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/datatypes/block.html" class=ttt>[block]</a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/datatypes/integer.html" class=ttt>12345</a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/datatypes/decimal.html" class=ttt>12.35 12,34</a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/datatypes/pair.html" class=ttt>10x20 (pair)</a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/datatypes/tuple.html" class=ttt>1.2.3.4 (tuple)</a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/datatypes/time.html" class=ttt>10:20:30 (time)</a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/datatypes/date.html" class=ttt>1/jan/2010 (date)</a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/datatypes/char.html" class=ttt>#"R" (char)</a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/datatypes/string.html" class=ttt>"string"</a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/datatypes/string.html" class=ttt>{multi-line<br>string}</a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/datatypes/binary.html" class=ttt>#{12AB C3D4} (binary)</a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/datatypes/file.html" class=ttt>%file</a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/datatypes/url.html" class=ttt>url://location</a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/datatypes/tag.html" class=ttt>&lt;tag&gt;</a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/datatypes/email.html" class=ttt>email@domain</a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/datatypes/issue.html" class=ttt>#issue</a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/concepts/scripts-comments.html" class=ttt>;comment</a></td>
+</tr>
+<tr>
+<td class=refcard-area>Constants</td>
+</tr>
+<tr>
+<td class=refcard>true false on off yes no</td>
+</tr>
+<tr>
+<td class=refcard>newline tab cr lf null</td>
+</tr>
+<tr>
+<td class=refcard>pi</td>
+</tr>
+<tr>
+<td class=refcard-area>System</td>
+</tr>
+<tr>
+<td class=refcard>system/version</td>
+</tr>
+<tr>
+<td class=refcard>system/product</td>
+</tr>
+<tr>
+<td class=refcard>system/options</td>
+</tr>
+<tr>
+<td class=refcard>system/script</td>
+</tr>
+<tr>
+<td class=refcard>system/contexts</td>
+</tr>
+
+</tr>
+</table>
+</td><td valign=top width="15%">
+<table class=refcard>
+<tr>
+<td class=refcard-area>Evaluate</td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/do.html" class=ql-func>do</a><div class="args">
+<span class="funame">do</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funref">/args</span>
+  &nbsp;<span class="funarg">arg</span>
+  &nbsp;<span class="funref">/next</span>
+  &nbsp;<span class="funarg">var</span>
+<p class="funline"><b>Evaluates a block, file, URL, function, word, or any other value.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[any-type!]</span>
+ - Normally a file name, URL, or block
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/args</span>
+ - If value is a script, this will set its system/script/args
+</p>
+<p class=refline><span class=funtarg>arg</span>
+ - Args passed to a script (normally a string)
+</p>
+<p class=argline><span class=funtref>/next</span>
+ - Do next expression only, return it, update block variable
+</p>
+<p class=refline><span class=funtarg>var</span>
+<span class=funtype>[word!]</span>
+ - Variable updated with new block position
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/reduce.html" class="fun">reduce</a> &nbsp; 
+<a href="/r3/docs/functions/load.html" class="fun">load</a> &nbsp; 
+<a href="/r3/docs/functions/import.html" class="fun">import</a> &nbsp; 
+<a href="/r3/docs/functions/loop.html" class="fun">loop</a> &nbsp; 
+<a href="/r3/docs/functions/repeat.html" class="fun">repeat</a> &nbsp; 
+<a href="/r3/docs/functions/call.html" class="fun">call</a> &nbsp; 
+<a href="/r3/docs/functions/launch.html" class="fun">launch</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/reduce.html" class=ql-func>reduce</a><div class="args">
+<span class="funame">reduce</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funref">/no-set</span>
+  &nbsp;<span class="funref">/only</span>
+  &nbsp;<span class="funarg">words</span>
+  &nbsp;<span class="funref">/into</span>
+  &nbsp;<span class="funarg">out</span>
+<p class="funline"><b>Evaluates expressions and returns multiple results.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/no-set</span>
+ - Keep set-words as-is. Do not set them.
+</p>
+<p class=argline><span class=funtref>/only</span>
+ - Only evaluate words and paths, not functions
+</p>
+<p class=refline><span class=funtarg>words</span>
+<span class=funtype>[block! none!]</span>
+ - Optional words that are not evaluated (keywords)
+</p>
+<p class=argline><span class=funtref>/into</span>
+ - Output results into a block with no intermediate storage
+</p>
+<p class=refline><span class=funtarg>out</span>
+<span class=funtype>[any-block!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/compose.html" class="fun">compose</a> &nbsp; 
+<a href="/r3/docs/functions/do.html" class="fun">do</a> &nbsp; 
+<a href="/r3/docs/functions/foreach.html" class="fun">foreach</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/compose.html" class=ql-func>compose</a><div class="args">
+<span class="funame">compose</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funref">/deep</span>
+  &nbsp;<span class="funref">/only</span>
+  &nbsp;<span class="funref">/into</span>
+  &nbsp;<span class="funarg">out</span>
+<p class="funline"><b>Evaluates a block of expressions, only evaluating parens, and returns a block.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+ - Block to compose
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/deep</span>
+ - Compose nested blocks
+</p>
+<p class=argline><span class=funtref>/only</span>
+ - Insert a block as a single value (not the contents of the block)
+</p>
+<p class=argline><span class=funtref>/into</span>
+ - Output results into a block with no intermediate storage
+</p>
+<p class=refline><span class=funtarg>out</span>
+<span class=funtype>[any-block!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/reduce.html" class="fun">reduce</a> &nbsp; 
+<a href="/r3/docs/functions/append.html" class="fun">append</a> &nbsp; 
+<a href="/r3/docs/functions/repend.html" class="fun">repend</a> &nbsp; 
+<a href="/r3/docs/functions/rejoin.html" class="fun">rejoin</a> &nbsp; 
+<a href="/r3/docs/functions/insert.html" class="fun">insert</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard-area>Branch</td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/if.html" class=ql-func>if</a><div class="args">
+<span class="funame">if</span>
+  &nbsp;<span class="funarg">condition</span>
+  &nbsp;<span class="funarg">then-block</span>
+  &nbsp;<span class="funref">/else</span>
+  &nbsp;<span class="funarg">else-block</span>
+<p class="funline"><b>If condition is TRUE, evaluates the block.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>condition</span>
+</p>
+<p class=argline><span class=funtarg>then-block</span>
+<span class=funtype>[block!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/else</span>
+ - If not true, evaluate this block
+</p>
+<p class=refline><span class=funtarg>else-block</span>
+<span class=funtype>[block!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/either.html" class="fun">either</a> &nbsp; 
+<a href="/r3/docs/functions/any.html" class="fun">any</a> &nbsp; 
+<a href="/r3/docs/functions/all.html" class="fun">all</a> &nbsp; 
+<a href="/r3/docs/functions/unless.html" class="fun">unless</a> &nbsp; 
+<a href="/r3/docs/functions/switch.html" class="fun">switch</a> &nbsp; 
+<a href="/r3/docs/functions/select.html" class="fun">select</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/either.html" class=ql-func>either</a><div class="args">
+<span class="funame">either</span>
+  &nbsp;<span class="funarg">condition</span>
+  &nbsp;<span class="funarg">true-block</span>
+  &nbsp;<span class="funarg">false-block</span>
+<p class="funline"><b>If condition is TRUE, evaluates the first block, else evaluates the second.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>condition</span>
+</p>
+<p class=argline><span class=funtarg>true-block</span>
+<span class=funtype>[block!]</span>
+</p>
+<p class=argline><span class=funtarg>false-block</span>
+<span class=funtype>[block!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/if.html" class="fun">if</a> &nbsp; 
+<a href="/r3/docs/functions/any.html" class="fun">any</a> &nbsp; 
+<a href="/r3/docs/functions/all.html" class="fun">all</a> &nbsp; 
+<a href="/r3/docs/functions/unless.html" class="fun">unless</a> &nbsp; 
+<a href="/r3/docs/functions/case.html" class="fun">case</a> &nbsp; 
+<a href="/r3/docs/functions/switch.html" class="fun">switch</a> &nbsp; 
+<a href="/r3/docs/functions/pick.html" class="fun">pick</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/all.html" class=ql-func>all</a><div class="args">
+<span class="funame">all</span>
+  &nbsp;<span class="funarg">block</span>
+<p class="funline"><b>Shortcut AND. Evaluates and returns at the first FALSE or NONE.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>block</span>
+<span class=funtype>[block!]</span>
+ - Block of expressions
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/any.html" class="fun">any</a> &nbsp; 
+<a href="/r3/docs/functions/and.html" class="fun">and</a> &nbsp; 
+<a href="/r3/docs/functions/or.html" class="fun">or</a> &nbsp; 
+<a href="/r3/docs/functions/case.html" class="fun">case</a> &nbsp; 
+<a href="/r3/docs/functions/switch.html" class="fun">switch</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/any.html" class=ql-func>any</a><div class="args">
+<span class="funame">any</span>
+  &nbsp;<span class="funarg">block</span>
+<p class="funline"><b>Shortcut OR. Evaluates and returns the first value that is not FALSE or NONE.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>block</span>
+<span class=funtype>[block!]</span>
+ - Block of expressions
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/all.html" class="fun">all</a> &nbsp; 
+<a href="/r3/docs/functions/or.html" class="fun">or</a> &nbsp; 
+<a href="/r3/docs/functions/and.html" class="fun">and</a> &nbsp; 
+<a href="/r3/docs/functions/case.html" class="fun">case</a> &nbsp; 
+<a href="/r3/docs/functions/switch.html" class="fun">switch</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/case.html" class=ql-func>case</a><div class="args">
+<span class="funame">case</span>
+  &nbsp;<span class="funarg">block</span>
+  &nbsp;<span class="funref">/all</span>
+<p class="funline"><b>Evaluates each condition, and when true, evaluates what follows it.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>block</span>
+<span class=funtype>[block!]</span>
+ - Block of cases (conditions followed by values)
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/all</span>
+ - Evaluate all cases (do not stop at first true case)
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/switch.html" class="fun">switch</a> &nbsp; 
+<a href="/r3/docs/functions/if.html" class="fun">if</a> &nbsp; 
+<a href="/r3/docs/functions/either.html" class="fun">either</a> &nbsp; 
+<a href="/r3/docs/functions/select.html" class="fun">select</a> &nbsp; 
+<a href="/r3/docs/functions/find.html" class="fun">find</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/switch.html" class=ql-func>switch</a><div class="args">
+<span class="funame">switch</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funarg">cases</span>
+  &nbsp;<span class="funref">/default</span>
+  &nbsp;<span class="funarg">case</span>
+  &nbsp;<span class="funref">/all</span>
+<p class="funline"><b>Selects a choice and evaluates the block that follows it.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+ - Target value
+</p>
+<p class=argline><span class=funtarg>cases</span>
+<span class=funtype>[block!]</span>
+ - Block of cases to check
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/default</span>
+</p>
+<p class=refline><span class=funtarg>case</span>
+ - Default case if no others found
+</p>
+<p class=argline><span class=funtref>/all</span>
+ - Evaluate all matches (not just first one)
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/case.html" class="fun">case</a> &nbsp; 
+<a href="/r3/docs/functions/select.html" class="fun">select</a> &nbsp; 
+<a href="/r3/docs/functions/find.html" class="fun">find</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard-area>Loop</td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/loop.html" class=ql-func>loop</a><div class="args">
+<span class="funame">loop</span>
+  &nbsp;<span class="funarg">count</span>
+  &nbsp;<span class="funarg">block</span>
+<p class="funline"><b>Evaluates a block a specified number of times.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>count</span>
+<span class=funtype>[number!]</span>
+ - Number of repetitions
+</p>
+<p class=argline><span class=funtarg>block</span>
+<span class=funtype>[block!]</span>
+ - Block to evaluate
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/repeat.html" class="fun">repeat</a> &nbsp; 
+<a href="/r3/docs/functions/for.html" class="fun">for</a> &nbsp; 
+<a href="/r3/docs/functions/while.html" class="fun">while</a> &nbsp; 
+<a href="/r3/docs/functions/until.html" class="fun">until</a> &nbsp; 
+<a href="/r3/docs/functions/do.html" class="fun">do</a> &nbsp; 
+<a href="/r3/docs/functions/break.html" class="fun">break</a> &nbsp; 
+<a href="/r3/docs/functions/continue.html" class="fun">continue</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/repeat.html" class=ql-func>repeat</a><div class="args">
+<span class="funame">repeat</span>
+  &nbsp;<span class="funarg">word</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funarg">body</span>
+<p class="funline"><b>Evaluates a block a number of times or over a series.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>word</span>
+<span class=funtype>[word!]</span>
+ - Word to set each time
+</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[number! series! none!]</span>
+ - Maximum number or series to traverse
+</p>
+<p class=argline><span class=funtarg>body</span>
+<span class=funtype>[block!]</span>
+ - Block to evaluate each time
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/loop.html" class="fun">loop</a> &nbsp; 
+<a href="/r3/docs/functions/foreach.html" class="fun">foreach</a> &nbsp; 
+<a href="/r3/docs/functions/forall.html" class="fun">forall</a> &nbsp; 
+<a href="/r3/docs/functions/forskip.html" class="fun">forskip</a> &nbsp; 
+<a href="/r3/docs/functions/for.html" class="fun">for</a> &nbsp; 
+<a href="/r3/docs/functions/while.html" class="fun">while</a> &nbsp; 
+<a href="/r3/docs/functions/until.html" class="fun">until</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/foreach.html" class=ql-func>foreach</a><div class="args">
+<span class="funame">foreach</span>
+  &nbsp;<span class="funarg">word</span>
+  &nbsp;<span class="funarg">data</span>
+  &nbsp;<span class="funarg">body</span>
+<p class="funline"><b>Evaluates a block for each value(s) in a series.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>word</span>
+<span class=funtype>[word! block!]</span>
+ - Word or block of words to set each time (local)
+</p>
+<p class=argline><span class=funtarg>data</span>
+<span class=funtype>[series! any-object! map! none!]</span>
+ - The series to traverse
+</p>
+<p class=argline><span class=funtarg>body</span>
+<span class=funtype>[block!]</span>
+ - Block to evaluate each time
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/remove-each.html" class="fun">remove-each</a> &nbsp; 
+<a href="/r3/docs/functions/map-each.html" class="fun">map-each</a> &nbsp; 
+<a href="/r3/docs/functions/for.html" class="fun">for</a> &nbsp; 
+<a href="/r3/docs/functions/forall.html" class="fun">forall</a> &nbsp; 
+<a href="/r3/docs/functions/forskip.html" class="fun">forskip</a> &nbsp; 
+<a href="/r3/docs/functions/repeat.html" class="fun">repeat</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/while.html" class=ql-func>while</a><div class="args">
+<span class="funame">while</span>
+  &nbsp;<span class="funarg">cond-block</span>
+  &nbsp;<span class="funarg">body-block</span>
+<p class="funline"><b>While a condition block is TRUE, evaluates another block.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>cond-block</span>
+<span class=funtype>[block!]</span>
+</p>
+<p class=argline><span class=funtarg>body-block</span>
+<span class=funtype>[block!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/until.html" class="fun">until</a> &nbsp; 
+<a href="/r3/docs/functions/loop.html" class="fun">loop</a> &nbsp; 
+<a href="/r3/docs/functions/repeat.html" class="fun">repeat</a> &nbsp; 
+<a href="/r3/docs/functions/for.html" class="fun">for</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/remove-each.html" class=ql-func>remove-each</a><div class="args">
+<span class="funame">remove-each</span>
+  &nbsp;<span class="funarg">word</span>
+  &nbsp;<span class="funarg">data</span>
+  &nbsp;<span class="funarg">body</span>
+<p class="funline"><b>Removes values for each block that returns true. Returns remove count. (Modifies)</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>word</span>
+<span class=funtype>[word! block!]</span>
+ - Word or block of words to set each time (local)
+</p>
+<p class=argline><span class=funtarg>data</span>
+<span class=funtype>[series!]</span>
+ - The series to traverse
+</p>
+<p class=argline><span class=funtarg>body</span>
+<span class=funtype>[block!]</span>
+ - Block to evaluate (return TRUE to remove)
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/foreach.html" class="fun">foreach</a> &nbsp; 
+<a href="/r3/docs/functions/remove.html" class="fun">remove</a> &nbsp; 
+<a href="/r3/docs/functions/map-each.html" class="fun">map-each</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/break.html" class=ql-func>break</a><div class="args">
+<span class="funame">break</span>
+  &nbsp;<span class="funref">/return</span>
+  &nbsp;<span class="funarg">value</span>
+<p class="funline"><b>Breaks out of a loop, while, until, repeat, foreach, etc.</b></p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/return</span>
+ - Forces the loop function to return a value
+</p>
+<p class=refline><span class=funtarg>value</span>
+<span class=funtype>[any-type!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/continue.html" class="fun">continue</a> &nbsp; 
+<a href="/r3/docs/functions/catch.html" class="fun">catch</a> &nbsp; 
+<a href="/r3/docs/functions/exit.html" class="fun">exit</a> &nbsp; 
+<a href="/r3/docs/functions/return.html" class="fun">return</a> &nbsp; 
+<a href="/r3/docs/functions/loop.html" class="fun">loop</a> &nbsp; 
+<a href="/r3/docs/functions/repeat.html" class="fun">repeat</a> &nbsp; 
+<a href="/r3/docs/functions/for.html" class="fun">for</a> &nbsp; 
+<a href="/r3/docs/functions/forall.html" class="fun">forall</a> &nbsp; 
+<a href="/r3/docs/functions/foreach.html" class="fun">foreach</a> &nbsp; 
+<a href="/r3/docs/functions/forever.html" class="fun">forever</a> &nbsp; 
+<a href="/r3/docs/functions/forskip.html" class="fun">forskip</a> &nbsp; 
+<a href="/r3/docs/functions/while.html" class="fun">while</a> &nbsp; 
+<a href="/r3/docs/functions/until.html" class="fun">until</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard-area>Function</td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/function.html" class=ql-func>function</a><div class="args">
+<span class="funame">function</span>
+  &nbsp;<span class="funarg">spec</span>
+  &nbsp;<span class="funarg">vars</span>
+  &nbsp;<span class="funarg">body</span>
+<p class="funline"><b>Defines a user function with local words.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>spec</span>
+<span class=funtype>[block!]</span>
+ - Optional help info followed by arg words (and optional type and string)
+</p>
+<p class=argline><span class=funtarg>vars</span>
+<span class=funtype>[block!]</span>
+ - List of words that are local to the function
+</p>
+<p class=argline><span class=funtarg>body</span>
+<span class=funtype>[block!]</span>
+ - The body block of the function
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/func.html" class="fun">func</a> &nbsp; 
+<a href="/r3/docs/functions/does.html" class="fun">does</a> &nbsp; 
+<a href="/r3/docs/functions/has.html" class="fun">has</a> &nbsp; 
+<a href="/r3/docs/functions/make.html" class="fun">make</a> &nbsp; 
+<a href="/r3/docs/functions/use.html" class="fun">use</a> &nbsp; 
+<a href="/r3/docs/functions/function.html" class="fun">function!</a> &nbsp; 
+<a href="/r3/docs/functions/function-q.html" class="fun">function?</a> &nbsp; 
+<a href="/r3/docs/functions/return.html" class="fun">return</a> &nbsp; 
+<a href="/r3/docs/functions/exit.html" class="fun">exit</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/funct.html" class=ql-func>funct</a><div class="args">
+<span class="funame">funct</span>
+  &nbsp;<span class="funarg">spec</span>
+  &nbsp;<span class="funarg">body</span>
+  &nbsp;<span class="funref">/with</span>
+  &nbsp;<span class="funarg">object</span>
+<p class="funline"><b>Defines a function with all set-words as locals.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>spec</span>
+<span class=funtype>[block!]</span>
+ - Help string (opt) followed by arg words (and opt type and string)
+</p>
+<p class=argline><span class=funtarg>body</span>
+<span class=funtype>[block!]</span>
+ - The body block of the function
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/with</span>
+ - Define or use a persistent object (self)
+</p>
+<p class=refline><span class=funtarg>object</span>
+<span class=funtype>[object! block! map!]</span>
+ - The object or spec
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/func.html" class=ql-func>func</a><div class="args">
+<span class="funame">func</span>
+  &nbsp;<span class="funarg">spec</span>
+  &nbsp;<span class="funarg">body</span>
+<p class="funline"><b>Defines a user function with given spec and body.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>spec</span>
+<span class=funtype>[block!]</span>
+ - Help string (opt) followed by arg words (and opt type and string)
+</p>
+<p class=argline><span class=funtarg>body</span>
+<span class=funtype>[block!]</span>
+ - The body block of the function
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/closure.html" class="fun">closure</a> &nbsp; 
+<a href="/r3/docs/functions/does.html" class="fun">does</a> &nbsp; 
+<a href="/r3/docs/functions/has.html" class="fun">has</a> &nbsp; 
+<a href="/r3/docs/functions/funco.html" class="fun">funco</a> &nbsp; 
+<a href="/r3/docs/functions/funct.html" class="fun">funct</a> &nbsp; 
+<a href="/r3/docs/functions/function.html" class="fun">function</a> &nbsp; 
+<a href="/r3/docs/functions/use.html" class="fun">use</a> &nbsp; 
+<a href="/r3/docs/functions/make.html" class="fun">make</a> &nbsp; 
+<a href="/r3/docs/functions/function.html" class="fun">function!</a> &nbsp; 
+<a href="/r3/docs/functions/function-q.html" class="fun">function?</a> &nbsp; 
+<a href="/r3/docs/functions/return.html" class="fun">return</a> &nbsp; 
+<a href="/r3/docs/functions/exit.html" class="fun">exit</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/has.html" class=ql-func>has</a><div class="args">
+<span class="funame">has</span>
+  &nbsp;<span class="funarg">vars</span>
+  &nbsp;<span class="funarg">body</span>
+<p class="funline"><b>A shortcut to define a function that has local variables but no arguments.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>vars</span>
+<span class=funtype>[block!]</span>
+ - List of words that are local to the function
+</p>
+<p class=argline><span class=funtarg>body</span>
+<span class=funtype>[block!]</span>
+ - The body block of the function
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/func.html" class="fun">func</a> &nbsp; 
+<a href="/r3/docs/functions/function.html" class="fun">function</a> &nbsp; 
+<a href="/r3/docs/functions/does.html" class="fun">does</a> &nbsp; 
+<a href="/r3/docs/functions/exit.html" class="fun">exit</a> &nbsp; 
+<a href="/r3/docs/functions/return.html" class="fun">return</a> &nbsp; 
+<a href="/r3/docs/functions/use.html" class="fun">use</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/does.html" class=ql-func>does</a><div class="args">
+<span class="funame">does</span>
+  &nbsp;<span class="funarg">body</span>
+<p class="funline"><b>A shortcut to define a function that has no arguments or locals.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>body</span>
+<span class=funtype>[block!]</span>
+ - The body block of the function
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/closure.html" class="fun">closure</a> &nbsp; 
+<a href="/r3/docs/functions/exit.html" class="fun">exit</a> &nbsp; 
+<a href="/r3/docs/functions/func.html" class="fun">func</a> &nbsp; 
+<a href="/r3/docs/functions/function.html" class="fun">function</a> &nbsp; 
+<a href="/r3/docs/functions/has.html" class="fun">has</a> &nbsp; 
+<a href="/r3/docs/functions/return.html" class="fun">return</a> &nbsp; 
+<a href="/r3/docs/functions/use.html" class="fun">use</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/exit.html" class=ql-func>exit</a><div class="args">
+<span class="funame">exit</span>
+<p class="funline"><b>Exits a function, returning no value.</b></p>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/return.html" class="fun">return</a> &nbsp; 
+<a href="/r3/docs/functions/catch.html" class="fun">catch</a> &nbsp; 
+<a href="/r3/docs/functions/break.html" class="fun">break</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/return.html" class=ql-func>return</a><div class="args">
+<span class="funame">return</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funref">/redo</span>
+<p class="funline"><b>Returns a value from a function.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[any-type!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/redo</span>
+ - Upon return, re-evaluate the returned result. (Used for DO)
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/break.html" class="fun">break</a> &nbsp; 
+<a href="/r3/docs/functions/exit.html" class="fun">exit</a> &nbsp; 
+<a href="/r3/docs/functions/catch.html" class="fun">catch</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard-area>Error</td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/attempt.html" class=ql-func>attempt</a><div class="args">
+<span class="funame">attempt</span>
+  &nbsp;<span class="funarg">block</span>
+<p class="funline"><b>Tries to evaluate a block and returns result or NONE on error.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>block</span>
+<span class=funtype>[block!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/try.html" class="fun">try</a> &nbsp; 
+<a href="/r3/docs/functions/error-q.html" class="fun">error?</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/try.html" class=ql-func>try</a><div class="args">
+<span class="funame">try</span>
+  &nbsp;<span class="funarg">block</span>
+  &nbsp;<span class="funref">/except</span>
+  &nbsp;<span class="funarg">code</span>
+<p class="funline"><b>Tries to DO a block and returns its value or an error.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>block</span>
+<span class=funtype>[block!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/except</span>
+ - On exception, evaluate this code block
+</p>
+<p class=refline><span class=funtarg>code</span>
+<span class=funtype>[block! any-function!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/attempt.html" class="fun">attempt</a> &nbsp; 
+<a href="/r3/docs/functions/error-q.html" class="fun">error?</a> &nbsp; 
+<a href="/r3/docs/functions/do.html" class="fun">do</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/catch.html" class=ql-func>catch</a><div class="args">
+<span class="funame">catch</span>
+  &nbsp;<span class="funarg">block</span>
+  &nbsp;<span class="funref">/name</span>
+  &nbsp;<span class="funarg">word</span>
+  &nbsp;<span class="funref">/quit</span>
+<p class="funline"><b>Catches a throw from a block and returns its value.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>block</span>
+<span class=funtype>[block!]</span>
+ - Block to evaluate
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/name</span>
+ - Catches a named throw
+</p>
+<p class=refline><span class=funtarg>word</span>
+<span class=funtype>[word! block!]</span>
+ - One or more names
+</p>
+<p class=argline><span class=funtref>/quit</span>
+ - Special catch for QUIT native
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/throw.html" class="fun">throw</a> &nbsp; 
+<a href="/r3/docs/functions/do.html" class="fun">do</a> &nbsp; 
+<a href="/r3/docs/functions/try.html" class="fun">try</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/throw.html" class=ql-func>throw</a><div class="args">
+<span class="funame">throw</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funref">/name</span>
+  &nbsp;<span class="funarg">word</span>
+<p class="funline"><b>Throws control back to a previous catch.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[any-type!]</span>
+ - Value returned from catch
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/name</span>
+ - Throws to a named catch
+</p>
+<p class=refline><span class=funtarg>word</span>
+<span class=funtype>[word!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/catch.html" class="fun">catch</a> &nbsp; 
+<a href="/r3/docs/functions/return.html" class="fun">return</a> &nbsp; 
+<a href="/r3/docs/functions/exit.html" class="fun">exit</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+
+</tr>
+</table>
+</td><td valign=top width="15%">
+<table class=refcard>
+<tr>
+<td class=refcard-area>Help/Debug</td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/help.html" class=ql-func>help</a><div class="args">
+<span class="funame">help</span>
+  &nbsp;<span class="funarg">word</span>
+  &nbsp;<span class="funref">/doc</span>
+<p class="funline"><b>Prints information about words and values.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>word</span>
+<span class=funtype>[any-type!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/doc</span>
+ - Open web browser to related documentation.
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/z-q.html" class="fun">?</a> &nbsp; 
+<a href="/r3/docs/functions/what.html" class="fun">what</a> &nbsp; 
+<a href="/r3/docs/functions/z-q-q.html" class="fun">??</a> &nbsp; 
+<a href="/r3/docs/functions/docs.html" class="fun">docs</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/what.html" class=ql-func>what</a><div class="args">
+<span class="funame">what</span>
+  &nbsp;<span class="funarg">name</span>
+  &nbsp;<span class="funref">/args</span>
+<p class="funline"><b>Prints a list of known functions.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>name</span>
+<span class=funtype>[word! lit-word! unset!]</span>
+ - Optional module name
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/args</span>
+ - Show arguments not titles
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/help.html" class="fun">help</a> &nbsp; 
+<a href="/r3/docs/functions/z-q.html" class="fun">?</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/docs.html" class=ql-func>docs</a><div class="args">
+<span class="funame">docs</span>
+<p class="funline"><b>Browse on-line documentation.</b></p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/source.html" class=ql-func>source</a><div class="args">
+<span class="funame">source</span>
+  &nbsp;<span class="funarg">word</span>
+<p class="funline"><b>Prints the source code for a word.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>word</span>
+<span class=funtype>[word! path!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/what.html" class="fun">what</a> &nbsp; 
+<a href="/r3/docs/functions/help.html" class="fun">help</a> &nbsp; 
+<a href="/r3/docs/functions/z-q.html" class="fun">?</a> &nbsp; 
+<a href="/r3/docs/functions/z-q-q.html" class="fun">??</a> &nbsp; 
+<a href="/r3/docs/functions/trace.html" class="fun">trace</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/trace.html" class=ql-func>trace</a><div class="args">
+<span class="funame">trace</span>
+  &nbsp;<span class="funarg">mode</span>
+  &nbsp;<span class="funref">/back</span>
+  &nbsp;<span class="funref">/function</span>
+<p class="funline"><b>Enables and disables evaluation tracing and backtrace.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>mode</span>
+<span class=funtype>[integer! logic!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/back</span>
+ - Set mode ON to enable or integer for lines to display
+</p>
+<p class=argline><span class=funtref>/function</span>
+ - Traces functions only (less output)
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/echo.html" class="fun">echo</a> &nbsp; 
+<a href="/r3/docs/functions/probe.html" class="fun">probe</a> &nbsp; 
+<a href="/r3/docs/functions/stack.html" class="fun">stack</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/probe.html" class=ql-func>probe</a><div class="args">
+<span class="funame">probe</span>
+  &nbsp;<span class="funarg">value</span>
+<p class="funline"><b>Debug print a molded value and returns that same value.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[any-type!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/z-q-q.html" class="fun">??</a> &nbsp; 
+<a href="/r3/docs/functions/mold.html" class="fun">mold</a> &nbsp; 
+<a href="/r3/docs/functions/print.html" class="fun">print</a> &nbsp; 
+<a href="/r3/docs/functions/trace.html" class="fun">trace</a> &nbsp; 
+<a href="/r3/docs/functions/source.html" class="fun">source</a> &nbsp; 
+<a href="/r3/docs/functions/help.html" class="fun">help</a> &nbsp; 
+<a href="/r3/docs/functions/what.html" class="fun">what</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/z-q-q.html" class=ql-func>??</a><div class="args">
+<span class="funame">??</span>
+  &nbsp;<span class="funarg">name</span>
+<p class="funline"><b>Debug print a word, path, or block of such, followed by its molded value.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>name</span>
+ - Word, path, and block to obtain values.
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/probe.html" class="fun">probe</a> &nbsp; 
+<a href="/r3/docs/functions/help.html" class="fun">help</a> &nbsp; 
+<a href="/r3/docs/functions/z-q.html" class="fun">?</a> &nbsp; 
+<a href="/r3/docs/functions/mold.html" class="fun">mold</a> &nbsp; 
+<a href="/r3/docs/functions/source.html" class="fun">source</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/delta-time.html" class=ql-func>delta-time</a><div class="args">
+<span class="funame">delta-time</span>
+  &nbsp;<span class="funarg">block</span>
+<p class="funline"><b>Delta-time - return the time it takes to evaluate a block.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>block</span>
+<span class=funtype>[block!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/delta-profile.html" class="fun">delta-profile</a> &nbsp; 
+<a href="/r3/docs/functions/dt.html" class="fun">dt</a> &nbsp; 
+<a href="/r3/docs/functions/dp.html" class="fun">dp</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard-area>Compare</td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/z-gt.html" class=ql-func><</a> <div class="args">
+<span class="funame"><</span>
+  &nbsp;<span class="funarg">value1</span>
+  &nbsp;<span class="funarg">value2</span>
+<p class="funline"><b>Returns TRUE if the first value is less than the second value.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value1</span>
+</p>
+<p class=argline><span class=funtarg>value2</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/lesser-q.html" class="fun">lesser?</a> &nbsp; 
+<a href="/r3/docs/functions/z-gt-eq.html" class="fun"><=</a> &nbsp; 
+<a href="/r3/docs/functions/z-lt.html" class="fun">></a> &nbsp; 
+<a href="/r3/docs/functions/z-lt-eq.html" class="fun">>=</a> &nbsp; 
+<a href="/r3/docs/functions/z-eq.html" class="fun">=</a> &nbsp; 
+<a href="/r3/docs/functions/z-gt-lt.html" class="fun"><></a> &nbsp; 
+<a href="/r3/docs/functions/min.html" class="fun">min</a> &nbsp; 
+<a href="/r3/docs/functions/max.html" class="fun">max</a> &nbsp; 
+</p>
+</div><a href="/r3/docs/functions/z-lt.html" class=ql-func>></a> <div class="args">
+<span class="funame">></span>
+  &nbsp;<span class="funarg">value1</span>
+  &nbsp;<span class="funarg">value2</span>
+<p class="funline"><b>Returns TRUE if the first value is greater than the second value.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value1</span>
+</p>
+<p class=argline><span class=funtarg>value2</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/greater-q.html" class="fun">greater?</a> &nbsp; 
+<a href="/r3/docs/functions/z-gt.html" class="fun"><</a> &nbsp; 
+<a href="/r3/docs/functions/z-gt-eq.html" class="fun"><=</a> &nbsp; 
+<a href="/r3/docs/functions/z-lt-eq.html" class="fun">>=</a> &nbsp; 
+<a href="/r3/docs/functions/z-eq.html" class="fun">=</a> &nbsp; 
+<a href="/r3/docs/functions/z-gt-lt.html" class="fun"><></a> &nbsp; 
+<a href="/r3/docs/functions/min.html" class="fun">min</a> &nbsp; 
+<a href="/r3/docs/functions/max.html" class="fun">max</a> &nbsp; 
+</p>
+</div><a href="/r3/docs/functions/z-gt-eq.html" class=ql-func><=</a> <div class="args">
+<span class="funame"><=</span>
+  &nbsp;<span class="funarg">value1</span>
+  &nbsp;<span class="funarg">value2</span>
+<p class="funline"><b>Returns TRUE if the first value is less than or equal to the second value.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value1</span>
+</p>
+<p class=argline><span class=funtarg>value2</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/lesser-or-equal-q.html" class="fun">lesser-or-equal?</a> &nbsp; 
+<a href="/r3/docs/functions/z-gt.html" class="fun"><</a> &nbsp; 
+<a href="/r3/docs/functions/z-lt.html" class="fun">></a> &nbsp; 
+<a href="/r3/docs/functions/z-lt-eq.html" class="fun">>=</a> &nbsp; 
+<a href="/r3/docs/functions/z-eq.html" class="fun">=</a> &nbsp; 
+<a href="/r3/docs/functions/z-gt-lt.html" class="fun"><></a> &nbsp; 
+<a href="/r3/docs/functions/min.html" class="fun">min</a> &nbsp; 
+<a href="/r3/docs/functions/max.html" class="fun">max</a> &nbsp; 
+</p>
+</div><a href="/r3/docs/functions/z-lt-eq.html" class=ql-func>>=</a><div class="args">
+<span class="funame">>=</span>
+  &nbsp;<span class="funarg">value1</span>
+  &nbsp;<span class="funarg">value2</span>
+<p class="funline"><b>Returns TRUE if the first value is greater than or equal to the second value.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value1</span>
+</p>
+<p class=argline><span class=funtarg>value2</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/greater-or-equal-q.html" class="fun">greater-or-equal?</a> &nbsp; 
+<a href="/r3/docs/functions/z-gt.html" class="fun"><</a> &nbsp; 
+<a href="/r3/docs/functions/z-gt-eq.html" class="fun"><=</a> &nbsp; 
+<a href="/r3/docs/functions/z-lt.html" class="fun">></a> &nbsp; 
+<a href="/r3/docs/functions/z-eq.html" class="fun">=</a> &nbsp; 
+<a href="/r3/docs/functions/z-gt-lt.html" class="fun"><></a> &nbsp; 
+<a href="/r3/docs/functions/min.html" class="fun">min</a> &nbsp; 
+<a href="/r3/docs/functions/max.html" class="fun">max</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/z-eq.html" class=ql-func>=</a> <div class="args">
+<span class="funame">=</span>
+  &nbsp;<span class="funarg">value1</span>
+  &nbsp;<span class="funarg">value2</span>
+<p class="funline"><b>Returns TRUE if the values are equal.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value1</span>
+</p>
+<p class=argline><span class=funtarg>value2</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/z-gt-lt.html" class="fun"><></a> &nbsp; 
+<a href="/r3/docs/functions/z-eq-eq.html" class="fun">==</a> &nbsp; 
+<a href="/r3/docs/functions/equal-q.html" class="fun">equal?</a> &nbsp; 
+</p>
+</div><a href="/r3/docs/functions/z-eq-eq.html" class=ql-func>==</a> <div class="args">
+<span class="funame">==</span>
+  &nbsp;<span class="funarg">value1</span>
+  &nbsp;<span class="funarg">value2</span>
+<p class="funline"><b>Returns TRUE if the values are strictly equal.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value1</span>
+</p>
+<p class=argline><span class=funtarg>value2</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/z-eq.html" class="fun">=</a> &nbsp; 
+<a href="/r3/docs/functions/z-gt-lt.html" class="fun"><></a> &nbsp; 
+<a href="/r3/docs/functions/strict-equal-q.html" class="fun">strict-equal?</a> &nbsp; 
+</p>
+</div><a href="/r3/docs/functions/z-gt-lt.html" class=ql-func><></a> <div class="args">
+<span class="funame"><></span>
+  &nbsp;<span class="funarg">value1</span>
+  &nbsp;<span class="funarg">value2</span>
+<p class="funline"><b>Returns TRUE if the values are not equal.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value1</span>
+</p>
+<p class=argline><span class=funtarg>value2</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/z-eq.html" class="fun">=</a> &nbsp; 
+<a href="/r3/docs/functions/z-eq-eq.html" class="fun">==</a> &nbsp; 
+<a href="/r3/docs/functions/not-equal-q.html" class="fun">not-equal?</a> &nbsp; 
+</p>
+</div><a href="/r3/docs/functions/z-ex-eq.html" class=ql-func>!=</a> <div class="args">
+<span class="funame">!=</span>
+  &nbsp;<span class="funarg">value1</span>
+  &nbsp;<span class="funarg">value2</span>
+<p class="funline"><b>Returns TRUE if the values are not equal.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value1</span>
+</p>
+<p class=argline><span class=funtarg>value2</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/z-eq.html" class="fun">=</a> &nbsp; 
+<a href="/r3/docs/functions/z-gt-lt.html" class="fun"><></a> &nbsp; 
+<a href="/r3/docs/functions/z-ex-eq-eq.html" class="fun">!==</a> &nbsp; 
+</p>
+</div><a href="/r3/docs/functions/z-ex-eq-eq.html" class=ql-func>!==</a><div class="args">
+<span class="funame">!==</span>
+  &nbsp;<span class="funarg">value1</span>
+  &nbsp;<span class="funarg">value2</span>
+<p class="funline"><b>Returns TRUE if the values are not strictly equal.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value1</span>
+</p>
+<p class=argline><span class=funtarg>value2</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/z-eq-eq.html" class="fun">==</a> &nbsp; 
+<a href="/r3/docs/functions/z-eq.html" class="fun">=</a> &nbsp; 
+<a href="/r3/docs/functions/z-gt-lt.html" class="fun"><></a> &nbsp; 
+<a href="/r3/docs/functions/z-ex-eq.html" class="fun">!=</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/z-eq-q.html" class=ql-func>=?</a> <div class="args">
+<span class="funame">=?</span>
+  &nbsp;<span class="funarg">value1</span>
+  &nbsp;<span class="funarg">value2</span>
+<p class="funline"><b>Returns TRUE if the values are identical.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value1</span>
+</p>
+<p class=argline><span class=funtarg>value2</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/z-eq.html" class="fun">=</a> &nbsp; 
+<a href="/r3/docs/functions/z-eq-eq.html" class="fun">==</a> &nbsp; 
+<a href="/r3/docs/functions/same-q.html" class="fun">same?</a> &nbsp; 
+</p>
+</div><a href="/r3/docs/functions/same-q.html" class=ql-func>same?</a><div class="args">
+<span class="funame">same?</span>
+  &nbsp;<span class="funarg">value1</span>
+  &nbsp;<span class="funarg">value2</span>
+<p class="funline"><b>Returns TRUE if the values are identical.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value1</span>
+</p>
+<p class=argline><span class=funtarg>value2</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/z-eq-q.html" class="fun">=?</a> &nbsp; 
+<a href="/r3/docs/functions/equal-q.html" class="fun">equal?</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard-area>Math</td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/z-plu.html" class=ql-func>+</a> <div class="args">
+<span class="funame">+</span>
+  &nbsp;<span class="funarg">value1</span>
+  &nbsp;<span class="funarg">value2</span>
+<p class="funline"><b>Returns the result of adding two values.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value1</span>
+<span class=funtype>[scalar! date!]</span>
+</p>
+<p class=argline><span class=funtarg>value2</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/z-.html" class="fun">-</a> &nbsp; 
+<a href="/r3/docs/functions/add.html" class="fun">add</a> &nbsp; 
+<a href="/r3/docs/functions/subtract.html" class="fun">subtract</a> &nbsp; 
+</p>
+</div><a href="/r3/docs/functions/z-.html" class=ql-func>-</a> <div class="args">
+<span class="funame">-</span>
+  &nbsp;<span class="funarg">value1</span>
+  &nbsp;<span class="funarg">value2</span>
+<p class="funline"><b>Returns the second value subtracted from the first.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value1</span>
+<span class=funtype>[scalar! date!]</span>
+</p>
+<p class=argline><span class=funtarg>value2</span>
+<span class=funtype>[scalar! date!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/z-plu.html" class="fun">+</a> &nbsp; 
+<a href="/r3/docs/functions/add.html" class="fun">add</a> &nbsp; 
+<a href="/r3/docs/functions/subtract.html" class="fun">subtract</a> &nbsp; 
+<a href="/r3/docs/functions/negate.html" class="fun">negate</a> &nbsp; 
+<a href="/r3/docs/functions/absolute.html" class="fun">absolute</a> &nbsp; 
+</p>
+</div><a href="/r3/docs/functions/z-mul.html" class=ql-func>*</a> <div class="args"></div><a href="/r3/docs/functions/z-div.html" class=ql-func>/</a> <div class="args">
+<span class="funame">/</span>
+  &nbsp;<span class="funarg">value1</span>
+  &nbsp;<span class="funarg">value2</span>
+<p class="funline"><b>Returns the first value divided by the second.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value1</span>
+<span class=funtype>[scalar!]</span>
+</p>
+<p class=argline><span class=funtarg>value2</span>
+<span class=funtype>[scalar!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/z-gtb-lt.html" class="fun"><b></a> &nbsp; 
+<a href="/r3/docs/functions/z-div-div.html" class="fun">//</a> &nbsp; 
+<a href="/r3/docs/functions/divide.html" class="fun">divide</a> &nbsp; 
+<a href="/r3/docs/functions/z-gtb-lt.html" class="fun"></b></a> &nbsp; 
+</p>
+</div><a href="/r3/docs/functions/z-mul-mul.html" class=ql-func>**</a><div class="args"></div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/remainder.html" class=ql-func>remainder</a><div class="args">
+<span class="funame">remainder</span>
+  &nbsp;<span class="funarg">value1</span>
+  &nbsp;<span class="funarg">value2</span>
+<p class="funline"><b>Returns the remainder of first value divided by second.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value1</span>
+<span class=funtype>[scalar!]</span>
+</p>
+<p class=argline><span class=funtarg>value2</span>
+<span class=funtype>[scalar!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/z-div-div.html" class="fun">//</a> &nbsp; 
+<a href="/r3/docs/functions/z-gtb-lt.html" class="fun"><b></a> &nbsp; 
+<a href="/r3/docs/functions/z-div.html" class="fun">/</a> &nbsp; 
+<a href="/r3/docs/functions/z-gtb-lt.html" class="fun"></b></a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/negate.html" class=ql-func>negate</a><div class="args">
+<span class="funame">negate</span>
+  &nbsp;<span class="funarg">number</span>
+<p class="funline"><b>Changes the sign of a number.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>number</span>
+<span class=funtype>[number! pair! money! time! bitset!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/z-plu.html" class="fun">+</a> &nbsp; 
+<a href="/r3/docs/functions/z-.html" class="fun">-</a> &nbsp; 
+<a href="/r3/docs/functions/positive-q.html" class="fun">positive?</a> &nbsp; 
+<a href="/r3/docs/functions/negative-q.html" class="fun">negative?</a> &nbsp; 
+<a href="/r3/docs/functions/complement.html" class="fun">complement</a> &nbsp; 
+<a href="/r3/docs/functions/not.html" class="fun">not</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/abs.html" class=ql-func>abs</a> <div class="args">
+<span class="funame">abs</span>
+  &nbsp;<span class="funarg">value</span>
+<p class="funline"><b>Returns the absolute value.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[number! pair! money! time!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/absolute.html" class="fun">absolute</a> &nbsp; 
+<a href="/r3/docs/functions/sign-q.html" class="fun">sign?</a> &nbsp; 
+<a href="/r3/docs/functions/negate.html" class="fun">negate</a> &nbsp; 
+<a href="/r3/docs/functions/z-.html" class="fun">-</a> &nbsp; 
+</p>
+</div><a href="/r3/docs/functions/absolute.html" class=ql-func>absolute</a><div class="args">
+<span class="funame">absolute</span>
+  &nbsp;<span class="funarg">value</span>
+<p class="funline"><b>Returns the absolute value.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[number! pair! money! time!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/abs.html" class="fun">abs</a> &nbsp; 
+<a href="/r3/docs/functions/sign-q.html" class="fun">sign?</a> &nbsp; 
+<a href="/r3/docs/functions/negate.html" class="fun">negate</a> &nbsp; 
+<a href="/r3/docs/functions/z-.html" class="fun">-</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/round.html" class=ql-func>round</a><div class="args">
+<span class="funame">round</span>
+  &nbsp;<span class="funarg">n</span>
+  &nbsp;<span class="funref">/to</span>
+  &nbsp;<span class="funarg">scale</span>
+  &nbsp;<span class="funref">/even</span>
+  &nbsp;<span class="funref">/down</span>
+  &nbsp;<span class="funref">/half-down</span>
+  &nbsp;<span class="funref">/floor</span>
+  &nbsp;<span class="funref">/ceiling</span>
+  &nbsp;<span class="funref">/half-ceiling</span>
+<p class="funline"><b>Rounds a numeric value. Halves round up (away from zero) by default.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>n</span>
+<span class=funtype>[number! pair! money! time!]</span>
+ - The value to round
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/to</span>
+ - Return the nearest multiple of the scale parameter
+</p>
+<p class=refline><span class=funtarg>scale</span>
+<span class=funtype>[number! money! time!]</span>
+ - Must be a non-zero value
+</p>
+<p class=argline><span class=funtref>/even</span>
+ - Halves round toward even results
+</p>
+<p class=argline><span class=funtref>/down</span>
+ - Round toward zero, ignoring discarded digits. (truncate)
+</p>
+<p class=argline><span class=funtref>/half-down</span>
+ - Halves round toward zero
+</p>
+<p class=argline><span class=funtref>/floor</span>
+ - Round in negative direction
+</p>
+<p class=argline><span class=funtref>/ceiling</span>
+ - Round in positive direction
+</p>
+<p class=argline><span class=funtref>/half-ceiling</span>
+ - Halves round in positive direction
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/mod.html" class="fun">mod</a> &nbsp; 
+<a href="/r3/docs/functions/modulo.html" class="fun">modulo</a> &nbsp; 
+<a href="/r3/docs/functions/z-div-div.html" class="fun">//</a> &nbsp; 
+<a href="/r3/docs/functions/remainder.html" class="fun">remainder</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/min.html" class=ql-func>min</a> <div class="args">
+<span class="funame">min</span>
+  &nbsp;<span class="funarg">value1</span>
+  &nbsp;<span class="funarg">value2</span>
+<p class="funline"><b>Returns the lesser of the two values.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value1</span>
+<span class=funtype>[scalar! date! series!]</span>
+</p>
+<p class=argline><span class=funtarg>value2</span>
+<span class=funtype>[scalar! date! series!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/max.html" class="fun">max</a> &nbsp; 
+<a href="/r3/docs/functions/z-gt.html" class="fun"><</a> &nbsp; 
+<a href="/r3/docs/functions/z-lt.html" class="fun">></a> &nbsp; 
+<a href="/r3/docs/functions/minimum-of.html" class="fun">minimum-of</a> &nbsp; 
+<a href="/r3/docs/functions/maximum-of.html" class="fun">maximum-of</a> &nbsp; 
+</p>
+</div><a href="/r3/docs/functions/max.html" class=ql-func>max</a><div class="args">
+<span class="funame">max</span>
+  &nbsp;<span class="funarg">value1</span>
+  &nbsp;<span class="funarg">value2</span>
+<p class="funline"><b>Returns the greater of the two values.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value1</span>
+<span class=funtype>[scalar! date! series!]</span>
+</p>
+<p class=argline><span class=funtarg>value2</span>
+<span class=funtype>[scalar! date! series!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/min.html" class="fun">min</a> &nbsp; 
+<a href="/r3/docs/functions/maximum-of.html" class="fun">maximum-of</a> &nbsp; 
+<a href="/r3/docs/functions/z-gt.html" class="fun"><</a> &nbsp; 
+<a href="/r3/docs/functions/z-lt.html" class="fun">></a> &nbsp; 
+<a href="/r3/docs/functions/maximum.html" class="fun">maximum</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/and.html" class=ql-func>and</a> <div class="args">
+<span class="funame">and</span>
+  &nbsp;<span class="funarg">value1</span>
+  &nbsp;<span class="funarg">value2</span>
+<p class="funline"><b>Returns the first value ANDed with the second.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value1</span>
+<span class=funtype>[logic! integer! char! tuple! binary! bitset! typeset! datatype!]</span>
+</p>
+<p class=argline><span class=funtarg>value2</span>
+<span class=funtype>[logic! integer! char! tuple! binary! bitset! typeset! datatype!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/or.html" class="fun">or</a> &nbsp; 
+<a href="/r3/docs/functions/all.html" class="fun">all</a> &nbsp; 
+<a href="/r3/docs/functions/not.html" class="fun">not</a> &nbsp; 
+<a href="/r3/docs/functions/xor.html" class="fun">xor</a> &nbsp; 
+<a href="/r3/docs/functions/logic-q.html" class="fun">logic?</a> &nbsp; 
+<a href="/r3/docs/functions/integer-q.html" class="fun">integer?</a> &nbsp; 
+</p>
+</div><a href="/r3/docs/functions/or.html" class=ql-func>or</a> <div class="args">
+<span class="funame">or</span>
+  &nbsp;<span class="funarg">value1</span>
+  &nbsp;<span class="funarg">value2</span>
+<p class="funline"><b>Returns the first value ORed with the second.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value1</span>
+<span class=funtype>[logic! integer! char! tuple! binary! bitset! typeset! datatype!]</span>
+</p>
+<p class=argline><span class=funtarg>value2</span>
+<span class=funtype>[logic! integer! char! tuple! binary! bitset! typeset! datatype!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/and.html" class="fun">and</a> &nbsp; 
+<a href="/r3/docs/functions/not.html" class="fun">not</a> &nbsp; 
+<a href="/r3/docs/functions/xor.html" class="fun">xor</a> &nbsp; 
+</p>
+</div><a href="/r3/docs/functions/xor.html" class=ql-func>xor</a><div class="args">
+<span class="funame">xor</span>
+  &nbsp;<span class="funarg">value1</span>
+  &nbsp;<span class="funarg">value2</span>
+<p class="funline"><b>Returns the first value exclusive ORed with the second.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value1</span>
+<span class=funtype>[logic! integer! char! tuple! binary! bitset! typeset! datatype!]</span>
+</p>
+<p class=argline><span class=funtarg>value2</span>
+<span class=funtype>[logic! integer! char! tuple! binary! bitset! typeset! datatype!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/and.html" class="fun">and</a> &nbsp; 
+<a href="/r3/docs/functions/or.html" class="fun">or</a> &nbsp; 
+<a href="/r3/docs/functions/not.html" class="fun">not</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/not.html" class=ql-func>not</a><div class="args">
+<span class="funame">not</span>
+  &nbsp;<span class="funarg">value</span>
+<p class="funline"><b>Returns the logic complement.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+ - (Only FALSE and NONE return TRUE)
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/complement.html" class="fun">complement</a> &nbsp; 
+<a href="/r3/docs/functions/negate.html" class="fun">negate</a> &nbsp; 
+<a href="/r3/docs/functions/and.html" class="fun">and</a> &nbsp; 
+<a href="/r3/docs/functions/or.html" class="fun">or</a> &nbsp; 
+<a href="/r3/docs/functions/xor.html" class="fun">xor</a> &nbsp; 
+<a href="/r3/docs/functions/unless.html" class="fun">unless</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/random.html" class=ql-func>random</a><div class="args">
+<span class="funame">random</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funref">/seed</span>
+  &nbsp;<span class="funref">/secure</span>
+  &nbsp;<span class="funref">/only</span>
+<p class="funline"><b>Returns a random value of the datatype or shuffles series (modifies).</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+ - Maximum value of result
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/seed</span>
+ - Restart or randomize
+</p>
+<p class=argline><span class=funtref>/secure</span>
+ - Returns a cryptographically secure random number
+</p>
+<p class=argline><span class=funtref>/only</span>
+ - Pick a random value from a series
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/checksum.html" class="fun">checksum</a> &nbsp; 
+<a href="/r3/docs/functions/now.html" class="fun">now</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/shift.html" class=ql-func>shift</a><div class="args">
+<span class="funame">shift</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funarg">bits</span>
+  &nbsp;<span class="funref">/logical</span>
+<p class="funline"><b>Shifts an integer left or right by a number of bits.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[integer!]</span>
+</p>
+<p class=argline><span class=funtarg>bits</span>
+<span class=funtype>[integer!]</span>
+ - Positive for left shift, negative for right shift
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/logical</span>
+ - Logical shift (sign bit ignored)
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/sine.html" class=ql-func>sine</a><div class="args">
+<span class="funame">sine</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funref">/radians</span>
+<p class="funline"><b>Returns the trigonometric sine.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[number!]</span>
+ - In degrees by default
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/radians</span>
+ - Value is specified in radians
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/arccosine.html" class="fun">arccosine</a> &nbsp; 
+<a href="/r3/docs/functions/arcsine.html" class="fun">arcsine</a> &nbsp; 
+<a href="/r3/docs/functions/arctangent.html" class="fun">arctangent</a> &nbsp; 
+<a href="/r3/docs/functions/cosine.html" class="fun">cosine</a> &nbsp; 
+<a href="/r3/docs/functions/pi.html" class="fun">pi</a> &nbsp; 
+<a href="/r3/docs/functions/tangent.html" class="fun">tangent</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/log-e.html" class=ql-func>log-e</a><div class="args">
+<span class="funame">log-e</span>
+  &nbsp;<span class="funarg">value</span>
+<p class="funline"><b>Returns the base-E (natural number) logarithm.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[number!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/exp.html" class="fun">exp</a> &nbsp; 
+<a href="/r3/docs/functions/log-10.html" class="fun">log-10</a> &nbsp; 
+<a href="/r3/docs/functions/log-2.html" class="fun">log-2</a> &nbsp; 
+<a href="/r3/docs/functions/power.html" class="fun">power</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/to.html" class=ql-func>to</a> <div class="args">
+<span class="funame">to</span>
+  &nbsp;<span class="funarg">type</span>
+  &nbsp;<span class="funarg">spec</span>
+<p class="funline"><b>Converts to a specified datatype.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>type</span>
+<span class=funtype>[any-type!]</span>
+ - The datatype or example value
+</p>
+<p class=argline><span class=funtarg>spec</span>
+<span class=funtype>[any-type!]</span>
+ - The attributes of the new value
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/make.html" class="fun">make</a> &nbsp; 
+</p>
+</div>(conversion)</td>
+</tr>
+<tr>
+<td class=refcard-area>Reflection</td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/words-of.html" class=ql-func>words-of</a><div class="args">
+<span class="funame">words-of</span>
+  &nbsp;<span class="funarg">value</span>
+<p class="funline"><b>Returns a copy of the words of a function, object, or module</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/body-of.html" class="fun">body-of</a> &nbsp; 
+<a href="/r3/docs/functions/reflect.html" class="fun">reflect</a> &nbsp; 
+<a href="/r3/docs/functions/spec-of.html" class="fun">spec-of</a> &nbsp; 
+<a href="/r3/docs/functions/title-of.html" class="fun">title-of</a> &nbsp; 
+<a href="/r3/docs/functions/types-of.html" class="fun">types-of</a> &nbsp; 
+<a href="/r3/docs/functions/values-of.html" class="fun">values-of</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/values-of.html" class=ql-func>values-of</a><div class="args">
+<span class="funame">values-of</span>
+  &nbsp;<span class="funarg">value</span>
+<p class="funline"><b>Returns a copy of the values of a object or module</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/body-of.html" class="fun">body-of</a> &nbsp; 
+<a href="/r3/docs/functions/reflect.html" class="fun">reflect</a> &nbsp; 
+<a href="/r3/docs/functions/spec-of.html" class="fun">spec-of</a> &nbsp; 
+<a href="/r3/docs/functions/title-of.html" class="fun">title-of</a> &nbsp; 
+<a href="/r3/docs/functions/types-of.html" class="fun">types-of</a> &nbsp; 
+<a href="/r3/docs/functions/words-of.html" class="fun">words-of</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/title-of.html" class=ql-func>title-of</a><div class="args">
+<span class="funame">title-of</span>
+  &nbsp;<span class="funarg">value</span>
+<p class="funline"><b>Returns a copy of the title of a function</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/body-of.html" class="fun">body-of</a> &nbsp; 
+<a href="/r3/docs/functions/reflect.html" class="fun">reflect</a> &nbsp; 
+<a href="/r3/docs/functions/spec-of.html" class="fun">spec-of</a> &nbsp; 
+<a href="/r3/docs/functions/types-of.html" class="fun">types-of</a> &nbsp; 
+<a href="/r3/docs/functions/values-of.html" class="fun">values-of</a> &nbsp; 
+<a href="/r3/docs/functions/words-of.html" class="fun">words-of</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/spec-of.html" class=ql-func>spec-of</a><div class="args">
+<span class="funame">spec-of</span>
+  &nbsp;<span class="funarg">value</span>
+<p class="funline"><b>Returns a copy of the spec of a function or module</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/body-of.html" class="fun">body-of</a> &nbsp; 
+<a href="/r3/docs/functions/reflect.html" class="fun">reflect</a> &nbsp; 
+<a href="/r3/docs/functions/title-of.html" class="fun">title-of</a> &nbsp; 
+<a href="/r3/docs/functions/types-of.html" class="fun">types-of</a> &nbsp; 
+<a href="/r3/docs/functions/values-of.html" class="fun">values-of</a> &nbsp; 
+<a href="/r3/docs/functions/words-of.html" class="fun">words-of</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/body-of.html" class=ql-func>body-of</a><div class="args">
+<span class="funame">body-of</span>
+  &nbsp;<span class="funarg">value</span>
+<p class="funline"><b>Returns a copy of the body of a function, object, or module</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/reflect.html" class="fun">reflect</a> &nbsp; 
+<a href="/r3/docs/functions/spec-of.html" class="fun">spec-of</a> &nbsp; 
+<a href="/r3/docs/functions/title-of.html" class="fun">title-of</a> &nbsp; 
+<a href="/r3/docs/functions/types-of.html" class="fun">types-of</a> &nbsp; 
+<a href="/r3/docs/functions/values-of.html" class="fun">values-of</a> &nbsp; 
+<a href="/r3/docs/functions/words-of.html" class="fun">words-of</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+
+</tr>
+</table>
+</td><td valign=top width="15%">
+<table class=refcard>
+<tr>
+<td class=refcard-area>Series Get</td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/find.html" class=ql-func>find</a><div class="args">
+<span class="funame">find</span>
+  &nbsp;<span class="funarg">series</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funref">/part</span>
+  &nbsp;<span class="funarg">length</span>
+  &nbsp;<span class="funref">/only</span>
+  &nbsp;<span class="funref">/case</span>
+  &nbsp;<span class="funref">/any</span>
+  &nbsp;<span class="funref">/with</span>
+  &nbsp;<span class="funarg">wild</span>
+  &nbsp;<span class="funref">/skip</span>
+  &nbsp;<span class="funarg">size</span>
+  &nbsp;<span class="funref">/last</span>
+  &nbsp;<span class="funref">/reverse</span>
+  &nbsp;<span class="funref">/tail</span>
+  &nbsp;<span class="funref">/match</span>
+<p class="funline"><b>Finds a value in a series and returns the series at the start of it.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>series</span>
+<span class=funtype>[series! gob! port! bitset! typeset! object! none!]</span>
+</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[any-type!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/part</span>
+ - Limits the search to a given length or position
+</p>
+<p class=refline><span class=funtarg>length</span>
+<span class=funtype>[number! series! pair!]</span>
+</p>
+<p class=argline><span class=funtref>/only</span>
+ - Treats a series value as only a single value
+</p>
+<p class=argline><span class=funtref>/case</span>
+ - Characters are case-sensitive
+</p>
+<p class=argline><span class=funtref>/any</span>
+ - Enables the * and ? wildcards
+</p>
+<p class=argline><span class=funtref>/with</span>
+ - Allows custom wildcards
+</p>
+<p class=refline><span class=funtarg>wild</span>
+<span class=funtype>[string!]</span>
+ - Specifies alternates for * and ?
+</p>
+<p class=argline><span class=funtref>/skip</span>
+ - Treat the series as records of fixed size
+</p>
+<p class=refline><span class=funtarg>size</span>
+<span class=funtype>[integer!]</span>
+</p>
+<p class=argline><span class=funtref>/last</span>
+ - Backwards from end of series
+</p>
+<p class=argline><span class=funtref>/reverse</span>
+ - Backwards from the current position
+</p>
+<p class=argline><span class=funtref>/tail</span>
+ - Returns the end of the series
+</p>
+<p class=argline><span class=funtref>/match</span>
+ - Performs comparison and returns the tail of the match
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/select.html" class="fun">select</a> &nbsp; 
+<a href="/r3/docs/functions/pick.html" class="fun">pick</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/select.html" class=ql-func>select</a><div class="args">
+<span class="funame">select</span>
+  &nbsp;<span class="funarg">series</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funref">/part</span>
+  &nbsp;<span class="funarg">length</span>
+  &nbsp;<span class="funref">/only</span>
+  &nbsp;<span class="funref">/case</span>
+  &nbsp;<span class="funref">/any</span>
+  &nbsp;<span class="funref">/with</span>
+  &nbsp;<span class="funarg">wild</span>
+  &nbsp;<span class="funref">/skip</span>
+  &nbsp;<span class="funarg">size</span>
+  &nbsp;<span class="funref">/last</span>
+  &nbsp;<span class="funref">/reverse</span>
+<p class="funline"><b>Finds a value in the series and returns the value or series after it.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>series</span>
+<span class=funtype>[series! port! map! object! none!]</span>
+</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[any-type!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/part</span>
+ - Limits the search to a given length or position
+</p>
+<p class=refline><span class=funtarg>length</span>
+<span class=funtype>[number! series! pair!]</span>
+</p>
+<p class=argline><span class=funtref>/only</span>
+ - Treats a series value as only a single value
+</p>
+<p class=argline><span class=funtref>/case</span>
+ - Characters are case-sensitive
+</p>
+<p class=argline><span class=funtref>/any</span>
+ - Enables the * and ? wildcards
+</p>
+<p class=argline><span class=funtref>/with</span>
+ - Allows custom wildcards
+</p>
+<p class=refline><span class=funtarg>wild</span>
+<span class=funtype>[string!]</span>
+ - Specifies alternates for * and ?
+</p>
+<p class=argline><span class=funtref>/skip</span>
+ - Treat the series as records of fixed size
+</p>
+<p class=refline><span class=funtarg>size</span>
+<span class=funtype>[integer!]</span>
+</p>
+<p class=argline><span class=funtref>/last</span>
+ - Backwards from end of series
+</p>
+<p class=argline><span class=funtref>/reverse</span>
+ - Backwards from the current position
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/find.html" class="fun">find</a> &nbsp; 
+<a href="/r3/docs/functions/switch.html" class="fun">switch</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/first.html" class=ql-func>first</a><div class="args">
+<span class="funame">first</span>
+  &nbsp;<span class="funarg">value</span>
+<p class="funline"><b>Returns the first value of a series.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/pick.html" class="fun">pick</a> &nbsp; 
+<a href="/r3/docs/functions/second.html" class="fun">second</a> &nbsp; 
+<a href="/r3/docs/functions/third.html" class="fun">third</a> &nbsp; 
+<a href="/r3/docs/functions/fourth.html" class="fun">fourth</a> &nbsp; 
+<a href="/r3/docs/functions/fifth.html" class="fun">fifth</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/last.html" class=ql-func>last</a><div class="args">
+<span class="funame">last</span>
+  &nbsp;<span class="funarg">value</span>
+<p class="funline"><b>Returns the last value of a series.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[series! tuple! gob!]</span>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/pick.html" class=ql-func>pick</a><div class="args">
+<span class="funame">pick</span>
+  &nbsp;<span class="funarg">series</span>
+  &nbsp;<span class="funarg">index</span>
+<p class="funline"><b>Returns the value at the specified position in a series.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>series</span>
+<span class=funtype>[series! map! gob! pair! date! time! tuple! bitset! port!]</span>
+</p>
+<p class=argline><span class=funtarg>index</span>
+ - Index offset, symbol, or other value to use as index
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/first.html" class="fun">first</a> &nbsp; 
+<a href="/r3/docs/functions/second.html" class="fun">second</a> &nbsp; 
+<a href="/r3/docs/functions/third.html" class="fun">third</a> &nbsp; 
+<a href="/r3/docs/functions/fourth.html" class="fun">fourth</a> &nbsp; 
+<a href="/r3/docs/functions/fifth.html" class="fun">fifth</a> &nbsp; 
+<a href="/r3/docs/functions/find.html" class="fun">find</a> &nbsp; 
+<a href="/r3/docs/functions/select.html" class="fun">select</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/length-q.html" class=ql-func>length?</a><div class="args">
+<span class="funame">length?</span>
+  &nbsp;<span class="funarg">series</span>
+<p class="funline"><b>Returns the length of the series from the current position.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>series</span>
+<span class=funtype>[series! port! map! tuple! bitset! object! gob! struct! any-word!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/head.html" class="fun">head</a> &nbsp; 
+<a href="/r3/docs/functions/tail-q.html" class="fun">tail?</a> &nbsp; 
+<a href="/r3/docs/functions/offset-q.html" class="fun">offset?</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/index-q.html" class=ql-func>index?</a><div class="args">
+<span class="funame">index?</span>
+  &nbsp;<span class="funarg">series</span>
+  &nbsp;<span class="funref">/xy</span>
+<p class="funline"><b>Returns the index number of the current position in the series.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>series</span>
+<span class=funtype>[series! gob! port!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/xy</span>
+ - Returns index as an XY pair offset
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/length-q.html" class="fun">length?</a> &nbsp; 
+<a href="/r3/docs/functions/offset-q.html" class="fun">offset?</a> &nbsp; 
+<a href="/r3/docs/functions/head.html" class="fun">head</a> &nbsp; 
+<a href="/r3/docs/functions/head-q.html" class="fun">head?</a> &nbsp; 
+<a href="/r3/docs/functions/tail.html" class="fun">tail</a> &nbsp; 
+<a href="/r3/docs/functions/tail-q.html" class="fun">tail?</a> &nbsp; 
+<a href="/r3/docs/functions/pick.html" class="fun">pick</a> &nbsp; 
+<a href="/r3/docs/functions/skip.html" class="fun">skip</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/next.html" class=ql-func>next</a><div class="args">
+<span class="funame">next</span>
+  &nbsp;<span class="funarg">series</span>
+<p class="funline"><b>Returns the series at its next position.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>series</span>
+<span class=funtype>[series! gob! port!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/back.html" class="fun">back</a> &nbsp; 
+<a href="/r3/docs/functions/first.html" class="fun">first</a> &nbsp; 
+<a href="/r3/docs/functions/head.html" class="fun">head</a> &nbsp; 
+<a href="/r3/docs/functions/tail.html" class="fun">tail</a> &nbsp; 
+<a href="/r3/docs/functions/head-q.html" class="fun">head?</a> &nbsp; 
+<a href="/r3/docs/functions/tail-q.html" class="fun">tail?</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/back.html" class=ql-func>back</a><div class="args">
+<span class="funame">back</span>
+  &nbsp;<span class="funarg">series</span>
+<p class="funline"><b>Returns the series at its previous position.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>series</span>
+<span class=funtype>[series! gob! port!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/next.html" class="fun">next</a> &nbsp; 
+<a href="/r3/docs/functions/last.html" class="fun">last</a> &nbsp; 
+<a href="/r3/docs/functions/head.html" class="fun">head</a> &nbsp; 
+<a href="/r3/docs/functions/tail.html" class="fun">tail</a> &nbsp; 
+<a href="/r3/docs/functions/head-q.html" class="fun">head?</a> &nbsp; 
+<a href="/r3/docs/functions/tail-q.html" class="fun">tail?</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/skip.html" class=ql-func>skip</a><div class="args">
+<span class="funame">skip</span>
+  &nbsp;<span class="funarg">series</span>
+  &nbsp;<span class="funarg">offset</span>
+<p class="funline"><b>Returns the series forward or backward from the current position.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>series</span>
+<span class=funtype>[series! gob! port!]</span>
+</p>
+<p class=argline><span class=funtarg>offset</span>
+<span class=funtype>[number! logic! pair!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/at.html" class="fun">at</a> &nbsp; 
+<a href="/r3/docs/functions/index-q.html" class="fun">index?</a> &nbsp; 
+<a href="/r3/docs/functions/next.html" class="fun">next</a> &nbsp; 
+<a href="/r3/docs/functions/back.html" class="fun">back</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard-area>Series Make</td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/make.html" class=ql-func>make</a><div class="args">
+<span class="funame">make</span>
+  &nbsp;<span class="funarg">type</span>
+  &nbsp;<span class="funarg">spec</span>
+<p class="funline"><b>Constructs a specified datatype.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>type</span>
+<span class=funtype>[any-type!]</span>
+ - The datatype or example value
+</p>
+<p class=argline><span class=funtarg>spec</span>
+<span class=funtype>[any-type!]</span>
+ - The attributes of the new value
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/copy.html" class="fun">copy</a> &nbsp; 
+<a href="/r3/docs/functions/type-q.html" class="fun">type?</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/copy.html" class=ql-func>copy</a><div class="args">
+<span class="funame">copy</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funref">/part</span>
+  &nbsp;<span class="funarg">length</span>
+  &nbsp;<span class="funref">/deep</span>
+  &nbsp;<span class="funref">/types</span>
+  &nbsp;<span class="funarg">kinds</span>
+<p class="funline"><b>Copies a series or object.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[series! port! map! object! bitset! any-function!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/part</span>
+ - Limits to a given length or position
+</p>
+<p class=refline><span class=funtarg>length</span>
+<span class=funtype>[number! series! pair!]</span>
+</p>
+<p class=argline><span class=funtref>/deep</span>
+ - Also copies series values within the block
+</p>
+<p class=argline><span class=funtref>/types</span>
+ - What datatypes to copy
+</p>
+<p class=refline><span class=funtarg>kinds</span>
+<span class=funtype>[typeset! datatype!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/make.html" class="fun">make</a> &nbsp; 
+<a href="/r3/docs/functions/form.html" class="fun">form</a> &nbsp; 
+<a href="/r3/docs/functions/mold.html" class="fun">mold</a> &nbsp; 
+<a href="/r3/docs/functions/join.html" class="fun">join</a> &nbsp; 
+<a href="/r3/docs/functions/ajoin.html" class="fun">ajoin</a> &nbsp; 
+<a href="/r3/docs/functions/rejoin.html" class="fun">rejoin</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/join.html" class=ql-func>join</a><div class="args">
+<span class="funame">join</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funarg">rest</span>
+<p class="funline"><b>Concatenates values.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+ - Base value
+</p>
+<p class=argline><span class=funtarg>rest</span>
+ - Value or block of values
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/ajoin.html" class="fun">ajoin</a> &nbsp; 
+<a href="/r3/docs/functions/rejoin.html" class="fun">rejoin</a> &nbsp; 
+<a href="/r3/docs/functions/form.html" class="fun">form</a> &nbsp; 
+<a href="/r3/docs/functions/reform.html" class="fun">reform</a> &nbsp; 
+<a href="/r3/docs/functions/append.html" class="fun">append</a> &nbsp; 
+<a href="/r3/docs/functions/repend.html" class="fun">repend</a> &nbsp; 
+<a href="/r3/docs/functions/mold.html" class="fun">mold</a> &nbsp; 
+<a href="/r3/docs/functions/remold.html" class="fun">remold</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/ajoin.html" class=ql-func>ajoin</a><div class="args">
+<span class="funame">ajoin</span>
+  &nbsp;<span class="funarg">block</span>
+<p class="funline"><b>Reduces and joins a block of values into a new string.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>block</span>
+<span class=funtype>[block!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/join.html" class="fun">join</a> &nbsp; 
+<a href="/r3/docs/functions/rejoin.html" class="fun">rejoin</a> &nbsp; 
+<a href="/r3/docs/functions/form.html" class="fun">form</a> &nbsp; 
+<a href="/r3/docs/functions/reform.html" class="fun">reform</a> &nbsp; 
+<a href="/r3/docs/functions/append.html" class="fun">append</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/rejoin.html" class=ql-func>rejoin</a><div class="args">
+<span class="funame">rejoin</span>
+  &nbsp;<span class="funarg">block</span>
+<p class="funline"><b>Reduces and joins a block of values.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>block</span>
+<span class=funtype>[block!]</span>
+ - Values to reduce and join
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/join.html" class="fun">join</a> &nbsp; 
+<a href="/r3/docs/functions/ajoin.html" class="fun">ajoin</a> &nbsp; 
+<a href="/r3/docs/functions/form.html" class="fun">form</a> &nbsp; 
+<a href="/r3/docs/functions/reform.html" class="fun">reform</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard-area>Series Modify</td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/append.html" class=ql-func>append</a><div class="args">
+<span class="funame">append</span>
+  &nbsp;<span class="funarg">series</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funref">/part</span>
+  &nbsp;<span class="funarg">length</span>
+  &nbsp;<span class="funref">/only</span>
+  &nbsp;<span class="funref">/dup</span>
+  &nbsp;<span class="funarg">count</span>
+<p class="funline"><b>Inserts a value at tail of series and returns the series at head. (Modifies)</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>series</span>
+<span class=funtype>[series! port! map! gob! object! bitset!]</span>
+ - Series at point to insert
+</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[any-type!]</span>
+ - The value to insert
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/part</span>
+ - Limits to a given length or position
+</p>
+<p class=refline><span class=funtarg>length</span>
+<span class=funtype>[number! series! pair!]</span>
+</p>
+<p class=argline><span class=funtref>/only</span>
+ - Only insert a block as a single value (not the contents of the block)
+</p>
+<p class=argline><span class=funtref>/dup</span>
+ - Duplicates the insert a specified number of times
+</p>
+<p class=refline><span class=funtarg>count</span>
+<span class=funtype>[number! pair!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/insert.html" class="fun">insert</a> &nbsp; 
+<a href="/r3/docs/functions/change.html" class="fun">change</a> &nbsp; 
+<a href="/r3/docs/functions/remove.html" class="fun">remove</a> &nbsp; 
+<a href="/r3/docs/functions/repend.html" class="fun">repend</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/repend.html" class=ql-func>repend</a><div class="args">
+<span class="funame">repend</span>
+  &nbsp;<span class="funarg">series</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funref">/part</span>
+  &nbsp;<span class="funarg">length</span>
+  &nbsp;<span class="funref">/only</span>
+  &nbsp;<span class="funref">/dup</span>
+  &nbsp;<span class="funarg">count</span>
+<p class="funline"><b>Appends a reduced value to a series and returns the series head.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>series</span>
+<span class=funtype>[series! port! map! gob! object! bitset!]</span>
+ - Series at point to insert
+</p>
+<p class=argline><span class=funtarg>value</span>
+ - The value to insert
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/part</span>
+ - Limits to a given length or position
+</p>
+<p class=refline><span class=funtarg>length</span>
+<span class=funtype>[number! series! pair!]</span>
+</p>
+<p class=argline><span class=funtref>/only</span>
+ - Inserts a series as a series
+</p>
+<p class=argline><span class=funtref>/dup</span>
+ - Duplicates the insert a specified number of times
+</p>
+<p class=refline><span class=funtarg>count</span>
+<span class=funtype>[number! pair!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/append.html" class="fun">append</a> &nbsp; 
+<a href="/r3/docs/functions/insert.html" class="fun">insert</a> &nbsp; 
+<a href="/r3/docs/functions/reduce.html" class="fun">reduce</a> &nbsp; 
+<a href="/r3/docs/functions/join.html" class="fun">join</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/insert.html" class=ql-func>insert</a><div class="args">
+<span class="funame">insert</span>
+  &nbsp;<span class="funarg">series</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funref">/part</span>
+  &nbsp;<span class="funarg">length</span>
+  &nbsp;<span class="funref">/only</span>
+  &nbsp;<span class="funref">/dup</span>
+  &nbsp;<span class="funarg">count</span>
+<p class="funline"><b>Inserts into a series and returns the series after the insert. (Modifies)</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>series</span>
+<span class=funtype>[series! port! map! gob! object! bitset! port!]</span>
+ - Series at point to insert
+</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[any-type!]</span>
+ - The value to insert
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/part</span>
+ - Limits to a given length or position
+</p>
+<p class=refline><span class=funtarg>length</span>
+<span class=funtype>[number! series! pair!]</span>
+</p>
+<p class=argline><span class=funtref>/only</span>
+ - Only insert a block as a single value (not the contents of the block)
+</p>
+<p class=argline><span class=funtref>/dup</span>
+ - Duplicates the insert a specified number of times
+</p>
+<p class=refline><span class=funtarg>count</span>
+<span class=funtype>[number! pair!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/append.html" class="fun">append</a> &nbsp; 
+<a href="/r3/docs/functions/change.html" class="fun">change</a> &nbsp; 
+<a href="/r3/docs/functions/clear.html" class="fun">clear</a> &nbsp; 
+<a href="/r3/docs/functions/remove.html" class="fun">remove</a> &nbsp; 
+<a href="/r3/docs/functions/join.html" class="fun">join</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/remove.html" class=ql-func>remove</a><div class="args">
+<span class="funame">remove</span>
+  &nbsp;<span class="funarg">series</span>
+  &nbsp;<span class="funref">/part</span>
+  &nbsp;<span class="funarg">length</span>
+<p class="funline"><b>Removes value(s) from a series and returns after the remove. (Modifies)</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>series</span>
+<span class=funtype>[series! gob! port! bitset! none!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/part</span>
+ - Removes to a given length or position
+</p>
+<p class=refline><span class=funtarg>length</span>
+<span class=funtype>[number! series! pair! char!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/append.html" class="fun">append</a> &nbsp; 
+<a href="/r3/docs/functions/change.html" class="fun">change</a> &nbsp; 
+<a href="/r3/docs/functions/clear.html" class="fun">clear</a> &nbsp; 
+<a href="/r3/docs/functions/insert.html" class="fun">insert</a> &nbsp; 
+<a href="/r3/docs/functions/sort.html" class="fun">sort</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/take.html" class=ql-func>take</a><div class="args">
+<span class="funame">take</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funref">/part</span>
+  &nbsp;<span class="funarg">length</span>
+  &nbsp;<span class="funref">/deep</span>
+  &nbsp;<span class="funref">/last</span>
+<p class="funline"><b>Copies and removes from series. (Modifies)</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[series! port! gob! none!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/part</span>
+ - Limits to a given length or position
+</p>
+<p class=refline><span class=funtarg>length</span>
+<span class=funtype>[number! series! pair!]</span>
+</p>
+<p class=argline><span class=funtref>/deep</span>
+ - Also copies series values within the block
+</p>
+<p class=argline><span class=funtref>/last</span>
+ - Take it from the tail end
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/clear.html" class=ql-func>clear</a><div class="args">
+<span class="funame">clear</span>
+  &nbsp;<span class="funarg">series</span>
+<p class="funline"><b>Removes all values. For series, removes from current index to tail and returns tail.  (Modifies)</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>series</span>
+<span class=funtype>[series! port! map! gob! bitset! none!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/remove.html" class="fun">remove</a> &nbsp; 
+<a href="/r3/docs/functions/append.html" class="fun">append</a> &nbsp; 
+<a href="/r3/docs/functions/change.html" class="fun">change</a> &nbsp; 
+<a href="/r3/docs/functions/insert.html" class="fun">insert</a> &nbsp; 
+<a href="/r3/docs/functions/sort.html" class="fun">sort</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/change.html" class=ql-func>change</a><div class="args">
+<span class="funame">change</span>
+  &nbsp;<span class="funarg">series</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funref">/part</span>
+  &nbsp;<span class="funarg">length</span>
+  &nbsp;<span class="funref">/only</span>
+  &nbsp;<span class="funref">/dup</span>
+  &nbsp;<span class="funarg">count</span>
+<p class="funline"><b>Changes a value in a series and returns the series after the change. (Modifies)</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>series</span>
+<span class=funtype>[series! gob! port!]</span>
+ - Series at point to change
+</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[any-type!]</span>
+ - The new value
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/part</span>
+ - Limits the amount to change to a given length or position
+</p>
+<p class=refline><span class=funtarg>length</span>
+<span class=funtype>[number! series! pair!]</span>
+</p>
+<p class=argline><span class=funtref>/only</span>
+ - Only change a block as a single value (not the contents of the block)
+</p>
+<p class=argline><span class=funtref>/dup</span>
+ - Duplicates the change a specified number of times
+</p>
+<p class=refline><span class=funtarg>count</span>
+<span class=funtype>[number! pair!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/append.html" class="fun">append</a> &nbsp; 
+<a href="/r3/docs/functions/clear.html" class="fun">clear</a> &nbsp; 
+<a href="/r3/docs/functions/insert.html" class="fun">insert</a> &nbsp; 
+<a href="/r3/docs/functions/remove.html" class="fun">remove</a> &nbsp; 
+<a href="/r3/docs/functions/sort.html" class="fun">sort</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/replace.html" class=ql-func>replace</a><div class="args">
+<span class="funame">replace</span>
+  &nbsp;<span class="funarg">target</span>
+  &nbsp;<span class="funarg">search</span>
+  &nbsp;<span class="funarg">replace</span>
+  &nbsp;<span class="funref">/all</span>
+  &nbsp;<span class="funref">/case</span>
+  &nbsp;<span class="funref">/tail</span>
+<p class="funline"><b>Replaces a search value with the replace value within the target series.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>target</span>
+<span class=funtype>[series!]</span>
+ - Series that is being modified
+</p>
+<p class=argline><span class=funtarg>search</span>
+ - Value to be replaced (converted if necessary)
+</p>
+<p class=argline><span class=funtarg>replace</span>
+ - Value to replace with (called each time if a function)
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/all</span>
+ - Replace all occurrences
+</p>
+<p class=argline><span class=funtref>/case</span>
+ - Case-sensitive replacement
+</p>
+<p class=argline><span class=funtref>/tail</span>
+ - Return target after the last replacement position
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/insert.html" class="fun">insert</a> &nbsp; 
+<a href="/r3/docs/functions/remove.html" class="fun">remove</a> &nbsp; 
+<a href="/r3/docs/functions/change.html" class="fun">change</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/trim.html" class=ql-func>trim</a><div class="args">
+<span class="funame">trim</span>
+  &nbsp;<span class="funarg">series</span>
+  &nbsp;<span class="funref">/head</span>
+  &nbsp;<span class="funref">/tail</span>
+  &nbsp;<span class="funref">/auto</span>
+  &nbsp;<span class="funref">/lines</span>
+  &nbsp;<span class="funref">/all</span>
+  &nbsp;<span class="funref">/with</span>
+  &nbsp;<span class="funarg">str</span>
+<p class="funline"><b>Removes space from a string or NONE from a block or object.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>series</span>
+<span class=funtype>[series! object! error! module!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/head</span>
+ - Removes only from the head
+</p>
+<p class=argline><span class=funtref>/tail</span>
+ - Removes only from the tail
+</p>
+<p class=argline><span class=funtref>/auto</span>
+ - Auto indents lines relative to first line
+</p>
+<p class=argline><span class=funtref>/lines</span>
+ - Removes all line breaks and extra spaces
+</p>
+<p class=argline><span class=funtref>/all</span>
+ - Removes all whitespace
+</p>
+<p class=argline><span class=funtref>/with</span>
+</p>
+<p class=refline><span class=funtarg>str</span>
+<span class=funtype>[char! string! binary! integer!]</span>
+ - Same as /all, but removes characters in 'str'
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/parse.html" class="fun">parse</a> &nbsp; 
+<a href="/r3/docs/functions/remove.html" class="fun">remove</a> &nbsp; 
+<a href="/r3/docs/functions/clear.html" class="fun">clear</a> &nbsp; 
+<a href="/r3/docs/functions/trim-last.html" class="fun">trim-last</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/split.html" class=ql-func>split</a><div class="args">
+<span class="funame">split</span>
+  &nbsp;<span class="funarg">series</span>
+  &nbsp;<span class="funarg">dlm</span>
+  &nbsp;<span class="funref">/into</span>
+<p class="funline"><b>Split a series into pieces; fixed or variable size, fixed number, or at delimiters</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>series</span>
+<span class=funtype>[series!]</span>
+ - The series to split
+</p>
+<p class=argline><span class=funtarg>dlm</span>
+<span class=funtype>[block! integer! char! bitset! any-string!]</span>
+ - Split size, delimiter(s), or rule(s).
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/into</span>
+ - If dlm is an integer, split into n pieces, rather than pieces of length n.
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/extract.html" class="fun">extract</a> &nbsp; 
+<a href="/r3/docs/functions/parse.html" class="fun">parse</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/sort.html" class=ql-func>sort</a><div class="args">
+<span class="funame">sort</span>
+  &nbsp;<span class="funarg">series</span>
+  &nbsp;<span class="funref">/case</span>
+  &nbsp;<span class="funref">/skip</span>
+  &nbsp;<span class="funarg">size</span>
+  &nbsp;<span class="funref">/compare</span>
+  &nbsp;<span class="funarg">comparator</span>
+  &nbsp;<span class="funref">/part</span>
+  &nbsp;<span class="funarg">length</span>
+  &nbsp;<span class="funref">/all</span>
+  &nbsp;<span class="funref">/reverse</span>
+<p class="funline"><b>Sorts a series. (Modifies)</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>series</span>
+<span class=funtype>[series!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/case</span>
+ - Case sensitive sort
+</p>
+<p class=argline><span class=funtref>/skip</span>
+ - Treat the series as records of fixed size
+</p>
+<p class=refline><span class=funtarg>size</span>
+<span class=funtype>[integer!]</span>
+ - Size of each record
+</p>
+<p class=argline><span class=funtref>/compare</span>
+ - Comparator offset, block or function
+</p>
+<p class=refline><span class=funtarg>comparator</span>
+<span class=funtype>[integer! block! any-function!]</span>
+</p>
+<p class=argline><span class=funtref>/part</span>
+ - Sort only part of a series
+</p>
+<p class=refline><span class=funtarg>length</span>
+<span class=funtype>[number! series!]</span>
+ - Length of series to sort
+</p>
+<p class=argline><span class=funtref>/all</span>
+ - Compare all fields
+</p>
+<p class=argline><span class=funtref>/reverse</span>
+ - Reverse sort order
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/append.html" class="fun">append</a> &nbsp; 
+<a href="/r3/docs/functions/change.html" class="fun">change</a> &nbsp; 
+<a href="/r3/docs/functions/clear.html" class="fun">clear</a> &nbsp; 
+<a href="/r3/docs/functions/insert.html" class="fun">insert</a> &nbsp; 
+<a href="/r3/docs/functions/remove.html" class="fun">remove</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/swap.html" class=ql-func>swap</a><div class="args">
+<span class="funame">swap</span>
+  &nbsp;<span class="funarg">series1</span>
+  &nbsp;<span class="funarg">series2</span>
+<p class="funline"><b>Swaps elements of a series. (Modifies)</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>series1</span>
+<span class=funtype>[series! gob!]</span>
+</p>
+<p class=argline><span class=funtarg>series2</span>
+<span class=funtype>[series! gob!]</span>
+</div></td>
+</tr>
+<tr>
+<td class=refcard-area>Sets</td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/unique.html" class=ql-func>unique</a><div class="args">
+<span class="funame">unique</span>
+  &nbsp;<span class="funarg">set1</span>
+  &nbsp;<span class="funref">/case</span>
+  &nbsp;<span class="funref">/skip</span>
+  &nbsp;<span class="funarg">size</span>
+<p class="funline"><b>Returns the data set with duplicates removed.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>set1</span>
+<span class=funtype>[block! string! binary! bitset! typeset!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/case</span>
+ - Use case-sensitive comparison (except bitsets)
+</p>
+<p class=argline><span class=funtref>/skip</span>
+ - Treat the series as records of fixed size
+</p>
+<p class=refline><span class=funtarg>size</span>
+<span class=funtype>[integer!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/intersect.html" class="fun">intersect</a> &nbsp; 
+<a href="/r3/docs/functions/union.html" class="fun">union</a> &nbsp; 
+<a href="/r3/docs/functions/difference.html" class="fun">difference</a> &nbsp; 
+<a href="/r3/docs/functions/exclude.html" class="fun">exclude</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/union.html" class=ql-func>union</a><div class="args">
+<span class="funame">union</span>
+  &nbsp;<span class="funarg">set1</span>
+  &nbsp;<span class="funarg">set2</span>
+  &nbsp;<span class="funref">/case</span>
+  &nbsp;<span class="funref">/skip</span>
+  &nbsp;<span class="funarg">size</span>
+<p class="funline"><b>Returns the union of two data sets.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>set1</span>
+<span class=funtype>[block! string! binary! bitset! typeset!]</span>
+ - first set
+</p>
+<p class=argline><span class=funtarg>set2</span>
+<span class=funtype>[block! string! binary! bitset! typeset!]</span>
+ - second set
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/case</span>
+ - Use case-sensitive comparison
+</p>
+<p class=argline><span class=funtref>/skip</span>
+ - Treat the series as records of fixed size
+</p>
+<p class=refline><span class=funtarg>size</span>
+<span class=funtype>[integer!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/difference.html" class="fun">difference</a> &nbsp; 
+<a href="/r3/docs/functions/intersect.html" class="fun">intersect</a> &nbsp; 
+<a href="/r3/docs/functions/exclude.html" class="fun">exclude</a> &nbsp; 
+<a href="/r3/docs/functions/unique.html" class="fun">unique</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/intersect.html" class=ql-func>intersect</a><div class="args">
+<span class="funame">intersect</span>
+  &nbsp;<span class="funarg">set1</span>
+  &nbsp;<span class="funarg">set2</span>
+  &nbsp;<span class="funref">/case</span>
+  &nbsp;<span class="funref">/skip</span>
+  &nbsp;<span class="funarg">size</span>
+<p class="funline"><b>Returns the intersection of two data sets.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>set1</span>
+<span class=funtype>[block! string! binary! bitset! typeset!]</span>
+ - first set
+</p>
+<p class=argline><span class=funtarg>set2</span>
+<span class=funtype>[block! string! binary! bitset! typeset!]</span>
+ - second set
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/case</span>
+ - Uses case-sensitive comparison
+</p>
+<p class=argline><span class=funtref>/skip</span>
+ - Treat the series as records of fixed size
+</p>
+<p class=refline><span class=funtarg>size</span>
+<span class=funtype>[integer!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/difference.html" class="fun">difference</a> &nbsp; 
+<a href="/r3/docs/functions/union.html" class="fun">union</a> &nbsp; 
+<a href="/r3/docs/functions/exclude.html" class="fun">exclude</a> &nbsp; 
+<a href="/r3/docs/functions/unique.html" class="fun">unique</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/difference.html" class=ql-func>difference</a><div class="args">
+<span class="funame">difference</span>
+  &nbsp;<span class="funarg">set1</span>
+  &nbsp;<span class="funarg">set2</span>
+  &nbsp;<span class="funref">/case</span>
+  &nbsp;<span class="funref">/skip</span>
+  &nbsp;<span class="funarg">size</span>
+<p class="funline"><b>Returns the difference of two data sets or dates.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>set1</span>
+<span class=funtype>[block! string! binary! bitset! date! typeset!]</span>
+ - First data set
+</p>
+<p class=argline><span class=funtarg>set2</span>
+<span class=funtype>[block! string! binary! bitset! date! typeset!]</span>
+ - Second data set
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/case</span>
+ - Uses case-sensitive comparison
+</p>
+<p class=argline><span class=funtref>/skip</span>
+ - Treat the series as records of fixed size
+</p>
+<p class=refline><span class=funtarg>size</span>
+<span class=funtype>[integer!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/intersect.html" class="fun">intersect</a> &nbsp; 
+<a href="/r3/docs/functions/union.html" class="fun">union</a> &nbsp; 
+<a href="/r3/docs/functions/exclude.html" class="fun">exclude</a> &nbsp; 
+<a href="/r3/docs/functions/unique.html" class="fun">unique</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/exclude.html" class=ql-func>exclude</a><div class="args">
+<span class="funame">exclude</span>
+  &nbsp;<span class="funarg">set1</span>
+  &nbsp;<span class="funarg">set2</span>
+  &nbsp;<span class="funref">/case</span>
+  &nbsp;<span class="funref">/skip</span>
+  &nbsp;<span class="funarg">size</span>
+<p class="funline"><b>Returns the first data set less the second data set.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>set1</span>
+<span class=funtype>[block! string! binary! bitset! typeset!]</span>
+ - First data set
+</p>
+<p class=argline><span class=funtarg>set2</span>
+<span class=funtype>[block! string! binary! bitset! typeset!]</span>
+ - Second data set
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/case</span>
+ - Uses case-sensitive comparison
+</p>
+<p class=argline><span class=funtref>/skip</span>
+ - Treat the series as records of fixed size
+</p>
+<p class=refline><span class=funtarg>size</span>
+<span class=funtype>[integer!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/difference.html" class="fun">difference</a> &nbsp; 
+<a href="/r3/docs/functions/intersect.html" class="fun">intersect</a> &nbsp; 
+<a href="/r3/docs/functions/union.html" class="fun">union</a> &nbsp; 
+<a href="/r3/docs/functions/unique.html" class="fun">unique</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+
+</tr>
+</table>
+</td><td valign=top width="15%">
+<table class=refcard>
+<tr>
+<td class=refcard-area>Console</td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/print.html" class=ql-func>print</a><div class="args">
+<span class="funame">print</span>
+  &nbsp;<span class="funarg">value</span>
+<p class="funline"><b>Outputs a value followed by a line break.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[any-type!]</span>
+ - The value to print
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/prin.html" class="fun">prin</a> &nbsp; 
+<a href="/r3/docs/functions/probe.html" class="fun">probe</a> &nbsp; 
+<a href="/r3/docs/functions/z-q-q.html" class="fun">??</a> &nbsp; 
+<a href="/r3/docs/functions/form.html" class="fun">form</a> &nbsp; 
+<a href="/r3/docs/functions/reform.html" class="fun">reform</a> &nbsp; 
+<a href="/r3/docs/functions/format.html" class="fun">format</a> &nbsp; 
+<a href="/r3/docs/functions/mold.html" class="fun">mold</a> &nbsp; 
+<a href="/r3/docs/functions/remold.html" class="fun">remold</a> &nbsp; 
+<a href="/r3/docs/functions/ajoin.html" class="fun">ajoin</a> &nbsp; 
+<a href="/r3/docs/functions/join.html" class="fun">join</a> &nbsp; 
+<a href="/r3/docs/functions/rejoin.html" class="fun">rejoin</a> &nbsp; 
+<a href="/r3/docs/functions/input.html" class="fun">input</a> &nbsp; 
+<a href="/r3/docs/functions/echo.html" class="fun">echo</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/probe.html" class=ql-func>probe</a><div class="args">
+<span class="funame">probe</span>
+  &nbsp;<span class="funarg">value</span>
+<p class="funline"><b>Debug print a molded value and returns that same value.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[any-type!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/z-q-q.html" class="fun">??</a> &nbsp; 
+<a href="/r3/docs/functions/mold.html" class="fun">mold</a> &nbsp; 
+<a href="/r3/docs/functions/print.html" class="fun">print</a> &nbsp; 
+<a href="/r3/docs/functions/trace.html" class="fun">trace</a> &nbsp; 
+<a href="/r3/docs/functions/source.html" class="fun">source</a> &nbsp; 
+<a href="/r3/docs/functions/help.html" class="fun">help</a> &nbsp; 
+<a href="/r3/docs/functions/what.html" class="fun">what</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/input.html" class=ql-func>input</a><div class="args">
+<span class="funame">input</span>
+<p class="funline"><b>Inputs a string from the console. New-line character is removed.</b></p>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/input-q.html" class="fun">input?</a> &nbsp; 
+<a href="/r3/docs/functions/ask.html" class="fun">ask</a> &nbsp; 
+<a href="/r3/docs/functions/confirm.html" class="fun">confirm</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/ask.html" class=ql-func>ask</a><div class="args">
+<span class="funame">ask</span>
+  &nbsp;<span class="funarg">question</span>
+  &nbsp;<span class="funref">/hide</span>
+<p class="funline"><b>Ask the user for input.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>question</span>
+<span class=funtype>[series!]</span>
+ - Prompt to user
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/hide</span>
+ - mask input with *
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/confirm.html" class="fun">confirm</a> &nbsp; 
+<a href="/r3/docs/functions/input.html" class="fun">input</a> &nbsp; 
+<a href="/r3/docs/functions/prin.html" class="fun">prin</a> &nbsp; 
+<a href="/r3/docs/functions/print.html" class="fun">print</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/confirm.html" class=ql-func>confirm</a><div class="args">
+<span class="funame">confirm</span>
+  &nbsp;<span class="funarg">question</span>
+  &nbsp;<span class="funref">/with</span>
+  &nbsp;<span class="funarg">choices</span>
+<p class="funline"><b>Confirms a user choice.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>question</span>
+<span class=funtype>[series!]</span>
+ - Prompt to user
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/with</span>
+</p>
+<p class=refline><span class=funtarg>choices</span>
+<span class=funtype>[string! block!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/ask.html" class="fun">ask</a> &nbsp; 
+<a href="/r3/docs/functions/input.html" class="fun">input</a> &nbsp; 
+<a href="/r3/docs/functions/prin.html" class="fun">prin</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/halt.html" class=ql-func>halt</a><div class="args">
+<span class="funame">halt</span>
+<p class="funline"><b>Stops evaluation and returns to the input prompt.</b></p>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/quit.html" class="fun">quit</a> &nbsp; 
+<a href="/r3/docs/functions/break.html" class="fun">break</a> &nbsp; 
+<a href="/r3/docs/functions/exit.html" class="fun">exit</a> &nbsp; 
+<a href="/r3/docs/functions/catch.html" class="fun">catch</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/quit.html" class=ql-func>quit</a><div class="args">
+<span class="funame">quit</span>
+  &nbsp;<span class="funref">/return</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funref">/now</span>
+<p class="funline"><b>Stops evaluation and exits the interpreter.</b></p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/return</span>
+ - Returns a value (to prior script or command shell)
+</p>
+<p class=refline><span class=funtarg>value</span>
+ - Note: use integers for command shell
+</p>
+<p class=argline><span class=funtref>/now</span>
+ - Quit immediately
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/halt.html" class="fun">halt</a> &nbsp; 
+<a href="/r3/docs/functions/exit.html" class="fun">exit</a> &nbsp; 
+<a href="/r3/docs/functions/q.html" class="fun">q</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard-area>Output</td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/mold.html" class=ql-func>mold</a><div class="args">
+<span class="funame">mold</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funref">/only</span>
+  &nbsp;<span class="funref">/all</span>
+  &nbsp;<span class="funref">/flat</span>
+<p class="funline"><b>Converts a value to a REBOL-readable string.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[any-type!]</span>
+ - The value to mold
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/only</span>
+ - For a block value, mold only its contents, no outer []
+</p>
+<p class=argline><span class=funtref>/all</span>
+ - Mold in serialized format
+</p>
+<p class=argline><span class=funtref>/flat</span>
+ - No indentation
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/form.html" class="fun">form</a> &nbsp; 
+<a href="/r3/docs/functions/remold.html" class="fun">remold</a> &nbsp; 
+<a href="/r3/docs/functions/join.html" class="fun">join</a> &nbsp; 
+<a href="/r3/docs/functions/insert.html" class="fun">insert</a> &nbsp; 
+<a href="/r3/docs/functions/reduce.html" class="fun">reduce</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/form.html" class=ql-func>form</a><div class="args">
+<span class="funame">form</span>
+  &nbsp;<span class="funarg">value</span>
+<p class="funline"><b>Converts a value to a string.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[any-type!]</span>
+ - The value to form
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/print.html" class="fun">print</a> &nbsp; 
+<a href="/r3/docs/functions/reform.html" class="fun">reform</a> &nbsp; 
+<a href="/r3/docs/functions/mold.html" class="fun">mold</a> &nbsp; 
+<a href="/r3/docs/functions/remold.html" class="fun">remold</a> &nbsp; 
+<a href="/r3/docs/functions/ajoin.html" class="fun">ajoin</a> &nbsp; 
+<a href="/r3/docs/functions/join.html" class="fun">join</a> &nbsp; 
+<a href="/r3/docs/functions/rejoin.html" class="fun">rejoin</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/to.html" class=ql-func>to</a><div class="args">
+<span class="funame">to</span>
+  &nbsp;<span class="funarg">type</span>
+  &nbsp;<span class="funarg">spec</span>
+<p class="funline"><b>Converts to a specified datatype.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>type</span>
+<span class=funtype>[any-type!]</span>
+ - The datatype or example value
+</p>
+<p class=argline><span class=funtarg>spec</span>
+<span class=funtype>[any-type!]</span>
+ - The attributes of the new value
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/make.html" class="fun">make</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard-area>Files/Ports</td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/read.html" class=ql-func>read</a><div class="args">
+<span class="funame">read</span>
+  &nbsp;<span class="funarg">source</span>
+  &nbsp;<span class="funref">/part</span>
+  &nbsp;<span class="funarg">length</span>
+  &nbsp;<span class="funref">/seek</span>
+  &nbsp;<span class="funarg">index</span>
+  &nbsp;<span class="funref">/string</span>
+  &nbsp;<span class="funref">/lines</span>
+<p class="funline"><b>Read from a file, URL, or other port.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>source</span>
+<span class=funtype>[port! file! url! block!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/part</span>
+ - Partial read a given number of units (source relative)
+</p>
+<p class=refline><span class=funtarg>length</span>
+<span class=funtype>[number!]</span>
+</p>
+<p class=argline><span class=funtref>/seek</span>
+ - Read from a specific position (source relative)
+</p>
+<p class=refline><span class=funtarg>index</span>
+<span class=funtype>[number!]</span>
+</p>
+<p class=argline><span class=funtref>/string</span>
+ - Convert UTF and line terminators to standard text string
+</p>
+<p class=argline><span class=funtref>/lines</span>
+ - Convert to block of strings (implies /string)
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/write.html" class="fun">write</a> &nbsp; 
+<a href="/r3/docs/functions/open.html" class="fun">open</a> &nbsp; 
+<a href="/r3/docs/functions/close.html" class="fun">close</a> &nbsp; 
+<a href="/r3/docs/functions/load.html" class="fun">load</a> &nbsp; 
+<a href="/r3/docs/functions/save.html" class="fun">save</a> &nbsp; 
+<a href="/r3/docs/functions/set-modes.html" class="fun">set-modes</a> &nbsp; 
+<a href="/r3/docs/functions/get-modes.html" class="fun">get-modes</a> &nbsp; 
+<a href="/r3/docs/functions/file.html" class="fun">file!</a> &nbsp; 
+<a href="/r3/docs/functions/url.html" class="fun">url!</a> &nbsp; 
+<a href="/r3/docs/functions/port.html" class="fun">port!</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/write.html" class=ql-func>write</a><div class="args">
+<span class="funame">write</span>
+  &nbsp;<span class="funarg">destination</span>
+  &nbsp;<span class="funarg">data</span>
+  &nbsp;<span class="funref">/part</span>
+  &nbsp;<span class="funarg">length</span>
+  &nbsp;<span class="funref">/seek</span>
+  &nbsp;<span class="funarg">index</span>
+  &nbsp;<span class="funref">/append</span>
+  &nbsp;<span class="funref">/allow</span>
+  &nbsp;<span class="funarg">access</span>
+  &nbsp;<span class="funref">/lines</span>
+<p class="funline"><b>Writes to a file, URL, or other port - auto-converts text strings.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>destination</span>
+<span class=funtype>[port! file! url! block!]</span>
+</p>
+<p class=argline><span class=funtarg>data</span>
+<span class=funtype>[binary! string! block!]</span>
+ - Data to write (non-binary converts to UTF-8)
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/part</span>
+ - Partial write a given number of units
+</p>
+<p class=refline><span class=funtarg>length</span>
+<span class=funtype>[number!]</span>
+</p>
+<p class=argline><span class=funtref>/seek</span>
+ - Write at a specific position
+</p>
+<p class=refline><span class=funtarg>index</span>
+<span class=funtype>[number!]</span>
+</p>
+<p class=argline><span class=funtref>/append</span>
+ - Write data at end of file
+</p>
+<p class=argline><span class=funtref>/allow</span>
+ - Specifies protection attributes
+</p>
+<p class=refline><span class=funtarg>access</span>
+<span class=funtype>[block!]</span>
+</p>
+<p class=argline><span class=funtref>/lines</span>
+ - Write each value in a block as a separate line
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/read.html" class="fun">read</a> &nbsp; 
+<a href="/r3/docs/functions/open.html" class="fun">open</a> &nbsp; 
+<a href="/r3/docs/functions/close.html" class="fun">close</a> &nbsp; 
+<a href="/r3/docs/functions/load.html" class="fun">load</a> &nbsp; 
+<a href="/r3/docs/functions/save.html" class="fun">save</a> &nbsp; 
+<a href="/r3/docs/functions/file.html" class="fun">file!</a> &nbsp; 
+<a href="/r3/docs/functions/url.html" class="fun">url!</a> &nbsp; 
+<a href="/r3/docs/functions/form.html" class="fun">form</a> &nbsp; 
+<a href="/r3/docs/functions/set-modes.html" class="fun">set-modes</a> &nbsp; 
+<a href="/r3/docs/functions/get-modes.html" class="fun">get-modes</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/load.html" class=ql-func>load</a><div class="args">
+<span class="funame">load</span>
+  &nbsp;<span class="funarg">source</span>
+  &nbsp;<span class="funref">/header</span>
+  &nbsp;<span class="funref">/next</span>
+  &nbsp;<span class="funref">/all</span>
+  &nbsp;<span class="funref">/unbound</span>
+<p class="funline"><b>Loads a file, URL, or string.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>source</span>
+<span class=funtype>[file! url! string! binary! block!]</span>
+ - Source or block of sources
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/header</span>
+ - Includes REBOL header object if present. Preempts /all.
+</p>
+<p class=argline><span class=funtref>/next</span>
+ - Load the next value only. Return block with value and new position.
+</p>
+<p class=argline><span class=funtref>/all</span>
+ - Load all values. Does not evaluate REBOL header.
+</p>
+<p class=argline><span class=funtref>/unbound</span>
+ - Do not bind the block.
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/save.html" class="fun">save</a> &nbsp; 
+<a href="/r3/docs/functions/read.html" class="fun">read</a> &nbsp; 
+<a href="/r3/docs/functions/do.html" class="fun">do</a> &nbsp; 
+<a href="/r3/docs/functions/import.html" class="fun">import</a> &nbsp; 
+<a href="/r3/docs/functions/bind.html" class="fun">bind</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/save.html" class=ql-func>save</a><div class="args">
+<span class="funame">save</span>
+  &nbsp;<span class="funarg">where</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funref">/header</span>
+  &nbsp;<span class="funarg">header-data</span>
+  &nbsp;<span class="funref">/all</span>
+<p class="funline"><b>Saves a value or a block to a file, URL, or into a string.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>where</span>
+<span class=funtype>[file! url! binary! string! none!]</span>
+ - Where to save (suffix determines encoding)
+</p>
+<p class=argline><span class=funtarg>value</span>
+ - Value to save
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/header</span>
+ - Save it with a header
+</p>
+<p class=refline><span class=funtarg>header-data</span>
+<span class=funtype>[block! object! logic!]</span>
+ - Header block, object, or take object from value
+</p>
+<p class=argline><span class=funtref>/all</span>
+ - Save in serialized format
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/load.html" class="fun">load</a> &nbsp; 
+<a href="/r3/docs/functions/mold.html" class="fun">mold</a> &nbsp; 
+<a href="/r3/docs/functions/write.html" class="fun">write</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/open.html" class=ql-func>open</a><div class="args">
+<span class="funame">open</span>
+  &nbsp;<span class="funarg">spec</span>
+  &nbsp;<span class="funref">/new</span>
+  &nbsp;<span class="funref">/read</span>
+  &nbsp;<span class="funref">/write</span>
+  &nbsp;<span class="funref">/seek</span>
+  &nbsp;<span class="funref">/allow</span>
+  &nbsp;<span class="funarg">access</span>
+<p class="funline"><b>Opens a port. Makes a new port from a specification, if necessary.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>spec</span>
+<span class=funtype>[port! file! url! block!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/new</span>
+ - Create new file - if it exists, reset it (truncate)
+</p>
+<p class=argline><span class=funtref>/read</span>
+ - Open for read access
+</p>
+<p class=argline><span class=funtref>/write</span>
+ - Open for write access
+</p>
+<p class=argline><span class=funtref>/seek</span>
+ - Optimize for random access
+</p>
+<p class=argline><span class=funtref>/allow</span>
+ - Specifies protection attributes
+</p>
+<p class=refline><span class=funtarg>access</span>
+<span class=funtype>[block!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/close.html" class="fun">close</a> &nbsp; 
+<a href="/r3/docs/functions/load.html" class="fun">load</a> &nbsp; 
+<a href="/r3/docs/functions/do.html" class="fun">do</a> &nbsp; 
+<a href="/r3/docs/functions/insert.html" class="fun">insert</a> &nbsp; 
+<a href="/r3/docs/functions/remove.html" class="fun">remove</a> &nbsp; 
+<a href="/r3/docs/functions/read.html" class="fun">read</a> &nbsp; 
+<a href="/r3/docs/functions/write.html" class="fun">write</a> &nbsp; 
+<a href="/r3/docs/functions/query.html" class="fun">query</a> &nbsp; 
+<a href="/r3/docs/functions/get-modes.html" class="fun">get-modes</a> &nbsp; 
+<a href="/r3/docs/functions/set-modes.html" class="fun">set-modes</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/close.html" class=ql-func>close</a><div class="args">
+<span class="funame">close</span>
+  &nbsp;<span class="funarg">port</span>
+<p class="funline"><b>Closes a port.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>port</span>
+<span class=funtype>[port!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/open.html" class="fun">open</a> &nbsp; 
+<a href="/r3/docs/functions/load.html" class="fun">load</a> &nbsp; 
+<a href="/r3/docs/functions/do.html" class="fun">do</a> &nbsp; 
+<a href="/r3/docs/functions/send.html" class="fun">send</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/delete.html" class=ql-func>delete</a><div class="args">
+<span class="funame">delete</span>
+  &nbsp;<span class="funarg">port</span>
+<p class="funline"><b>Send port a delete request.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>port</span>
+<span class=funtype>[port! file! url! block!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/create.html" class="fun">create</a> &nbsp; 
+<a href="/r3/docs/functions/exists-q.html" class="fun">exists?</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/exists-q.html" class=ql-func>exists?</a><div class="args">
+<span class="funame">exists?</span>
+  &nbsp;<span class="funarg">target</span>
+<p class="funline"><b>Returns the type of a file or URL if it exists, otherwise none.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>target</span>
+<span class=funtype>[file! url!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/read.html" class="fun">read</a> &nbsp; 
+<a href="/r3/docs/functions/write.html" class="fun">write</a> &nbsp; 
+<a href="/r3/docs/functions/delete.html" class="fun">delete</a> &nbsp; 
+<a href="/r3/docs/functions/modified-q.html" class="fun">modified?</a> &nbsp; 
+<a href="/r3/docs/functions/size-q.html" class="fun">size?</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/size-q.html" class=ql-func>size?</a><div class="args">
+<span class="funame">size?</span>
+  &nbsp;<span class="funarg">target</span>
+<p class="funline"><b>Returns the size of a file.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>target</span>
+<span class=funtype>[file! url!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/modified-q.html" class="fun">modified?</a> &nbsp; 
+<a href="/r3/docs/functions/exists-q.html" class="fun">exists?</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/modified-q.html" class=ql-func>modified?</a><div class="args">
+<span class="funame">modified?</span>
+  &nbsp;<span class="funarg">target</span>
+<p class="funline"><b>Returns the last modified date of a file.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>target</span>
+<span class=funtype>[file! url!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/exists-q.html" class="fun">exists?</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/suffix-q.html" class=ql-func>suffix?</a><div class="args">
+<span class="funame">suffix?</span>
+  &nbsp;<span class="funarg">path</span>
+<p class="funline"><b>Return the file suffix of a filename or url. Else, NONE.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>path</span>
+<span class=funtype>[file! url! string!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/find.html" class="fun">find</a> &nbsp; 
+<a href="/r3/docs/functions/split-path.html" class="fun">split-path</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/dir-q.html" class=ql-func>dir?</a><div class="args">
+<span class="funame">dir?</span>
+  &nbsp;<span class="funarg">target</span>
+<p class="funline"><b>Returns TRUE if the file or url ends with a slash (or backslash).</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>target</span>
+<span class=funtype>[file! url!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/make-dir.html" class="fun">make-dir</a> &nbsp; 
+<a href="/r3/docs/functions/modified-q.html" class="fun">modified?</a> &nbsp; 
+<a href="/r3/docs/functions/exists-q.html" class="fun">exists?</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/split-path.html" class=ql-func>split-path</a><div class="args">
+<span class="funame">split-path</span>
+  &nbsp;<span class="funarg">target</span>
+<p class="funline"><b>Splits and returns directory path and file as a block.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>target</span>
+<span class=funtype>[file! url! string!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/clean-path.html" class="fun">clean-path</a> &nbsp; 
+<a href="/r3/docs/functions/suffix-q.html" class="fun">suffix?</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/dirize.html" class=ql-func>dirize</a><div class="args">
+<span class="funame">dirize</span>
+  &nbsp;<span class="funarg">path</span>
+<p class="funline"><b>Returns a copy of the path turned into a directory.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>path</span>
+<span class=funtype>[file! string! url!]</span>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/to-local-file.html" class=ql-func>to-local-file</a><div class="args">
+<span class="funame">to-local-file</span>
+  &nbsp;<span class="funarg">path</span>
+  &nbsp;<span class="funref">/full</span>
+<p class="funline"><b>Converts a REBOL file path to the local system file path.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>path</span>
+<span class=funtype>[file! string!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/full</span>
+ - Prepends current dir for full path (for relative paths only)
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/to-rebol-file.html" class="fun">to-rebol-file</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard-area>Schemes</td>
+</tr>
+<tr>
+<td class=refcard>file</td>
+</tr>
+<tr>
+<td class=refcard>http</td>
+</tr>
+<tr>
+<td class=refcard>ftp</td>
+</tr>
+<tr>
+<td class=refcard>pop</td>
+</tr>
+<tr>
+<td class=refcard>imap</td>
+</tr>
+<tr>
+<td class=refcard>smtp</td>
+</tr>
+<tr>
+<td class=refcard>dns</td>
+</tr>
+
+</tr>
+</table>
+</td><td valign=top width="15%">
+<table class=refcard>
+<tr>
+<td class=refcard-area>Context</td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/object.html" class=ql-func>object</a><div class="args">
+<span class="funame">object</span>
+  &nbsp;<span class="funarg">blk</span>
+<p class="funline"><b>Defines a unique object.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>blk</span>
+<span class=funtype>[block!]</span>
+ - Object words and values.
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/module.html" class=ql-func>module</a><div class="args">
+<span class="funame">module</span>
+  &nbsp;<span class="funarg">spec</span>
+  &nbsp;<span class="funarg">body</span>
+<p class="funline"><b>Creates a module.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>spec</span>
+<span class=funtype>[block!]</span>
+ - Name or spec block
+</p>
+<p class=argline><span class=funtarg>body</span>
+<span class=funtype>[block!]</span>
+ - The body block of the module
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/import.html" class=ql-func>import</a><div class="args">
+<span class="funame">import</span>
+  &nbsp;<span class="funarg">module</span>
+  &nbsp;<span class="funref">/version</span>
+  &nbsp;<span class="funarg">ver</span>
+  &nbsp;<span class="funref">/check</span>
+  &nbsp;<span class="funarg">sum</span>
+  &nbsp;<span class="funref">/isolate</span>
+  &nbsp;<span class="funref">/only</span>
+<p class="funline"><b>Imports a module; locate, load, make, and setup its bindings.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>module</span>
+<span class=funtype>[word! file! url! module! block!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/version</span>
+</p>
+<p class=refline><span class=funtarg>ver</span>
+<span class=funtype>[tuple!]</span>
+ - Module must be this version or greater
+</p>
+<p class=argline><span class=funtref>/check</span>
+</p>
+<p class=refline><span class=funtarg>sum</span>
+<span class=funtype>[binary!]</span>
+ - Module checksum as (checksum/secure of mold/flat)
+</p>
+<p class=argline><span class=funtref>/isolate</span>
+ - Force module to create and use its own non-shared global namespace
+</p>
+<p class=argline><span class=funtref>/only</span>
+ - Load and return module, but don't export to system
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/do.html" class="fun">do</a> &nbsp; 
+<a href="/r3/docs/functions/load.html" class="fun">load</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/construct.html" class=ql-func>construct</a><div class="args">
+<span class="funame">construct</span>
+  &nbsp;<span class="funarg">block</span>
+  &nbsp;<span class="funref">/with</span>
+  &nbsp;<span class="funarg">object</span>
+  &nbsp;<span class="funref">/only</span>
+<p class="funline"><b>Creates an object with scant (safe) evaluation.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>block</span>
+<span class=funtype>[block! string! binary!]</span>
+ - Specification
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/with</span>
+ - Default object
+</p>
+<p class=refline><span class=funtarg>object</span>
+<span class=funtype>[object!]</span>
+</p>
+<p class=argline><span class=funtref>/only</span>
+ - Values are kept as-is
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/make.html" class="fun">make</a> &nbsp; 
+<a href="/r3/docs/functions/context.html" class="fun">context</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/bind.html" class=ql-func>bind</a><div class="args">
+<span class="funame">bind</span>
+  &nbsp;<span class="funarg">words</span>
+  &nbsp;<span class="funarg">context</span>
+  &nbsp;<span class="funref">/copy</span>
+  &nbsp;<span class="funref">/only</span>
+  &nbsp;<span class="funref">/new</span>
+  &nbsp;<span class="funref">/set</span>
+<p class="funline"><b>Binds words to the specified context. (Modifies)</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>words</span>
+<span class=funtype>[block! any-word!]</span>
+ - A block of words or single word (returned)
+</p>
+<p class=argline><span class=funtarg>context</span>
+<span class=funtype>[any-word! any-object!]</span>
+ - A reference to the target context
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/copy</span>
+ - Deep copy block before binding it
+</p>
+<p class=argline><span class=funtref>/only</span>
+ - Bind only first block (not deep)
+</p>
+<p class=argline><span class=funtref>/new</span>
+ - Add to context any new words found
+</p>
+<p class=argline><span class=funtref>/set</span>
+ - Add to context any new set-words found
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/bind-q.html" class="fun">bind?</a> &nbsp; 
+<a href="/r3/docs/functions/use.html" class="fun">use</a> &nbsp; 
+<a href="/r3/docs/functions/do.html" class="fun">do</a> &nbsp; 
+<a href="/r3/docs/functions/func.html" class="fun">func</a> &nbsp; 
+<a href="/r3/docs/functions/function.html" class="fun">function</a> &nbsp; 
+<a href="/r3/docs/functions/does.html" class="fun">does</a> &nbsp; 
+<a href="/r3/docs/functions/make.html" class="fun">make</a> &nbsp; 
+<a href="/r3/docs/functions/import.html" class="fun">import</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/get.html" class=ql-func>get</a><div class="args">
+<span class="funame">get</span>
+  &nbsp;<span class="funarg">word</span>
+  &nbsp;<span class="funref">/any</span>
+<p class="funline"><b>Gets the value of a word, path, or values of an object.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>word</span>
+ - Word, path, object to get
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/any</span>
+ - Allows word to have no value (be unset)
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/set.html" class="fun">set</a> &nbsp; 
+<a href="/r3/docs/functions/value-q.html" class="fun">value?</a> &nbsp; 
+<a href="/r3/docs/functions/in.html" class="fun">in</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/set.html" class=ql-func>set</a><div class="args">
+<span class="funame">set</span>
+  &nbsp;<span class="funarg">word</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funref">/any</span>
+  &nbsp;<span class="funref">/pad</span>
+<p class="funline"><b>Sets a word, path, block of words, or object to specified value(s).</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>word</span>
+<span class=funtype>[any-word! any-path! block! object!]</span>
+ - Word, block of words, path, or object to be set
+</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[any-type!]</span>
+ - Value or block of values
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/any</span>
+ - Allows setting words to any value, including unset
+</p>
+<p class=argline><span class=funtref>/pad</span>
+ - For objects, if block is too short, remaining words are set to NONE
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/get.html" class="fun">get</a> &nbsp; 
+<a href="/r3/docs/functions/in.html" class="fun">in</a> &nbsp; 
+<a href="/r3/docs/functions/value-q.html" class="fun">value?</a> &nbsp; 
+<a href="/r3/docs/functions/unset.html" class="fun">unset</a> &nbsp; 
+<a href="/r3/docs/functions/protect.html" class="fun">protect</a> &nbsp; 
+<a href="/r3/docs/functions/unprotect.html" class="fun">unprotect</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/in.html" class=ql-func>in</a><div class="args">
+<span class="funame">in</span>
+  &nbsp;<span class="funarg">object</span>
+  &nbsp;<span class="funarg">word</span>
+<p class="funline"><b>Returns the word or block in the object's context.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>object</span>
+<span class=funtype>[any-object! block!]</span>
+</p>
+<p class=argline><span class=funtarg>word</span>
+<span class=funtype>[any-word! block! paren!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/set.html" class="fun">set</a> &nbsp; 
+<a href="/r3/docs/functions/get.html" class="fun">get</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/value-q.html" class=ql-func>value?</a><div class="args">
+<span class="funame">value?</span>
+  &nbsp;<span class="funarg">value</span>
+<p class="funline"><b>Returns TRUE if the word has been set.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/default.html" class="fun">default</a> &nbsp; 
+<a href="/r3/docs/functions/unset-q.html" class="fun">unset?</a> &nbsp; 
+<a href="/r3/docs/functions/equal-q.html" class="fun">equal?</a> &nbsp; 
+<a href="/r3/docs/functions/strict-equal-q.html" class="fun">strict-equal?</a> &nbsp; 
+<a href="/r3/docs/functions/same-q.html" class="fun">same?</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/use.html" class=ql-func>use</a><div class="args">
+<span class="funame">use</span>
+  &nbsp;<span class="funarg">vars</span>
+  &nbsp;<span class="funarg">body</span>
+<p class="funline"><b>Defines words local to a block.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>vars</span>
+<span class=funtype>[block! word!]</span>
+ - Local word(s) to the block
+</p>
+<p class=argline><span class=funtarg>body</span>
+<span class=funtype>[block!]</span>
+ - Block to evaluate
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/function.html" class="fun">function!</a> &nbsp; 
+<a href="/r3/docs/functions/object.html" class="fun">object!</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard-area>Other</td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/now.html" class=ql-func>now</a><div class="args">
+<span class="funame">now</span>
+  &nbsp;<span class="funref">/year</span>
+  &nbsp;<span class="funref">/month</span>
+  &nbsp;<span class="funref">/day</span>
+  &nbsp;<span class="funref">/time</span>
+  &nbsp;<span class="funref">/zone</span>
+  &nbsp;<span class="funref">/date</span>
+  &nbsp;<span class="funref">/weekday</span>
+  &nbsp;<span class="funref">/yearday</span>
+  &nbsp;<span class="funref">/precise</span>
+  &nbsp;<span class="funref">/utc</span>
+<p class="funline"><b>Returns local date and time.</b></p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/year</span>
+ - Returns year only
+</p>
+<p class=argline><span class=funtref>/month</span>
+ - Returns month only
+</p>
+<p class=argline><span class=funtref>/day</span>
+ - Returns day of the month only
+</p>
+<p class=argline><span class=funtref>/time</span>
+ - Returns time only
+</p>
+<p class=argline><span class=funtref>/zone</span>
+ - Returns time zone offset from UCT (GMT) only
+</p>
+<p class=argline><span class=funtref>/date</span>
+ - Returns date only
+</p>
+<p class=argline><span class=funtref>/weekday</span>
+ - Returns day of the week as integer (Monday is day 1)
+</p>
+<p class=argline><span class=funtref>/yearday</span>
+ - Returns day of the year (Julian)
+</p>
+<p class=argline><span class=funtref>/precise</span>
+ - Higher precision
+</p>
+<p class=argline><span class=funtref>/utc</span>
+ - Universal time (no zone)
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/date-q.html" class="fun">date?</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/parse.html" class=ql-func>parse</a><div class="args">
+<span class="funame">parse</span>
+  &nbsp;<span class="funarg">input</span>
+  &nbsp;<span class="funarg">rules</span>
+  &nbsp;<span class="funref">/all</span>
+  &nbsp;<span class="funref">/case</span>
+<p class="funline"><b>Parses a string or block series according to grammar rules.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>input</span>
+<span class=funtype>[series!]</span>
+ - Input series to parse
+</p>
+<p class=argline><span class=funtarg>rules</span>
+<span class=funtype>[block! string! char! none!]</span>
+ - Rules to parse by (none = ",;")
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/all</span>
+ - For simple rules (not blocks) parse all chars including whitespace
+</p>
+<p class=argline><span class=funtref>/case</span>
+ - Uses case-sensitive comparison
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/trim.html" class="fun">trim</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/secure.html" class=ql-func>secure</a><div class="args">
+<span class="funame">secure</span>
+  &nbsp;<span class="funarg">policy</span>
+<p class="funline"><b>Set security policies (use SECURE help for more information).</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>policy</span>
+<span class=funtype>[word! lit-word! block! unset!]</span>
+ - Set single or multiple policies (or HELP)
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/protect.html" class="fun">protect</a> &nbsp; 
+<a href="/r3/docs/functions/load.html" class="fun">load</a> &nbsp; 
+<a href="/r3/docs/functions/import.html" class="fun">import</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/wait.html" class=ql-func>wait</a><div class="args">
+<span class="funame">wait</span>
+  &nbsp;<span class="funarg">value</span>
+  &nbsp;<span class="funref">/all</span>
+<p class="funline"><b>Waits for a duration, port, or both.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>value</span>
+<span class=funtype>[number! time! port! block! none!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/all</span>
+ - Returns all in a block
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/time.html" class="fun">time!</a> &nbsp; 
+<a href="/r3/docs/functions/date.html" class="fun">date!</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/browse.html" class=ql-func>browse</a><div class="args">
+<span class="funame">browse</span>
+  &nbsp;<span class="funarg">url</span>
+<p class="funline"><b>Open web browser to a URL or local file.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>url</span>
+<span class=funtype>[url! file! none!]</span>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/compress.html" class=ql-func>compress</a><div class="args">
+<span class="funame">compress</span>
+  &nbsp;<span class="funarg">data</span>
+<p class="funline"><b>Compresses a string series and returns it.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>data</span>
+<span class=funtype>[binary! string!]</span>
+ - If string, it will be UTF8 encoded
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/decompress.html" class="fun">decompress</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/decompress.html" class=ql-func>decompress</a><div class="args">
+<span class="funame">decompress</span>
+  &nbsp;<span class="funarg">data</span>
+  &nbsp;<span class="funref">/limit</span>
+  &nbsp;<span class="funarg">size</span>
+<p class="funline"><b>Decompresses data. Result is binary.</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>data</span>
+<span class=funtype>[binary!]</span>
+ - Data to decompress
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/limit</span>
+</p>
+<p class=refline><span class=funtarg>size</span>
+ - Limit the result to this maximum size
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/compress.html" class="fun">compress</a> &nbsp; 
+<a href="/r3/docs/functions/enbase.html" class="fun">enbase</a> &nbsp; 
+<a href="/r3/docs/functions/debase.html" class="fun">debase</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/lowercase.html" class=ql-func>lowercase</a><div class="args">
+<span class="funame">lowercase</span>
+  &nbsp;<span class="funarg">string</span>
+  &nbsp;<span class="funref">/part</span>
+  &nbsp;<span class="funarg">length</span>
+<p class="funline"><b>Converts string of characters to lowercase. (Modifies)</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>string</span>
+<span class=funtype>[any-string! char!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/part</span>
+ - Limits to a given length or position
+</p>
+<p class=refline><span class=funtarg>length</span>
+<span class=funtype>[number! any-string!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/uppercase.html" class="fun">uppercase</a> &nbsp; 
+<a href="/r3/docs/functions/trim.html" class="fun">trim</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/uppercase.html" class=ql-func>uppercase</a><div class="args">
+<span class="funame">uppercase</span>
+  &nbsp;<span class="funarg">string</span>
+  &nbsp;<span class="funref">/part</span>
+  &nbsp;<span class="funarg">length</span>
+<p class="funline"><b>Converts string of characters to uppercase. (Modifies)</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>string</span>
+<span class=funtype>[any-string! char!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/part</span>
+ - Limits to a given length or position
+</p>
+<p class=refline><span class=funtarg>length</span>
+<span class=funtype>[number! any-string!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/lowercase.html" class="fun">lowercase</a> &nbsp; 
+<a href="/r3/docs/functions/trim.html" class="fun">trim</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/entab.html" class=ql-func>entab</a><div class="args">
+<span class="funame">entab</span>
+  &nbsp;<span class="funarg">string</span>
+  &nbsp;<span class="funref">/size</span>
+  &nbsp;<span class="funarg">number</span>
+<p class="funline"><b>Converts spaces in a string to tabs (default tab size 4). (Modifies)</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>string</span>
+<span class=funtype>[any-string!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/size</span>
+ - Specifies the number of spaces per tab
+</p>
+<p class=refline><span class=funtarg>number</span>
+<span class=funtype>[integer!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/detab.html" class="fun">detab</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/detab.html" class=ql-func>detab</a><div class="args">
+<span class="funame">detab</span>
+  &nbsp;<span class="funarg">string</span>
+  &nbsp;<span class="funref">/size</span>
+  &nbsp;<span class="funarg">number</span>
+<p class="funline"><b>Converts tabs in a string to spaces (default tab size 4). (Modifies)</b></p>
+<p class="funote">Arguments:</p>
+<p class=argline><span class=funtarg>string</span>
+<span class=funtype>[any-string!]</span>
+</p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/size</span>
+ - Specifies the number of spaces per tab
+</p>
+<p class=refline><span class=funtarg>number</span>
+<span class=funtype>[integer!]</span>
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/entab.html" class="fun">entab</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard-area>GUI/Graphics</td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/view.html" class=ql-func>view</a><div class="args"></div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/unview.html" class=ql-func>unview</a><div class="args"></div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/layout.html" class=ql-func>layout</a><div class="args"></div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/alert.html" class=ql-func>alert</a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/request.html" class=ql-func>request</a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/request-file.html" class=ql-func>request-file</a><div class="args">
+<span class="funame">request-file</span>
+  &nbsp;<span class="funref">/save</span>
+  &nbsp;<span class="funref">/multi</span>
+  &nbsp;<span class="funref">/file</span>
+  &nbsp;<span class="funarg">name</span>
+  &nbsp;<span class="funref">/title</span>
+  &nbsp;<span class="funarg">text</span>
+  &nbsp;<span class="funref">/filter</span>
+  &nbsp;<span class="funarg">list</span>
+<p class="funline"><b>Asks user to select a file and returns full file path (or block of paths).</b></p>
+<p class="funote">Refinements:</p>
+<p class=argline><span class=funtref>/save</span>
+ - File save mode
+</p>
+<p class=argline><span class=funtref>/multi</span>
+ - Allows multiple file selection, returned as a block
+</p>
+<p class=argline><span class=funtref>/file</span>
+</p>
+<p class=refline><span class=funtarg>name</span>
+<span class=funtype>[file!]</span>
+ - Default file name or directory
+</p>
+<p class=argline><span class=funtref>/title</span>
+</p>
+<p class=refline><span class=funtarg>text</span>
+<span class=funtype>[string!]</span>
+ - Window title
+</p>
+<p class=argline><span class=funtref>/filter</span>
+</p>
+<p class=refline><span class=funtarg>list</span>
+<span class=funtype>[block!]</span>
+ - Block of filters (filter-name filter)
+<p class="funote">See also:</p>
+<p class="funline">
+<a href="/r3/docs/functions/request.html" class="fun">request</a> &nbsp; 
+<a href="/r3/docs/functions/to-local-file.html" class="fun">to-local-file</a> &nbsp; 
+<a href="/r3/docs/functions/to-rebol-file.html" class="fun">to-rebol-file</a> &nbsp; 
+</p>
+</div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/draw.html" class=ql-func>draw</a><div class="args"></div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/show.html" class=ql-func>show</a><div class="args"></div></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/get-face.html" class=ql-func>get-face</a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/set-face.html" class=ql-func>set-face</a></td>
+</tr>
+<tr>
+<td class=refcard><a href="/r3/docs/functions/focus.html" class=ql-func>focus</a></td>
+</tr>
+
+</tr>
+</table>
+</td></tr></table><p>
+</div></body>
