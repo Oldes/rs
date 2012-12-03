@@ -71,7 +71,7 @@ write %cheatsheet.html rejoin [
     </style>
 	<base href="http://www.rebol.com/">
     <script type="text/javascript" src="http://rebol.desajn.net/js/jquery-1.3.2.min.js"></script>
-    <script type="text/javascript" src="http://rebol.desajn.net/js/main.js"></script>
+    <script type="text/javascript" src="http://rebol.desajn.net/js/cheatsheet.js"></script>
 </head>
 <body>
 <div class=funcDecription></div>}
