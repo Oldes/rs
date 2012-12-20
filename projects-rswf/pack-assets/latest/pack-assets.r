@@ -51,6 +51,7 @@ ctx-pack-assets: context [
 		cmdTimelineName:             14
 		cmdTimelineShape:            15
 		cmdStartMovie2:              16
+		cmdWalkData:                 17
 	;Shape's commands:
 		cmdLineStyle:                1
 		cmdMoveTo:                   2
@@ -66,6 +67,9 @@ ctx-pack-assets: context [
 		cmdShowFrame:                128
 		
 	out: make stream-io [] ;Holds output stream
+	
+	;Charsets:
+	chDigit: charset "0123456789"
 	
 	;Functions:
 	write-bitmap-assets: func[
@@ -194,46 +198,67 @@ ctx-pack-assets: context [
 						;]
 					]
 					out/writeUI8 cmdEndMovie
+					out/writeUI16 0 ;no labels
 				]
 			]
 		]
 	]
-	
+	get-atf-file: func[
+		atf-type "Required ATF file extension (%dxt or %etc)"
+		file     [any-string!] "Name of the bitmap file without extension"
+	][
+		rejoin [file #"." atf-type]
+	]
 	has-atf-version: func[
 		atf-type "Required ATF file extension (%dxt or %etc)"
 		file     [any-string!] "Name of the bitmap file without extension"
 		/local
 			origFile
 			imageFile
+			localDirBinUtils
 		][
-		origFile: rejoin [dirPacks file %.png]
+		print ["=== has-atf-version ===" mold file]
+		if not any [
+			probe exists? probe origFile: join file %-fs8.png
+			probe exists? probe origFile: join file %.png
+		][
+			ask reform ["Cannot found source file for ATF:" mold file]
+		]
+		
 		all [
 			atf-type
 			any [
 				all [
-					exists? imageFile: rejoin [file #"." atf-type]
+					exists? probe imageFile: rejoin [file #"." atf-type]
 					(modified? imageFile) > (modified? origFile)
 				]
 				(
+					localDirBinUtils: join to-local-file dirBinUtils #"\"
 					;delete imageFile
 					switch/default atf-type [
 						%dxt [
+							{
 							call/wait/console probe rejoin [
-								dirBinUtils { PVRTexTool.exe -m -yflip0 -f DXT5 -dds}
+								localDirBinUtils {PVRTexTool.exe -m -yflip0 -f DXT5 -dds}
 									{ -i } to-local-file origFile
 									{ -o } to-local-file file {.dds}
 							]
 							call/wait/console probe rejoin [
-								dirBinUtils { dds2atf.exe -2}
+								to-local-file dirBinUtils {\dds2atf.exe -4 -q 0}
 									{ -i } to-local-file file {.dds}
+									{ -o } to-local-file imageFile
+							]}
+							call/wait/console probe rejoin [
+								localDirBinUtils {png2atf.exe -c d -4}
+									{ -i } to-local-file origFile
 									{ -o } to-local-file imageFile
 							]
 							true
 						]
 						%etc [
 							call/wait/console probe rejoin [
-								dirBinUtils { png2atf.exe -c e -2}
-									{ -i } to-local-file file {.png}
+								localDirBinUtils {png2atf.exe -c e -4}
+									{ -i } to-local-file origFile
 									{ -o } to-local-file imageFile
 							]
 							true
@@ -294,7 +319,7 @@ ctx-pack-assets: context [
 					
 					origImageFile: rejoin [dirPacks dir %.png]
 					any [
-						has-atf-version atf-type dir
+						has-atf-version atf-type join dirPacks dir
 						all [
 							exists? imageFile: rejoin [dirPacks dir %-fs8.png]
 							any [
@@ -310,6 +335,9 @@ ctx-pack-assets: context [
 							]
 						]
 						exists? imageFile: origImageFile
+					]
+					if atf-type [
+						imageFile: get-atf-file atf-type join dirPacks dir
 					]
 					bin: read/binary probe imageFile
 					either atf-type [
@@ -340,6 +368,9 @@ ctx-pack-assets: context [
 						exists? imageFile: rejoin [sourceDir name %.png]
 					]
 				][
+					if atf-type [
+						imageFile: get-atf-file atf-type join sourceDir name
+					]
 					bin: read/binary probe imageFile
 					either atf-type [
 						out/writeUI8   cmdATFTextureMovie
@@ -355,31 +386,48 @@ ctx-pack-assets: context [
 					
 					xml: read/binary sourceDir/:file
 					replace/all xml "^@" "" ;very dirty conversion from UTF16 codepoint - NOTE: make sure to use just Latin1 chars in names!
-					parse/all xml [
-						any [
-							thru {<SubTexture name="} copy name to {"}
-							thru {x="} copy x to {"}
-							thru {y="} copy y to {"}
-							thru {width="} copy width to {"}
-							thru {height="} copy height to {"}
-							thru {frameX="} copy frameX to {"}
-							thru {frameY="} copy frameY to {"}
-							thru {frameWidth="} copy frameWidth to {"}
-							thru {frameHeight="} copy frameHeight to {"}
-							(
-								out/writeUI8  cmdAddMovieTextureWithFrame
-								out/writeUI16 to-integer x
-								out/writeUI16 to-integer y
-								out/writeUI16 to-integer width
-								out/writeUI16 to-integer height
-								out/writeUI16 to-integer frameX
-								out/writeUI16 to-integer frameY
-								out/writeUI16 to-integer frameWidth
-								out/writeUI16 to-integer frameHeight
-							)
+					use [name x y width height frameX frameY frameWidth frameHeight][
+						parse/all xml [
+							any [
+								thru {<SubTexture name="} copy name to {"}
+								thru {x="} copy x to {"}
+								thru {y="} copy y to {"}
+								thru {width="} copy width to {"}
+								thru {height="} copy height to {"}
+								thru {frameX="} copy frameX to {"}
+								thru {frameY="} copy frameY to {"}
+								thru {frameWidth="} copy frameWidth to {"}
+								thru {frameHeight="} copy frameHeight to {"}
+								(
+									out/writeUI8  cmdAddMovieTextureWithFrame
+									out/writeUI16 to-integer x
+									out/writeUI16 to-integer y
+									out/writeUI16 to-integer width
+									out/writeUI16 to-integer height
+									out/writeUI16 to-integer frameX
+									out/writeUI16 to-integer frameY
+									out/writeUI16 to-integer frameWidth
+									out/writeUI16 to-integer frameHeight
+								)
+							]
 						]
 					]
 					out/writeUI8 cmdEndMovie
+					either all [
+						exists? probe sourceTXT: rejoin [sourceDir name %.labels]
+						not empty? data: load sourceTXT
+					][
+						out/writeUI16 (length? data) / 2
+						foreach [number label] data [
+							print [number tab label]
+							out/writeUI16 number
+							out/writeUTF  label
+						]
+					][
+						out/writeUI16 0 ;no labels
+					]
+					
+					
 				]
 			]
 		]
@@ -417,12 +465,115 @@ ctx-pack-assets: context [
 			print ["Timeline bytes:" (index? out/outBuffer) - indx]
 		]
 		
-		out/writeUI8 0 ;end
-		write/binary join %./bin/ rejoin either atf-type [
-			[uppercase atf-type "/" level %.lvl]
+		;;WALK DATA:
+		sourceTXT: rejoin [dirAssetsRoot %WalkData\ level %.txt]
+		data: context either exists? sourceTXT [
+			load sourceTXT
 		][
-			[%Data/ level %.lvl]
-		] head out/outBuffer
+			;this is just in case no walk data is specified yet (but there probably will be in every level!
+			[
+				posX: [0]
+				posY: [0]
+				scale: [1]
+				rotate: [0]
+				sensors: []
+				labelsAt: []
+				labelsLeft: []
+				labelsRight: []
+			]
+		]
+		num: length? data/posX
+		tmp: first data
+		if all [
+			num = length? data/posY
+			num = length? data/scale
+			num = length? data/rotate
+		][
+			print ["Walk DATA found.. frames:" num]
+			out/writeUI8   cmdWalkData
+			out/writeUI16  num
+			foreach value data/posX   [ out/writeFloat value ]
+			foreach value data/posY   [ out/writeFloat value ]
+			foreach value data/scale  [ out/writeFloat value ]
+			foreach value data/rotate [ out/writeFloat value ]
+			
+			out/writeUI16 (length? data/labelsAt) / 2
+			foreach [num name] data/labelsAt [
+				out/writeUI16 num
+				out/writeUTF  name
+			]
+			
+			out/writeUI16 (length? data/labelsLeft) / 2
+			foreach [num name] data/labelsLeft [
+				out/writeUI16 num
+				out/writeUTF  name
+			]
+			
+			out/writeUI16 (length? data/labelsRight) / 2
+			foreach [num name] data/labelsRight [
+				out/writeUI16 num
+				out/writeUTF  name
+			]
+				
+			either empty? data/sensors [
+				out/writeUI8 0 ;no nodes
+				out/writeUI8 0 ;no arcs
+			][
+				nodes: copy []
+				arcs:  copy []
+				foreach [name pos] data/sensors [
+					parse/all to-string name [
+						#"P" copy fromNode some chDigit (
+							repend nodes [
+								fromNode: to-integer fromNode
+								pos
+							]
+						) any [
+							#"_"
+							copy arcType [#"j" | #"f" | #"b" | #"w" | none]
+							copy toNode some chDigit
+							(
+								toNode: to-integer toNode
+								if none? arcType [arcType: #"w"]
+								;print [arcType fromNode toNode]
+								repend arcs [arcType fromNode toNode]
+							)
+						]
+					]
+				]
+				;nodes must be numbers from 0 to n
+				probe sort/skip nodes 2
+				if nodes/1 <> 0 [
+					make error! "INVALID WALK NODE - Nodes must start with id 0!"
+				]
+				for n 3 length? nodes 2 [
+					if 1 <> (nodes/(n) - nodes/(n - 2)) [
+						make error! "INVALID WALK NODEs = Nodes must be numbers from 0 to n with increment 1!"
+					]
+				]
+				out/writeUI8 (length? nodes) / 2
+				foreach [node pos] nodes [
+					out/writeUI16 pos/x
+					out/writeUI16 pos/y
+				]
+				;probe new-line/skip arcs true 3
+				out/writeUI8 (length? arcs) / 3
+				foreach [arcType fromNode toNode] arcs [
+					print rejoin [tab arcType #" " fromNode "-" toNode]
+					out/writeByte arcType
+					out/writeUI8  fromNode
+					out/writeUI8  toNode
+				]
+			]
+		]
+		
+		out/writeUI8 0 ;end
+		write/binary join %./bin/ rejoin [%Data/ level %.lvl] head out/outBuffer
+		;either atf-type [
+		;	[uppercase atf-type "/" level %.lvl]
+		;][
+		;	[%Data/ level %.lvl]
+		;] head out/outBuffer
 	]
 	
 	parse-timeline: func[
