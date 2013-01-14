@@ -1,9 +1,10 @@
 REBOL [
     Title: "Pack-assets"
     Date: 15-Nov-2012/11:03:26+1:00
-    Version: 0.1.0
+    Version: 0.1.2
     Author: "Oldes"
     Email: oldes.huhuman@gmail.com
+	Home: https://github.com/Oldes/rs/blob/master/projects-rswf/pack-assets/latest/pack-assets.r
 	require: [
 		rs-project %stream-io
 		rs-project %form-timeline
@@ -466,103 +467,93 @@ ctx-pack-assets: context [
 		]
 		
 		;;WALK DATA:
-		sourceTXT: rejoin [dirAssetsRoot %WalkData\ level %.txt]
-		data: context either exists? sourceTXT [
-			load sourceTXT
-		][
-			;this is just in case no walk data is specified yet (but there probably will be in every level!
-			[
-				posX: [0]
-				posY: [0]
-				scale: [1]
-				rotate: [0]
-				sensors: []
-				labelsAt: []
-				labelsLeft: []
-				labelsRight: []
-			]
-		]
-		num: length? data/posX
-		tmp: first data
-		if all [
-			num = length? data/posY
-			num = length? data/scale
-			num = length? data/rotate
-		][
-			print ["Walk DATA found.. frames:" num]
-			out/writeUI8   cmdWalkData
-			out/writeUI16  num
-			foreach value data/posX   [ out/writeFloat value ]
-			foreach value data/posY   [ out/writeFloat value ]
-			foreach value data/scale  [ out/writeFloat value ]
-			foreach value data/rotate [ out/writeFloat value ]
-			
-			out/writeUI16 (length? data/labelsAt) / 2
-			foreach [num name] data/labelsAt [
-				out/writeUI16 num
-				out/writeUTF  name
-			]
-			
-			out/writeUI16 (length? data/labelsLeft) / 2
-			foreach [num name] data/labelsLeft [
-				out/writeUI16 num
-				out/writeUTF  name
-			]
-			
-			out/writeUI16 (length? data/labelsRight) / 2
-			foreach [num name] data/labelsRight [
-				out/writeUI16 num
-				out/writeUTF  name
-			]
-				
-			either empty? data/sensors [
-				out/writeUI8 0 ;no nodes
-				out/writeUI8 0 ;no arcs
+		sourceTXT: rejoin [dirAssetsRoot %WalkData\ level %_chuze.txt]
+		if exists? sourceTXT [
+			data: context load sourceTXT
+			num: length? data/posX
+			tmp: first data
+			if all [
+				num = length? data/posY
+				num = length? data/scale
+				num = length? data/rotate
 			][
-				nodes: copy []
-				arcs:  copy []
-				foreach [name pos] data/sensors [
-					parse/all to-string name [
-						#"P" copy fromNode some chDigit (
-							repend nodes [
-								fromNode: to-integer fromNode
-								pos
+				print ["Walk DATA found.. frames:" num]
+				out/writeUI8   cmdWalkData
+				out/writeUI16  num
+				foreach value data/posX   [ out/writeFloat value ]
+				foreach value data/posY   [ out/writeFloat value ]
+				foreach value data/scale  [ out/writeFloat value ]
+				foreach value data/rotate [ out/writeFloat value ]
+				
+				out/writeUI16 (length? data/labelsAt) / 2
+				foreach [num name] data/labelsAt [
+					out/writeUI16 num
+					out/writeUTF  name
+				]
+				
+				out/writeUI16 (length? data/labelsLeft) / 2
+				foreach [num name] data/labelsLeft [
+					out/writeUI16 num
+					out/writeUTF  name
+				]
+				
+				out/writeUI16 (length? data/labelsRight) / 2
+				foreach [num name] data/labelsRight [
+					out/writeUI16 num
+					out/writeUTF  name
+				]
+					
+				either empty? data/sensors [
+					out/writeUI8 0 ;no nodes
+					out/writeUI8 0 ;no arcs
+				][
+					nodes: copy []
+					arcs:  copy []
+					foreach [name pos] data/sensors [
+						parse/all to-string name [
+							#"P" copy fromNode some chDigit (
+								repend nodes [
+									fromNode: to-integer fromNode
+									pos
+								]
+							) any [
+								#"_"
+								copy arcType [#"j" | #"f" | #"b" | #"w" | #"n" | #"c" | #"v" | #"s" | none]
+								copy toNode some chDigit
+								(
+									toNode: to-integer toNode
+									if none? arcType [arcType: #"w"]
+									;print [arcType fromNode toNode]
+									repend arcs [arcType fromNode toNode]
+								)
 							]
-						) any [
-							#"_"
-							copy arcType [#"j" | #"f" | #"b" | #"w" | none]
-							copy toNode some chDigit
-							(
-								toNode: to-integer toNode
-								if none? arcType [arcType: #"w"]
-								;print [arcType fromNode toNode]
-								repend arcs [arcType fromNode toNode]
-							)
 						]
 					]
-				]
-				;nodes must be numbers from 0 to n
-				probe sort/skip nodes 2
-				if nodes/1 <> 0 [
-					make error! "INVALID WALK NODE - Nodes must start with id 0!"
-				]
-				for n 3 length? nodes 2 [
-					if 1 <> (nodes/(n) - nodes/(n - 2)) [
-						make error! "INVALID WALK NODEs = Nodes must be numbers from 0 to n with increment 1!"
+					;nodes must be numbers from 0 to n
+					probe new-line/skip sort/skip nodes 2 true 2
+					if nodes/1 <> 0 [
+						make error! "INVALID WALK NODE - Nodes must start with id 0!"
 					]
-				]
-				out/writeUI8 (length? nodes) / 2
-				foreach [node pos] nodes [
-					out/writeUI16 pos/x
-					out/writeUI16 pos/y
-				]
-				;probe new-line/skip arcs true 3
-				out/writeUI8 (length? arcs) / 3
-				foreach [arcType fromNode toNode] arcs [
-					print rejoin [tab arcType #" " fromNode "-" toNode]
-					out/writeByte arcType
-					out/writeUI8  fromNode
-					out/writeUI8  toNode
+					for n 3 length? nodes 2 [
+						if 1 <> (nodes/(n) - nodes/(n - 2)) [
+							print "!!! INVALID WALK NODEs (Nodes must be numbers from 0 to n with increment 1)!"
+							print ["Found invalid sequence neer:" n mold node/(n)]
+							halt
+						]
+					]
+					out/writeUI8 (length? nodes) / 2
+					foreach [node pos] nodes [
+						out/writeUI16 pos/x
+						out/writeUI16 pos/y
+					]
+					;probe new-line/skip arcs true 3
+					out/writeUI8 (length? arcs) / 3
+					foreach [arcType fromNode toNode] arcs [
+						print rejoin [tab arcType #" " fromNode "-" toNode]
+						out/writeByte arcType
+						out/writeUI8  fromNode
+						out/writeUI8  toNode
+					]
 				]
 			]
 		]
