@@ -46,6 +46,8 @@ ctx-XFL: context [
 	Symbol-counter:   copy []
 	files-to-parse:   copy []
 	
+	file-modified?: false
+	
 	scale-x: 
 	scale-y: 1
 	
@@ -78,7 +80,7 @@ ctx-XFL: context [
 	rl_edgNumber: [SP opt [#"+" | #"-"] some ch_digits opt [#"." some ch_digits]]
 	rl_hexNum: [#"#" copy _n [some ch_hex #"." some ch_hex] (
 			trim _n
-			_s: find n #"." remove _s if 1 = length? _s [append _s "0"] ;removes dot and aligns the number after it
+			_s: find _n #"." remove _s if 1 = length? _s [append _s "0"] ;removes dot and aligns the number after it
 			_n: (to integer! debase/base head insert/dup _n #"0" (length? _n) // 2 16) / 256
 		)
 	]
@@ -129,6 +131,7 @@ ctx-XFL: context [
 		
 		tmp_shapeMinPos: 99999999x99999999
 		tmp_isSymbolGraphic?: none
+		recycle
 	]
 	
 	init: func[
@@ -350,9 +353,10 @@ ctx-XFL: context [
 		;ask ""
 		write/binary file: xfl-target-dir/LIBRARY/(join encode-filename name %.xml) form-xfl symbol
 		
-		append files-to-parse file                    
+		;append files-to-parse file                    
 		name
 	]
+
 	make-symbol-dom: func[name][
 		first to-DOM [
 			{<DOMSymbolInstance libraryItemName="} name {" name="" symbolType="graphic">
