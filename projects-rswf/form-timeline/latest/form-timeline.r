@@ -178,12 +178,13 @@ ctx-form-timeline: context [
 			result
 			tagId tagData offset
 			tmp
-			depth move cid ids attributes oldAttributes colorAtts
+			depth move cid ids attributes oldAttributes colorAtts frameStart
 			maxDepth depths-replaced depths-to-remove ids-at-depth currentFrame
 	][
-		result: tail rejoin ["^-TotalFrames " frames "^/"]
+		frameStart: result: tail rejoin ["^-TotalFrames " frames "^/"]
 		maxDepth: 0
 		currentFrame: 1
+		depth-offsets: copy []
 		depth-to-id: copy []
 		depth-attributes: copy []
 		ids: copy []
@@ -224,32 +225,47 @@ ctx-form-timeline: context [
 							[#[none] #[none] [0 0]]
 						]
 					]
-					either oldAttributes: select depth-attributes depth [
-						either all [move none? cid][
-							;probe reform [mold attributes mold oldAttributes]
-							;comment {
-							foreach att attributes [
-								if att [
-									change/only oldAttributes att 
-								]
-								oldAttributes: next oldAttributes
-							];}
-							attributes: oldAttributes: head oldAttributes
+					either cid [
+						offset: select offsets cid
+						either tmp: find/tail depth-offsets cid [
+							change tmp offset
 						][
-							depth-attributes/(depth): attributes
+							repend depth-offsets [depth offset]
 						]
 					][
+						offset: select depth-offsets depth
+					]
+
+					
+					;print "------------"
+					;either oldAttributes: select depth-attributes depth [
+					;	either all [move none? cid][
+					;		probe reform [mold attributes mold oldAttributes]
+					;		;comment {
+					;		foreach att attributes [
+					;			if att [
+					;				change/only oldAttributes att 
+					;			]
+					;			oldAttributes: next oldAttributes
+					;		];}
+					;		attributes: oldAttributes: head oldAttributes
+					;	][
+					;		
+					;		depth-attributes/(depth): attributes
+					;	]
+					;][
 						if all [move none? cid][
 							;ask reform [2 mold attributes mold oldAttributes]
 						]
-						repend/only repend depth-attributes depth attributes
-					]
+						if offset [
+							;ask reform ["changing offset:" offset cid]
+							attributes/3/1: attributes/3/1 + offset/1
+							attributes/3/2: attributes/3/2 + offset/2
+						]
+						;repend/only repend depth-attributes depth attributes
+					;]
+
 					
-					if offset: select offsets cid [
-						;ask reform ["changing offset:" offset]
-						attributes/3/1: attributes/3/1 + offset/1
-						attributes/3/2: attributes/3/2 + offset/2
-					]
 					
 					either cid [
 						append usage-counter cid
@@ -275,10 +291,12 @@ ctx-form-timeline: context [
 				]
 				28 [;removeDepth
 					;print "---"
+					
 					depth: tagData
 					realDepth: index? tmp: find depths depth
 					;print ["remove" depth realDepth mold depths]
 					remove tmp
+					remove/part find depth-offsets depth 2
 					remove/part find depth-attributes depth 2
 					;probe depth-attributes
 					result: insert result rejoin [
@@ -286,12 +304,14 @@ ctx-form-timeline: context [
 					]
 				]
 				1 [;showFrame
-					result: insert result ajoin ["^-ShowFrame ;" currentFrame "^/"]
+					frameStart: result: insert result ajoin ["^-ShowFrame ;" currentFrame "^/"]
+					;frameStart: index? result
 					currentFrame: currentFrame + 1
 				]
 				43 [
 					;frameLabel
-					result: insert result rejoin ["^-Label " mold as-string tagData "^/"]
+					insert frameStart rejoin ["^-Label " mold as-string tagData "^/"]
+					result: tail result
 				]
 				45 [;SoundStreamHead2, not used
 				]
@@ -354,14 +374,30 @@ ctx-form-timeline: context [
 			parseActions: swf-parser/swfTagParseActions
 		]
 		tags: extract-swf-tags src-swf [
+			56   ;AVM1 - ExportAssets - used to get names of the used bitmaps and sprites
+			76   ;AVM2 - DoAction3StartupClass
+		]
+		foreach [tagId tagData] tags [
+			probe parsed: parse-swf-tag tagId tagData
+			foreach [id name] parsed [
+				replace/all name "_" "/"
+				parse/all name ["Bitmaps/" copy name to end]
+				repend names [id as-string name]
+				;print ["^-AssetName:" id mold as-string name]
+			]
+		]
+
+		tags: extract-swf-tags src-swf [
 			2 22 32 67 83 ;shape definitions
 			;4 26 70 ;placeObject - not used as I'm not analysing root timeline, only exported Sprites
 			;5 28 ;removeObject - --//--
 			;20 21 35 36 ;bitmap definitions - not used as I'm interested only in named one
+			36   ;DefineBitsLossless2
 			39   ;defineSprite - this one is important!
 			;43   ;frameLabel
-			56   ;ExportAssets - used to get names of the used bitmaps and sprites
+			;56   ;ExportAssets - used to get names of the used bitmaps and sprites
 			14   ;defineSound
+			0    ;end
 		]
 		
 		foreach [tagId tagData] tags [
@@ -377,6 +413,14 @@ ctx-form-timeline: context [
 				;]
 				;20 21 35 36 [;DefineBitsLossless DefineBitsJPEG2 DefineBitsJPEG3 DefineBitsLossless 
 				;]
+				36 [;DefineBitsLossless2
+					if find names parsed/1 [
+						repend types [parsed/1 'image]
+					]
+					;repend names [id name]
+					;repend types [id 'image]
+					;halt
+				]
 				39 [;DefineSprite
 					analyse-sprite parsed
 				]
@@ -398,6 +442,10 @@ ctx-form-timeline: context [
 					probe parsed
 					ask ""
 					repend types [parsed/1 'sound]
+				]
+				0 [;End
+					;I break the loop because I noticed, that FlashPro sometimes leaves garbage after the end tag!
+					break
 				]
 			]
 		]
