@@ -72,6 +72,8 @@ ctx-pack-assets: context [
 	;Charsets:
 	chDigit: charset "0123456789"
 	
+	timelineIdOffset: 0
+	
 	;Functions:
 	write-bitmap-assets: func[
 		level  [any-string!] "Lavel's name"
@@ -218,10 +220,10 @@ ctx-pack-assets: context [
 			imageFile
 			localDirBinUtils
 		][
-		print ["=== has-atf-version ===" mold file]
+		print ["=== has-atf-version ===" mold file atf-type]
 		if not any [
-			probe exists? probe origFile: join file %-fs8.png
-			probe exists? probe origFile: join file %.png
+			exists? origFile: join file %-fs8.png
+			exists? origFile: join file %.png
 		][
 			ask reform ["Cannot found source file for ATF:" mold file]
 		]
@@ -230,8 +232,10 @@ ctx-pack-assets: context [
 			atf-type
 			any [
 				all [
+					
 					exists? probe imageFile: rejoin [file #"." atf-type]
 					(modified? imageFile) > (modified? origFile)
+					;false ;;<-- uncomment to force re-conversion
 				]
 				(
 					localDirBinUtils: join to-local-file dirBinUtils #"\"
@@ -258,7 +262,15 @@ ctx-pack-assets: context [
 						]
 						%etc [
 							call/wait/console probe rejoin [
-								localDirBinUtils {png2atf.exe -c e -4}
+								localDirBinUtils {png2atf.exe -c e -4 -q 0}
+									{ -i } to-local-file origFile
+									{ -o } to-local-file imageFile
+							]
+							true
+						]
+						%rgba [
+							call/wait/console probe rejoin [
+								localDirBinUtils {png2atf.exe -r -q 0}
 									{ -i } to-local-file origFile
 									{ -o } to-local-file imageFile
 							]
@@ -293,7 +305,7 @@ ctx-pack-assets: context [
 			if #"/" <> pick dirBinUtils 1 [insert dirBinUtils what-dir]
 		][	make error! "Unspecified dirBinUtils" ]
 
-		if all [atf-type none? find [%dxt %etc] atf-type][ atf-type: none ]
+		if all [atf-type none? find [%dxt %etc %rgba] atf-type][ atf-type: none ]
 		
 		out/clearBuffers
 		out/writeBytes as-binary "LVL"
@@ -451,11 +463,19 @@ ctx-pack-assets: context [
 		]
 		
 		;;TIMELINE OBJECTS DEFINITIONS:
-		sourceSWF: rejoin [dirAssetsRoot %TimelineSWFs\ level %.swf]
-		sourceTXT: rejoin [dirAssetsRoot %TimelineSWFs\ level %.txt]
+		case [
+			exists? sourceSWF: rejoin [dirAssetsRoot %TimelineSWFs\ level %_anims.swf][
+				sourceTXT: rejoin [dirAssetsRoot %TimelineSWFs\ level %_anims.txt]
+			]
+			exists? sourceSWF: rejoin [dirAssetsRoot %TimelineSWFs\ level %.swf][
+				sourceTXT: rejoin [dirAssetsRoot %TimelineSWFs\ level %.txt]
+			]
+		]
+
 		if exists? sourceSWF [
 			indx: index? out/outBuffer
 			if any [
+				;true ;;<-- just to force recreation every time
 				not exists? sourceTXT
 				(modified? sourceTXT) < (modified? sourceSWF)
 				;(modified? join rs/get-project-dir 'form-timeline %form-timeline.r) > (modified? sourceTXT)
@@ -578,7 +598,7 @@ ctx-pack-assets: context [
 			any [
 				set type ['Movie | 'Sprite] set id integer! set data block! (
 					out/writeUI8  cmdTimelineObject
-					out/writeUI16 id
+					out/writeUI16 id + timelineIdOffset
 					indx: index? out/outBuffer
 					parse-controlTags data
 					out/writeUI8   0 ;end of timeline;
@@ -590,7 +610,7 @@ ctx-pack-assets: context [
 				'Name set id integer! set name string! (
 					;print [id mold name length? head out/outBuffer]
 					out/writeUI8  cmdTimelineName
-					out/writeUI16 id
+					out/writeUI16 id + timelineIdOffset
 					out/writeUTF  name
 				)
 				|
@@ -718,6 +738,7 @@ ctx-pack-assets: context [
 			)
 			any [
 				'Move set depth integer! set transform block! set color [block! | none] (
+					;print ["Move: " depth]
 					out/writeUI8  cmdMove
 					out/writeUI16 depth - 1
 					flags: 0
@@ -729,16 +750,18 @@ ctx-pack-assets: context [
 				)
 				|
 				'Place set type word! set id integer! set depth integer! set transform block! set color [block! | none] (
+					;print ["Place: " id]
 					out/writeUI8  cmdPlace
-					out/writeUI16 id
+					out/writeUI16 id + timelineIdOffset
 					out/writeUI16 depth - 1
 					flags: select [image 0 object 1 shape 2] type
 					write-transform transform color flags
 				)
 				|
 				'Replace set type word! set id integer! set depth integer! set transform block! set color [block! | none] (
+					;print ["Replace: " id]
 					out/writeUI8  cmdReplace
-					out/writeUI16 id
+					out/writeUI16 id + timelineIdOffset
 					out/writeUI16 depth - 1
 					flags: select [image 0 object 1 shape 2] type
 					write-transform transform color flags
@@ -756,7 +779,7 @@ ctx-pack-assets: context [
 				|
 				'Sound set id integer! set soundData block! (
 					out/writeUI8  cmdSound
-					out/writeUI16 id
+					out/writeUI16 id + timelineIdOffset
 					;soundData not used yet!
 				)
 				| pos: 1 skip (
