@@ -51,10 +51,10 @@ with ctx-XFL [
 			select atts "name"
 		]
 		if node/1 = "DOMSymbolInstance" [
-			add-file-to-parse node
+			;add-file-to-parse node
 		]
 		if name [
-			print ["CHECK-ITEM:" name]
+			;print ["CHECK-ITEM:" name]
 			forall items-to-check [
 				if any [
 					same-names? name select items-to-check/1/2 "name"
