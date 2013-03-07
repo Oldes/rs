@@ -717,7 +717,7 @@ ctx-pack-assets: context [
 		out/writeUI8   0
 		out/writeUI32  0.5 * length? names 
 		foreach [name id] names [
-			out/writeUI16 id + timelineIdOffset
+			out/writeUI16 id
 			out/writeUTF  name
 		]
 	]
