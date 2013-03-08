@@ -108,6 +108,17 @@ ctx-pack-assets: context [
 		packFile: join name %.pack
 		
 		unless exists? dirPacks/:packFile [
+			{
+			TODO: use REBOL script for texture packing instead of the JAVA's texture packer
+			;---------------------
+			imgs: read dir: %/d/assets/Bitmaps/Domek/DomekAnimace/
+			size-imgs: copy []
+			foreach i imgs [repend size-imgs [get-image-size dir/:i dir/:i]]
+			ctx-rectangle-pack/padding: 2x2
+			tmp: pow2-rectangle-pack size-imgs
+			combine-files tmp/2/1 tmp/1 %/d/test-result.png
+			}
+			
 			if 0 < call/wait/console probe reform [
 				{java -classpath} texturePacker
 					to-local-file srcDir
@@ -646,8 +657,6 @@ ctx-pack-assets: context [
 		out/writeUI8 cmdUseLevel
 		out/writeUTF level 
 		
-		probe new-line strings true
-		
 		out/writeUI16 length? strings
 		foreach string strings [
 			out/writeUTF string
@@ -710,9 +719,6 @@ ctx-pack-assets: context [
 		out/outBuffer: at head out/outBuffer startIndx
 		out/writeUI32  probe length? out/outBuffer
 		
-		
-		
-		probe new-line/skip names true 2
 		out/outBuffer: tail out/outBuffer
 		out/writeUI8   0
 		out/writeUI32  0.5 * length? names 
@@ -823,13 +829,14 @@ ctx-pack-assets: context [
 		data
 		/local
 			id depth transform type frames name colorTransform ;parse variables
-			flags soundData
+			flags soundData pos
 	][
 		parse/all data [
 			'TotalFrames set frames integer! (
 				out/writeUI16 frames
 			)
 			any [
+				pos:
 				'Move set depth integer! set transform block! set color [block! | none] (
 					;print ["Move: " depth]
 					out/writeUI8  cmdMove
@@ -848,6 +855,11 @@ ctx-pack-assets: context [
 					out/writeUI16 id + timelineIdOffset
 					out/writeUI16 depth - 1
 					flags: select [image 0 object 1 shape 2] type
+					if none? flags [
+						print ["Unknown place object type:" type]
+						probe copy/part mold pos 200
+						halt
+					]
 					write-transform transform color flags
 				)
 				|
