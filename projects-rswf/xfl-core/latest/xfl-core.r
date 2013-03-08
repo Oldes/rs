@@ -137,7 +137,7 @@ ctx-XFL: context [
 	init: func[
 		"Init XFL environment"
 		source-dir        [file!] "XFL source directory"
-		/into-dir target-dir  [file!] "Optional XFL target directory"
+		/into-dir target-dir  [file! none!] "Optional XFL target directory"
 	][
 		xfl-source-dir:  source-dir
 		;uses full dir path:
@@ -145,7 +145,7 @@ ctx-XFL: context [
 		
 		print ["XFL INIT: [" xfl-source-dir "]"]
 	
-		xfl-target-dir:  either into-dir [
+		xfl-target-dir:  either target-dir [
 			target-dir
 		][
 			print "=============================================================="
