@@ -269,6 +269,10 @@ ctx-form-timeline: context [
 					
 					either cid [
 						append usage-counter cid
+						unless type: select types cid [
+							print ["!!! Unknown type for cid: " cid]
+							halt
+						]
 						result: insert result rejoin [
 							either move ["^-Replace "]["^-Place "] (select types cid)
 							#" " cid
@@ -391,8 +395,7 @@ ctx-form-timeline: context [
 			2 22 32 67 83 ;shape definitions
 			;4 26 70 ;placeObject - not used as I'm not analysing root timeline, only exported Sprites
 			;5 28 ;removeObject - --//--
-			;20 21 35 36 ;bitmap definitions - not used as I'm interested only in named one
-			36   ;DefineBitsLossless2
+			20 21 35 36 ;bitmap definitions
 			39   ;defineSprite - this one is important!
 			;43   ;frameLabel
 			;56   ;ExportAssets - used to get names of the used bitmaps and sprites
@@ -411,9 +414,7 @@ ctx-form-timeline: context [
 				;]
 				;5 28 [;RemoveObject
 				;]
-				;20 21 35 36 [;DefineBitsLossless DefineBitsJPEG2 DefineBitsJPEG3 DefineBitsLossless 
-				;]
-				36 [;DefineBitsLossless2
+				20 21 35 36 [;DefineBitsLossless DefineBitsJPEG2 DefineBitsJPEG3 DefineBitsLossless2 	
 					if find names parsed/1 [
 						repend types [parsed/1 'image]
 					]
@@ -427,14 +428,6 @@ ctx-form-timeline: context [
 				43 [;framelabel
 					print ""
 					probe as-string parsed
-				]
-				56 [;ExportAssets
-					foreach [id name] parsed [
-						replace/all name "_" "/"
-						parse/all name ["Bitmaps/" copy name to end]
-						repend names [id as-string name]
-						;print ["^-AssetName:" id mold as-string name]
-					]
 				]
 				;70 [;PlaceObject3
 				;]
