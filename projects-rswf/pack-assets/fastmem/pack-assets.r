@@ -8,6 +8,7 @@ REBOL [
 	require: [
 		rs-project %stream-io
 		rs-project %form-timeline
+		rs-project %texture-packer
 	]
 	comment: {
 		complex example where this script is used is here:
@@ -49,6 +50,8 @@ ctx-pack-assets: context [
 		cmdTimelineData:             10
 		cmdTimelineObject:           11
 		cmdTimelineShape:            12
+		
+		cmdDefineSound:              15
 
 		cmdWalkData:                 20
 		
@@ -103,22 +106,22 @@ ctx-pack-assets: context [
 			sequences  ;block with image sequences with values: [index xy size orig offset] where sequence is multiple images with same ID
 			bitmapName ;holds name of image being processed
 			imgFile partId x y xy size orig offset index var value ;local values used in parse
+			error
 	][
 		srcDir: rejoin [dirAssetsRoot %Bitmaps\ level #"/" name]
-		packFile: join name %.pack
+		packFile: join name %.rpack
 		
-		unless exists? dirPacks/:packFile [
-			{
-			TODO: use REBOL script for texture packing instead of the JAVA's texture packer
-			;---------------------
-			imgs: read dir: %/d/assets/Bitmaps/Domek/DomekAnimace/
-			size-imgs: copy []
-			foreach i imgs [repend size-imgs [get-image-size dir/:i dir/:i]]
-			ctx-rectangle-pack/padding: 2x2
-			tmp: pow2-rectangle-pack size-imgs
-			combine-files tmp/2/1 tmp/1 %/d/test-result.png
-			}
-			
+		unless any [
+			exists? dirPacks/:packFile
+			exists? rejoin [dirPacks name %.pack]
+		][
+			if error? set/any 'error try [
+				texture-pack srcDir dirPacks
+			][
+				print "Packing failed!"
+				do error
+			]
+			comment {
 			if 0 < call/wait/console probe reform [
 				{java -classpath} texturePacker
 					to-local-file srcDir
@@ -128,6 +131,7 @@ ctx-pack-assets: context [
 				print "Packing failed!"
 				halt
 			]
+			}
 		]
 		
 		imgFile:   none
@@ -138,97 +142,148 @@ ctx-pack-assets: context [
 		
 		rlPair: [copy x some chDigits ", " copy y some chDigits (value: as-pair to-integer x to-integer y) #"^/"]
 		
-		parse/all read dirPacks/:packFile [
-			some [
-				#"^/" [
-					copy imgFile to #"^/" 1 skip (
-						probe imgFile print "========================"
-						bitmapName: uppercase/part replace/all copy imgFile "." "_" 1
-						regions: copy []
-						sequences: copy []
-						repend data [imgFile bitmapName regions sequences]
-					)
-					thru #"^/"
-					thru #"^/"
-					thru #"^/"
-					some [
-						some [
-							"  " [
-									"xy: "   copy xy     to #"^/" 1 skip 
-								"  size: "   copy size   to #"^/" 1 skip
-								"  orig: "   copy orig   to #"^/" 1 skip
-								"  offset: " copy offset to #"^/" 1 skip
-								"  index: "  copy index  to #"^/" 1 skip
-								(
-									index: to-integer index
-									either index < 0 [
-										if offset <> "0, 0" [
-											ask reform ["!! Found trimed image" mold partId "offset:" offset]
-										]
-										repend regions [partId xy size]
-									][
-										sequence: select sequences partId
-										if none? sequence  [
-											append sequences partId
-											append/only sequences sequence: copy []
-										]
-										repend sequence [index xy size orig offset]
-									]
-								)
-								| copy var to #":" 2 skip copy value to #"^/" 1 skip ;(print [var value])
-							]
+		either exists? dirPacks/:packFile [
+			regions: copy []
+			sequences: copy []
+			foreach [xy size file] load dirPacks/:packFile [
+				file: last split-path file
+				parse file [
+					copy partId to #"_" 1 skip copy index to #"." to end (
+						sequence: select sequences partId
+						if none? sequence  [
+							append sequences partId
+							append/only sequences sequence: copy []
 						]
-						|
-						copy partId [some chNotSpace to #"^/"] thru #"^/"
-					]
+						repend sequence [to integer! index xy size]
+					)
+					|
+					copy partId to #"." to end (
+						repend regions [partId xy size]
+					)
 				]
 			]
-		]
-		if regions [
-			sort/skip/reverse regions 3
-			new-line/skip regions true 3
-		]
-		
-		foreach [imgFile bitmapName regions sequences] data [
 			
 			foreach [partId xy size] regions [
-				xy:   load trim/all/with xy ","
-				size: load trim/all/with size ","
 				out/writeUI8 cmdDefineImage
 				write-string partId
 				out/writeUI16 xy/1
 				out/writeUI16 xy/2
 				out/writeUI16 size/1
 				out/writeUI16 size/2
-				
 			]
 			unless empty? sequences [
 				foreach [id sequence] sequences [
 					print ["Sequence" mold id "with length" ((length? sequence) / 5)] 
-					sort/skip sequence 5
+					sort/skip sequence 3
 					out/writeUI8 cmdStartMovie
 					write-string id
 					foreach [index xy size orig offs] sequence [
-						xy:   load trim/all/with xy   ","
-						size: load trim/all/with size ","
-						;either offs = "0, 0" [
-							;TODO... I could use version without frame here..
-						;][
-							orig: load trim/all/with orig ","
-							offs: load trim/all/with offs ","
-							out/writeUI8 cmdAddMovieTextureWithFrame
-							out/writeUI16 xy/1
-							out/writeUI16 xy/2
-							out/writeUI16 size/1
-							out/writeUI16 size/2
-							out/writeUI32 - offs/1
-							out/writeUI32 size/2 - orig/2 + offs/2 ;- offs/2
-							out/writeUI16 orig/1
-							out/writeUI16 orig/2
-						;]
+						orig: load trim/all/with orig ","
+						offs: load trim/all/with offs ","
+						out/writeUI8 cmdAddMovieTextureWithFrame
+						out/writeUI16 xy/1
+						out/writeUI16 xy/2
+						out/writeUI16 size/1
+						out/writeUI16 size/2
 					]
 					out/writeUI8 cmdEndMovie
 					out/writeUI16 0 ;no labels
+				]
+			]
+		][
+			;using old pack version
+			parse/all read rejoin [dirPacks name %.pack] [
+				some [
+					#"^/" [
+						copy imgFile to #"^/" 1 skip (
+							probe imgFile print "========================"
+							bitmapName: uppercase/part replace/all copy imgFile "." "_" 1
+							regions: copy []
+							sequences: copy []
+							repend data [imgFile bitmapName regions sequences]
+						)
+						thru #"^/"
+						thru #"^/"
+						thru #"^/"
+						some [
+							some [
+								"  " [
+										"xy: "   copy xy     to #"^/" 1 skip 
+									"  size: "   copy size   to #"^/" 1 skip
+									"  orig: "   copy orig   to #"^/" 1 skip
+									"  offset: " copy offset to #"^/" 1 skip
+									"  index: "  copy index  to #"^/" 1 skip
+									(
+										index: to-integer index
+										either index < 0 [
+											if offset <> "0, 0" [
+												ask reform ["!! Found trimed image" mold partId "offset:" offset]
+											]
+											repend regions [partId xy size]
+										][
+											sequence: select sequences partId
+											if none? sequence  [
+												append sequences partId
+												append/only sequences sequence: copy []
+											]
+											repend sequence [index xy size orig offset]
+										]
+									)
+									| copy var to #":" 2 skip copy value to #"^/" 1 skip ;(print [var value])
+								]
+							]
+							|
+							copy partId [some chNotSpace to #"^/"] thru #"^/"
+						]
+					]
+				]
+			]
+			if regions [
+				sort/skip/reverse regions 3
+				new-line/skip regions true 3
+			]
+			
+			foreach [imgFile bitmapName regions sequences] data [
+				
+				foreach [partId xy size] regions [
+					xy:   load trim/all/with xy ","
+					size: load trim/all/with size ","
+					out/writeUI8 cmdDefineImage
+					write-string partId
+					out/writeUI16 xy/1
+					out/writeUI16 xy/2
+					out/writeUI16 size/1
+					out/writeUI16 size/2
+					
+				]
+				unless empty? sequences [
+					foreach [id sequence] sequences [
+						print ["Sequence" mold id "with length" ((length? sequence) / 5)] 
+						sort/skip sequence 5
+						out/writeUI8 cmdStartMovie
+						write-string id
+						foreach [index xy size orig offs] sequence [
+							xy:   load trim/all/with xy   ","
+							size: load trim/all/with size ","
+							;either offs = "0, 0" [
+								;TODO... I could use version without frame here..
+							;][
+								orig: load trim/all/with orig ","
+								offs: load trim/all/with offs ","
+								out/writeUI8 cmdAddMovieTextureWithFrame
+								out/writeUI16 xy/1
+								out/writeUI16 xy/2
+								out/writeUI16 size/1
+								out/writeUI16 size/2
+								out/writeUI32 - offs/1
+								out/writeUI32 size/2 - orig/2 + offs/2 ;- offs/2
+								out/writeUI16 orig/1
+								out/writeUI16 orig/2
+							;]
+						]
+						out/writeUI8 cmdEndMovie
+						out/writeUI16 0 ;no labels
+					]
 				]
 			]
 		]
@@ -295,6 +350,14 @@ ctx-pack-assets: context [
 							]
 							true
 						]
+						%pvr [
+							call/wait/console probe rejoin [
+								localDirBinUtils {png2atf.exe -c p -4 -q 0}
+									{ -i } to-local-file origFile
+									{ -o } to-local-file imageFile
+							]
+							true
+						]
 						%rgba [
 							call/wait/console probe rejoin [
 								localDirBinUtils {png2atf.exe -r -q 0}
@@ -332,7 +395,7 @@ ctx-pack-assets: context [
 			if #"/" <> pick dirBinUtils 1 [insert dirBinUtils what-dir]
 		][	make error! "Unspecified dirBinUtils" ]
 
-		if all [atf-type none? find [%dxt %etc %rgba] atf-type][ atf-type: none ]
+		if all [atf-type none? find [%dxt %etc %rgba %pvr] atf-type][ atf-type: none ]
 		
 		out/clearBuffers
 		
@@ -417,6 +480,23 @@ ctx-pack-assets: context [
 				]
 			]
 		]
+		;;SOUNDS:
+		sourceDir: dirize rejoin [dirAssetsRoot %Sounds\ level]
+		if exists? sourceDir [
+			foreach file read sourceDir [
+				parse file [
+					copy name to ".mp3" 4 skip end (
+						print ["Sound: " file]
+						bin: read/binary sourceDir/:file
+						out/writeUI8   cmdDefineSound
+						write-string   name
+						out/writeUI32  length? bin
+						out/writeBytes bin
+					)
+				]
+			]
+		]
+		
 		;;STARLING Sheets:
 		sourceDir: dirize rejoin [dirAssetsRoot %Starling\ level]
 		if exists? sourceDir [
@@ -657,11 +737,12 @@ ctx-pack-assets: context [
 		out/writeUI8 cmdUseLevel
 		out/writeUTF level 
 		
+		print ["Writing" length? strings "strings.."]
 		out/writeUI16 length? strings
 		foreach string strings [
 			out/writeUTF string
 		]
-		
+		print ["Writing file..."]
 		write/binary join %./bin/ rejoin [%Data/ level %.lvl] head out/outBuffer
 		;either atf-type [
 		;	[uppercase atf-type "/" level %.lvl]
@@ -733,34 +814,32 @@ ctx-pack-assets: context [
 		/local
 			colorMult hasColorMult removeTint alpha
 	][
-		if transform/1 [flags: flags or 8]
-		if transform/2 [flags: flags or 16]
+		if transform/3 [flags: flags or 8]
+		if transform/1 [flags: flags or 16]
+		if transform/2 [flags: flags or 32]
 		if color [
 			either block? colorMult: color/1 [
-				flags: flags or 32
+				flags: flags or 64
 				alpha: colorMult/4
 				if any [
 					colorMult/1 <> 256
 					colorMult/2 <> 256
 					colorMult/3 <> 256
 				][
-					flags: flags or 64
+					flags: flags or 128
 					hasColorMult: true
 				]
 			][
-				flags: flags or 64
+				flags: flags or 128
 				colorMult: [255 255 255]
 				hasColorMult: true
 			]
 		]
 		out/writeUI8  flags
 		;probe transform
-		either transform/3 [
+		if transform/3 [
 			out/writeFloat transform/3/1 / 20 ;x
 			out/writeFloat transform/3/2 / 20 ;y
-		][
-			out/writeFloat 0 ;x
-			out/writeFloat 0 ;y
 		]
 		if transform/1 [
 			out/writeFloat transform/1/1 ;scaleX
