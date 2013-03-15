@@ -222,7 +222,7 @@ ctx-form-timeline: context [
 					if none? attributes [
 						attributes: any [
 							select depth-attributes depth
-							[#[none] #[none] [0 0]]
+							[#[none] #[none] #[none]]
 						]
 					]
 					either cid [
