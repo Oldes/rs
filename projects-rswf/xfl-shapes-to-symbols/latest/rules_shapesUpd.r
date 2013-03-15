@@ -88,7 +88,7 @@ append XFL-action-rules [
 
 					print ["SHPUPD:" ch tmp/1]
 					tmp/3: true
-					change current-node get-symbol-dom shape-to-symbol current-node ch
+					change current-node make-symbol-dom shape-to-symbol current-node ch
 				]
 				file-modified?: true
 			]
