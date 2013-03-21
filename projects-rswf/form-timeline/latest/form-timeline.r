@@ -1,8 +1,8 @@
 REBOL [
     Title: "form-timeline"
-    Date: 11-Nov-2012/17:03:45+1:00
+    Date: 21-Mar-2013/15:05:26+1:00
     Name: none
-    Version: 0.1.0
+    Version: 0.3.0
     File: none
     Home: none
     Author: "Oldes"
@@ -34,11 +34,17 @@ ctx-form-timeline: context [
 	sounds:  copy []
 	sprites: copy []
 	names:   copy [] ;used to store names of objects per ID
+	names-images: copy []
 	types:   copy [] ;used to store types of objects per ID
 	offsets: copy [] ;used to offset sprite images where registration point is not 0x0
 	replaced-sprites: copy []
 	sprite-images: copy []
 	usage-counter: copy []
+	
+	ids-replaced:  copy []
+	num-shapes:  0
+	num-images:  0
+	num-objects: 0
 	
 	analyse-shape: func[
 		data [block!] "Parsed SWF Shape data"
@@ -120,7 +126,10 @@ ctx-form-timeline: context [
 			]]
 			result: head result
 			repend types [id 'shape]
-			repend shapes [id result] 
+			repend shapes [id result]
+			
+			repend ids-replaced [id to-string num-shapes]
+			num-shapes: num-shapes + 1
 		]
 	]
 	
@@ -144,7 +153,7 @@ ctx-form-timeline: context [
 			matrix:  tagData/4
 			;Test if this sprite just puts simple shape with bitmap fill so I can use Image instead of this Sprite
 			either all [
-			false
+				false ;DON'T USING THIS OPTIMIZATION NOW!!
 				3 = length? tags
 				tagId = 26 ;placeObject
 				name: select names tagData/3
@@ -155,19 +164,25 @@ ctx-form-timeline: context [
 					matrix/3/2 = 0 ;the image is placed on position 0x0
 				]
 			][
+				;as image
 				repend names [id name]
 				repend types [id 'image]
+				
 				if offset: select offsets tagData/3 [
 					repend/only repend offsets id offset
 				]
 				
 				print ["^-Image instead of sprite:" id mold name mold tag]
-				
 			][
+				;as sprite
+				repend ids-replaced [id to-string num-objects]
+				num-objects: num-objects + 1
 				form-sprite-tags id frames tags
 			]
 		][
-			;movie
+			;as movie
+			repend ids-replaced [id to-string num-objects]
+			num-objects: num-objects + 1
 			form-sprite-tags id frames tags
 		]
 	]
@@ -180,6 +195,7 @@ ctx-form-timeline: context [
 			tmp
 			depth move cid ids attributes oldAttributes colorAtts frameStart
 			maxDepth depths-replaced depths-to-remove ids-at-depth currentFrame
+			name
 	][
 		frameStart: result: tail rejoin ["^-TotalFrames " frames "^/"]
 		maxDepth: 0
@@ -197,7 +213,9 @@ ctx-form-timeline: context [
 			tagData: tag/2
 			switch/default tagId [
 				26 70 [;placeObject
-					set [depth move cid attributes colorAtts]  tagData
+					set [depth move cid attributes colorAtts ]  tagData
+					name: tagData/7
+					
 					if tmp: find replaced-sprites cid [
 						cid: sprite-images/(index? tmp)
 					]
@@ -275,10 +293,11 @@ ctx-form-timeline: context [
 						]
 						result: insert result rejoin [
 							either move ["^-Replace "]["^-Place "] (select types cid)
-							#" " cid
+							#" " select ids-replaced cid
 							#" " realDepth
 							mold/all attributes
 							either colorAtts [mold/all colorAtts][""]
+							either all [name #"$" = name/1] [mold as-string next name][""] ;only names which beggins with char $  
 							#"^/"
 						]
 					][
@@ -369,9 +388,12 @@ ctx-form-timeline: context [
 		clear bitmaps
 		clear sprites
 		clear names
+		clear names-images
 		clear types
 		clear offsets
 		clear usage-counter
+		clear ids-replaced
+		num-images: num-objects: num-shapes: 0
 		
 		with swf-parser/swf-tag-parser [
 			verbal?: false
@@ -382,11 +404,18 @@ ctx-form-timeline: context [
 			76   ;AVM2 - DoAction3StartupClass
 		]
 		foreach [tagId tagData] tags [
-			probe parsed: parse-swf-tag tagId tagData
+			parsed: parse-swf-tag tagId tagData
 			foreach [id name] parsed [
 				replace/all name "_" "/"
-				parse/all name ["Bitmaps/" copy name to end]
-				repend names [id as-string name]
+				either parse/all name ["Bitmaps/" copy name to end][
+					;print ["Image:" id tab name]
+					repend types [id 'image]
+					append names-images name
+					repend ids-replaced [id to-string length? names-images]
+					
+				][
+					repend names [id as-string name]
+				]
 				;print ["^-AssetName:" id mold as-string name]
 			]
 		]
@@ -416,7 +445,11 @@ ctx-form-timeline: context [
 				;]
 				20 21 35 36 [;DefineBitsLossless DefineBitsJPEG2 DefineBitsJPEG3 DefineBitsLossless2 	
 					if find names parsed/1 [
-						repend types [parsed/1 'image]
+						unless find types parsed/1 [
+							print ["!!! UNKNOWN IMAGE" parsed/1]
+							ask "continue?"
+						]
+						;repend types [parsed/1 'image]
 					]
 					;repend names [id name]
 					;repend types [id 'image]
@@ -432,8 +465,8 @@ ctx-form-timeline: context [
 				;70 [;PlaceObject3
 				;]
 				14 [;DefineSound
-					probe parsed
-					ask ""
+					print ["SOUND: " mold parsed]
+					ask "continue?"
 					repend types [parsed/1 'sound]
 				]
 				0 [;End
@@ -447,26 +480,37 @@ ctx-form-timeline: context [
 		code: copy ""
 		foreach [id name] names [
 			if find usage-counter id [
-				append code reform ["Name" id mold name "^/"]
+				append code reform ["Name" select ids-replaced id mold name "^/"]
 			]
 		]
-		print code
+		
+		repend code [
+			"^/Images "
+			mold new-line/all names-images true
+			"^/^/"
+		]
+
 		foreach [id def] shapes [
-			print ["shape" id]
-			append code ajoin ["Shape " id " [^/" def "]^/"]
+			print ["!!! shape" id]
+			append code ajoin ["Shape " select ids-replaced id " [^/" def "]^/"]
 		]
 		
 		foreach [id def] sprites [
-			print ["sprite" id]
+			;print ["sprite" id]
 			append code rejoin [
 				either def/1 = 1 ["Sprite "]["Movie "]
-				id " [^/" def/2 "]^/"
+				select ids-replaced id " [^/" def/2 "]^/"
 			]
 			;if name: select names id [
 			;	append code reform ["Asset" id mold name "^/"]
 			;]
 		]
-
+		print "---------------------"
+		print [" images:" length? names-images]
+		print [" shapes:" num-shapes]
+		print ["objects:" num-objects]
+		print "---------------------"
+		;probe ids-replaced
 		;print code
 		write head change find/last src-swf "." ".txt"code ;replaces swf extension with txt and saves result into this new file
 	]

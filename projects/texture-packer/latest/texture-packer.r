@@ -85,8 +85,11 @@ ctx-texture-packer: context [
 		/local
 			imgs pack target-name
 			size data
+			result-files
+			tmp n
 	][
 		clear size-imgs
+		result-files: copy []
 		
 		if verbose > 0 [
 			print ["Texture-packing:" mold sourceDir]
@@ -113,13 +116,21 @@ ctx-texture-packer: context [
 			]
 		]
 		set [size data] pow2-rectangle-pack size-imgs
-		
 		target-name: join targetDir head remove back tail last split-path sourceDir
 		save join target-name %.rpack data/1 
-		combine-files data/1 size join target-name %.png
+		append result-files target-name
 		
+		combine-files data/1 size join target-name %.png
+		n: 0
+		while [not empty? data/2][
+			set [size data] pow2-rectangle-pack data/2
+			n: n + 1
+			combine-files data/1 size rejoin [target-name %_ n %.png]
+			save tmp: rejoin [target-name %_ n %.rpack] data/1
+			append result-files tmp
+		]
 		clear size-imgs
-		target-name
+		result-files
 	]
 
 	;texture-pack %/d/assets/Bitmaps/Domek/DomekPopredi/ %/d/

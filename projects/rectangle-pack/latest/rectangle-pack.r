@@ -143,6 +143,7 @@ ctx-rectangle-pack: context [
 		;probe minArea
 		unless minResult [
 			probe result
+			minResult: reduce [max-size result]
 		]
 		minResult
 	]
