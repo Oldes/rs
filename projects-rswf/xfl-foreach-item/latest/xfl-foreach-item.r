@@ -93,11 +93,14 @@ renameBitmaps: func[node /local libDir atts name extFile newName f][
 					className: replace/all copy newName "/" "_" 
 					either find atts "linkageExportForAS" [
 						atts/("linkageExportForAS"): "true"
+					][
+						repend atts ["linkageExportForAS" "true"]
+					]
+					either find atts "linkageClassName" [
 						atts/("linkageClassName"): className
 					][
-						repend atts ["linkageExportForAS" "true" "linkageClassName" className]
+						repend atts ["linkageClassName" className]
 					]
-					
 					
 					bmpNum: bmpNum + 1
 				)
@@ -119,4 +122,5 @@ renameBitmaps: func[node /local libDir atts name extFile newName f][
 ]
 onItemCallback: 
 onNodeCallback: :renameBitmaps
-xfl-foreach-item %/d/Domek_intro_d/ %/d/Domek_intro_r/
+xfl-foreach-item %/d/Domek_r/ %/d/Domek_anims/
+;xfl-foreach-item %/d/assets/TimelineSWFs/Klicnice_anims_normal_d/ %/d/assets/TimelineSWFs/Klicnice_anims_normal_r/
