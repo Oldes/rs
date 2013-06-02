@@ -35,6 +35,7 @@ ctx-form-timeline: context [
 	sprites: copy []
 	names:   copy [] ;used to store names of objects per ID
 	names-images: copy []
+	names-sounds: copy []
 	types:   copy [] ;used to store types of objects per ID
 	offsets: copy [] ;used to offset sprite images where registration point is not 0x0
 	replaced-sprites: copy []
@@ -55,7 +56,7 @@ ctx-form-timeline: context [
 			name  ;used as an bitmap alias
 			style ;holds temporaly style block
 	][
-		
+		;print ["analyse-shape" mold data]
 		set [id bounds edge shape] data
 		set [FillStyles LineStyles ShapeRecords] shape
 
@@ -77,7 +78,7 @@ ctx-form-timeline: context [
 		LineStyles: head LineStyles
 		
 		fill: FillStyles/1 ;checking only for the first fill style, maybe I should clear undefined fills first!
-
+		
 		either all [
 			fill
 			fill/1 >= 64 ;there is a bitmap fill
@@ -85,7 +86,7 @@ ctx-form-timeline: context [
 		][
 			repend names [id name]
 			repend types [id 'image]
-			
+			;print ["SHAPE AS IMAGE?" mold ShapeRecords/2]
 			either all [
 				ShapeRecords/2/1
 				ShapeRecords/2/1/1 = fill/2/2/3/1
@@ -105,14 +106,20 @@ ctx-form-timeline: context [
 			result: copy "" 
 			parse/all ShapeRecords [any [
 				'style set style block! (
-					if all [
-						style/4
-						tmp: pick LineStyles style/4
+					;probe lineStyles
+					either tmp: style/5 [
+						;probe tmp
+						LineStyles: tmp/2
 					][
-						result: insert result reform ["^-lineStyle" tmp/1 tmp/4 "^/"]
-					]
-					if tmp: style/1 [
-						result: insert result reform ["^-moveTo" tmp/1 tmp/2 "^/"]
+						if all [
+							style/4
+							tmp: pick LineStyles style/4
+						][
+							result: insert result reform ["^-lineStyle" tmp/1 tmp/4 "^/"]
+						]
+						if tmp: style/1 [
+							result: insert result reform ["^-moveTo" tmp/1 tmp/2 "^/"]
+						]
 					]
 				)
 				|
@@ -339,8 +346,7 @@ ctx-form-timeline: context [
 				45 [;SoundStreamHead2, not used
 				]
 				15 [;StartSound
-					result: insert result rejoin ["^-Sound " tagData/1 " " mold tagData/2 "^/"]
-					append usage-counter tagData/1
+					result: insert result do-startSound tagData
 				]
 				12 [
 					;actions
@@ -380,6 +386,32 @@ ctx-form-timeline: context [
 		]
 	]
 	
+	do-startSound: func[data
+		/local id SyncStop SyncNoMultiple InPoint OutPoint Loops Envelope p
+	][
+		id: data/1
+		set [
+			SyncStop
+			SyncNoMultiple
+			InPoint
+			OutPoint
+			Loops
+			Envelope
+		] next data/2
+		if block? envelope [
+			;flash is leaving multiple sound envelop values for same sample frames,
+			;so I first clean it up and leave just the last values for samples with same number
+			p: none
+			forskip envelope 3 [
+				if all [p p = envelope/1][
+					envelope: remove/part skip envelope -3 3
+				]
+				p: envelope/1
+			]
+		]
+		append usage-counter id
+		rejoin ["^-Sound " select ids-replaced id " " mold reduce [any [loops 0] any [envelope reduce [0 32768 32768]]] "^/"]
+	]
 	set 'form-timeline func[
 		src-swf [file!]
 		/local tags tagId tagData parsed
@@ -389,6 +421,7 @@ ctx-form-timeline: context [
 		clear sprites
 		clear names
 		clear names-images
+		clear names-sounds
 		clear types
 		clear offsets
 		clear usage-counter
@@ -407,12 +440,20 @@ ctx-form-timeline: context [
 			parsed: parse-swf-tag tagId tagData
 			foreach [id name] parsed [
 				replace/all name "_" "/"
-				either parse/all name ["Bitmaps/" copy name to end][
-					;print ["Image:" id tab name]
-					repend types [id 'image]
-					append names-images name
-					repend ids-replaced [id to-string length? names-images]
-					
+				unless parse/all name [
+					"Bitmaps/" copy name to end (
+						;print ["Image:" id tab name]
+						repend types [id 'image]
+						append names-images name
+						repend ids-replaced [id to-string length? names-images]
+					)
+					|
+					"Sounds/" copy name to end (
+						print ["Sound:" id tab name]
+						repend types [id 'sound]
+						append names-sounds name
+						repend ids-replaced [id to-string length? names-sounds]
+					)
 				][
 					repend names [id as-string name]
 				]
@@ -465,10 +506,20 @@ ctx-form-timeline: context [
 				;70 [;PlaceObject3
 				;]
 				14 [;DefineSound
-					print ["SOUND: " mold parsed]
-					ask "continue?"
+					tmp: pick names-sounds to-integer select ids-replaced parsed/1
+					print ["SOUND: " tmp]
+					bin: last parsed
+					if any [
+						;;NOTE: named MP3 files are exported into Sounds dir which is located in SWF's parent dir 
+						not exists? mp3file: rejoin [first split-path src-swf %../Sounds/ tmp %.mp3]
+						(size? mp3file) <> length? bin
+					][
+						print ["Exporting MP3:" mp3file "-" length? bin "bytes"]
+						write/binary mp3file bin
+					]
 					repend types [parsed/1 'sound]
 				]
+				
 				0 [;End
 					;I break the loop because I noticed, that FlashPro sometimes leaves garbage after the end tag!
 					break
@@ -489,9 +540,14 @@ ctx-form-timeline: context [
 			mold new-line/all names-images true
 			"^/^/"
 		]
+		repend code [
+			"^/Sounds "
+			mold new-line/all names-sounds true
+			"^/^/"
+		]
 
 		foreach [id def] shapes [
-			print ["!!! shape" id]
+			;print ["!!! shape" id]
 			append code ajoin ["Shape " select ids-replaced id " [^/" def "]^/"]
 		]
 		
@@ -509,6 +565,7 @@ ctx-form-timeline: context [
 		print [" images:" length? names-images]
 		print [" shapes:" num-shapes]
 		print ["objects:" num-objects]
+		print [" sounds:" length? names-sounds]
 		print "---------------------"
 		;probe ids-replaced
 		;print code
