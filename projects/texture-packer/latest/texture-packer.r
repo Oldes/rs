@@ -115,7 +115,7 @@ ctx-texture-packer: context [
 				]
 			]
 		]
-		set [size data] pow2-rectangle-pack size-imgs
+		set [size data] pow2-rectangle-pack/method size-imgs 3
 		target-name: join targetDir head remove back tail last split-path sourceDir
 		save join target-name %.rpack data/1 
 		append result-files target-name
@@ -123,10 +123,10 @@ ctx-texture-packer: context [
 		combine-files data/1 size join target-name %.png
 		n: 0
 		while [not empty? data/2][
-			set [size data] pow2-rectangle-pack data/2
+			set [size data] pow2-rectangle-pack/method data/2 3
 			n: n + 1
 			combine-files data/1 size rejoin [target-name %_ n %.png]
-			save tmp: rejoin [target-name %_ n %.rpack] data/1
+			save join tmp: rejoin [target-name %_ n] %.rpack data/1
 			append result-files tmp
 		]
 		clear size-imgs
