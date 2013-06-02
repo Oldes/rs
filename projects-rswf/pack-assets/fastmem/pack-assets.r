@@ -72,7 +72,8 @@ ctx-pack-assets: context [
 		cmdShowFrame:                128
 		
 
-	usedTimelineImages: none	
+	usedTimelineImages: none
+	usedTimelineSounds: none
 	level-images: copy []  ;Storing list of all defined level images
 		
 	out: make stream-io [] ;Holds output stream
@@ -356,7 +357,7 @@ ctx-pack-assets: context [
 				]
 				;write data into result stream
 				out/writeUI8 cmdTextureData
-				write-string to-string packName
+				write-string to-string find/tail packName dirPacks
 				bin: read/binary get-atf-file atf-type packName
 				either atf-type [
 					out/writeUI8   1 ;is compressed
@@ -390,21 +391,48 @@ ctx-pack-assets: context [
 				]
 			]
 		]
+		
+		;;TIMELINE - form timeline before sound because it exports MP3 files
+		case [
+			exists? sourceSWF: rejoin [dirAssetsRoot %TimelineSWFs\ level %_anims.swf][
+				sourceTXT: rejoin [dirAssetsRoot %TimelineSWFs\ level %_anims.txt]
+			]
+			exists? sourceSWF: rejoin [dirAssetsRoot %TimelineSWFs\ level %.swf][
+				sourceTXT: rejoin [dirAssetsRoot %TimelineSWFs\ level %.txt]
+			]
+		]
+		if exists? sourceSWF [
+			if any [
+				;true ;;<-- just to force recreation every time
+				not exists? sourceTXT
+				(modified? sourceTXT) < (modified? sourceSWF)
+				;(modified? join rs/get-project-dir 'form-timeline %form-timeline.r) > (modified? sourceTXT)
+			][
+				form-timeline sourceSWF
+			]
+		]
+		
 		;;SOUNDS:
-		sourceDir: dirize rejoin [dirAssetsRoot %Sounds\ level]
-		if exists? sourceDir [
-			foreach file read sourceDir [
+		soundsDir: dirize rejoin [dirAssetsRoot %Sounds\ level]
+		level-sounds: copy []
+		if exists? soundsDir [
+			n: 0
+			foreach file read soundsDir [
 				parse file [
 					copy name to ".mp3" 4 skip end (
 						print ["Sound: " file]
-						bin: read/binary sourceDir/:file
+						append level-sounds rejoin [to-string level %"/" name]
+						bin: read/binary soundsDir/:file
 						out/writeUI8   cmdDefineSound
 						write-string   name
+						out/writeUI16  timelineIdOffset + n
 						out/writeUI32  length? bin
 						out/writeBytes bin
+						n: n + 1
 					)
 				]
 			]
+			save soundsDir/sounds.txt level-sounds
 		]
 		
 		;;STARLING Sheets:
@@ -503,7 +531,7 @@ ctx-pack-assets: context [
 					]
 					out/outBuffer: tail out/outBuffer ;sets output back after specifications
 					
-				]
+				];END OF CLASIC STARLING
 			]
 		]
 		
@@ -523,26 +551,9 @@ ctx-pack-assets: context [
 			]
 		]
 		
-		;;TIMELINE OBJECTS DEFINITIONS:
-		case [
-			exists? sourceSWF: rejoin [dirAssetsRoot %TimelineSWFs\ level %_anims.swf][
-				sourceTXT: rejoin [dirAssetsRoot %TimelineSWFs\ level %_anims.txt]
-			]
-			exists? sourceSWF: rejoin [dirAssetsRoot %TimelineSWFs\ level %.swf][
-				sourceTXT: rejoin [dirAssetsRoot %TimelineSWFs\ level %.txt]
-			]
-		]
-
+		;;TIMELINE OBJECTS DEFINITIONS (continue)
 		if exists? sourceSWF [
 			indx: index? out/outBuffer
-			if any [
-				;true ;;<-- just to force recreation every time
-				not exists? sourceTXT
-				(modified? sourceTXT) < (modified? sourceSWF)
-				;(modified? join rs/get-project-dir 'form-timeline %form-timeline.r) > (modified? sourceTXT)
-			][
-				form-timeline sourceSWF
-			]
 			parse-timeline sourceTXT
 			print ["Timeline bytes:" (index? out/outBuffer) - indx]
 		]
@@ -565,6 +576,19 @@ ctx-pack-assets: context [
 				foreach value data/posY   [ out/writeFloat value ]
 				foreach value data/scale  [ out/writeFloat value ]
 				foreach value data/rotate [ out/writeFloat value ]
+				
+				;Reflections:
+				either all [
+					find first data 'rPosX
+					0 < num: length? data/rPosX
+				][
+					out/writeUI16  num
+					foreach value data/rPosX   [ out/writeFloat value ]
+					foreach value data/rPosY   [ out/writeFloat value ]
+					foreach value data/rRotate [ out/writeFloat value ]
+				][
+					out/writeUI16  0
+				]
 				
 				out/writeUI16 (length? data/labelsAt) / 2
 				foreach [num name] data/labelsAt [
@@ -695,18 +719,20 @@ ctx-pack-assets: context [
 				)
 				|
 				'Shape set id integer! set data block! (
-					comment {
+					;comment {
 					out/writeUI8  cmdTimelineShape
-					out/writeUI16 id
+					out/writeUI16 id + timelineIdOffset
 					indx: index? out/outBuffer
 					parse-ShapeDefinition data
 					out/outBuffer: at head out/outBuffer indx
 					out/writeUI32 length? out/outBuffer
 					out/outBuffer: tail out/outBuffer
-					}
+					;}
 				)
 				|
 				'Images set usedTimelineImages block!
+				|
+				'Sounds set usedTimelineSounds block!
 			]
 		]
 		out/outBuffer: at head out/outBuffer startIndx
@@ -724,13 +750,36 @@ ctx-pack-assets: context [
 	write-transform: func[
 		transform color flags
 		/local
-			colorMult hasColorMult removeTint alpha
+			colorMult colorAdd hasColorMult removeTint alpha useColorMatrix
 	][
 		if transform/3 [flags: flags or 8]
 		if transform/1 [flags: flags or 16]
 		if transform/2 [flags: flags or 32]
 		if color [
+			set [colorMult colorAdd] color
+			either any [
+				block? colorAdd
+				all [
+					block? colorMult
+					any [
+						colorMult/1 <> 256
+						colorMult/2 <> 256
+						colorMult/3 <> 256
+					]
+				]
+			][
+				flags: flags or 64
+				useColorMatrix: true
+				print ["ColorMatrix.." mold color]
+			][
+				if block? colorMult [
+					flags: flags or 128
+					alpha: colorMult/4
+				]
+			]
+			comment {
 			either block? colorMult: color/1 [
+				
 				flags: flags or 64
 				alpha: colorMult/4
 				if any [
@@ -745,7 +794,7 @@ ctx-pack-assets: context [
 				flags: flags or 128
 				colorMult: [255 255 255]
 				hasColorMult: true
-			]
+			]}
 		]
 		out/writeUI8  flags
 		;probe transform
@@ -761,13 +810,25 @@ ctx-pack-assets: context [
 			out/writeFloat transform/2/1 ;skewX
 			out/writeFloat transform/2/2 ;skewY
 		]
-		if alpha [
-			out/writeUI8 min 255 alpha
-		]
-		if hasColorMult [
-			out/writeUI8 min 255 colorMult/1
-			out/writeUI8 min 255 colorMult/2
-			out/writeUI8 min 255 colorMult/3
+		either useColorMatrix [
+			out/writeFloat colorMult/1 / 256
+			out/writeFloat colorMult/2 / 256
+			out/writeFloat colorMult/3 / 256
+			out/writeFloat colorMult/4 / 256
+			if none? colorAdd [colorAdd: [0 0 0 0]]
+			out/writeFloat colorAdd/1 / 256
+			out/writeFloat colorAdd/2 / 256
+			out/writeFloat colorAdd/3 / 256
+			out/writeFloat colorAdd/4 / 256
+			{if hasColorMult [
+				out/writeUI8 min 255 colorMult/1
+				out/writeUI8 min 255 colorMult/2
+				out/writeUI8 min 255 colorMult/3
+			]}
+		][
+			if alpha [
+				out/writeUI8 min 255 alpha
+			]
 		]
 	]
 
@@ -794,7 +855,9 @@ ctx-pack-assets: context [
 			'curve set points block! (
 				out/writeUI8   cmdCurve
 				out/writeUI16 (length? points) / 4 ;count
+				
 				foreach [cx cy ax ay] points [
+					;print ["curve" cx cy ax ay]
 					out/writeUI16 cx
 					out/writeUI16 cy
 					out/writeUI16 ax
@@ -852,6 +915,7 @@ ctx-pack-assets: context [
 					either name [
 						out/writeUI8 cmdPlaceNamed
 						out/writeUTF name
+						;ask ["NAMED.." name]
 					][
 						out/writeUI8 cmdPlace
 					]
@@ -893,9 +957,18 @@ ctx-pack-assets: context [
 				)
 				|
 				'Sound set id integer! set soundData block! (
+					if error? try [
+						id: -1 + index? find level-sounds usedTimelineSounds/:id
+					][
+						print ["!!! Unknown timeline sound!" id usedTimelineSounds/:id]
+						halt
+					]
 					out/writeUI8  cmdSound
 					out/writeUI16 id + timelineIdOffset
-					;soundData not used yet!
+					out/writeUI16 soundData/1 ;repeat
+					;not using all values from envelope, just first one
+					out/writeUI16 soundData/2/2 ;leftVolume
+					out/writeUI16 soundData/2/3 ;rightVolume
 				)
 				| pos: 1 skip (
 					ask reform ["UNKNOWN COMMAND near:" mold copy/part pos 20 "..."] 
