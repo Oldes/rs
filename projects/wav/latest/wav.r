@@ -27,6 +27,7 @@ ctx-wav: make stream-io [
 	wav-port: none
 	wav-data-size: 0
 	wav-Format: none
+	cues: copy []
 	
 	readRIFFTypeChunk: does [
 		context [
@@ -50,6 +51,7 @@ ctx-wav: make stream-io [
 		context [
 			id:            readUI32 ;unique identification value
 			position:      readUI32 ;play order position
+			position-time: to-time (position / wav-Format/sampleRate)
 			data-id:       as-string readBytes 4 ;RIFF ID of corresponding data chunk
 			chunk-start:   readUI32 ;Offset of Data Chunk *
 			block-start:   readUI32 ;Offset to sample of First Channel
@@ -60,7 +62,8 @@ ctx-wav: make stream-io [
 		context [
 			data-size: readUI32
 			cue-id: readUI32
-			text:   as-string readBytes (data-size - 4)
+			cue:    pick cues (1 + cue-id)
+			text:   as-string readBytes (data-size + (data-size // 2) - 4)
 		]
 	]
 	seekToBuffer: func[bytes][
@@ -70,7 +73,8 @@ ctx-wav: make stream-io [
 		inBuffer
 	]
 	open: func["Reads WAV file into buffer" wav-file [file! url!]][
-		WAVHeader: none
+		WAVHeader: wav-Format: none
+		clear cues
 		probe wav-file
 		wav-port: system/words/open/read/binary/seek wav-file
 		seekToBuffer 20
@@ -82,7 +86,7 @@ ctx-wav: make stream-io [
 		/local tmp ChunkID ChunkSize subChunkID size 
 	][
 		open wav-file
-		probe tmp: readRIFFTypeChunk
+		tmp: readRIFFTypeChunk
 		either all [tmp/id = "RIFF" tmp/type = "WAVE"][
 			probe tail? inBuffer
 			while [not tail? inBuffer][
@@ -101,15 +105,15 @@ ctx-wav: make stream-io [
 					"cue " [
 						print ["CUE:"]
 						loop readUI32 [
-							probe readCUEPoint
+							repend cues probe readCUEPoint
 						]
 					]
 					"LIST" [
 						print ["LIST:" size]
 						;probe as-string readBytes size
 						if #{6164746C} = readBytes 4 [ ;adtl
-							probe as-string inBuffer
-							while [#{6C61626C} = probe readBytes 4][ ;labl
+							;probe as-string inBuffer
+							while [#{6C61626C} = readBytes 4][ ;labl
 								probe readLabelChunk
 							]
 						]
