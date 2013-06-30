@@ -486,8 +486,8 @@ ctx-pack-assets: context [
 					out/writeUI8 cmdEndMovie
 
 					either all [
-						exists? probe sourceTXT: rejoin [sourceDir name %.labels]
-						not empty? data: load sourceTXT
+						exists? probe sourceLabels: rejoin [sourceDir name %.labels]
+						not empty? data: load sourceLabels
 					][
 						out/writeUI16 (length? data) / 2
 						foreach [number label] data [
@@ -693,7 +693,7 @@ ctx-pack-assets: context [
 			startIndx
 			names ;used to store names-to-id data
 	][
-		print ["====== parse-timeline "]
+		print ["====== parse-timeline " file]
 		names: copy []
 		out/writeUI8  cmdTimelineData
 		startIndx: index? out/outBuffer
@@ -744,6 +744,7 @@ ctx-pack-assets: context [
 		foreach [name id] names [
 			out/writeUI16 id
 			out/writeUTF  name
+			print ["Named TO:" id name]
 		]
 	]
 
