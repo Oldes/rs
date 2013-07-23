@@ -45,8 +45,6 @@ download-fossil-dir: func[dir url /local page wasDir subdir][
 								if not exists? subdir [
 									download-fossil-dir subdir rejoin [http://red.esperconsultancy.nl/ dir {dir?ci=} dirId {&name=} dirName]
 								]
-								print [dirId dirName]
-								ask ""
 							)
 						]					
 
