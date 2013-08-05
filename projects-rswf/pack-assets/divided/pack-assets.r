@@ -39,6 +39,8 @@ ctx-pack-assets: context [
 	;Asset's commands:
 		cmdUseLevel:                 1
 		cmdTextureData:              2
+		cmdPackedAssets:              102
+		cmdUseTexture:                103
 		cmdDefineImage:              3
 		cmdStartMovie:               4
 		cmdEndMovie:                 5
@@ -77,6 +79,7 @@ ctx-pack-assets: context [
 	level-images: copy []  ;Storing list of all defined level images
 	pack-files:   copy []
 	out: make stream-io [] ;Holds output stream
+	outTextures: make stream-io [] ;Holds textures stream - textures are separated because they may be reloaded when a context is lost
 	strings: copy []
 
 	;Charsets:
@@ -197,7 +200,6 @@ ctx-pack-assets: context [
 				]
 			]
 		]
-		
 		foreach [partId xy size] regions [
 			out/writeUI8 cmdDefineImage
 			out/writeUI16 offsetImageId - 1 + index? find level-images partId
@@ -314,20 +316,28 @@ ctx-pack-assets: context [
 			]
 		]
 	]
+	
+	idOffsetData: [
+		%Univerzal       [0       0      0      0     ]
+		%PrasivkaUfo     [100     100    100    100   ]
+		%PlanetaDomovska [600     1100   100    100   ]
+		
+		;%Konstrukter   [11      34     0      0     ]
+		;%Prasivka      [195     1805   2      3     ]
+		;%Domek         [632     4514   997    3     ]
+		;%Mustek        [1364    7509   997    48    ]
+		;%Houbar        [1464    8025   2160   48    ]
+	]
+	
+	get-imageIdOffset: func[level [any-string!] /local tmp][
+		tmp: select idOffsetData to-file level
+		either tmp [tmp/2][1100]
+	]
 	set-timelineIdOffset: func[level [any-string!]][
 		;if level <> %Univerzal [level: none]
 		set [offsetObjectId offsetImageId offsetShapeId offsetSoundId] any[
-			select [
-				%Univerzal       [0       0      0      0     ]
-				%PlanetaDomovska [100     100    100    100   ]
-				
-				;%Konstrukter   [11      34     0      0     ]
-				;%Prasivka      [195     1805   2      3     ]
-				;%Domek         [632     4514   997    3     ]
-				;%Mustek        [1364    7509   997    48    ]
-				;%Houbar        [1464    8025   2160   48    ]
-			] level
-			[100 100 100 110]
+			select idOffsetData to-file level
+			[600 1100 100 110]
 		]
 	]
 	set 'make-packs func [
@@ -361,6 +371,7 @@ ctx-pack-assets: context [
 		
 		;-- Init ouput buffer...
 		out/clearBuffers
+		outTextures/clearBuffers
 		clear pack-files
 		clear level-images
 		
@@ -401,7 +412,6 @@ ctx-pack-assets: context [
 			;probe level-images
 			save rejoin [dirAssetsRoot %Bitmaps/ level %/images.txt] level-images
 			
-			
 			foreach packName pack-files [
 				probe origImageFile: rejoin [packName %.png]
 				;-- Generate ATF versions if required...
@@ -424,20 +434,34 @@ ctx-pack-assets: context [
 					exists? imageFile: origImageFile
 				]
 				;-- Write bitmaps data into result stream
-				out/writeUI8 cmdTextureData
-				out/writeUTF to-string find/tail packName dirPacks
 				bin: read/binary get-atf-file atf-type packName
+				
+				outTextures/writeUI8 cmdTextureData
+				outTextures/writeUTF to-string find/tail packName dirPacks
+
+				out/writeUI8 cmdPackedAssets
+				out/writeUTF to-string find/tail packName dirPacks
+				write-rpack-assets join packName %.rpack
+				
 				either atf-type [
-					out/writeUI8   1 ;is compressed
-					out/writeUI32  length? bin
-					out/writeBytes bin
-					write-rpack-assets join packName %.rpack
+					outTextures/writeUI8   1 ;is compressed
+					outTextures/writeUI32  length? bin
+					outTextures/writeBytes bin
+					
+					;out/writeUI8   1 ;is compressed
+					;out/writeUI32  length? bin
+					;out/writeBytes bin
+					;write-rpack-assets join packName %.rpack
 				][
-					out/writeUI8   0 ;not compressed
-					write-rpack-assets join packName %.rpack
+					outTextures/writeUI8   0 ;not compressed
+					outTextures/writeUI32  length? bin
+					outTextures/writeBytes bin
+					
+					;out/writeUI8   0 ;not compressed
+					;write-rpack-assets join packName %.rpack
 					;storing PNG after assets - because we must use loader to get bitmap from bytes
-					out/writeUI32  length? bin
-					out/writeBytes bin
+					;out/writeUI32  length? bin
+					;out/writeBytes bin
 				]
 			]
 			
@@ -516,7 +540,10 @@ ctx-pack-assets: context [
 						exists? imageFile: rejoin [sourceDir name %.png]
 					]
 				][
-					out/writeUI8 cmdTextureData
+					outTextures/writeUI8 cmdTextureData
+					outTextures/writeUTF name
+					
+					out/writeUI8 cmdPackedAssets
 					out/writeUTF name
 					;store output stream position
 					indx: index? out/outBuffer 
@@ -580,25 +607,25 @@ ctx-pack-assets: context [
 					]
 					bin: read/binary probe imageFile
 					
-					out/outBuffer: at head out/outBuffer indx 
+					;out/outBuffer: at head out/outBuffer indx 
 					either atf-type [
 						;storing ATF in front of asset specifications
 						;set output position in front of written asssets specification;
-						out/writeUI8   1
-						out/writeUI32  length? bin
-						out/writeBytes bin
+						outTextures/writeUI8   1
+						outTextures/writeUI32  length? bin
+						outTextures/writeBytes bin
 						
-						out/outBuffer: tail out/outBuffer
+						;out/outBuffer: tail out/outBuffer
 						
 					][
-						out/writeUI8   0
+						outTextures/writeUI8   0
 						;storing PNG after assets - because we must use loader to get bitmap from bytes
-						out/outBuffer: tail out/outBuffer
-						out/writeUI32  length? bin
-						out/writeBytes bin
+						;outTextures/outBuffer: tail outTextures/outBuffer
+						outTextures/writeUI32  length? bin
+						outTextures/writeBytes bin
 
 					]
-					out/outBuffer: tail out/outBuffer ;sets output back after specifications
+					;out/outBuffer: tail out/outBuffer ;sets output back after specifications
 					
 				];END OF CLASIC STARLING
 			]
@@ -732,6 +759,14 @@ ctx-pack-assets: context [
 			]
 		]
 		
+		outTextures/writeUI8 0 ;end
+		outTextures/outBuffer: head outTextures/outBuffer
+		outTextures/writeBytes as-binary "LVL"
+		outTextures/writeUI8 cmdUseLevel
+		outTextures/writeUTF level 
+		
+		print ["Writing textures file..."]
+		write/binary join %./bin/ rejoin [%Data/ target #"/" level %.lvl] head outTextures/outBuffer
 		
 		out/writeUI8 0 ;end
 		
@@ -947,7 +982,7 @@ ctx-pack-assets: context [
 		data
 		/local
 			id depth transform type frames name colorTransform ;parse variables
-			flags soundData pos
+			flags soundData pos imageName externalLevel
 	][
 		parse/all data [
 			'TotalFrames set frames integer! (
@@ -983,17 +1018,27 @@ ctx-pack-assets: context [
 					][
 						out/writeUI8 cmdPlace
 					]
-					if type = 'image [
-						if error? try [
-							id: -1 + index? find level-images usedTimelineImages/:id
-						][
-							print ["!!! Unknown timeline image!" id usedTimelineImages/:id]
-							probe level-images
-							halt
-						]
-					]
 					switch/default type [
-						image  [ out/writeUI16 id + offsetImageId ]
+						image  [
+							imageName: usedTimelineImages/:id
+							if error? try [
+								id: -1 + offsetImageId + index? find level-images imageName
+							][
+								if error? try [
+									parse imageName [copy externalLevel to #"/" to end]
+									;TODO: optimize this part!!
+									id: index? find load rejoin [dirAssetsRoot %Bitmaps/ externalLevel %/images.txt] imageName
+									id: id - 1 + get-imageIdOffset externalLevel
+									;print ["External image:" imageName]
+								][
+									ask ["!!! Unknown timeline image!" id imageName]
+									;probe level-images
+									id: 0
+								]
+
+							]
+							out/writeUI16 id 
+						]
 						object [ out/writeUI16 id + offsetObjectId ]
 						shape  [ out/writeUI16 id + offsetShapeId ]
 					][
@@ -1010,7 +1055,7 @@ ctx-pack-assets: context [
 				)
 				|
 				'Replace set type word! set id integer! set depth integer! set transform block! set color [block! | none] (
-					;print ["Replace: " id]
+					; ["Replace: " id]
 					out/writeUI8  cmdReplace
 					switch/default type [
 						image  [ out/writeUI16 id + offsetImageId ]
