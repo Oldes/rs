@@ -78,12 +78,36 @@ ctx-texture-packer: context [
 		]
 	]               
 
-	
+	get-size-imgs: func[
+		sourceDir [file!]
+		/local imgs img-path
+	][
+		print ["Getting image sizes from:" mold sourceDir]
+		imgs: read sourceDir	
+		foreach img imgs [
+			either all [
+				#"/" =  last img
+				#"_" <> first img
+			][
+				get-size-imgs sourceDir/:img
+			][
+				if find ["png" "jpg" "bmp"] last parse img "." [
+					img-path: sourceDir/:img
+					
+					repend size-imgs [
+						get-image-size img-path
+						img-path
+					]
+				]
+			]
+		]
+		size-imgs
+	]
 	set 'texture-pack func[
 		sourceDir [file!] "Directory with images to pack"
 		targetDir [file!] "Directory where to save result"
 		/local
-			imgs pack target-name
+			pack target-name
 			size data
 			result-files
 			tmp n
@@ -98,24 +122,14 @@ ctx-texture-packer: context [
 		
 		sourceDir: dirize sourceDir
 		unless exists? targetDir: dirize targetDir [ make-dir/deep targetDir ]
-		
-		imgs: read sourceDir		
-		
+
 		ctx-rectangle-pack/max-size: max-size
 		ctx-rectangle-pack/padding:  padding
 		ctx-rectangle-pack/verbose:   verbose
 		
-		foreach img imgs [
-			if find ["png" "jpg" "bmp"] last parse img "." [
-				img-path: sourceDir/:img
-				
-				repend size-imgs [
-					get-image-size img-path
-					img-path
-				]
-			]
-		]
-		set [size data] pow2-rectangle-pack/method size-imgs 3
+		get-size-imgs sourceDir
+		
+		set [size data] pow2-rectangle-pack/method size-imgs 4
 		target-name: join targetDir head remove back tail last split-path sourceDir
 		save join target-name %.rpack data/1 
 		append result-files target-name
@@ -123,7 +137,7 @@ ctx-texture-packer: context [
 		combine-files data/1 size join target-name %.png
 		n: 0
 		while [not empty? data/2][
-			set [size data] pow2-rectangle-pack/method data/2 3
+			set [size data] pow2-rectangle-pack/method data/2 4
 			n: n + 1
 			combine-files data/1 size rejoin [target-name %_ n %.png]
 			save join tmp: rejoin [target-name %_ n] %.rpack data/1
