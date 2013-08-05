@@ -157,7 +157,7 @@ ctx-form-timeline: context [
 			tag:     tags/1
 			tagId:   tag/1
 			tagData: tag/2
-			matrix:  tagData/4
+			matrix:  either tagData [tagData/4][reduce [none none 0x0]]
 			;Test if this sprite just puts simple shape with bitmap fill so I can use Image instead of this Sprite
 			either all [
 				false ;DON'T USING THIS OPTIMIZATION NOW!!
