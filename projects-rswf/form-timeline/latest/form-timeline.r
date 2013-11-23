@@ -414,7 +414,7 @@ ctx-form-timeline: context [
 	]
 	set 'form-timeline func[
 		src-swf [file!]
-		/local tags tagId tagData parsed
+		/local tags tagId tagData parsed soundDir soundName mp3file
 	][
 		clear shapes
 		clear bitmaps
@@ -451,7 +451,7 @@ ctx-form-timeline: context [
 					"Sounds/" copy name to end (
 						print ["Sound:" id tab name]
 						repend types [id 'sound]
-						append names-sounds name
+						append names-sounds to-file name
 						repend ids-replaced [id to-string length? names-sounds]
 					)
 				][
@@ -509,12 +509,15 @@ ctx-form-timeline: context [
 					tmp: pick names-sounds to-integer select ids-replaced parsed/1
 					print ["SOUND: " tmp]
 					bin: last parsed
+					set [soundDir soundName] split-path tmp
+					soundDir: rejoin [first split-path src-swf %../Sounds/ soundDir ]
 					if any [
 						;;NOTE: named MP3 files are exported into Sounds dir which is located in SWF's parent dir 
-						not exists? mp3file: rejoin [first split-path src-swf %../Sounds/ tmp %.mp3]
+						not exists? mp3file: rejoin [soundDir soundName %.mp3]
 						(size? mp3file) <> length? bin
 					][
 						print ["Exporting MP3:" mp3file "-" length? bin "bytes"]
+						if not exists? soundDir [make-dir/deep soundDir]
 						write/binary mp3file bin
 					]
 					repend types [parsed/1 'sound]

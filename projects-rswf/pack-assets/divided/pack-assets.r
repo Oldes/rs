@@ -54,6 +54,7 @@ ctx-pack-assets: context [
 		cmdTimelineShape:            12
 
 		cmdDefineSound:              15
+		cmdDefineSoundOgg:           16
 
 		cmdWalkData:                 20
 
@@ -81,7 +82,7 @@ ctx-pack-assets: context [
 	out: make stream-io [] ;Holds output stream
 	outTextures: make stream-io [] ;Holds textures stream - textures are separated because they may be reloaded when a context is lost
 	strings: copy []
-
+	sound-groups: copy []
 	;Charsets:
 	chDigit: charset "0123456789"
 	
@@ -319,8 +320,8 @@ ctx-pack-assets: context [
 	
 	idOffsetData: [
 		%Univerzal       [0       0      0      0     ]
-		%PrasivkaUfo     [100     100    100    100   ]
-		%PlanetaDomovska [600     1100   100    100   ]
+		%UniverzalPrasivka     [100     100    100    100   ]
+		%PlanetaDomovska [600     1100   100    200   ]
 		
 		;%Konstrukter   [11      34     0      0     ]
 		;%Prasivka      [195     1805   2      3     ]
@@ -337,7 +338,7 @@ ctx-pack-assets: context [
 		;if level <> %Univerzal [level: none]
 		set [offsetObjectId offsetImageId offsetShapeId offsetSoundId] any[
 			select idOffsetData to-file level
-			[600 1100 100 110]
+			[600 1100 100 210]
 		]
 	]
 	set 'make-packs func [
@@ -374,6 +375,7 @@ ctx-pack-assets: context [
 		outTextures/clearBuffers
 		clear pack-files
 		clear level-images
+		clear sound-groups
 		
 		set-timelineIdOffset level
 		maxSoundId:
@@ -509,22 +511,43 @@ ctx-pack-assets: context [
 		level-sounds: copy []
 		if exists? soundsDir [
 			n: 0
-			foreach file read soundsDir [
-				parse file [
-					copy name to ".mp3" 4 skip end (
-						print ["Sound: " file]
-						append level-sounds rejoin [to-string level %"/" name]
-						bin: read/binary soundsDir/:file
-						out/writeUI8   cmdDefineSound
-						out/writeUTF   name
-						out/writeUI16  offsetSoundId + n
-						out/writeUI32  length? bin
-						out/writeBytes bin
-						n: n + 1
-					)
+			soundsToImport: read soundsDir
+			forall soundsToImport [
+				probe file: soundsToImport/1
+				either #"/" = last file [
+					foreach subFile read soundsDir/:file [
+						append soundsToImport rejoin [file subFile]
+					]
+				][
+					parse file [
+						copy name to ".mp3" 4 skip end (
+							print ["Sound: " file]
+							append level-sounds rejoin [to-string level %"/" name]
+							bin: read/binary soundsDir/:file
+							out/writeUI8   cmdDefineSound
+							out/writeUTF   name
+							out/writeUI16  offsetSoundId + n
+							out/writeUI32  length? bin
+							out/writeBytes bin
+							n: n + 1
+						)
+						;|
+						;copy name to ".ogg" 4 skip end (
+						;	print ["Sound: " file]
+						;	append level-sounds rejoin [to-string level %"/" name]
+						;	bin: read/binary soundsDir/:file
+						;	out/writeUI8   cmdDefineSoundOgg
+						;	out/writeUTF   name
+						;	out/writeUI16  offsetSoundId + n
+						;	out/writeUI32  length? bin
+						;	out/writeBytes bin
+						;	n: n + 1
+						;)
+					]
 				]
 			]
 			maxSoundId: n
+			new-line/all level-sounds true
 			save soundsDir/sounds.txt level-sounds
 		]
 		
@@ -813,7 +836,7 @@ ctx-pack-assets: context [
 				)
 				|
 				'Name set id integer! set name string! (
-					;print [id mold name length? head out/outBuffer]
+					print [id mold name length? head out/outBuffer]
 					repend names [name id + offsetObjectId]
 				)
 				|
@@ -838,11 +861,21 @@ ctx-pack-assets: context [
 		
 		out/outBuffer: tail out/outBuffer
 		out/writeUI8   0
+		
 		out/writeUI32  0.5 * length? names 
 		foreach [name id] names [
 			out/writeUI16 id
 			out/writeUTF  name
-			print ["Named TO:" id name]
+			;print ["Named TO:" id name]
+		]
+		
+		out/writeUI32  length? sound-groups 
+		id: 0
+		foreach name sound-groups [
+			id: id + 1
+			out/writeUI8  id
+			out/writeUTF  name
+			print ["Sound Group:" id name]
 		]
 	]
 
@@ -982,7 +1015,7 @@ ctx-pack-assets: context [
 		data
 		/local
 			id depth transform type frames name colorTransform ;parse variables
-			flags soundData pos imageName externalLevel
+			flags soundData pos imageName externalLevel soundGroup
 	][
 		parse/all data [
 			'TotalFrames set frames integer! (
@@ -1080,18 +1113,30 @@ ctx-pack-assets: context [
 				)
 				|
 				'Sound set id integer! set soundData block! (
+					name: to string! usedTimelineSounds/:id
 					if error? try [
-						id: -1 + index? find level-sounds usedTimelineSounds/:id
+						id: -1 + index? find level-sounds name
 					][
-						print ["!!! Unknown timeline sound!" id usedTimelineSounds/:id]
+						print ["!!! Unknown timeline sound!" id name]
 						halt
 					]
 					out/writeUI8  cmdSound
 					out/writeUI16 id + offsetSoundId
 					out/writeUI16 soundData/1 ;repeat
+					either parse name [thru #"/" copy id to #"/" to end][
+						either tmp: find sound-groups id [
+							out/writeUI8 index? tmp
+						][
+							append sound-groups id
+							out/writeUI8 length? sound-groups
+						]
+					][
+						out/writeUI8 0 ;no soundGroup
+					]
 					;not using all values from envelope, just first one
 					out/writeUI16 soundData/2/2 ;leftVolume
 					out/writeUI16 soundData/2/3 ;rightVolume
+					
 				)
 				| pos: 1 skip (
 					ask reform ["UNKNOWN COMMAND near:" mold copy/part pos 20 "..."] 
