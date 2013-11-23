@@ -121,7 +121,13 @@ MP3: context [
 			Type: 2
 			Version:           readUI16
 			Flags:             readUI8
-			Data:              readBytes checkBufferSize readSynchSafeInt ;<-not parsed yet
+			Header:            readBytes checkBufferSize readSynchSafeInt ;<-not parsed yet
+			Extended: (
+				either (flags and 64) [
+					print "has extended header!"
+					readBytes checkBufferSize readSynchSafeInt
+				][ none ]
+			)
 		]
 	]
 	readMP3FrameHeader: has[hdrb hdr ][
@@ -208,7 +214,7 @@ MP3: context [
 	on-read-MP3Frame: func[hdr][
 		num_frames: num_frames + 1
 		duration: duration + (1152 / hdr/SamplingRate)
-		? hdr
+		;? hdr
 		skipBytes hdr/sdsize
 	]
 	on-read-ID3: func[id3][
