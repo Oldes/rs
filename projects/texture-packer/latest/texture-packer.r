@@ -20,7 +20,14 @@ ctx-texture-packer: context [
 	max-size: 2048x2048
 	
 	verbose: 1
-	
+	comment {
+		SORT-METHODs:
+		1 = precedence: side X
+		2 = precedence: side Y
+		3 = predecence: area
+		4 = precedence: any side's size
+	}
+	sort-method: 4
 	
 	
 	combine-files: func[files size into /local tmp png? *wand2 *pixel][
@@ -129,7 +136,7 @@ ctx-texture-packer: context [
 		
 		get-size-imgs sourceDir
 		
-		set [size data] pow2-rectangle-pack/method size-imgs 4
+		set [size data] pow2-rectangle-pack/method size-imgs sort-method
 		target-name: join targetDir head remove back tail last split-path sourceDir
 		save join target-name %.rpack data/1 
 		append result-files target-name
@@ -137,7 +144,7 @@ ctx-texture-packer: context [
 		combine-files data/1 size join target-name %.png
 		n: 0
 		while [not empty? data/2][
-			set [size data] pow2-rectangle-pack/method data/2 4
+			set [size data] pow2-rectangle-pack/method data/2 sort-method
 			n: n + 1
 			combine-files data/1 size rejoin [target-name %_ n %.png]
 			save join tmp: rejoin [target-name %_ n] %.rpack data/1

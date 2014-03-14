@@ -9,10 +9,28 @@ REBOL [
 		rs-project %stream-io
 		rs-project %form-timeline
 		rs-project %texture-packer
+		rs-project %triangulator
+		rs-project %zlib
+		rs-project %mp3
 	]
 	comment: {
 		complex example where this script is used is here:
 		https://github.com/Oldes/Starling-timeline-example
+		
+		Should try this ATF packing once iOS will be more important for us:
+		
+		from http://forum.starling-framework.org/topic/i-got-my-game-to-60fps-with-an-iphone4-on-ios7
+		<i>
+		Here are some snippets from my applescripts
+
+		For PVRTC (Alpha Compressed)
+		do script "PVRTexToolCLI -f PVRTC1_4 -potcanvas + -q pvrtcbest -l -m 2 -i " & file_name & ".png -o " & file_name & ".pvr"
+		do script "pvr2atf -n 0,0 -p " & file_name & ".pvr -o " & file_name & ".atf" in first window
+
+		For DXT (RGBA) Works on desktop and iOS
+		do script "PVRTexToolCLI -f r8g8b8a8,UBN,lRGB -potcanvas + -m 1 -q pvrtcbest -dither -l -i " & file_name & ".png -o " & file_name & ".pvr"
+		do script "pvr2atf -r " & file_name & ".pvr -c p -n 0,0 -o " & file_name & ".atf" in first window
+		</i>
 	}
 ]
 
@@ -52,11 +70,17 @@ ctx-pack-assets: context [
 		cmdTimelineData:             10
 		cmdTimelineObject:           11
 		cmdTimelineShape:            12
-
+		cmdTimelineShape2:           13
+		
+		cmdTimelineData2:            40
+		cmdShapeBuffers:             41
+		
 		cmdDefineSound:              15
 		cmdDefineSoundOgg:           16
+		cmdDefineSoundLoop:          17
 
 		cmdWalkData:                 20
+		cmdPathData:                 25
 
 		cmdImageNames:               30		
 	;Shape's commands:
@@ -72,6 +96,11 @@ ctx-pack-assets: context [
 		cmdLabel:                    4
 		cmdReplace:                  5
 		cmdSound:                    6
+		cmdFPS:                      30
+		cmdFPSRange:                 31
+		cmdSlowFPS:                  32
+		cmdStop:                     33
+		cmdRelease:                  34
 		cmdShowFrame:                128
 		
 
@@ -322,6 +351,7 @@ ctx-pack-assets: context [
 		%Univerzal       [0       0      0      0     ]
 		%UniverzalPrasivka     [100     100    100    100   ]
 		%PlanetaDomovska [600     1100   100    200   ]
+		%PlanetaZluta    [600     1100   100    150   ]
 		
 		;%Konstrukter   [11      34     0      0     ]
 		;%Prasivka      [195     1805   2      3     ]
@@ -530,6 +560,16 @@ ctx-pack-assets: context [
 							out/writeUI32  length? bin
 							out/writeBytes bin
 							n: n + 1
+						)
+						|
+						copy name to ".loop" 5 skip end (
+							bin: read/binary soundsDir/:file
+							mp3/parse/file soundsDir/:file
+							out/writeUI8   cmdDefineSoundLoop
+							out/writeUTF   name
+							out/writeUI32  mp3/num_frames
+							out/writeUI32  length? bin
+							out/writeBytes bin
 						)
 						;|
 						;copy name to ".ogg" 4 skip end (
@@ -742,7 +782,7 @@ ctx-pack-assets: context [
 								]
 							) any [
 								#"_"
-								copy arcType [#"j" | #"f" | #"b" | #"w" | #"n" | #"c" | #"v" | #"s" | #"r" | none]
+								copy arcType [#"j" | #"f" | #"b" | #"w" | #"n" | #"c" | #"v" | #"s" | #"r" | #"k" | none]
 								copy toNode some chDigit
 								(
 									toNode: to-integer toNode
@@ -778,6 +818,35 @@ ctx-pack-assets: context [
 						out/writeUI8  fromNode
 						out/writeUI8  toNode
 					]
+				]
+			]
+		]
+		
+		;;PATH DATA:
+		sourceTXT: rejoin [dirAssetsRoot %Paths\ level %_paths.txt]
+		if exists? sourceTXT [
+			data: context load sourceTXT
+			num: length? data/posX
+			tmp: first data
+			if all [
+				num = length? data/posY
+				num = length? data/scaleX
+				num = length? data/scaleY
+				num = length? data/rotate
+			][
+				print ["Path DATA found.. frames:" num]
+				out/writeUI8   cmdPathData
+				out/writeUI16  num
+				foreach value data/posX   [ out/writeFloat value ]
+				foreach value data/posY   [ out/writeFloat value ]
+				foreach value data/scaleX [ out/writeFloat value ]
+				foreach value data/scaleY [ out/writeFloat value ]
+				foreach value data/rotate [ out/writeFloat value ]
+				
+				out/writeUI16 (length? data/labelsAt) / 2
+				foreach [num name] data/labelsAt [
+					out/writeUI16 num
+					out/writeUTF  name
 				]
 			]
 		]
@@ -818,8 +887,9 @@ ctx-pack-assets: context [
 			names ;used to store names-to-id data
 	][
 		print ["====== parse-timeline " file]
+		ctx-triangulator/init
 		names: copy []
-		out/writeUI8  cmdTimelineData
+		out/writeUI8  cmdTimelineData2
 		startIndx: index? out/outBuffer
 		parse/all load file [
 			any [
@@ -841,6 +911,7 @@ ctx-pack-assets: context [
 				)
 				|
 				'Shape set id integer! set data block! (
+					{
 					out/writeUI8  cmdTimelineShape
 					out/writeUI16 id + offsetShapeId
 					indx: index? out/outBuffer
@@ -849,6 +920,15 @@ ctx-pack-assets: context [
 					out/writeUI32 length? out/outBuffer
 					out/outBuffer: tail out/outBuffer
 					if maxShapeId < id [maxShapeId: id]
+					}
+					out/writeUI8  cmdTimelineShape2
+					out/writeUI16 id + offsetShapeId
+					data: triangulate-shape data ;main result is stored in shared vertex and index buffers inside triangulator
+					out/writeUI8  data/1 ;buffer number
+					out/writeUI32 data/2 ;firstIndex
+					out/writeUI32 data/3 ;numTriangles
+					
+					if maxShapeId < id [maxShapeId: id]
 				)
 				|
 				'Images set usedTimelineImages block!
@@ -856,9 +936,13 @@ ctx-pack-assets: context [
 				'Sounds set usedTimelineSounds block!
 			]
 		]
+		
+		outTextures/writeUI8 cmdShapeBuffers
+		outTextures/writeBytes ctx-triangulator/get-buffers-binary
+		
+		
 		out/outBuffer: at head out/outBuffer startIndx
 		out/writeUI32  probe length? out/outBuffer
-		
 		out/outBuffer: tail out/outBuffer
 		out/writeUI8   0
 		
@@ -902,7 +986,7 @@ ctx-pack-assets: context [
 			][
 				flags: flags or 64
 				useColorMatrix: true
-				print ["ColorMatrix.." mold color]
+				print ["ColorMatrix.." mold color mold transform]
 			][
 				if block? colorMult [
 					flags: flags or 128
@@ -1011,10 +1095,11 @@ ctx-pack-assets: context [
 		]]
 		out/writeUI8 0 ;end
 	]
+
 	parse-controlTags: func[
 		data
 		/local
-			id depth transform type frames name colorTransform ;parse variables
+			id depth transform type frames name colorTransform value value2 ;parse variables
 			flags soundData pos imageName externalLevel soundGroup
 	][
 		parse/all data [
@@ -1108,8 +1193,34 @@ ctx-pack-assets: context [
 				)
 				|
 				'Label set name string! (
-					out/writeUI8 cmdlabel
-					out/writeUTF name
+					unless parse name [
+						"_fps" copy value some chDigit end (
+							out/writeUI8 cmdFPS
+							out/writeUI8 to-integer value
+						) |
+						"_fps" copy value some chDigit "-" copy value2 some chDigit end (
+							out/writeUI8 cmdFPSRange
+							out/writeUI8 to-integer value
+							out/writeUI8 to-integer value2
+						)
+						|
+						"_stop" end (
+							out/writeUI8 cmdStop
+						)
+						|
+						"_release" end (
+							out/writeUI8 cmdRelease
+						)
+						|
+						"_slowFps" copy value some chDigit end (
+							;will set FPS to: 1 + Math.random()*value
+							out/writeUI8 cmdSlowFPS
+							out/writeUI8 to-integer value
+						)
+					][
+						out/writeUI8 cmdlabel
+						out/writeUTF name
+					]
 				)
 				|
 				'Sound set id integer! set soundData block! (
