@@ -16,8 +16,11 @@ REBOL [
 	comment: {
 		complex example where this script is used is here:
 		https://github.com/Oldes/Starling-timeline-example
-		
-		Should try this ATF packing once iOS will be more important for us:
+		warning: the timeline example is not updated so it will be probably not compatible with this version
+	}
+	
+	note-to-myself: {
+		Should I try this ATF packing once iOS will be more important for us?
 		
 		from http://forum.starling-framework.org/topic/i-got-my-game-to-60fps-with-an-iphone4-on-ios7
 		<i>
