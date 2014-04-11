@@ -279,9 +279,9 @@ ctx-form-timeline: context [
 					;		depth-attributes/(depth): attributes
 					;	]
 					;][
-						if all [move none? cid][
-							;ask reform [2 mold attributes mold oldAttributes]
-						]
+						;if all [move none? cid][
+						;	ask reform [2 mold attributes mold oldAttributes]
+						;]
 						if offset [
 							;ask reform ["changing offset:" offset cid]
 							attributes/3/1: attributes/3/1 + offset/1
