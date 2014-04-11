@@ -40,13 +40,7 @@ ctx-pack-assets: context [
 	dirBinUtils:   %./Utils/
 	dirAssetsRoot: %./Assets/
 	dirPacks:      join dirAssetsRoot %Packs/
-	comment {
-		Required utils can be found here:
-			http://code.google.com/p/libgdx/wiki/TexturePacker
-			http://code.google.com/p/libgdx/downloads/list
-			http://pngquant.org/
-	}
-	texturePacker: "./Utils/gdx.jar:./Utils/gdx-tools.jar com.badlogic.gdx.tools.imagepacker.TexturePacker2"
+
 	pngQuantExe:   dirBinUtils/pngquant
 	if system/version/4 = 3 [append pngQuantExe %.exe]
 	
