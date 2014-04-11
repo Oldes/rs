@@ -197,9 +197,11 @@ MP3: context [
 			][
 				on-read-MP3Frame readMP3FrameHeader
 			][
-				switch as-string readBytes 3 [
+				switch/default as-string readBytes 3 [
 					"ID3" [ on-read-ID3 readID3v2]
 					"TAG" [ on-read-ID3 readID3v1]
+				][
+					ask "UNKNOWN TAG?"
 				]
 			]
 			if all [continue? 5048 > length? inBuffer] [
