@@ -27,7 +27,7 @@ camelize-wav-name: func[name][
 			  s: "_16bit" e: (s: remove/part s e) :s
 			| s: "_16b"   e: (s: remove/part s e) :s
 			;| s: ".wav" end e: (s: remove/part s e) :s
-			| s: some [#" " | #"_"] e: (s: remove/part s e uppercase/part s 1) :s
+			| s: some [#" " | #"_" | #"-"] e: (s: remove/part s e uppercase/part s 1) :s
 			|
 			1 skip	
 		]
@@ -51,7 +51,7 @@ wav-to-mp3: func[source [file! string!] /local wavs cmd][
 		if parse wav [thru ".wav" end][
 			parts: split-path wav
 			mp3: join parts/1 camelize-wav-name replace parts/2 ".wav" ".mp3"
-			print join "==> " cmd: rejoin [{c:\dev\utils\lame\lame -b 320 -h --silent -t "} to-local-file wav {" "} to-local-file mp3 {"}]
+			print join "==> " cmd: rejoin [{x:\utils\lame\lame -b 320 -h --silent -t "} to-local-file wav {" "} to-local-file mp3 {"}]
 			call/console cmd
 		]
 	]
