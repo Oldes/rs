@@ -51,7 +51,7 @@ rebol [
 					readSB nbits ;G
 					readSB nbits ;B
 				]
-			][	none ]
+			][	[256 256 256] ]
 			either HasAddTerms? [
 				reduce [
 					readSB nbits ;R
@@ -76,7 +76,7 @@ rebol [
 					readSB nbits ;B
 					readSB nbits ;A
 				]
-			][	none ]
+			][	[256 256 256 256] ]
 			either HasAddTerms? [
 				reduce [
 					readSB nbits ;R
