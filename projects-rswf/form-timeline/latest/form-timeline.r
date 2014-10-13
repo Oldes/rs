@@ -108,14 +108,27 @@ ctx-form-timeline: context [
 				'style set style block! (
 					;probe lineStyles
 					either tmp: style/5 [
-						;probe tmp
 						LineStyles: tmp/2
+						FillStyles: tmp/1
 					][
-						if all [
+						;ask mold style
+						
+						either all [
 							style/4
 							tmp: pick LineStyles style/4
 						][
+							;probe tmp ask "?"
 							result: insert result reform ["^-lineStyle" tmp/1 tmp/4 "^/"]
+						][
+							;no line style found, so trying to use fillColor for line (fills are not supported)
+							if all [
+								style/3
+								tmp: pick FillStyles style/3
+							][
+								print ["USING FILL INSTEAD OF LINE: " mold tmp]
+								result: insert result reform ["^-lineStyle" 30 tmp/2 "^/"] ;TEMP: USING FILL COLOR AS A LINE and 1.5px width
+								;reform ["^-fillStyle" tmp/2 "^/"]
+							]
 						]
 						if tmp: style/1 [
 							result: insert result reform ["^-moveTo" tmp/1 tmp/2 "^/"]
@@ -132,6 +145,11 @@ ctx-form-timeline: context [
 				)
 			]]
 			result: head result
+			
+			if parse/all result ["^-moveTo" to end][
+				probe ShapeRecords
+				ask "???????????????????"
+			]
 			repend types [id 'shape]
 			repend shapes [id result]
 			
@@ -202,7 +220,7 @@ ctx-form-timeline: context [
 			tmp
 			depth move cid ids attributes oldAttributes colorAtts frameStart
 			maxDepth depths-replaced depths-to-remove ids-at-depth currentFrame
-			name
+			name numLabels
 	][
 		frameStart: result: tail rejoin ["^-TotalFrames " frames "^/"]
 		maxDepth: 0
@@ -213,9 +231,9 @@ ctx-form-timeline: context [
 		ids: copy []
 		ids-at-depth: copy []
 		depths: copy [] ;stores depth values as are placed in the list
+		numLabels: 0
 		
 		foreach tag tags [
-			;probe tag
 			tagId:   tag/1
 			tagData: tag/2
 			switch/default tagId [
@@ -245,9 +263,13 @@ ctx-form-timeline: context [
 					]
 					
 					if none? attributes [
-						attributes: any [
-							select depth-attributes depth
-							[#[none] #[none] #[none]]
+						either 'shape = select types cid [
+							attributes: any [
+								select depth-attributes depth
+								[#[none] #[none] #[none]]
+							]
+						][
+							attributes: [#[none] #[none] #[none]]
 						]
 					]
 					either cid [
@@ -263,22 +285,54 @@ ctx-form-timeline: context [
 
 					
 					;print "------------"
-					;either oldAttributes: select depth-attributes depth [
-					;	either all [move none? cid][
-					;		probe reform [mold attributes mold oldAttributes]
-					;		;comment {
-					;		foreach att attributes [
-					;			if att [
-					;				change/only oldAttributes att 
-					;			]
-					;			oldAttributes: next oldAttributes
-					;		];}
-					;		attributes: oldAttributes: head oldAttributes
-					;	][
-					;		
-					;		depth-attributes/(depth): attributes
-					;	]
-					;][
+					if 'shape = select types cid [
+						either oldAttributes: select depth-attributes depth [
+							either all [move ][
+								;if 'shape = select types cid [
+								;	probe reform [mold attributes mold oldAttributes]
+								;	ask ""
+								;]
+								;comment {
+								foreach att attributes [
+									if att [
+										change/only oldAttributes att 
+									]
+									oldAttributes: next oldAttributes
+								];}
+								attributes: oldAttributes: head oldAttributes
+							][
+								
+								attributes: oldAttributes: head oldAttributes
+							]
+						][
+							;if all [move none? cid][
+							;	ask reform [2 mold attributes mold oldAttributes]
+							;]
+						;	if offset [
+						;		;ask reform ["changing offset:" offset cid]
+						;		attributes/3/1: attributes/3/1 + offset/1
+						;		attributes/3/2: attributes/3/2 + offset/2
+						;	]
+							repend/only repend depth-attributes depth attributes
+						]
+					]
+					comment {
+					either oldAttributes: select depth-attributes depth [
+						either all [move none? cid][
+							probe reform [mold attributes mold oldAttributes]
+							;comment {
+							foreach att attributes [
+								if att [
+									change/only oldAttributes att 
+								]
+								oldAttributes: next oldAttributes
+							];}
+							attributes: oldAttributes: head oldAttributes
+						][
+							
+							depth-attributes/(depth): attributes
+						]
+					][
 						;if all [move none? cid][
 						;	ask reform [2 mold attributes mold oldAttributes]
 						;]
@@ -288,8 +342,8 @@ ctx-form-timeline: context [
 							attributes/3/2: attributes/3/2 + offset/2
 						]
 						;repend/only repend depth-attributes depth attributes
-					;]
-
+					]
+					}
 					
 					
 					either cid [
@@ -302,7 +356,7 @@ ctx-form-timeline: context [
 							either move ["^-Replace "]["^-Place "] (select types cid)
 							#" " select ids-replaced cid
 							#" " realDepth
-							mold/all attributes
+							#" " mold/all attributes
 							either colorAtts [mold/all colorAtts][""]
 							either all [name #"$" = name/1] [mold as-string next name][""] ;only names which beggins with char $  
 							#"^/"
@@ -341,6 +395,10 @@ ctx-form-timeline: context [
 				43 [
 					;frameLabel
 					insert frameStart rejoin ["^-Label " mold as-string tagData "^/"]
+					if tagData/1 <> #"_" [
+						;labels with underscore are special so I don't count them
+						numLabels: numLabels + 1
+					]
 					result: tail result
 				]
 				45 [;SoundStreamHead2, not used
@@ -356,6 +414,8 @@ ctx-form-timeline: context [
 				ask reform ["Unknown tag" tagId "!"]
 			]
 		]
+		
+		
 		either all [
 		false
 			1 = frames
@@ -379,6 +439,9 @@ ctx-form-timeline: context [
 			print ["^-Image instead of sprite:" id mold name cid]
 			;ask "?"
 		][
+			if numLabels > 0 [
+				insert find/tail head result #"^/" "^-HasLabels^/"
+			]
 			append usage-counter id
 			repend types [id 'object]
 			result: head result
@@ -414,7 +477,7 @@ ctx-form-timeline: context [
 	]
 	set 'form-timeline func[
 		src-swf [file!]
-		/local tags tagId tagData parsed soundDir soundName mp3file
+		/local tags tagId tagData parsed sndDir soundDir soundMasterDir soundName mp3file tmp bin
 	][
 		clear shapes
 		clear bitmaps
@@ -509,12 +572,16 @@ ctx-form-timeline: context [
 					tmp: pick names-sounds to-integer select ids-replaced parsed/1
 					print ["SOUND: " tmp]
 					bin: last parsed
-					set [soundDir soundName] split-path tmp
-					soundDir: rejoin [first split-path src-swf %../Sounds/ soundDir ]
-					if any [
-						;;NOTE: named MP3 files are exported into Sounds dir which is located in SWF's parent dir 
-						not exists? mp3file: rejoin [soundDir soundName %.mp3]
-						(size? mp3file) <> length? bin
+					set [sndDir soundName] split-path tmp
+					soundDir: rejoin [first split-path src-swf %../Sounds/ sndDir ]
+					soundMasterDir: rejoin [first split-path src-swf %../Sounds_master/ sndDir ]
+					;-- NOTE: named MP3 files are exported into Sounds dir which is located in SWF's parent dir 
+					if all [
+						not exists? rejoin [soundMasterDir soundName %.mp3]
+						any [
+							not exists? mp3file: rejoin [soundDir soundName %.mp3]
+							(size? mp3file) <> length? bin
+						]
 					][
 						print ["Exporting MP3:" mp3file "-" length? bin "bytes"]
 						if not exists? soundDir [make-dir/deep soundDir]

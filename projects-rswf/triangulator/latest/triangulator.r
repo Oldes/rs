@@ -14,6 +14,7 @@ ctx-triangulator: context [
 	_terms: none
 	_subSteps: 0
 	_bezierError: 0.75
+	_minLineWidth: 20 ;in TWIPS!! so 40 = 2px
 	
 	_curveOutput: copy []
 	

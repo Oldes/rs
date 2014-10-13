@@ -9,7 +9,7 @@ REBOL [
 		rs-project %stream-io
 		rs-project %form-timeline
 		rs-project %texture-packer
-		rs-project %triangulator
+		rs-project %triangulator ;'shrink
 		rs-project %zlib
 		rs-project %mp3
 	]
@@ -34,6 +34,16 @@ REBOL [
 		do script "PVRTexToolCLI -f r8g8b8a8,UBN,lRGB -potcanvas + -m 1 -q pvrtcbest -dither -l -i " & file_name & ".png -o " & file_name & ".pvr"
 		do script "pvr2atf -r " & file_name & ".pvr -c p -n 0,0 -o " & file_name & ".atf" in first window
 		</i>
+		
+		or maybe from:
+		http://forum.starling-framework.org/topic/atf-observations-ymmv
+		Since this post has been useful to some, I'll add another tidbit. The best quality PVR compression I've found for iOS is attained using the PVRTexTool utility from PowerVR. I think you have to sign up for their developer program to download the PowerVR GraphicsSDK, but it's free, though maybe you can find the tool itself elsewhere. Anyway, this commandline gives better PVR compression quality than Adobe's tool*:
+
+		PVRTexToolCL -i atlas.png -o atlas.pvr -m -l -f PVRTC1_4 -q pvrtcbest -mfilter cubic
+		This creates a .pvr file, and you then use Adobe's pvr2atf to create the atf file:
+
+		pvr2atf -p atlas.pvr -o atlas.atf
+		* - this is interesting, since it seems that Adobe's tool (png2atf) uses PVRTexTool libraries under the hood (same stdout while encoding). PVRTexTool also has more options for quality and encoding - play around with them in the GUI, but the above setting represents the best quality (albeit fairly slow to encode) for iOS compatibility.
 	}
 ]
 
@@ -75,11 +85,13 @@ ctx-pack-assets: context [
 		cmdDefineSound:              15
 		cmdDefineSoundOgg:           16
 		cmdDefineSoundLoop:          17
+		cmdDefineSoundRAW:			 18
 
 		cmdWalkData:                 20
 		cmdPathData:                 25
 
-		cmdImageNames:               30		
+		cmdImageNames:               30
+		cmdStringPool:               31
 	;Shape's commands:
 		cmdLineStyle:                1
 		cmdMoveTo:                   2
@@ -93,11 +105,18 @@ ctx-pack-assets: context [
 		cmdLabel:                    4
 		cmdReplace:                  5
 		cmdSound:                    6
+		cmdLabelCallback:            7
+		cmdSoundVBR:                 8
+		cmdSoundVBR2:                9
+		cmdRemoveAnd:                11
 		cmdFPS:                      30
 		cmdFPSRange:                 31
 		cmdSlowFPS:                  32
 		cmdStop:                     33
 		cmdRelease:                  34
+		cmdTouchable:                35
+		cmdHide:                     36
+		cmdShow:                     37
 		cmdShowFrame:                128
 		
 
@@ -109,35 +128,43 @@ ctx-pack-assets: context [
 	outTextures: make stream-io [] ;Holds textures stream - textures are separated because they may be reloaded when a context is lost
 	strings: copy []
 	sound-groups: copy []
+	noATFfiles: [] ;Add names of packs where just PNG must be used (no ATF)
 	;Charsets:
 	chDigit: charset "0123456789"
 	
 	offsetSoundId:
 	offsetImageId:
 	offsetShapeId:
-	offsetObjectId: 0
+	offsetObjectId:
+	offsetStringId: 0
 	maxSoundId:
 	maxImageId:
 	maxShapeId:
 	maxObjectId: 0
 	
+	currentLevel: none;
 	;Functions:
 
-	comment {
+
 	write-string: func[
 		"Writes string using UI16 pointer (zero based)"
 		string [string!]
-		/local f
+		/local f id
 	][
-		out/writeUI16 -1 + either f: find strings string [
+		id: offsetStringId - 1 + either f: find strings string [
 			index? f
 		][
 			append strings string
 			length? strings
 		]
+		either id < 256 [
+			out/writeUI8 id
+		][
+			print "*** StringPool max size (255) reached! So 1 byte per ID will not be enough."
+			halt
+		]
 	]
-	}
-	
+
 	pack-bitmaps: func[
 		level  [any-string!] "Lavel's name"
 		name   [any-string!] "Per level texture sheet's name"
@@ -260,12 +287,24 @@ ctx-pack-assets: context [
 		out/outBuffer: tail out/outBuffer
 	]
 
+	not-excluded-atf?: func[file][
+		none? find noATFfiles last parse file "/"
+	]
+	
 	get-atf-file: func[
 		atf-type "Required ATF file extension (%dxt or %etc)"
 		file     [any-string!] "Name of the bitmap file without extension"
 	][
-		rejoin [file #"." any [atf-type %png]]
+		rejoin either all [
+			atf-type
+			not-excluded-atf? file
+		][
+			[file #"." atf-type]
+		][
+			[file #"." %png]
+		]
 	]
+
 	has-atf-version: func[
 		atf-type "Required ATF file extension (%dxt or %etc)"
 		file     [any-string!] "Name of the bitmap file without extension"
@@ -281,9 +320,9 @@ ctx-pack-assets: context [
 		][
 			ask reform ["Cannot found source file for ATF:" mold file]
 		]
-		
 		all [
 			atf-type
+			not-excluded-atf? file
 			any [
 				all [
 					
@@ -297,17 +336,17 @@ ctx-pack-assets: context [
 					switch/default atf-type [
 						%dxt [
 							{
-							call/wait/console probe rejoin [
+							call/console probe rejoin [
 								localDirBinUtils {PVRTexTool.exe -m -yflip0 -f DXT5 -dds}
 									{ -i } to-local-file origFile
 									{ -o } to-local-file file {.dds}
 							]
-							call/wait/console probe rejoin [
+							call/console probe rejoin [
 								to-local-file dirBinUtils {\dds2atf.exe -4 -q 0}
 									{ -i } to-local-file file {.dds}
 									{ -o } to-local-file imageFile
 							]}
-							call/wait/console probe rejoin [
+							call/console probe rejoin [
 								localDirBinUtils {png2atf.exe -c d -4}
 									{ -i } to-local-file origFile
 									{ -o } to-local-file imageFile
@@ -315,7 +354,7 @@ ctx-pack-assets: context [
 							true
 						]
 						%etc [
-							call/wait/console probe rejoin [
+							call/console probe rejoin [
 								localDirBinUtils {png2atf.exe -c e -4 -q 0}
 									{ -i } to-local-file origFile
 									{ -o } to-local-file imageFile
@@ -323,7 +362,7 @@ ctx-pack-assets: context [
 							true
 						]
 						%pvr [
-							call/wait/console probe rejoin [
+							call/console probe rejoin [
 								localDirBinUtils {png2atf.exe -c p -4 -q 0}
 									{ -i } to-local-file origFile
 									{ -o } to-local-file imageFile
@@ -331,7 +370,7 @@ ctx-pack-assets: context [
 							true
 						]
 						%rgba [
-							call/wait/console probe rejoin [
+							call/console probe rejoin [
 								localDirBinUtils {png2atf.exe -4 -r -q 0}
 									{ -i } to-local-file origFile
 									{ -o } to-local-file imageFile
@@ -345,10 +384,10 @@ ctx-pack-assets: context [
 	]
 	
 	idOffsetData: [
-		%Univerzal       [0       0      0      0     ]
-		%UniverzalPrasivka     [100     100    100    100   ]
-		%PlanetaDomovska [600     1100   100    200   ]
-		%PlanetaZluta    [600     1100   100    150   ]
+		%Univerzal         [0       0      0      0     10]
+		%UniverzalPrasivka [100     100    100    150   15]
+		%PlanetaDomovska   [600     1100   100    200   30]
+		%PlanetaZluta      [600     1100   100    150   30]
 		
 		;%Konstrukter   [11      34     0      0     ]
 		;%Prasivka      [195     1805   2      3     ]
@@ -363,9 +402,9 @@ ctx-pack-assets: context [
 	]
 	set-timelineIdOffset: func[level [any-string!]][
 		;if level <> %Univerzal [level: none]
-		set [offsetObjectId offsetImageId offsetShapeId offsetSoundId] any[
+		set [offsetObjectId offsetImageId offsetShapeId offsetSoundId offsetStringId] any[
 			select idOffsetData to-file level
-			[600 1100 100 210]
+			[600 1100 100 210 30]
 		]
 	]
 	set 'make-packs func [
@@ -384,6 +423,7 @@ ctx-pack-assets: context [
 			x y width height frameX frameY frameWidth frameHeight ;variables used in starling's data xml
 			files ;holds temporary data for farther processing
 	][
+		currentLevel: to string! level ;uppercase/part lowercase to string! level 1
 		;-- Check if main directories are specifield...
 		either dirAssetsRoot [
 			dirAssetsRoot: to-file dirAssetsRoot
@@ -403,6 +443,7 @@ ctx-pack-assets: context [
 		clear pack-files
 		clear level-images
 		clear sound-groups
+		clear strings
 		
 		set-timelineIdOffset level
 		maxSoundId:
@@ -452,7 +493,7 @@ ctx-pack-assets: context [
 							(modified? imageFile) > (modified? origImageFile)
 							(
 								delete imageFile
-								call/wait/console probe rejoin [
+								call/console probe rejoin [
 									to-local-file pngQuantExe " "
 									to-local-file join what-dir origImageFile
 								]
@@ -472,25 +513,17 @@ ctx-pack-assets: context [
 				out/writeUTF to-string find/tail packName dirPacks
 				write-rpack-assets join packName %.rpack
 				
-				either atf-type [
+				either all [
+					atf-type
+					not-excluded-atf? packName
+				][
 					outTextures/writeUI8   1 ;is compressed
 					outTextures/writeUI32  length? bin
 					outTextures/writeBytes bin
-					
-					;out/writeUI8   1 ;is compressed
-					;out/writeUI32  length? bin
-					;out/writeBytes bin
-					;write-rpack-assets join packName %.rpack
 				][
 					outTextures/writeUI8   0 ;not compressed
 					outTextures/writeUI32  length? bin
 					outTextures/writeBytes bin
-					
-					;out/writeUI8   0 ;not compressed
-					;write-rpack-assets join packName %.rpack
-					;storing PNG after assets - because we must use loader to get bitmap from bytes
-					;out/writeUI32  length? bin
-					;out/writeBytes bin
 				]
 			]
 			
@@ -568,6 +601,24 @@ ctx-pack-assets: context [
 							out/writeUI32  length? bin
 							out/writeBytes bin
 						)
+						|
+						copy name to ".snd" 4 skip end (
+							print ["Sound RAW: " file]
+							bin: read/binary soundsDir/:file
+							out/writeUI8   cmdDefineSoundRAW
+							out/writeUTF   name
+							out/writeUI32  b: length? bin
+								;-- test for same length in level Mloci
+								;	if (b / 5292) <> round(b / 5292) [
+								;		ask "blby snd"
+								;	]
+								;--
+							;while [not tail? bin][
+							;	out/writeBytes head reverse copy/part bin 2
+							;	bin: skip bin 2
+							;]
+							out/writeBytes bin
+						)
 						;|
 						;copy name to ".ogg" 4 skip end (
 						;	print ["Sound: " file]
@@ -588,6 +639,7 @@ ctx-pack-assets: context [
 			save soundsDir/sounds.txt level-sounds
 		]
 		
+		
 		;;STARLING Sheets:
 		sourceDir: dirize rejoin [dirAssetsRoot %Starling\ level]
 		if exists? sourceDir [
@@ -600,6 +652,7 @@ ctx-pack-assets: context [
 						exists? imageFile: rejoin [sourceDir name %.png]
 					]
 				][
+					print ["using:" imageFile]
 					outTextures/writeUI8 cmdTextureData
 					outTextures/writeUTF name
 					
@@ -662,13 +715,19 @@ ctx-pack-assets: context [
 					out/writeUI32  length? out/outBuffer
 					out/outBuffer: tail out/outBuffer
 					
-					if atf-type [
+					if all [
+						atf-type
+						not-excluded-atf? join sourceDir name
+					][
 						imageFile: get-atf-file atf-type join sourceDir name
 					]
 					bin: read/binary probe imageFile
 					
 					;out/outBuffer: at head out/outBuffer indx 
-					either atf-type [
+					either all [
+						atf-type
+						not-excluded-atf? join sourceDir name
+					][
 						;storing ATF in front of asset specifications
 						;set output position in front of written asssets specification;
 						outTextures/writeUI8   1
@@ -847,6 +906,53 @@ ctx-pack-assets: context [
 				]
 			]
 		]
+
+		;;RAW data:
+		RAWDir: dirize rejoin [dirAssetsRoot %Raw\ level]
+		if exists? RAWDir [
+			n: 0
+			filesToImport: read RAWDir
+			forall filesToImport [
+				probe file: filesToImport/1
+				parse file [
+					copy name to ".bin" 4 skip end (
+						print ["RAW:" file]
+						bin: read/binary RAWDir/:file
+						out/writeUI8   cmdDefineSoundRAW
+						out/writeUTF   name
+						out/writeUI32  b: length? bin
+						out/writeBytes bin
+					)
+					|
+					copy name to ".path" 5 skip end (
+						print ["RAW Path:" file]
+						data: make object! load RAWDir/:file
+
+						out/writeUI8   cmdDefineSoundRAW
+						out/writeUTF   name
+						tmp: out/outBuffer
+						if (length? data/x) <> (length? data/y) [
+							print "Number of X positions is not same as Y!!"
+							halt
+						]
+						;path data..
+						out/writeUI16 length? data/x
+						foreach x data/x [out/writeFloat x]
+						foreach y data/y [out/writeFloat y]
+						out/writeUI16 length? data/labels
+						foreach [num label] data/labels [
+							out/writeUI16 num
+							out/writeUTF label
+						]
+						;..path data end
+						out/outBuffer: tmp
+						out/writeUI32 length? out/outBuffer ;size of path data in the raw block
+						out/outBuffer: tail out/outBuffer
+					)
+
+				]
+			]
+		]
 		
 		outTextures/writeUI8 0 ;end
 		outTextures/outBuffer: head outTextures/outBuffer
@@ -863,6 +969,15 @@ ctx-pack-assets: context [
 		out/writeBytes as-binary "LVL"
 		out/writeUI8 cmdUseLevel
 		out/writeUTF level 
+
+		out/writeUI8  cmdStringPool
+		out/writeUI16 length? probe strings
+		n: 0
+		foreach string strings [
+			out/writeUI16 offsetStringId + n
+			out/writeUTF string
+			n: n + 1
+		]
 		
 		print ["Writing file..."]
 		write/binary join %./bin/ rejoin [%Data/ level %.lvl] head out/outBuffer
@@ -872,6 +987,7 @@ ctx-pack-assets: context [
 			maxImageId
 			maxShapeId
 			maxSoundId
+			length? strings
 		]
 	]
 	
@@ -1097,12 +1213,53 @@ ctx-pack-assets: context [
 		data
 		/local
 			id depth transform type frames name colorTransform value value2 ;parse variables
-			flags soundData pos imageName externalLevel soundGroup
+			flags soundData pos imageName externalLevel soundGroup temp
 	][
+		place-command: does [
+			;print ["Place: " id]
+			switch/default type [
+				image  [
+					imageName: usedTimelineImages/:id
+					if error? try [
+						id: -1 + offsetImageId + index? find level-images imageName
+					][
+						if error? try [
+							parse imageName [copy externalLevel to #"/" to end]
+							;TODO: optimize this part!!
+							id: index? find load rejoin [dirAssetsRoot %Bitmaps/ externalLevel %/images.txt] imageName
+							id: id - 1 + get-imageIdOffset externalLevel
+							;print ["External image:" imageName]
+						][
+							ask ["!!! Unknown timeline image!" id imageName]
+							;probe level-images
+							id: 0
+						]
+
+					]
+					out/writeUI16 id 
+				]
+				object [ out/writeUI16 id + offsetObjectId ]
+				shape  [ out/writeUI16 id + offsetShapeId ]
+			][
+				make error! reform ["!!! UNKNOWN TYPE:" type]
+			]
+			out/writeUI16 depth - 1
+			flags: select [image 0 object 1 shape 2] type
+			if none? flags [
+				print ["Unknown place object type:" type]
+				probe copy/part mold pos 200
+				halt
+			]
+			write-transform transform color flags
+		]
+
 		parse/all data [
 			'TotalFrames set frames integer! (
 				out/writeUI16 frames
 			)
+			opt ['HasLabels (
+				out/writeUI8 cmdLabelCallback
+			)]
 			any [
 				pos:
 				'Move set depth integer! set transform block! set color [block! | none] (
@@ -1125,48 +1282,14 @@ ctx-pack-assets: context [
 					set color [block! | none]
 					set name [string! | none]
 				(
-					;print ["Place: " id]
 					either name [
 						out/writeUI8 cmdPlaceNamed
-						out/writeUTF name
+						write-string name
 						;ask ["NAMED.." name]
 					][
 						out/writeUI8 cmdPlace
 					]
-					switch/default type [
-						image  [
-							imageName: usedTimelineImages/:id
-							if error? try [
-								id: -1 + offsetImageId + index? find level-images imageName
-							][
-								if error? try [
-									parse imageName [copy externalLevel to #"/" to end]
-									;TODO: optimize this part!!
-									id: index? find load rejoin [dirAssetsRoot %Bitmaps/ externalLevel %/images.txt] imageName
-									id: id - 1 + get-imageIdOffset externalLevel
-									;print ["External image:" imageName]
-								][
-									ask ["!!! Unknown timeline image!" id imageName]
-									;probe level-images
-									id: 0
-								]
-
-							]
-							out/writeUI16 id 
-						]
-						object [ out/writeUI16 id + offsetObjectId ]
-						shape  [ out/writeUI16 id + offsetShapeId ]
-					][
-						make error! reform ["!!! UNKNOWN TYPE:" type]
-					]
-					out/writeUI16 depth - 1
-					flags: select [image 0 object 1 shape 2] type
-					if none? flags [
-						print ["Unknown place object type:" type]
-						probe copy/part mold pos 200
-						halt
-					]
-					write-transform transform color flags
+					place-command
 				)
 				|
 				'Replace set type word! set id integer! set depth integer! set transform block! set color [block! | none] (
@@ -1184,10 +1307,31 @@ ctx-pack-assets: context [
 					write-transform transform color flags
 				)
 				|
-				'Remove set depth integer! (
-					out/writeUI8  cmdRemove
-					out/writeUI16 depth - 1
-				)
+				'Remove set depth integer! temp: (
+					;I'm testing there if next command is 'Place' and into same depth, if so, I do cmdReplace instead so I avoid 'splice' call in runtime
+					either all [
+						temp/1 = 'Place
+						depth = temp/4
+						not string? temp/7 ;temp/7 is place object's name - I don't use replace command when there is name
+					][ 
+						parse/all temp [
+							'Place 
+							set type word!
+							set id integer!
+							set depth integer!
+							set transform block!
+							set color [block! | none]
+							set name [string! | none]
+							temp:
+							to end
+						]
+						out/writeUI8  cmdReplace
+						place-command
+					][
+						out/writeUI8  cmdRemove
+						out/writeUI16 depth - 1
+					]
+				) :temp
 				|
 				'Label set name string! (
 					unless parse name [
@@ -1205,6 +1349,14 @@ ctx-pack-assets: context [
 							out/writeUI8 cmdStop
 						)
 						|
+						"_hide" end (
+							out/writeUI8 cmdHide
+						)
+						|
+						"_show" end (
+							out/writeUI8 cmdShow
+						)
+						|
 						"_release" end (
 							out/writeUI8 cmdRelease
 						)
@@ -1214,9 +1366,25 @@ ctx-pack-assets: context [
 							out/writeUI8 cmdSlowFPS
 							out/writeUI8 to-integer value
 						)
+						|
+						"_touchable" end (
+							out/writeUI8 cmdTouchable
+						)
+						|
+						"_snd" opt ["_"] copy name to #"_" 1 skip copy value some chDigit end (
+							out/writeUI8 cmdSoundVBR
+							write-string rejoin [currentLevel #"/" name]
+							out/writeUI8 to-integer value
+							either parse name [copy group to #"/" to end][
+								out/writeUI8 1
+								write-string group
+							][
+								out/writeUI8 0
+							]
+						)
 					][
 						out/writeUI8 cmdlabel
-						out/writeUTF name
+						write-string name
 					]
 				)
 				|
