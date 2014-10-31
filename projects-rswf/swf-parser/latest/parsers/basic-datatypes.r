@@ -7,8 +7,8 @@ rebol [
 		byteAlign
 		;print ["readMATRIX" copy/part inBuffer 20 bitBuffer availableBits]
 		reduce [
-			either readBitLogic [ readPair ][none] ;scale
-			either readBitLogic [ readPair ][none] ;rotate
+			either readBitLogic [ readPair ][[1 1]] ;scale
+			either readBitLogic [ readPair ][[0 0]] ;rotate
 			readSBPair ;translate
 		]
 	]
