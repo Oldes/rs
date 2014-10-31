@@ -13,6 +13,7 @@ REBOL [
 	]
 	preprocess: true
 ]
+dir_imagemagick: %"/x/UTILS/ImageMagick-6.8.8-Q16"
 
 unless value? 'useSquareOnlyBitmaps? [useSquareOnlyBitmaps?: false]
 
