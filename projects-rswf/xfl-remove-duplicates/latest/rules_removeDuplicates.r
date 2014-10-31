@@ -25,6 +25,7 @@ append XFL-action-rules [
 		"folders" |
 		"swatchLists"  |
 		"extendedSwatchLists" |
+		"persistentData" |
 		"PrinterSettings" |
 		"publishHistory"
 	]
