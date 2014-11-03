@@ -352,13 +352,26 @@ ctx-triangulator: context [
 		out/clearBuffers
 		forall vertexBuffers [clear vertexBuffers/1]
 		forall indexBuffers  [clear indexBuffers/1]
+		strokeDefinition: clear head strokeDefinition
 		vertexBuffers: clear head vertexBuffers
 		indexBuffers:  clear head indexBuffers
 		vertices: clear head vertices
 		indices:  clear head indices
+		newIndices: clear head newIndices
+		numVertices: 0
 		clear vertToIndHash
 		ind0: ind1: ind2: ind3: 0
+		idx: 0
 	]
+
+
+	vertices:         make binary! 70000 ;-- array of vertices in binary format
+	indices:          copy [] ;-- array of indexes pointing to vertices
+	newIndices:       copy [] ;-- this is used as a temp holder, when buffer is full
+	vertToIndHash:    make hash! 65535
+	numVertices: 0
+	ind0: ind1: ind2: ind3: 0
+	idx: 0
 
 	get-buffers-binary: func[][
 		out/clearBuffers
