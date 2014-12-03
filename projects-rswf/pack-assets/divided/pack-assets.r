@@ -383,11 +383,13 @@ ctx-pack-assets: context [
 		]
 	]
 	
+	;-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	;-- !!!!!!!!!!!!!!! HARDOCDED VALUES !!!!!!!!!!!!!!!!!!!!!
 	idOffsetData: [
 		%Univerzal         [0       0      0      0     10]
-		%UniverzalPrasivka [100     100    100    150   15]
-		%PlanetaDomovska   [600     1100   100    200   30]
-		%PlanetaZluta      [600     1100   100    150   30]
+		%UniverzalPrasivka [100     200    100    200   15]
+		%PlanetaDomovska   [600     1300   100    250   30]
+		%PlanetaZluta      [600     1300   100    250   30]
 		
 		;%Konstrukter   [11      34     0      0     ]
 		;%Prasivka      [195     1805   2      3     ]
@@ -395,18 +397,20 @@ ctx-pack-assets: context [
 		;%Mustek        [1364    7509   997    48    ]
 		;%Houbar        [1464    8025   2160   48    ]
 	]
-	
+	;-- !!!!!!!!!!!!!!! HARDOCDED VALUES !!!!!!!!!!!!!!!!!!!!!
 	get-imageIdOffset: func[level [any-string!] /local tmp][
 		tmp: select idOffsetData to-file level
-		either tmp [tmp/2][1100]
+		either tmp [tmp/2][1300]
 	]
+	;-- !!!!!!!!!!!!!!! HARDOCDED VALUES !!!!!!!!!!!!!!!!!!!!!
 	set-timelineIdOffset: func[level [any-string!]][
 		;if level <> %Univerzal [level: none]
 		set [offsetObjectId offsetImageId offsetShapeId offsetSoundId offsetStringId] any[
 			select idOffsetData to-file level
-			[600 1100 100 210 30]
+			[600 1300 100 250 30]
 		]
 	]
+
 	set 'make-packs func [
 		level [any-string!]   "Level's ID"
 		/atf atf-type         "ATF extension which could be used for bitmap compression (dxt or etc)"
