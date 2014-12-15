@@ -385,11 +385,13 @@ ctx-pack-assets: context [
 	
 	;-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	;-- !!!!!!!!!!!!!!! HARDOCDED VALUES !!!!!!!!!!!!!!!!!!!!!
+	;--                 [objects images shapes sounds strings]
 	idOffsetData: [
 		%Univerzal         [0       0      0      0     10]
 		%UniverzalPrasivka [100     200    100    200   15]
 		%PlanetaDomovska   [600     1300   100    250   30]
 		%PlanetaZluta      [600     1300   100    250   30]
+		%PlanetaTermiti    [600     1300   100    290   30]
 		
 		;%Konstrukter   [11      34     0      0     ]
 		;%Prasivka      [195     1805   2      3     ]
@@ -407,7 +409,7 @@ ctx-pack-assets: context [
 		;if level <> %Univerzal [level: none]
 		set [offsetObjectId offsetImageId offsetShapeId offsetSoundId offsetStringId] any[
 			select idOffsetData to-file level
-			[600 1300 100 250 30]
+			[600 1300 100 300 30]
 		]
 	]
 
@@ -943,7 +945,7 @@ ctx-pack-assets: context [
 						out/writeUI16 length? data/x
 						foreach x data/x [out/writeFloat x]
 						foreach y data/y [out/writeFloat y]
-						out/writeUI16 length? data/labels
+						out/writeUI16 0.5 * length? data/labels
 						foreach [num label] data/labels [
 							out/writeUI16 num
 							out/writeUTF label
