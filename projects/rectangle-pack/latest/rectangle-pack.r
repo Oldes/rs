@@ -156,6 +156,9 @@ ctx-rectangle-pack: context [
 		/local placed skiped free-bins free-area placed? rw rh rx ry width height
 	][
 		if verbose > 0 [print ["RECTPACK to size:" target-area]]
+
+		;sort-method: 3 ;louka kytky
+
 		sort/compare/skip size-data func[a b /local oa ob][
 			switch/default sort-method [
 				2 [
