@@ -836,7 +836,7 @@ ctx-pack-assets: context [
 					nodes: copy []
 					arcs:  copy []
 					foreach [name pos] data/sensors [
-						parse/all to-string name [
+						parse/all/case to-string name [
 							#"P" copy fromNode some chDigit (
 								repend nodes [
 									fromNode: to-integer fromNode
@@ -844,7 +844,7 @@ ctx-pack-assets: context [
 								]
 							) any [
 								#"_"
-								copy arcType [#"j" | #"f" | #"b" | #"w" | #"n" | #"c" | #"v" | #"s" | #"r" | #"k" | none]
+								copy arcType [#"j" | #"f" | #"b" | #"w" | #"n" | #"c" | #"v" | #"s" | #"r" | #"k" | #"S" | none]
 								copy toNode some chDigit
 								(
 									toNode: to-integer toNode
@@ -1318,7 +1318,10 @@ ctx-pack-assets: context [
 					either all [
 						temp/1 = 'Place
 						depth = temp/4
-						not string? temp/7 ;temp/7 is place object's name - I don't use replace command when there is name
+						not any [                              ;I don't use replace command when there is name
+							all [block? temp/6 string? temp/7] ;temp/7 is place object's name (if color is not used)
+							string? temp/6                     ;temp/6 is place object's name (if color is used) 
+						]
 					][ 
 						parse/all temp [
 							'Place 
