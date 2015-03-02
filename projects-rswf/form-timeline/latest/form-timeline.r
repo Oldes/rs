@@ -43,9 +43,16 @@ ctx-form-timeline: context [
 	usage-counter: copy []
 	
 	ids-replaced:  copy []
+	id-offset:   0
+	max-id:      0
 	num-shapes:  0
 	num-images:  0
 	num-objects: 0
+
+	update-id: func[id [integer!]][
+		if id > max-id [ max-id: id ]
+		id: id + id-offset
+	]
 	
 	analyse-shape: func[
 		data [block!] "Parsed SWF Shape data"
@@ -59,6 +66,8 @@ ctx-form-timeline: context [
 		;print ["analyse-shape" mold data]
 		set [id bounds edge shape] data
 		set [FillStyles LineStyles ShapeRecords] shape
+
+		id: update-id id
 
 		forall FillStyles [
 			style: FillStyles/1
@@ -82,11 +91,14 @@ ctx-form-timeline: context [
 		either all [
 			fill
 			fill/1 >= 64 ;there is a bitmap fill
+			;-- TODO!
+			;-- this does not look as correct condition, becase image names are not in names anymore:
 			name: select names fill/2/1 ;it's known named bitmap 
 		][
+			ask "IS THIS HAPPENNING?"
 			repend names [id name]
 			repend types [id 'image]
-			;print ["SHAPE AS IMAGE?" mold ShapeRecords/2]
+			print ["SHAPE AS IMAGE?" mold ShapeRecords/2]
 			either all [
 				ShapeRecords/2/1
 				ShapeRecords/2/1/1 = fill/2/2/3/1
@@ -168,48 +180,39 @@ ctx-form-timeline: context [
 			offset
 	][
 		set [id frames tags] data
+		id: update-id id
 		;print ["frames" frames]
 		
-		either frames = 1 [
+		if frames = 1 [
 			;sprite or image
+			if tags/1/1 = 45 [tags: remove tags] ;ignore SoundStreamHead2 tag, which is inside of sprite sometimes without any reason (bug in Flashi IDE!)
 			tag:     tags/1
 			tagId:   tag/1
 			tagData: tag/2
 			matrix:  either tagData [tagData/4][reduce [none none 0x0]]
 			;Test if this sprite just puts simple shape with bitmap fill so I can use Image instead of this Sprite
-			either all [
-				false ;DON'T USING THIS OPTIMIZATION NOW!!
+			if all [
+				;false ;DON'T USING THIS OPTIMIZATION NOW!!
 				3 = length? tags
-				tagId = 26 ;placeObject
-				name: select names tagData/3
+				find [4 26 70] tagId ;placeObject
+				'image = select types tagData/3
 				all [
-					none? matrix/1 ;no scale
-					none? matrix/2 ;no rotate
-					matrix/3/1 = 0
-					matrix/3/2 = 0 ;the image is placed on position 0x0
+					matrix/1/1 = 1 matrix/1/2 = 1 ;no scale
+					matrix/2/1 = 0 matrix/2/2 = 0 ;no rotate
+					matrix/3/1 = 0 matrix/3/2 = 0 ;the image is placed on position 0x0
 				]
 			][
 				;as image
-				repend names [id name]
-				repend types [id 'image]
-				
-				if offset: select offsets tagData/3 [
-					repend/only repend offsets id offset
-				]
-				
-				print ["^-Image instead of sprite:" id mold name mold tag]
-			][
-				;as sprite
-				repend ids-replaced [id to-string num-objects]
-				num-objects: num-objects + 1
-				form-sprite-tags id frames tags
+				append replaced-sprites id
+				append sprite-images   tagData/3 + id-offset
+				;print ["^-Image instead of sprite:" id mold name mold tag]
+				return
 			]
-		][
-			;as movie
-			repend ids-replaced [id to-string num-objects]
-			num-objects: num-objects + 1
-			form-sprite-tags id frames tags
 		]
+		;as movie/sprite
+		repend ids-replaced [id to-string num-objects]
+		num-objects: num-objects + 1
+		form-sprite-tags id frames tags
 	]
 	
 	form-sprite-tags: func[
@@ -239,6 +242,9 @@ ctx-form-timeline: context [
 			switch/default tagId [
 				26 70 [;placeObject
 					set [depth move cid attributes colorAtts ]  tagData
+
+					if integer? cid [cid: cid + id-offset]
+
 					name: tagData/7
 					
 					if tmp: find replaced-sprites cid [
@@ -349,6 +355,7 @@ ctx-form-timeline: context [
 					either cid [
 						append usage-counter cid
 						unless type: select types cid [
+							probe types
 							print ["!!! Unknown type for cid: " cid]
 							halt
 						]
@@ -415,44 +422,19 @@ ctx-form-timeline: context [
 			]
 		]
 		
-		
-		either all [
-		false
-			1 = frames
-			1 = length? depths
-			'image = (select types cid)
-			none? attributes/1
-			none? attributes/2
-			0 = attributes/3/1
-			0 = attributes/3/2
-			none? colorAtts
-		][
-			;name: select names cid
-			;repend names [id name]
-			;repend types [id 'image]
-			append replaced-sprites id
-			append sprite-images   cid
-			;if offset: select offsets tagData/3 [
-			;	repend/only repend offsets id offset
-			;]
-			
-			print ["^-Image instead of sprite:" id mold name cid]
-			;ask "?"
-		][
-			if numLabels > 0 [
-				insert find/tail head result #"^/" "^-HasLabels^/"
-			]
-			append usage-counter id
-			repend types [id 'object]
-			result: head result
-			repend sprites [id reduce [frames result]]
+		if numLabels > 0 [
+			insert find/tail head result #"^/" "^-HasLabels^/"
 		]
+		append usage-counter id
+		repend types [id 'object]
+		result: head result
+		repend sprites [id reduce [frames result]]
 	]
 	
 	do-startSound: func[data
 		/local id SyncStop SyncNoMultiple InPoint OutPoint Loops Envelope p
 	][
-		id: data/1
+		id: data/1 + id-offset
 		set [
 			SyncStop
 			SyncNoMultiple
@@ -477,10 +459,12 @@ ctx-form-timeline: context [
 	]
 	set 'form-timeline func[
 		src-swf [file!]
-		/local tags tagId tagData parsed sndDir soundDir soundMasterDir soundName mp3file tmp bin
+		/local tags tagId tagData parsed sndDir soundDir soundMasterDir soundName mp3file tmp bin swfs n id
 	][
+		print "-- FormTimeline"
 		clear shapes
 		clear bitmaps
+		clear sounds
 		clear sprites
 		clear names
 		clear names-images
@@ -489,113 +473,141 @@ ctx-form-timeline: context [
 		clear offsets
 		clear usage-counter
 		clear ids-replaced
-		num-images: num-objects: num-shapes: 0
-		
+		clear replaced-sprites
+		clear sprite-images
+		num-images: num-objects: num-shapes: id-offset: max-id: 0
+
+		swfs: reduce [src-swf]
+		n: 2
+		while [exists? tmp: head insert find copy src-swf %.swf n][
+			append swfs tmp
+			n: n + 1
+		]
+
 		with swf-parser/swf-tag-parser [
 			verbal?: false
 			parseActions: swf-parser/swfTagParseActions
 		]
-		tags: extract-swf-tags src-swf [
-			56   ;AVM1 - ExportAssets - used to get names of the used bitmaps and sprites
-			76   ;AVM2 - DoAction3StartupClass
-		]
-		foreach [tagId tagData] tags [
-			parsed: parse-swf-tag tagId tagData
-			foreach [id name] parsed [
-				replace/all name "_" "/"
-				unless parse/all name [
-					"Bitmaps/" copy name to end (
-						;print ["Image:" id tab name]
-						repend types [id 'image]
-						append names-images name
-						repend ids-replaced [id to-string length? names-images]
-					)
-					|
-					"Sounds/" copy name to end (
-						print ["Sound:" id tab name]
-						repend types [id 'sound]
-						append names-sounds to-file name
-						repend ids-replaced [id to-string length? names-sounds]
-					)
-				][
-					repend names [id as-string name]
-				]
-				;print ["^-AssetName:" id mold as-string name]
+	
+		foreach src-swf swfs [
+			print ["----- parsing:" src-swf] 
+			tags: extract-swf-tags src-swf [
+				56   ;AVM1 - ExportAssets - used to get names of the used bitmaps and sprites
+				76   ;AVM2 - DoAction3StartupClass
 			]
-		]
-
-		tags: extract-swf-tags src-swf [
-			2 22 32 67 83 ;shape definitions
-			;4 26 70 ;placeObject - not used as I'm not analysing root timeline, only exported Sprites
-			;5 28 ;removeObject - --//--
-			20 21 35 36 ;bitmap definitions
-			39   ;defineSprite - this one is important!
-			;43   ;frameLabel
-			;56   ;ExportAssets - used to get names of the used bitmaps and sprites
-			14   ;defineSound
-			0    ;end
+			foreach [tagId tagData] tags [
+				parsed: parse-swf-tag tagId tagData
+				foreach [id name] parsed [
+					replace/all name "_" "/"
+					id: update-id id
+					unless parse/all name [
+						"Bitmaps/" copy name to end (
+							;print ["Image:" id tab name]
+							repend types [id 'image]
+							either none? tmp: find names-images name [
+								append names-images name
+								repend ids-replaced [id to-string length? names-images]
+							][
+								repend ids-replaced [id to-string index? tmp]
+							]
+						)
+						|
+						"Sounds/" copy name to end (
+							print ["Sound:" id  tab name]
+							repend types [id 'sound]
+							either none? tmp: find names-sounds name [
+								append names-sounds to-file name
+								repend ids-replaced [id to-string length? names-sounds]
+							][
+								repend ids-replaced [id to-string index? tmp]
+							]
+						)
+					][
+						repend names [id as-string name]
+					]
+					;print ["^-AssetName:" id mold as-string name]
+				]
+			]
+			;print ["ids-replaced:" mold ids-replaced]
+			tags: extract-swf-tags src-swf [
+				2 22 32 67 83 ;shape definitions
+				;4 26 70 ;placeObject - not used as I'm not analysing root timeline, only exported Sprites
+				;5 28 ;removeObject - --//--
+				20 21 35 36 ;bitmap definitions
+				39   ;defineSprite - this one is important!
+				;43   ;frameLabel
+				;56   ;ExportAssets - used to get names of the used bitmaps and sprites
+				14   ;defineSound
+				0    ;end
+			]
+			
+			foreach [tagId tagData] tags [
+				;print ["===TAG[" tagId "]==="]
+				parsed: parse-swf-tag tagId tagData
+				switch tagId [
+					2 22 32 67 83 [;DefineShape
+						analyse-shape parsed
+					]
+					;4 26 [;PlaceObject
+					;]
+					;5 28 [;RemoveObject
+					;]
+					20 21 35 36 [;DefineBitsLossless DefineBitsJPEG2 DefineBitsJPEG3 DefineBitsLossless2
+						id: parsed/1 + id-offset
+						if find names id [
+							unless find types id [
+								print ["!!! UNKNOWN IMAGE" id]
+								ask "continue?"
+							]
+							;repend types [parsed/1 'image]
+						]
+						;repend names [id name]
+						;repend types [id 'image]
+						;halt
+					]
+					39 [;DefineSprite
+						analyse-sprite parsed
+					]
+					43 [;framelabel
+						print ""
+						probe as-string parsed
+					]
+					;70 [;PlaceObject3
+					;]
+					14 [;DefineSound
+						id: parsed/1 + id-offset
+						tmp: pick names-sounds to-integer select ids-replaced id
+						print ["SOUND: " tmp]
+						bin: last parsed
+						set [sndDir soundName] split-path tmp
+						soundDir: rejoin [first split-path src-swf %../Sounds/ sndDir ]
+						soundMasterDir: rejoin [first split-path src-swf %../Sounds_master/ sndDir ]
+						;-- NOTE: named MP3 files are exported into Sounds dir which is located in SWF's parent dir 
+						if all [
+							not exists? rejoin [soundMasterDir soundName %.mp3]
+							any [
+								not exists? mp3file: rejoin [soundDir soundName %.mp3]
+								(size? mp3file) <> length? bin
+							]
+						][
+							print ["Exporting MP3:" mp3file "-" length? bin "bytes"]
+							if not exists? soundDir [make-dir/deep soundDir]
+							write/binary mp3file bin
+						]
+						repend types [id 'sound]
+					]
+					
+					0 [;End
+						;I break the loop because I noticed, that FlashPro sometimes leaves garbage after the end tag!
+						break
+					]
+				]
+			]
+			id-offset: id-offset + max-id
+			max-id: 0
+			;print ["TYPES:" mold types]
 		]
 		
-		foreach [tagId tagData] tags [
-			;print ["===TAG[" tagId "]==="]
-			parsed: parse-swf-tag tagId tagData
-			switch tagId [
-				2 22 32 67 83 [;DefineShape
-					analyse-shape parsed
-				]
-				;4 26 [;PlaceObject
-				;]
-				;5 28 [;RemoveObject
-				;]
-				20 21 35 36 [;DefineBitsLossless DefineBitsJPEG2 DefineBitsJPEG3 DefineBitsLossless2 	
-					if find names parsed/1 [
-						unless find types parsed/1 [
-							print ["!!! UNKNOWN IMAGE" parsed/1]
-							ask "continue?"
-						]
-						;repend types [parsed/1 'image]
-					]
-					;repend names [id name]
-					;repend types [id 'image]
-					;halt
-				]
-				39 [;DefineSprite
-					analyse-sprite parsed
-				]
-				43 [;framelabel
-					print ""
-					probe as-string parsed
-				]
-				;70 [;PlaceObject3
-				;]
-				14 [;DefineSound
-					tmp: pick names-sounds to-integer select ids-replaced parsed/1
-					print ["SOUND: " tmp]
-					bin: last parsed
-					set [sndDir soundName] split-path tmp
-					soundDir: rejoin [first split-path src-swf %../Sounds/ sndDir ]
-					soundMasterDir: rejoin [first split-path src-swf %../Sounds_master/ sndDir ]
-					;-- NOTE: named MP3 files are exported into Sounds dir which is located in SWF's parent dir 
-					if all [
-						not exists? rejoin [soundMasterDir soundName %.mp3]
-						any [
-							not exists? mp3file: rejoin [soundDir soundName %.mp3]
-							(size? mp3file) <> length? bin
-						]
-					][
-						print ["Exporting MP3:" mp3file "-" length? bin "bytes"]
-						if not exists? soundDir [make-dir/deep soundDir]
-						write/binary mp3file bin
-					]
-					repend types [parsed/1 'sound]
-				]
-				
-				0 [;End
-					;I break the loop because I noticed, that FlashPro sometimes leaves garbage after the end tag!
-					break
-				]
-			]
-		]
 		;probe new-line/skip names true 2
 		
 		code: copy ""
@@ -639,7 +651,7 @@ ctx-form-timeline: context [
 		print "---------------------"
 		;probe ids-replaced
 		;print code
-		write head change find/last src-swf "." ".txt"code ;replaces swf extension with txt and saves result into this new file
+		write head change find/last src-swf "." ".txt" code ;replaces swf extension with txt and saves result into this new file
 	]
 ]
 ;form-timeline %/f/samorost3/temp/spici.swf
