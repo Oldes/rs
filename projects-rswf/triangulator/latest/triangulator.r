@@ -227,6 +227,7 @@ ctx-triangulator: context [
 			any [
 				'lineStyle
 					set lineWidth integer! (
+						if lineWidth < _minLineWidth [lineWidth: _minLineWidth]
 						strokeDefinition: insert strokeDefinition reduce ['width lineWidth: lineWidth * 0.05]
 					)
 					opt [set lineColor tuple! (
