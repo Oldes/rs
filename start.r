@@ -12,9 +12,30 @@ dir_lib:         join what-dir %lib/     ;used to store external libraries
 
 
 ;Change this variable to your ImageMagick installation location if needed
-dir_imagemagick: %"/x/UTILS/ImageMagick-6.8.0-Q16/"
+dir_imagemagick: %"/c/dev/UTILS/ImageMagick-6.9.0-Q16/"
 ;It's used by imagick to load MagickWand's dll or the convert app
 
+crypt: func [
+    "Encrypts or decrypts data and returns the result."
+    data [any-string!] "Data to encrypt or decrypt"
+    akey [binary!] "The encryption key"
+    /decrypt "Decrypt the data"
+    /binary "Produce binary decryption result."
+    /local port
+][
+    port: open [
+        scheme: 'crypt
+        direction: pick [encrypt decrypt] not decrypt
+        key: akey
+        padding: true
+    ]
+    insert port data
+    update port
+    data: copy port
+    close port
+    if all [decrypt not binary] [data: to-string data]
+    data
+]
 do %rs.r
 print "RS ready"
 rs/run 'wav-to-mp3
