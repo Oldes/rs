@@ -581,6 +581,8 @@ ctx-pack-assets: context [
 			forall soundsToImport [
 				probe file: soundsToImport/1
 				either #"/" = last file [
+					parse file [copy tmp to #"/"]
+					unless find sound-groups tmp [append sound-groups tmp]
 					foreach subFile read soundsDir/:file [
 						append soundsToImport rejoin [file subFile]
 					]
