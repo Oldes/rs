@@ -335,22 +335,23 @@ ctx-pack-assets: context [
 					;delete imageFile
 					switch/default atf-type [
 						%dxt [
-							{
 							call/console probe rejoin [
-								localDirBinUtils {PVRTexTool.exe -m -yflip0 -f DXT5 -dds}
+								localDirBinUtils {PVRTexTool.exe -m -yflip0 -q pvrtcbest -dither -l -f DXT5 -dds}
 									{ -i } to-local-file origFile
 									{ -o } to-local-file file {.dds}
 							]
 							call/console probe rejoin [
-								to-local-file dirBinUtils {\dds2atf.exe -4 -q 0}
+								to-local-file dirBinUtils {\dds2atf.exe -4 -q 0 -f 0}
 									{ -i } to-local-file file {.dds}
 									{ -o } to-local-file imageFile
-							]}
+							]
+							{
 							call/console probe rejoin [
 								localDirBinUtils {png2atf.exe -c d -4}
 									{ -i } to-local-file origFile
 									{ -o } to-local-file imageFile
 							]
+							}
 							true
 						]
 						%etc [
@@ -370,9 +371,20 @@ ctx-pack-assets: context [
 							true
 						]
 						%rgba [
-							call/console probe rejoin [
+							{call/console probe rejoin [
 								localDirBinUtils {png2atf.exe -4 -r -q 0}
 									{ -i } to-local-file origFile
+									{ -o } to-local-file imageFile
+							]}
+							;this method seems to be without edge issues, but on old machines slower probably
+							call/console probe rejoin [
+								localDirBinUtils {PVRTexToolCLI.exe -f r8g8b8a8,UBN,lRGB -potcanvas + -m 1 -q pvrtcbest -dither -l}
+									{ -i } to-local-file origFile
+									{ -o } to-local-file file {.pvr}
+							]
+							call/console probe rejoin [
+								to-local-file dirBinUtils {\pvr2atf.exe -c p -n 0,0}
+									{ -r } to-local-file file {.pvr}
 									{ -o } to-local-file imageFile
 							]
 							true
