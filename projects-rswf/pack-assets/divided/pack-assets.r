@@ -7,7 +7,7 @@ REBOL [
 	Home: https://github.com/Oldes/rs/blob/master/projects-rswf/pack-assets/fastmem/pack-assets.r
 	require: [
 		rs-project %stream-io
-		rs-project %form-timeline
+		rs-project %form-timeline 'optimized
 		rs-project %texture-packer
 		rs-project %triangulator ;'shrink
 		rs-project %zlib
@@ -108,7 +108,9 @@ ctx-pack-assets: context [
 		cmdLabelCallback:            7
 		cmdSoundVBR:                 8
 		cmdSoundVBR2:                9
-		cmdRemoveAnd:                11
+		cmdDispose:                  11
+		cmdChangeDepth:              12
+		cmdNewMaxDepth:                13
 		cmdFPS:                      30
 		cmdFPSRange:                 31
 		cmdSlowFPS:                  32
@@ -575,7 +577,7 @@ ctx-pack-assets: context [
 		]
 		if exists? sourceSWF [
 			if any [
-				;true ;;<-- just to force recreation every time
+				true ;;<-- just to force recreation every time
 				not exists? sourceTXT
 				(modified? sourceTXT) < (modified? sourceSWF)
 				;(modified? join rs/get-project-dir 'form-timeline %form-timeline.r) > (modified? sourceTXT)
@@ -1235,6 +1237,9 @@ ctx-pack-assets: context [
 			id depth transform type frames name colorTransform value value2 ;parse variables
 			flags soundData pos imageName externalLevel soundGroup temp
 	][
+		;print "===parse-controlTags==="
+		;probe data
+		;ask ""
 		place-command: does [
 			;print ["Place: " id]
 			switch/default type [
@@ -1245,7 +1250,7 @@ ctx-pack-assets: context [
 					][
 						if error? try [
 							parse imageName [copy externalLevel to #"/" to end]
-							;TODO: optimize this part!!
+							;TODO: optimize this part (to not load the images.txt for each image)!!
 							id: index? find load rejoin [dirAssetsRoot %Bitmaps/ externalLevel %/images.txt] imageName
 							id: id - 1 + get-imageIdOffset externalLevel
 							;print ["External image:" imageName]
@@ -1274,8 +1279,9 @@ ctx-pack-assets: context [
 		]
 
 		parse/all data [
-			'TotalFrames set frames integer! (
+			'TotalFrames set frames integer! 'MaxDepth set depth integer!(
 				out/writeUI16 frames
+				out/writeUI16 depth - 1
 			)
 			opt ['HasLabels (
 				out/writeUI8 cmdLabelCallback
@@ -1315,46 +1321,29 @@ ctx-pack-assets: context [
 				'Replace set type word! set id integer! set depth integer! set transform block! set color [block! | none] (
 					; ["Replace: " id]
 					out/writeUI8  cmdReplace
-					switch/default type [
-						image  [ out/writeUI16 id + offsetImageId ]
-						object [ out/writeUI16 id + offsetObjectId ]
-						shape  [ out/writeUI16 id + offsetShapeId ]
-					][
-						make error! reform ["!!! UNKNOWN TYPE:" type]
-					]
-					out/writeUI16 depth - 1
-					flags: select [image 0 object 1 shape 2] type
-					write-transform transform color flags
+					place-command
 				)
 				|
-				'Remove set depth integer! temp: (
-					;I'm testing there if next command is 'Place' and into same depth, if so, I do cmdReplace instead so I avoid 'splice' call in runtime
-					either all [
-						temp/1 = 'Place
-						depth = temp/4
-						not any [                              ;I don't use replace command when there is name
-							all [block? temp/6 string? temp/7] ;temp/7 is place object's name (if color is not used)
-							string? temp/6                     ;temp/6 is place object's name (if color is used) 
-						]
-					][ 
-						parse/all temp [
-							'Place 
-							set type word!
-							set id integer!
-							set depth integer!
-							set transform block!
-							set color [block! | none]
-							set name [string! | none]
-							temp:
-							to end
-						]
-						out/writeUI8  cmdReplace
-						place-command
-					][
-						out/writeUI8  cmdRemove
-						out/writeUI16 depth - 1
-					]
-				) :temp
+				'Dispose set depth integer! (
+					out/writeUI8  cmdDispose
+					out/writeUI16 depth - 1
+				)
+				|
+				'Remove set depth integer! (
+					out/writeUI8  cmdRemove
+					out/writeUI16 depth - 1
+				)
+				|
+				'ChangeDepth set depth integer! set pos integer! (
+					out/writeUI8  cmdChangeDepth
+					out/writeUI16 depth - 1
+					out/writeUI16 pos - 1
+				)
+				|
+				'NewMaxDepth set depth integer! (
+					out/writeUI8 cmdNewMaxDepth
+					out/writeUI16 depth
+				)
 				|
 				'Label set name string! (
 					unless parse name [
