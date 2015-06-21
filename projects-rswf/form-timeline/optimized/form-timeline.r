@@ -445,7 +445,7 @@ ctx-form-timeline: context [
 				)
 			]
 		]
-		probe head result
+		head result
 	]
 
 	do-startSound: func[data

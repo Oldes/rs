@@ -1281,7 +1281,10 @@ ctx-pack-assets: context [
 		parse/all data [
 			'TotalFrames set frames integer! 'MaxDepth set depth integer!(
 				out/writeUI16 frames
-				out/writeUI16 depth - 1
+				if depth > 200 [
+					ask ["big alloc" depth]
+				]
+				out/writeUI16 either depth > 0 [depth - 1][0]
 			)
 			opt ['HasLabels (
 				out/writeUI8 cmdLabelCallback
@@ -1324,27 +1327,27 @@ ctx-pack-assets: context [
 					place-command
 				)
 				|
-				'Dispose set depth integer! (
-					out/writeUI8  cmdDispose
-					out/writeUI16 depth - 1
-				)
-				|
+				;'Dispose set depth integer! (
+				;	out/writeUI8  cmdDispose
+				;	out/writeUI16 depth - 1
+				;)
+				;|
 				'Remove set depth integer! (
 					out/writeUI8  cmdRemove
 					out/writeUI16 depth - 1
 				)
 				|
-				'ChangeDepth set depth integer! set pos integer! (
-					out/writeUI8  cmdChangeDepth
-					out/writeUI16 depth - 1
-					out/writeUI16 pos - 1
-				)
-				|
-				'NewMaxDepth set depth integer! (
-					out/writeUI8 cmdNewMaxDepth
-					out/writeUI16 depth
-				)
-				|
+				;'ChangeDepth set depth integer! set pos integer! (
+				;	out/writeUI8  cmdChangeDepth
+				;	out/writeUI16 depth - 1
+				;	out/writeUI16 pos - 1
+				;)
+				;|
+				;'NewMaxDepth set depth integer! (
+				;	out/writeUI8 cmdNewMaxDepth
+				;	out/writeUI16 depth
+				;)
+				;|
 				'Label set name string! (
 					unless parse name [
 						"_fps" copy value some chDigit end (
