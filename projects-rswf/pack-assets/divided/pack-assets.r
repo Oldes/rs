@@ -107,7 +107,7 @@ ctx-pack-assets: context [
 		cmdSound:                    6
 		cmdLabelCallback:            7
 		cmdSoundVBR:                 8
-		cmdSoundVBR2:                9
+		cmdSoundLNG:                 9
 		cmdRemoveAnd:                11
 		cmdFPS:                      30
 		cmdFPSRange:                 31
@@ -335,23 +335,26 @@ ctx-pack-assets: context [
 					;delete imageFile
 					switch/default atf-type [
 						%dxt [
-							call/console probe rejoin [
-								localDirBinUtils {PVRTexTool.exe -m -yflip0 -q pvrtcbest -dither -l -f DXT5 -dds}
-									{ -i } to-local-file origFile
-									{ -o } to-local-file file {.dds}
+							either parse file [thru "./Assets/Packs/" ["HoubarKrabicka" | "MustekMain"] end] [
+								;this version is correct when some of images is used with BlemdMode.MULTIPLY
+								call/console probe rejoin [
+									localDirBinUtils {png2atf.exe -c d -4}
+										{ -i } to-local-file origFile
+										{ -o } to-local-file imageFile
+								]
+							][
+								;this method should have in theory better result, but have issue when used with MULTIPLY blend mode.
+								call/console probe rejoin [
+									localDirBinUtils {PVRTexTool.exe -m -yflip0 -q 5 -dither -l -f DXT5 -dds}
+										{ -i } to-local-file origFile
+										{ -o } to-local-file file {.dds}
+								]
+								call/console probe rejoin [
+									to-local-file dirBinUtils {\dds2atf.exe -4 -q 0 -f 0}
+										{ -i } to-local-file file {.dds}
+										{ -o } to-local-file imageFile
+								]
 							]
-							call/console probe rejoin [
-								to-local-file dirBinUtils {\dds2atf.exe -4 -q 0 -f 0}
-									{ -i } to-local-file file {.dds}
-									{ -o } to-local-file imageFile
-							]
-							{
-							call/console probe rejoin [
-								localDirBinUtils {png2atf.exe -c d -4}
-									{ -i } to-local-file origFile
-									{ -o } to-local-file imageFile
-							]
-							}
 							true
 						]
 						%etc [
@@ -400,10 +403,10 @@ ctx-pack-assets: context [
 	;--                 [objects images shapes sounds strings]
 	idOffsetData: [
 		%Univerzal         [0       0      0      0     10]
-		%UniverzalPrasivka [100     200    100    200   15]
-		%PlanetaDomovska   [600     1300   100    250   40]
-		%PlanetaZluta      [600     1300   100    250   40]
-		%PlanetaTermiti    [600     1300   100    290   40]
+		%UniverzalPrasivka [100     200    100    210   27]
+		%PlanetaDomovska   [600     1300   100    250   50]
+		%PlanetaZluta      [600     1300   100    250   50]
+		%PlanetaTermiti    [600     1300   100    290   50]
 		
 		;%Konstrukter   [11      34     0      0     ]
 		;%Prasivka      [195     1805   2      3     ]
@@ -421,7 +424,7 @@ ctx-pack-assets: context [
 		;if level <> %Univerzal [level: none]
 		set [offsetObjectId offsetImageId offsetShapeId offsetSoundId offsetStringId] any[
 			select idOffsetData to-file level
-			[600 1300 100 300 40]
+			[600 1300 100 300 50]
 		]
 	]
 
@@ -872,6 +875,7 @@ ctx-pack-assets: context [
 					;nodes must be numbers from 0 to n
 					probe new-line/skip sort/skip nodes 2 true 2
 					if nodes/1 <> 0 [
+						probe nodes
 						make error! "INVALID WALK NODE - Nodes must start with id 0!"
 					]
 					for n 3 length? nodes 2 [
@@ -1398,6 +1402,17 @@ ctx-pack-assets: context [
 							out/writeUI8 cmdSoundVBR
 							write-string rejoin [currentLevel #"/" name]
 							out/writeUI8 to-integer value
+							either parse name [copy group to #"/" to end][
+								out/writeUI8 1
+								write-string group
+							][
+								out/writeUI8 0
+							]
+						)
+						|
+						"_snd" opt ["_"] [copy name to "_L" end | copy name to end] (
+							out/writeUI8 cmdSoundLNG
+							write-string rejoin [currentLevel #"/" name]
 							either parse name [copy group to #"/" to end][
 								out/writeUI8 1
 								write-string group
