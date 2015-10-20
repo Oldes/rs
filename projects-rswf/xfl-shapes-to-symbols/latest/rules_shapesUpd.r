@@ -48,8 +48,7 @@ append XFL-action-rules [
 			"elements" |
 			"DOMGroup" |
 			"members" |
-			"Actionscript" 
-			
+			"Actionscript"			
 		]  (
 			parse-xfl content
 		) |
@@ -125,7 +124,9 @@ append XFL-action-rules [
 		"morphHintsList" |
 		"DOMStaticText" |
 		"motionObjectXML" |
-		"transformationPoint"   ;do nothing
+		"transformationPoint" |
+		"betweenFrameMatrixList" |
+		"IKTree"  ;do nothing
 	]
 	DOMShape-shapesUpd [
 		"strokes" (

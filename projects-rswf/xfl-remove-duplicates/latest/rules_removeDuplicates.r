@@ -97,7 +97,9 @@ append XFL-action-rules [
 		"morphHintsList" |
 		"DOMStaticText" |
 		"motionObjectXML" |
-		"transformationPoint"   ;do nothing
+		"transformationPoint" |
+		"betweenFrameMatrixList" |
+		"IKTree"   ;do nothing
 	]
 	DOMShape-removeDuplicates [
 		"strokes" (
