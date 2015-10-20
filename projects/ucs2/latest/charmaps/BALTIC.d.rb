@@ -1,0 +1,60 @@
+; BALTIC UCS-2 decoding rule
+;  source: ftp://dkuug.dk/i18n/charmaps/BALTIC
+any [
+#{201D} (insert tail result #{A1}) | 
+#{00D8} (insert tail result #{A8}) | 
+#{201E} (insert tail result #{AA}) | 
+#{00C6} (insert tail result #{AF}) | 
+#{00F8} (insert tail result #{B8}) | 
+#{201C} (insert tail result #{BA}) | 
+#{00E6} (insert tail result #{BF}) | 
+#{012E} (insert tail result #{C0}) | 
+#{0116} (insert tail result #{C1}) | 
+#{0100} (insert tail result #{C2}) | 
+#{0106} (insert tail result #{C3}) | 
+#{0104} (insert tail result #{C6}) | 
+#{010C} (insert tail result #{C7}) | 
+#{0122} (insert tail result #{C8}) | 
+#{017D} (insert tail result #{CA}) | 
+#{0118} (insert tail result #{CB}) | 
+#{0112} (insert tail result #{CC}) | 
+#{0136} (insert tail result #{CD}) | 
+#{012A} (insert tail result #{CE}) | 
+#{013B} (insert tail result #{CF}) | 
+#{0141} (insert tail result #{D0}) | 
+#{0145} (insert tail result #{D1}) | 
+#{0143} (insert tail result #{D2}) | 
+#{014C} (insert tail result #{D4}) | 
+#{0172} (insert tail result #{D8}) | 
+#{0160} (insert tail result #{D9}) | 
+#{015A} (insert tail result #{DA}) | 
+#{016A} (insert tail result #{DB}) | 
+#{017B} (insert tail result #{DD}) | 
+#{0179} (insert tail result #{DE}) | 
+#{012F} (insert tail result #{E0}) | 
+#{0117} (insert tail result #{E1}) | 
+#{0101} (insert tail result #{E2}) | 
+#{0107} (insert tail result #{E3}) | 
+#{0105} (insert tail result #{E6}) | 
+#{010D} (insert tail result #{E7}) | 
+#{0123} (insert tail result #{E8}) | 
+#{017E} (insert tail result #{EA}) | 
+#{0119} (insert tail result #{EB}) | 
+#{0113} (insert tail result #{EC}) | 
+#{0137} (insert tail result #{ED}) | 
+#{012B} (insert tail result #{EE}) | 
+#{013C} (insert tail result #{EF}) | 
+#{0142} (insert tail result #{F0}) | 
+#{0146} (insert tail result #{F1}) | 
+#{0144} (insert tail result #{F2}) | 
+#{014D} (insert tail result #{F4}) | 
+#{0173} (insert tail result #{F8}) | 
+#{0161} (insert tail result #{F9}) | 
+#{015B} (insert tail result #{FA}) | 
+#{016B} (insert tail result #{FB}) | 
+#{017C} (insert tail result #{FD}) | 
+#{017A} (insert tail result #{FE}) | 
+#{0138} (insert tail result #{FF}) | 
+#{00} copy c 1 skip (insert tail result c) | 
+copy c 2 skip (decodeUnknownChar c)
+]

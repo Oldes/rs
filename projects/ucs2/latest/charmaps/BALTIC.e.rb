@@ -1,0 +1,59 @@
+; BALTIC UCS-2 encoding rule
+; source:  ftp://dkuug.dk/i18n/charmaps/BALTIC
+any [
+#{A1} (insert tail result #{201D}) | 
+#{A8} (insert tail result #{00D8}) | 
+#{AA} (insert tail result #{201E}) | 
+#{AF} (insert tail result #{00C6}) | 
+#{B8} (insert tail result #{00F8}) | 
+#{BA} (insert tail result #{201C}) | 
+#{BF} (insert tail result #{00E6}) | 
+#{C0} (insert tail result #{012E}) | 
+#{C1} (insert tail result #{0116}) | 
+#{C2} (insert tail result #{0100}) | 
+#{C3} (insert tail result #{0106}) | 
+#{C6} (insert tail result #{0104}) | 
+#{C7} (insert tail result #{010C}) | 
+#{C8} (insert tail result #{0122}) | 
+#{CA} (insert tail result #{017D}) | 
+#{CB} (insert tail result #{0118}) | 
+#{CC} (insert tail result #{0112}) | 
+#{CD} (insert tail result #{0136}) | 
+#{CE} (insert tail result #{012A}) | 
+#{CF} (insert tail result #{013B}) | 
+#{D0} (insert tail result #{0141}) | 
+#{D1} (insert tail result #{0145}) | 
+#{D2} (insert tail result #{0143}) | 
+#{D4} (insert tail result #{014C}) | 
+#{D8} (insert tail result #{0172}) | 
+#{D9} (insert tail result #{0160}) | 
+#{DA} (insert tail result #{015A}) | 
+#{DB} (insert tail result #{016A}) | 
+#{DD} (insert tail result #{017B}) | 
+#{DE} (insert tail result #{0179}) | 
+#{E0} (insert tail result #{012F}) | 
+#{E1} (insert tail result #{0117}) | 
+#{E2} (insert tail result #{0101}) | 
+#{E3} (insert tail result #{0107}) | 
+#{E6} (insert tail result #{0105}) | 
+#{E7} (insert tail result #{010D}) | 
+#{E8} (insert tail result #{0123}) | 
+#{EA} (insert tail result #{017E}) | 
+#{EB} (insert tail result #{0119}) | 
+#{EC} (insert tail result #{0113}) | 
+#{ED} (insert tail result #{0137}) | 
+#{EE} (insert tail result #{012B}) | 
+#{EF} (insert tail result #{013C}) | 
+#{F0} (insert tail result #{0142}) | 
+#{F1} (insert tail result #{0146}) | 
+#{F2} (insert tail result #{0144}) | 
+#{F4} (insert tail result #{014D}) | 
+#{F8} (insert tail result #{0173}) | 
+#{F9} (insert tail result #{0161}) | 
+#{FA} (insert tail result #{015B}) | 
+#{FB} (insert tail result #{016B}) | 
+#{FD} (insert tail result #{017C}) | 
+#{FE} (insert tail result #{017A}) | 
+#{FF} (insert tail result #{0138}) | 
+copy c 1 skip (insert tail result join #{00} c)
+]

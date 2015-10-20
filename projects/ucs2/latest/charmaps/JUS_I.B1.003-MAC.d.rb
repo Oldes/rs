@@ -1,0 +1,67 @@
+; JUS_I.B1.003-MAC UCS-2 decoding rule
+;  source: ftp://dkuug.dk/i18n/charmaps/JUS_I.B1.003-MAC
+any [
+#{0416} (insert tail result #{40}) | 
+#{0411} (insert tail result #{42}) | 
+#{0426} (insert tail result #{43}) | 
+#{0414} (insert tail result #{44}) | 
+#{0415} (insert tail result #{45}) | 
+#{0424} (insert tail result #{46}) | 
+#{0413} (insert tail result #{47}) | 
+#{0425} (insert tail result #{48}) | 
+#{0418} (insert tail result #{49}) | 
+#{0408} (insert tail result #{4A}) | 
+#{041A} (insert tail result #{4B}) | 
+#{041B} (insert tail result #{4C}) | 
+#{041C} (insert tail result #{4D}) | 
+#{041D} (insert tail result #{4E}) | 
+#{041E} (insert tail result #{4F}) | 
+#{041F} (insert tail result #{50}) | 
+#{0409} (insert tail result #{51}) | 
+#{0420} (insert tail result #{52}) | 
+#{0421} (insert tail result #{53}) | 
+#{0422} (insert tail result #{54}) | 
+#{0423} (insert tail result #{55}) | 
+#{0412} (insert tail result #{56}) | 
+#{040A} (insert tail result #{57}) | 
+#{040F} (insert tail result #{58}) | 
+#{0405} (insert tail result #{59}) | 
+#{0417} (insert tail result #{5A}) | 
+#{0428} (insert tail result #{5B}) | 
+#{0403} (insert tail result #{5C}) | 
+#{040C} (insert tail result #{5D}) | 
+#{0427} (insert tail result #{5E}) | 
+#{0436} (insert tail result #{60}) | 
+#{0430} (insert tail result #{61}) | 
+#{0431} (insert tail result #{62}) | 
+#{0446} (insert tail result #{63}) | 
+#{0434} (insert tail result #{64}) | 
+#{0435} (insert tail result #{65}) | 
+#{0444} (insert tail result #{66}) | 
+#{0433} (insert tail result #{67}) | 
+#{0445} (insert tail result #{68}) | 
+#{0438} (insert tail result #{69}) | 
+#{0458} (insert tail result #{6A}) | 
+#{043A} (insert tail result #{6B}) | 
+#{043B} (insert tail result #{6C}) | 
+#{043C} (insert tail result #{6D}) | 
+#{043D} (insert tail result #{6E}) | 
+#{043E} (insert tail result #{6F}) | 
+#{043F} (insert tail result #{70}) | 
+#{0459} (insert tail result #{71}) | 
+#{0440} (insert tail result #{72}) | 
+#{0441} (insert tail result #{73}) | 
+#{0442} (insert tail result #{74}) | 
+#{0443} (insert tail result #{75}) | 
+#{0432} (insert tail result #{76}) | 
+#{045A} (insert tail result #{77}) | 
+#{045F} (insert tail result #{78}) | 
+#{0455} (insert tail result #{79}) | 
+#{0437} (insert tail result #{7A}) | 
+#{0448} (insert tail result #{7B}) | 
+#{0453} (insert tail result #{7C}) | 
+#{045C} (insert tail result #{7D}) | 
+#{0447} (insert tail result #{7E}) | 
+#{00} copy c 1 skip (insert tail result c) | 
+copy c 2 skip (decodeUnknownChar c)
+]

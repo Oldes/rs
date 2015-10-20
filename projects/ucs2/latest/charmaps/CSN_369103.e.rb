@@ -1,0 +1,65 @@
+; CSN_369103 UCS-2 encoding rule
+; source:  ftp://dkuug.dk/i18n/charmaps/CSN_369103
+any [
+#{24} (insert tail result #{00A4}) | 
+#{A1} (insert tail result #{0104}) | 
+#{A2} (insert tail result #{02D8}) | 
+#{A3} (insert tail result #{0141}) | 
+#{A4} (insert tail result #{0024}) | 
+#{A5} (insert tail result #{013D}) | 
+#{A6} (insert tail result #{015A}) | 
+#{A9} (insert tail result #{0160}) | 
+#{AA} (insert tail result #{015E}) | 
+#{AB} (insert tail result #{0164}) | 
+#{AC} (insert tail result #{0179}) | 
+#{AE} (insert tail result #{017D}) | 
+#{AF} (insert tail result #{017B}) | 
+#{B1} (insert tail result #{0105}) | 
+#{B2} (insert tail result #{02DB}) | 
+#{B3} (insert tail result #{0142}) | 
+#{B5} (insert tail result #{013E}) | 
+#{B6} (insert tail result #{015B}) | 
+#{B7} (insert tail result #{02C7}) | 
+#{B9} (insert tail result #{0161}) | 
+#{BA} (insert tail result #{015F}) | 
+#{BB} (insert tail result #{0165}) | 
+#{BC} (insert tail result #{017A}) | 
+#{BD} (insert tail result #{02DD}) | 
+#{BE} (insert tail result #{017E}) | 
+#{BF} (insert tail result #{017C}) | 
+#{C0} (insert tail result #{0154}) | 
+#{C3} (insert tail result #{0102}) | 
+#{C5} (insert tail result #{0139}) | 
+#{C6} (insert tail result #{0106}) | 
+#{C8} (insert tail result #{010C}) | 
+#{CA} (insert tail result #{0118}) | 
+#{CC} (insert tail result #{011A}) | 
+#{CF} (insert tail result #{010E}) | 
+#{D0} (insert tail result #{0110}) | 
+#{D1} (insert tail result #{0143}) | 
+#{D2} (insert tail result #{0147}) | 
+#{D5} (insert tail result #{0150}) | 
+#{D8} (insert tail result #{0158}) | 
+#{D9} (insert tail result #{016E}) | 
+#{DB} (insert tail result #{0170}) | 
+#{DE} (insert tail result #{0162}) | 
+#{E0} (insert tail result #{0155}) | 
+#{E3} (insert tail result #{0103}) | 
+#{E5} (insert tail result #{013A}) | 
+#{E6} (insert tail result #{0107}) | 
+#{E8} (insert tail result #{010D}) | 
+#{EA} (insert tail result #{0119}) | 
+#{EC} (insert tail result #{011B}) | 
+#{EF} (insert tail result #{010F}) | 
+#{F0} (insert tail result #{0111}) | 
+#{F1} (insert tail result #{0144}) | 
+#{F2} (insert tail result #{0148}) | 
+#{F5} (insert tail result #{0151}) | 
+#{F8} (insert tail result #{0159}) | 
+#{F9} (insert tail result #{016F}) | 
+#{FB} (insert tail result #{0171}) | 
+#{FE} (insert tail result #{0163}) | 
+#{FF} (insert tail result #{02D9}) | 
+#{A4} (insert tail result #{0024}) | 
+copy c 1 skip (insert tail result join #{00} c)
+]
