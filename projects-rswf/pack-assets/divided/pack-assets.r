@@ -7,7 +7,7 @@ REBOL [
 	Home: https://github.com/Oldes/rs/blob/master/projects-rswf/pack-assets/fastmem/pack-assets.r
 	require: [
 		rs-project %stream-io
-		rs-project %form-timeline ;'optimized
+		rs-project %form-timeline
 		rs-project %texture-packer
 		rs-project %triangulator ;'shrink
 		rs-project %zlib
@@ -109,9 +109,6 @@ ctx-pack-assets: context [
 		cmdSoundVBR:                 8
 		cmdSoundLNG:                 9
 		cmdRemoveAnd:                11
-		;cmdDispose:                  11
-		;cmdChangeDepth:              12
-		;cmdNewMaxDepth:                13
 		cmdFPS:                      30
 		cmdFPSRange:                 31
 		cmdSlowFPS:                  32
@@ -581,7 +578,7 @@ ctx-pack-assets: context [
 		]
 		if exists? sourceSWF [
 			if any [
-				true ;;<-- just to force recreation every time
+				;true ;;<-- just to force recreation every time
 				not exists? sourceTXT
 				(modified? sourceTXT) < (modified? sourceSWF)
 				;(modified? join rs/get-project-dir 'form-timeline %form-timeline.r) > (modified? sourceTXT)
@@ -1252,7 +1249,7 @@ ctx-pack-assets: context [
 					][
 						if error? try [
 							parse imageName [copy externalLevel to #"/" to end]
-							;TODO: optimize this part (to not load the images.txt for each image)!!
+							;TODO: optimize this part!!
 							id: index? find load rejoin [dirAssetsRoot %Bitmaps/ externalLevel %/images.txt] imageName
 							id: id - 1 + get-imageIdOffset externalLevel
 							;print ["External image:" imageName]
@@ -1281,12 +1278,8 @@ ctx-pack-assets: context [
 		]
 
 		parse/all data [
-			'TotalFrames set frames integer! 'MaxDepth set depth integer!(
+			'TotalFrames set frames integer! (
 				out/writeUI16 frames
-				if depth > 200 [
-					ask ["big alloc" depth]
-				]
-				out/writeUI16 either depth > 0 [depth - 1][0]
 			)
 			opt ['HasLabels (
 				out/writeUI8 cmdLabelCallback
@@ -1367,17 +1360,6 @@ ctx-pack-assets: context [
 					]
 				) :temp
 				|
-				;'ChangeDepth set depth integer! set pos integer! (
-				;	out/writeUI8  cmdChangeDepth
-				;	out/writeUI16 depth - 1
-				;	out/writeUI16 pos - 1
-				;)
-				;|
-				;'NewMaxDepth set depth integer! (
-				;	out/writeUI8 cmdNewMaxDepth
-				;	out/writeUI16 depth
-				;)
-				;|
 				'Label set name string! (
 					unless parse name [
 						"_fps" copy value some chDigit end (
