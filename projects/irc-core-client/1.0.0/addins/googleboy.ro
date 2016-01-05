@@ -1,0 +1,26 @@
+rebol [title: "googleboy"]
+googleboy: context [
+	google: func[search-what /local temp-page adresses messages][
+		adresses: copy []
+		messages: copy []
+		temp-page: read to url! rejoin ["http://www.google.com/search?q=" search-what]
+		parse temp-page [any [
+			thru {<p class=g>} thru {<a href=} copy temp-adress to ">" copy temp-message to {</a>} (
+				append adresses temp-adress append messages next temp-message
+			)
+		]]
+	]
+	chat-rules: [
+		[temp-word][thru "!google " copy temp-word to end][
+			
+			say replace/all replace/all replace replace rejoin [messages/1 newline adresses/1] "none" "Rekl bych, ze nic takovyho" "none" "proste NEEXISTUJE!!!" "<b>" "" "</b>" ""
+		;probe adresses
+		;probe messages
+	]
+	init: func[][
+		if none? find active-irc/user-data/chat-rules chat-rules [
+			append active-irc/user-data/chat-rules chat-rules
+		]
+	]
+]
+

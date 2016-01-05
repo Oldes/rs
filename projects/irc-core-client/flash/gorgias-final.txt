@@ -1,0 +1,5213 @@
+[Kallikles]
+Takhle pozdì se prı má chodit do války a do bitvy, Sokrate.
+
+[Sokrates]
+Co pøicházíme opravdu, jak se øíká, po slavnosti a opozdili jsme se?
+
+[Kallikles]
+Ano, a po jak pìkné slavnosti! Nebo Gorgias nám právì povìdìl ve své pøednášce mnoho krásného.
+
+[Sokrates]
+Tím je, Kallikle, vinen tuhle Chairefon;
+kvùli nìmu jsme se musili zdret na námìstí.
+
+[Chairefon]
+Nic si z toho nedìlej, Sokrate, já to zase napravím.
+Gorgias je mùj pøítel a tak nám nìco pøednese, libo-li, hned teï anebo, budeš-li chtít, nìkdy jindy.
+
+[Kallikles]
+Jake, Chairefonte?
+Sokrates touí si poslechnout Gorgia?
+
+[Chairefon]
+Právì proto jsme zde.
+
+[Kallikles]
+Nue, a budete chtít, pøijïte ke mnì do domu;
+Gorgias toti u mne bydlí a nìco vám pøednese.
+
+[Sokrates]
+Dobøe, Kallikle.
+Ale zdali pak by se mu chtìlo s námi rozmlouvati?
+Rád bych se toti od nìho dovìdìl, jakı je vıznam toho jeho umìní a co je to, co ohlašuje a èemu uèí;
+ale tu pøednášku a udìlá, jak pravíš, nìkdy jindy.
+
+[Kallikles]
+Nejlepší bude, Sokrate, dáti tu otázku jemu samému.
+Nebo tahle vìc byla jedním èíslem jeho vıstupu;
+vybízel toti,
+aby mu dávali otázky, kdokoli z posluchaèù by nìjakou chtìl, a na všechny e odpoví.
+
+[Sokrates]
+To je hezké.
+Chairefonte, zeptej se ho.
+
+[Chairefon]
+Naè se mám zeptat?
+
+[Sokrates]
+Kdo je.
+
+[Chairefon]
+Jak to myslíš?
+
+[Sokrates]
+Jako na pøíklad kdyby byl øemeslníkem dìlajícím obuv,
+odpovìdìl by ti patrnì, e je švec;
+èi nerozumíš, jak to myslím?
+
+[Chairefon]
+Rozumím a zeptám se.
+
+Povìz mi, Gorgio, je pravda, co øíká tuhle Kallikles,
+e prı ohlašuješ,
+e budeš odpovídat, na cokoli by se tì kdo tázal?
+
+[Gorgias]
+Pravda, Chairefonte;
+však právì nyní jsem to zrovna ohlašoval a tvrdím,
+e za mnoho let ještì nikdo mi nedal ádnou otázku,
+která by mi byla nová.
+
+[Chairefon]
+Bude ti tedy asi snadno odpovìdìt, Gorgio?
+
+[Gorgias]
+Hned to mùeš zkusit, Chairefonte.
+
+[Polos]
+Dozajista, ale jestlie chceš, Chairefonte, zkus to na mnì.
+Nebo Gorgias, jak se mi zdá, je také u unaven,
+vdy právì probral mnoho vìcí.
+
+[Chairefon]
+Jak to, Pole?
+ty se domníváš,
+e bys odpovìdìl lépe ne Gorgias?
+
+[Polos]
+Co øekneš tomu, kdy to dovedu tak,
+aby to tobì staèilo?
+
+[Chairefon]
+Nic;
+ale kdy chceš, odpovídej.
+
+[Polos]
+Ta se.
+
+[Chairefon]
+Ji se tái.
+Kdyby byl Gorgias odborníkem v tom umìní jako jeho bratr Herodikos,
+jak bychom ho po právu nazıvali?
+Ne tak jako onoho?
+
+[Polos]
+Ovšeme.
+
+[Chairefon]
+Tedy bychom dobøe øíkali, kdybychom ho nazıvali lékaøem?
+
+[Polos]
+Ano.
+
+[Chairefon]
+A kdyby byl znalı toho umìní jako Aristofon Aglaofontùv nebo jeho bratr, kım bychom ho správnì nazıvali?
+
+[Polos]
+Je jasné,
+e malíøem.
+
+[Chairefon]
+Kterého umìní je tedy doopravdy znalı a kım bychom jej proto správnì nazıvali?
+
+[Polos]
+Ó, Chairefonte, mnoho je rozliènıch znalostí na svìtì, zkušenì vynalezenıch ze zkušeností;
+zkušenost toti pùsobí,
+e cesta našeho ivota je øízena znalostí,
+ale nezkušenost ji ponechává náhodì.
+Ze všech tìchto znalostí jedni nabıvají tìch,
+druzí onìch,
+kadı jinım zpùsobem,
+nejlepší pak lidé nejlepších;
+z tìchto je i tuhle Gorgias a jemu náleí umìní ze všech nejkrásnìjší.
+
+[Sokrates]
+Je vidìt, Gorgio,
+e je Polos dobøe pøipraven k slovním vıkonùm;
+ale vdy nedìlá to, co slíbil Chairefontovi.
+
+[Gorgias]
+Co právì, Sokrate?
+
+[Sokrates]
+Vidím,
+e neodpovídá zcela na otázku.
+
+[Gorgias]
+Nue chceš-li, ota se ho ty.
+
+[Sokrates]
+Ne, ale mnohem radìji bych se tázal tebe, jestlie je tobì samému po chuti odpovídat.
+Nebo Polos, jak je mi patrno u z toho, co øekl, je více vycvièen v tak øeèené rétorice ne v dialogu.
+
+[Polos]
+Jak to, Sokrate?
+
+[Sokrates]
+Protoe, Pole, na otázku Chairefontovu, kterého umìní je Gorgias znalı, ty pronášíš chvaloøeè na jeho umìní, jako kdyby je nìkdo hanìl, ale které to umìní je, to jsi neodpovìdìl.
+
+[Polos]
+Co jsem neodpovìdìl,
+e to je nejkrásnìjší umìní?
+
+[Sokrates]
+Jistì.
+Ale nikdo se netáe, jaké je Gorgiovo umìní,
+nıbr které a kım je tøeba nazıvat Gorgiu;
+jako kdy ti Chairefon dal pøedešlé otázky a ty jsi mu dobøe a struènì odpovìdìl, øekni i nyní takto, které je to umìní a kım máme nazıvat Gorgiu.
+Radìji však, Gorgio, øekni nám ty sám, kterého umìní jsi znalı a kım je proto tøeba tì nazıvat.
+
+[Gorgias]
+Rétoriky, Sokrate.
+
+[Sokrates]
+Je tedy tøeba tì nazıvat rétorem?
+
+[Gorgias]
+A to dobrım, Sokrate, jestlie mì chceš nazıvat podle toho, èím jsem a èím se honosím, jak øekl Homér.
+
+[Sokrates]
+Však chci.
+
+[Gorgias]
+Tak tedy nazıvej.
+
+[Sokrates]
+Jistì pak si máme mysliti,
+e jsi schopen dìlat i jiné takovımi.
+
+[Gorgias]
+Vskutku to o sobì prohlašuji, nejenom zde,
+nıbr i jinde.
+
+[Sokrates]
+Zdali pak bys tedy byl ochoten, Gorgio, po zpùsobu našeho nynìjšího rozhovoru i dále dávat jednak otázky, jednak odpovìdi, ale tyhle dlouhé øeèi, jaké zaèal i Polos, odloit na jindy?
+Ne buï vìren svému slibu a raè na tu otázku struènì odpovìdìt.
+
+[Gorgias]
+Jsou, Sokrate, nìkteré odpovìdi, které nutnì vyadují obšírnosti v slovním vıraze;
+ale pøesto se pokusím promluvit co nejstruènìji.
+Vdy také i to je jedna vìc z mého umìní,
+e by nikdo nepovìdìl toté struènìji neli já.
+
+[Sokrates]
+Toho je jistì potøebí, Gorgio;
+a podej mi ukázku právì téhle vìci, krátkomluvnosti,
+kdeto dlouhomluvnost mi ukáeš a jindy.
+
+[Gorgias]
+To také podám a øekneš,
+e jsi neslyšel nikoho struènìjšího.
+
+[Sokrates]
+Nue:
+kdy tvrdíš,
+e jsi znalı umìní øeènického a e bys i jiného udìlal øeèníkem, øekni mi, které vìci se tıká rétorika?
+Na pøíklad tkalcovství se tıká vıroby odìvu,
+e ano?
+
+[Gorgias]
+Ano.
+
+[Sokrates]
+Tak i hudební umìní se tıká vytváøení písní, pravda?
+
+[Gorgias]
+Ano.
+
+[Sokrates]
+U Hery, Gorgio, obdivuji se tvım odpovìdím,
+e odpovídáš tak struènì, jak jen mono.
+
+[Gorgias]
+Ano, Sokrate, myslím si,
+e to dìlám docela slušnì.
+
+[Sokrates]
+Máš pravdu.
+Nue tedy mi takto odpovìz i o rétorice, které vìci znalost to je.
+
+[Gorgias]
+Øeèí.
+
+[Sokrates]
+Jakıch to, Gorgio?
+Zdali takovıch, které ukazují nemocnım, co by mìli dìlat,
+aby byli zdrávi?
+
+[Gorgias]
+Ne.
+
+[Sokrates]
+Tedy rétorika se netıká všech øeèí.
+
+[Gorgias]
+Jistì ne.
+
+[Sokrates]
+Ale ovšem èiní lidi schopnımi mluvit.
+
+[Gorgias]
+Ano.
+
+[Sokrates]
+A zajisté nejen mluvit,
+nıbr o tıch vìcech i rozumnì myslit?
+
+[Gorgias]
+Jak by ne?
+
+[Sokrates]
+Lékaøství, o nìm jsme prve mluvili, èiní lidi schopnımi myslit a mluvit o nemocnıch,
+e ano?
+
+[Gorgias]
+Nutnì.
+
+[Sokrates]
+Tedy i lékaøství, jak se podobá, má za pøedmìt øeèi.
+
+[Gorgias]
+Ano.
+
+[Sokrates]
+A to øeèi tıkající se nemocí?
+
+[Gorgias]
+Zajisté.
+
+[Sokrates]
+Zdali pak i gymnastika nemá pøedmìtem øeèi, ty, které se tıkají dobrého a špatného stavu tìl?
+
+[Gorgias]
+Ovšem.
+
+[Sokrates]
+A jistì se to takto má, Gorgio, i s ostatními umìními;
+kadé z nich má pøedmìtem ty øeèi, které se tıkají oboru kadého jednotlivého umìní.
+
+[Gorgias]
+Patrnì.
+
+[Sokrates]
+Proè pak tedy asi nenazıváš øeènickımi ta jiná umìní, kdy mají pøedmìtem øeèi, jestlie podle tvého vımìru øeènické umìní je to umìní, které má pøedmìtem øeèi?
+
+[Gorgias]
+Protoe, Sokrate, pøi tìch jinıch umìních takøka veškerá znalost záleí v ruèních vıkonech a podobnıch èinnostech,
+kdeto pøi rétorice není ádného takového ruèního díla,
+nıbr všechna její èinnost a její uplatòování se dìje øeèmi.
+Z tohoto dùvodu já soudím,
+e rétorika je umìní mající pøedmìtem øeèi, a mám pravdu, jak já myslím.
+
+[Sokrates]
+Zdali pak rozumím, jakım to umìním ji chceš nazıvat?
+Však brzy se to dovím jasnìji.
+Nue odpovìz:
+máme rozlièná umìní,
+e ano?
+
+[Gorgias]
+Ano.
+
+[Sokrates]
+Ze všech pak umìní, myslím, pøi jednìch je hlavní vìcí èinnost;
+øeèi potøebují jen málo, nìkterá pak docela nic, a odborná práce by se pøi nich mohla provádìt i mlèky, jako je tomu pøi malíøství, sochaøství a mnoha jinıch.
+Taková máš, jak se mi zdá, na mysli a o tìch tvrdíš,
+e k nim rétorika nenáleí;
+èi ne?
+
+[Gorgias]
+Ano, docela dobøe pøedpokládáš, Sokrate.
+
+[Sokrates]
+Jiného pak druhu jsou ta umìní, která všechno provádìjí øeèí a èinu takøka buï ádného nepotøebují nebo jen zcela málo, jako na pøíklad nauka o èíslech, poètáøství, geometrie, umìní hrát mlınek a mnohá jiná umìní, z nich nìkterá mají skoro stejnì øeèí jako úkonù, vìtšina však jich má více a namnoze veškerá èinnost i veškeré uplatòování záleí jim v øeèech.
+Za jedno z tìchto pokládáš, jak se mi zdá, rétoriku.
+
+[Gorgias]
+Pravdu mluvíš.
+
+[Sokrates]
+Avšak jistì ádné z tìchto, myslím, nechceš nazıvat rétorikou, aèkoli ses tak vyjádøil,
+e rétorika je to umìní, které se uplatòuje øeèí, a nìkdo by mohl namítnout, kdyby chtìl chytat za slovo, „ty tedy, Gorgio, nazıváš aritmetiku rétorikou?” Ale domnívám se,
+e nenazıváš rétorikou ani aritmetiku ani geometrii.
+
+[Gorgias]
+Vskutku správnì se domníváš, Sokrate, a tvùj pøedpoklad je oprávnìn.
+
+[Sokrates]
+Nue tedy i ty dokonèi odpovìï na mou otázku.
+Kdy toti je rétorika jedno z tìch umìní, která uívají vìtšinou øeèi, a kdy jsou i jiná taková, pokus se øíci, které z nich je rétorika a k èemu se vztahuje její uplatòování øeèmi.
+Jako kdyby se mne nìkdo tázal o kterémkoli z umìní, o kterıch jsem právì mluvil:
+„Sokrate, které umìní je nauka o èíslech?”, øekl bych mu, jako právì ty,
+e je to jedno z umìní, která se uplatòují øeèí.
+A kdyby se mne dále tázal:
+„Co jest pøedmìtem toho druhu umìní?”, øekl bych,
+e jeho pøedmìtem jsou pojmy sudého a lichého bez ohledu na to, kolik je kde jednoho i druhého.
+A kdyby se zase zeptal:
+„Které umìní nazıváš poètáøstvím?”, øekl bych,
+e i toto náleí mezi umìní, která se veskrze uplatòují øeèí;
+a kdyby se dále tázal:
+„Co jest pøedmìtem toho umìní?”, øekl bych jako ti, kdo sestavují na smìnu návrh,
+e v ostatních vìcech je poètáøství jako nauka o èíslech — nebo má tentı pøedmìt, sudé a liché — ale rozdíl je ten,
+e poètáøství pøihlíí i k tomu, jaké je liché i sudé co do mnoství, jednak kadé v pomìru k sobì samému, jednak obojí k sobì navzájem.
+A kdyby se nìkdo tázal na astronomii, øekl bych,
+e i tato se ve všem uplatòuje øeèí, a kdyby se optal:
+„A co je pøedmìtem øeèí astronomie, Sokrate?”, øekl bych,
+e pohyby hvìzd a slunce i mìsíce, jakı je vzájemnı pomìr jejich rychlostí.
+
+[Gorgias]
+A to bys mluvil správnì, Sokrate.
+
+[Sokrates]
+Nue tedy hleï i ty, Gorgio, tak mluviti.
+Rétorika tedy je jedno z umìní, která všechno provádìjí a uplatòují øeèí,
+e ano?
+
+[Gorgias]
+Tak jest.
+
+[Sokrates]
+Øekni pak, co je pøedmìtem toho druhu umìní?
+Která to je vìc, jí se tıkají tyto øeèi, kterıch uívá rétorika?
+
+[Gorgias]
+Jsou to nejvìtší z lidskıch vìcí, Sokrate, a nejlepší.
+
+[Sokrates]
+Ale, Gorgio, i tohle, co øíkáš, je sporné a ještì to není nic jasného.
+Myslím,
+e jsi slyšel pøi symposiích zpívat to skolion, v kterém se vypoèítává,
+e nejvìtší dobro je bıt zdráv, za druhé bıt krásnı a za tøetí, jak praví skladatel skolia, bıt bohat bez nepoctivosti.
+
+[Gorgias]
+Ano, slyšel jsem;
+ale k èemu to øíkáš?
+
+[Sokrates]
+Pøedstav si,
+e by hned k tobì pøistoupili vırobci tìchto druhù dobra, které vychválil skladatel skolia, toti lékaø, uèitel tìlocviku a penìník,
+a nejprve by øekl lékaø:
+„Sokrate, klame tì Gorgias; nebo to, co je nejvìtší dobro pro lidi, není pøedmìtem jeho umìní, nıbr mého”
+— a tu kdybych se ho otázal, kdo jest,
+e takto mluví,
+øekl by asi, e lékaø.
+„Co to mluvíš? co dílo tvého umìní je nejvìtší dobro?”
+„Jak by ne, Sokrate?”,
+øekl by asi,
+„zdraví! co je pro lidi vìtší dobro ne zdraví?”
+Kdyby pak zase po nìm uèitel tìlocviku øekl:
+„Divil bych se vìru, Sokrate, i já sám, kdyby ti Gorgias dovedl ukázat, e jeho umìní dává vìtší dobro ne mé”,
+øekl bych i tomuto:
+„A kdo pak jsi ty, èlovìèe, a co je tvé dílo?”
+„Uèitel tìlocviku”,
+odpovìdìl by,
+„a mé dílo je èinit lidi, jejich tìla, krásnımi a silnımi.”
+A po uèiteli tìlocviku øekl by penìník, jak se domnívám, pln pohrdání ke všem:
+„Podívej se, Sokrate, zdali se ti ukáe buï u Gorgia nebo u kohokoli jiného nìjaké vìtší dobro nad bohatství.”
+Tu bychom mu øekli:
+„Jake? co ty jsi vırobce bohatství?”
+Odpovìdìl by, e ano.
+„Kdo jsi?”
+„Penìník.”
+„Jake,”
+øekneme,
+„ty snad soudíš, e nejvìtším dobrem pro lidi je bohatství?”
+„Jak pak by ne?”
+øekne.
+„Ale vdy pøece tuhle Gorgias proti tomu tvrdí, e jeho umìní je pøíèinou vìtšího dobra neli tvé,”
+øekli bychom my.
+Tu je zøejmé, e by se potom zeptal:
+„A které je to dobro? a Gorgias odpoví.”
+Nue tedy, Gorgio, pomysli si,
+e jsi tázán i od onìch i ode mne, a odpovìz,
+co jest to, o èem ty tvrdíš,
+e to je nejvìtší dobro pro lidi
+a e ty jsi jeho vırobcem.
+
+[Gorgias]
+To, Sokrate, co je vpravdì nejvìtším dobrem a pøíèinou jednak osobní svobody pro lidi samy vùbec, jednak zároveò i pøíèinou i monosti pro kadého jednotlivce zvláš,
+aby vládl nad jinımi ve své obci.
+
+[Sokrates]
+Co tedy tím myslíš?
+
+[Gorgias]
+Já tím myslím schopnost pøemlouvati øeèmi i na soudì soudce i v radì èleny rady i na snìmu snìmovníky i v kadém jiném obèanském shromádìní, kterékoli se koná.
+A jistì budeš mít pøi této moci svım sluhou lékaøe a sluhou budeš mít uèitele tìlocviku;
+a co se tıèe tohoto penìníka, ukáe se,
+e získává peníze ne pro sebe,
+nıbr pro jiného, toti pro tebe, kterı dovedeš mluvit a pøemlouvat zástupy.
+
+[Sokrates]
+Nyní se mi zdá, Gorgio,
+e jsi z nejvìtší blízkosti ukázal, za které umìní pokládáš rétoriku, a jestlie dobøe rozumím, pravíš,
+e rétorika je vırobkynì pøemlouvání a všechna její èinnost i všechen její obsah e smìøuje k tomuto cíli;
+èi mùeš snad øíci,
+e moc rétoriky má vìtší rozsah ne to, zpùsobovat v duších posluchaèù pøemluvu?
+
+[Gorgias]
+Nikterak, Sokrate,
+nıbr zdá se mi,
+e ji náleitì vymezuješ;
+to je toti její hlavní obsah.
+
+[Sokrates]
+Nue poslyš, Gorgio.
+Jestlie jsou lidé, kteøí, kdy vespolek rozmlouvají, chtìjí znát právì to, o èem se mluví, dobøe vìz,
+e jeden z nich jsem, jak si namlouvám, také já;
+a mám za to,
+e i ty.
+
+[Gorgias]
+A co dále, Sokrate?
+
+[Sokrates]
+Hned ti to povím.
+Co se tıèe toho pøemlouvání zpùsobovaného rétorikou, o které ty mluvíš, dobøe vìz,
+e jasnì nevím, co to jest a kterıch vìcí se tıká, avšak tuším, co asi myslíš,
+e to je a co je jeho pøedmìtem;
+nicménì však se tì otái, co je podle tvého mínìní to pøemlouvání zpùsobované rétorikou a kterıch vìcí se tıká.
+A proè se otái tebe, kdy mám o tom sám tušení, a proè to neøíkám sám?
+Ne kvùli tobì,
+nıbr pro rozpravu,
+aby postupovala tak,
+e by nám co nejvíce vyjasòovala pøedmìt øeèi.
+Pozoruj, zdali se ti zdá,
+e se tì dotazuji právem;
+na pøíklad kdybych se tì tázal, kterı malíø je Zeuxis, a ty bys mi øekl,
+e ten, co maluje obrazy, zdali pak bych se tì právem neotázal, jaké e obrazy maluje a kde?
+
+[Gorgias]
+Ovšem.
+
+[Sokrates]
+Ne snad proto,
+e jsou i jiní malíøi, kteøí malují mnoho jinıch obrazù?
+
+[Gorgias]
+Ano.
+
+[Sokrates]
+Kdyby však nikdo jinı nemaloval ne Zeuxis, byla by tvá odpovìï dobrá?
+
+[Gorgias]
+Jak by ne?
+
+[Sokrates]
+Nue tedy øekni i o rétorice:
+zdá se ti,
+e jediná rétorika pøemlouváním zpùsobuje zmìnu mínìní, èi e to dìlají i jiná umìní?
+Myslím to takhle:
+kdokoli vyuèuje kterékoli vìci, zdali pak zpùsobuje zmìnu mínìní v tom, èemu vyuèuje, èi ne?
+
+[Gorgias]
+Ano, Sokrate, zpùsobuje zmìnu mínìní, a to co nejvíce.
+
+[Sokrates]
+Vrame se k tım umìním, o kterıch jsme právì teï mluvili;
+zdali pak nás aritmetika, nauka o èíslech, nepouèuje o všem, co souvisí s èíslem, a tak také i aritmetik?
+
+[Gorgias]
+Ovšem.
+
+[Sokrates]
+Nezpùsobuje tedy i zmìnu mínìní?
+
+[Gorgias]
+Ano.
+
+[Sokrates]
+Jest tedy i aritmetika vırobkynì pøemlouvání?
+
+[Gorgias]
+To je zjevné.
+
+[Sokrates]
+Nue tedy jestlie se nás nìkdo bude ptát, jakého pøemlouvání a v které vìci, odpovíme mu asi,
+e nauèného, a to o veškerém oboru sudého a lichého;
+a tak i o všech ostatních umìních, o kterıch jsme právì mluvili, budeme moci ukázati,
+e se zabıvají vırobou pøemlouvání a kterého i v které vìci, èi ne?
+
+[Gorgias]
+Ano.
+
+[Sokrates]
+Není tedy rétorika sama jediná vırobkyní pøemlouvání.
+
+[Gorgias]
+Máš pravdu.
+
+[Sokrates]
+Kdy tedy nevykonává sama toto dílo,
+nıbr dìlají to i jiná umìní, právem bychom se potom zeptali mluvèího, jako kdy šlo o malíøe:
+„Jaké je to pøemlouvání a co je pøedmìtem toho pøemlouvání, které je oborem rétoriky?” Èi nezdá se ti tato otázka oprávnìna?
+
+[Gorgias]
+Arcie.
+
+[Sokrates]
+Odpovìz tedy, Gorgio, kdy se i tobì takto zdá.
+
+[Gorgias]
+Myslím tedy, Sokrate,
+e to pøemlouvání, které se dìje na soudech i v jinıch shromádìních, jak jsem právì øíkal, a e jeho pøedmìtem je to, co je spravedlivé a nespravedlivé.
+
+[Sokrates]
+I já jsem tušil, Gorgio,
+e myslíš toto pøemlouvání a o tìchto vìcech;
+ale aby ses nedivil, jestlie se tì i o nìco pozdìji na nìco takového zeptám, co se sice zdá zøejmé, ale já se na to pøece ptám — jak pravím, dávám tu otázku,
+aby øeè šla nepøetritım chodem k svému cíli, ne kvùli tobì, ale abychom si nezvykali druh druhu podkládati jisté myšlenky a pøedbíhati jeden slova druhého,
+nıbr abys ty podle svého pøedpokladu vedl k cíli své myšlenky, jakım zpùsobem bys chtìl.
+
+[Gorgias]
+A správnì to dìláš, Sokrate, zdá se mi.
+
+[Sokrates]
+Nue tedy podívejme se i na toto.
+Jest nìco, èemu øíkáš „vìdìti”?
+
+[Gorgias]
+Ano.
+
+[Sokrates]
+A co „vìøiti”?
+
+[Gorgias]
+Arcie.
+
+[Sokrates]
+Zdali pak tedy se ti zdá,
+e vìdìti a vìøiti, vìdìní a víra, je toté èi e to je nìco jiného?
+
+[Gorgias]
+Já se domnívám, Sokrate,
+e nìco jiného.
+
+[Sokrates]
+Ano.
+Dobøe se domníváš;
+a poznáš to z tohoto.
+Kdyby se tì toti nìkdo otázal:
+„Zdali pak jest, Gorgio, nìkterá víra nepravdivá a nìkterá pravdivá?” odpovìdìl bys, jak myslím, kladnì.
+
+[Gorgias]
+Ano.
+
+[Sokrates]
+A co, jest nepravdivé a pravdivé vìdìní?
+
+[Gorgias]
+Nikoli.
+
+[Sokrates]
+I tak je tedy zøejmo,
+e to není toté.
+
+[Gorgias]
+Máš pravdu.
+
+[Sokrates]
+Avšak jistì i ti, kdo získali vìdìní, i ti, kdo uvìøili, jsou pøemluveni.
+
+[Gorgias]
+Tak jest.
+
+[Sokrates]
+Chceš tedy, abychom uznali dva druhy pøemluvy, jeden, kterı dává víru bez vìdìní, a druhı, kterı dává vìdìní?
+
+[Gorgias]
+Ovšeme.
+
+[Sokrates]
+Nue kterou pøemluvu o vìcech spravedlivıch a nespravedlivıch zpùsobuje rétorika na soudech i v jinıch shromádìních?
+Tu, z které vzniká vìøení bez vìdìní, èi z které vzniká vìdìní?
+
+[Gorgias]
+To je pøece zøejmé, Sokrate,
+e tu, z které vzniká vìøení.
+
+[Sokrates]
+Rétorika je tedy, jak se podobá, vırobkynì pøemluvy vìøivé, a ne nauèné, o spravedlivu a nespravedlivu.
+
+[Gorgias]
+Ano.
+
+[Sokrates]
+Tedy ani rétor není uèitelem soudù a jinıch shromádìní o vìcech spravedlivıch a nespravedlivıch,
+nıbr toliko zpùsobovatelem víry;
+vdy by jistì nemohl nauèiti tak èetné shromádìní v krátkém èase tak velikım vìcem.
+
+[Gorgias]
+To jistì ne.
+
+[Sokrates]
+Nue tedy vizme, jakı asi vıznam má to, co øíkáme o rétorice;
+já toti ani sám ještì nedovedu si plnì uvìdomit vıznam svıch slov.
+Kdykoli se koná v obci schùze o volbì lékaøù nebo o stavitelích lodí nebo o nìkterém jiném druhu odbornıch pracovníkù, tehdy, rozumí se samo sebou, nebude radit odborník v rétorice?
+Nebo je zøejmé,
+e pøi kadé volbì je tøeba voliti nejlepšího odborníka.
+Ani nebude radit rétor, kdykoli jde o stavbu hradeb nebo zaøízení pøístavù nebo lodìnic,
+nıbr stavitelé;
+dále ani kdykoli je porada o volbì vojevùdcù nebo o nìjakém postavení vojska proti nepøátelùm nebo o dobytí míst,
+nıbr tehdy budou radit vojenští odborníci a ne odborníci v rétorice;
+èi jak soudíš, Gorgio, o takovıch vìcech?
+Nebo kdy i sám o sobì øíkáš,
+e jsi rétor i e jiné dìláš odborníky v rétorice, je na místì vyptávat se tebe na vìci tvého umìní.
+A mìj za to,
+e se i já nyní zastávám tvé vìci;
+moná toti,
+e mezi pøítomnımi tu je nìkdo, kdo se chce stát tvım ákem, jako já pozoruji nìkteré dosti èetné, kteøí však by se snad ostıchali se tì zeptati.
+Kdy jsi tedy tázán ode mne, mìj za to,
+e jsi i od onìch tázán:
+„Èeho se nám dostane, Gorgio, bu-deme-li tvımi áky?
+O kterıch vìcech budeme schopni radit obci?
+Zdali pak jediné o spravedlivém a nespravedlivém èi také o tìch vìcech, o kterıch právì teï mluvil Sokrates?” Nue pokus se jim odpovìdìti.
+
+[Gorgias]
+Však já se pokusím, Sokrate, zøejmì ti odhalit veškeru moc rétoriky;
+vdy ty sám jsi dal dobrı návod.
+Jistì pøece víš,
+e tyto athénské lodìnice a hradby i zaøízení pøístavù vzniklo z rady Themistokleovy a dílem z Perikleovy, ale ne od odbornıch stavitelù.
+
+[Sokrates]
+Ano, Gorgio, øíká se to o Themistokleovi;
+Periklea pak jsem sám slyšel, kdy nám dával rady o støední zdi.
+
+[Gorgias]
+A kdykoli je nìjaká volba, o jakıch jsi právì teï mluvil, Sokrate, vidíš,
+e to jsou øeèníci, kteøí radí a jejich mínìní o takovıch vìcech vítìzí.
+
+[Sokrates]
+Tomu se také divím, Gorgio, a proto se tì ji dlouho ptám, jaká e je to moc rétoriky.
+Mnì se toti jeví, kdy ji takto pozoruji, její velikost pøímo daimonská.
+
+[Gorgias]
+Jen kdybys všechno znal, Sokrate,
+e v sobì obsahuje a má pod svou mocí, mùeme øíci, všechny síly! A povím ti velké svìdectví té vìci:
+ji mnohokráte jsem navštívil se svım bratrem i s jinımi lékaøi nemocného, jen nechtìl ani vypíti lék, ani se dát lékaøi øezat nebo pálit, a tu kdy ho nedovedl pøemluvit lékaø, já jsem ho pøemluvil, a to ádnım jinım umìním ne øeènickım.
+A kdyby pøišel kamkoli do mìsta mu znalı øeènìní a s ním lékaø a kdyby bylo tøeba øeènickım zápasem rozhodnouti na snìmu nebo v nìkterém jiném shromádìní, kterı z obou by mìl bıt zvolen lékaøem, tvrdím,
+e by lékaø neznamenal nic a e by byl zvolen, kdyby chtìl, ten, kterı dovede promluviti.
+A také kdyby zápasil s kterımkoli jinım odborníkem, pøemluvil by znalec øeènìní spíše ne kdokoli jinı,
+aby jeho zvolili, nebo nic není, o èem by nedovedl promluvit pøed mnostvím lidí odbornı øeèník pøesvìdèivìji ne kdokoli jinı z odborníkù.
+Tedy tak veliká a taková je moc toho umìní;
+ovšem je tøeba, Sokrate, uívati rétoriky jako kadého jiného druhu zápasnictví.
+Jinıch druhù zápasnictví se toti nesmí uívat proti všem lidem jen z toho dùvodu,
+e se nìkdo nauèil na pøíklad rohovat a zápasit v køíku a bojovat ve zbroji, take má vrch nad pøáteli i nepøáteli;
+proto ještì nesmí zasazovat rány pøátelùm, ani je bodat a zabíjet.
+A naopak,
+pøi Diovi,
+jestlie si nìkdo navštìvováním palaistry dobøe vypìstuje tìlo a stane se rohovníkem a potom zasazuje rány otci a matce nebo nìkterému jinému z blízkıch nebo z pøátel,
+proto ještì nelze míti v nenávisti a vyhánìti z obcí cvièitele mládee a uèitele boje ve zbroji.
+Oni toti nauèili svému umìní,
+aby se ho spravedlivì uívalo proti nepøátelùm a škùdcùm, k obranì a ne k útoku;
+tito však to obrátili a uívají své síly a svého umìní nesprávnì.
+Tedy uèitelé nejsou špatní lidé, ani to umìní není proto vinno nebo špatné,
+nıbr podle mého mínìní ti, kteøí ho neuívají správnì.
+Toté jest øíci i o rétorice.
+Rétor je toti schopen mluviti pøede všemi a o všem, take pùsobí na mnoství s vìtší pøesvìdèivostí zkrátka ve všem, cokoli by chtìl;
+nicménì však proto ještì nesmí odnímati vıznam ani lékaøùm — jen proto,
+e by mìl moc to udìlat — ani ostatním odborníkùm,
+nıbr je tøeba i rétoriky uívat spravedlivì právì tak jako umìní zápasnického.
+Pakli však nìkdo se stane dobrım øeèníkem a potom touto silou a tímto umìním èiní bezpráví, nesmíme mít v nenávisti uèitele a vyhánìt ho z obcí.
+Onen toti vyuèil svému umìní k spravedlivému uívání, tento však ho uívá opaènì.
+Tedy spravedlivo je nenávidìt a vyhánìt a zabíjet toho, kdo nesprávnì uívá, ale ne uèitele.
+
+[Sokrates]
+Myslím, Gorgio,
+e i ty máš mnoho zkušeností z rozprav a vypozoroval jsi pøi nich to,
+e si lidé nesnadno dovedou navzájem ujasnit pøedmìt, o kterém se pokusí rozmlouvati, a s pøijatım i danım pouèením konèit své schùzky;
+naopak, kdykoli se o nìèem dostanou do sporu a jeden o druhém tvrdí,
+e mluví nesprávnì nebo nejasnì, horší se a jeden se domnívá o druhém,
+e mluví ze zloby:
+kadı chce mít pravdu, a nehledají, oè jde v jejich rozpravì.
+A nìkteøí se nakonec rozcházejí velmi hanebnì, s nadávkami a kdy byli jeden o druhém øekli takové vìci,
+e se i pøítomní sami na sebe mrzí,
+e se jim chtìlo bıti posluchaèi takovıch lidí.
+A proè to øíkám?
+Protoe se mi nyní zdá,
+e nemluvíš zcela dùslednì ani shodnì s tím, co jsi mluvil o rétorice na zaèátku;
+a tu se bojím tì vyvracet,
+aby sis o mnì nemyslil,
+e nemluvím k vìci a e mi nejde o to,
+aby se stala jasnou,
+nıbr e mluvím proti tobì.
+Jestlie i ty jsi z lidí, z kterıch jsem také já, vìru rád bych ti dával otázky;
+pakli ne, nechal bych toho.
+A z kterıch lidí jsem já?
+Z tìch, kteøí by se rádi dali usvìdèit, jestlie mluvím nìco nepravdivého, a kteøí by rádi usvìdèili, kdyby nìkdo mluvil nìco nepravdivého, a kteøí by neménì rádi se dali usvìdèiti, neli by sami usvìdèili;
+pokládám to toti za vìtší dobro, a to tou mìrou, jako je vìtší dobro sám bıti zbaven nejvìtšího zla neli zbaviti ho jiného.
+Nic není toti, myslím, tak veliké zlo pro èlovìka jako nepravdivé mínìní o tìch vìcech, které jsou právì nyní pøedmìtem naší øeèi.
+Jestlie tedy i ty øekneš,
+e jsi takovı, rozmlouvejme;
+pakli však se ti snad zdá,
+e by se toho mìlo nechat, nechme to ji bıt a pøerušme rozmluvu.
+
+[Gorgias]
+Mohu øíci, Sokrate,
+e i já sám jsem takovı, jakého ty pøedstavuješ;
+avšak snad bychom si mìli všímat i pøání svıch posluchaèù.
+Nebo u dávno, døíve ne jste i vy pøišli, mnoho jsem pøednášel svım posluchaèùm a nyní snad to protáhneme pøíliš daleko, jestlie budeme rozmlouvat.
+Je tedy tøeba hledìti i na jejich pøání, zdali snad nìkteré z nich nezdrujeme, zatím co chtìjí dìlat nìco jiného.
+
+[Chairefon]
+Sami slyšíte, Gorgio a Sokrate, hluènı odpor tìchto muù, chtících poslouchati, jestlie budete nìco mluvit;
+a co se mne tıèe, ké nemám tak velikı nedostatek èasu, abych musil opustit takovéto øeèi a takto mluvené a dìlat nìco pilnìjšího!
+
+[Kallikles]
+Pøi bozích, Chairefonte, také já sám jsem byl ji pøi mnohıch rozmluvách, ale nevím, zdali jsem kdy mìl takovou radost jako nyní;
+mnì se proto zavdìèíte, i kdybyste chtìli rozmlouvat celı den.
+
+[Sokrates]
+Buï jist, Kallikle,
+e s mé strany není ádné pøekáky, jen jestlie chce Gorgias.
+
+[Gorgias]
+Po tom všem, Sokrate, by bylo hanba, abych já nechtìl, kdy jsem sám veøejnì vyzval,
+aby se kadı dotazoval, co kdo chce.
+Nue tedy, jestlie je našim posluchaèùm libo, pokraèuj v rozmluvì a ta se, naè chceš.
+
+[Sokrates]
+Tedy poslyš, Gorgio, èemu se divím v tvıch øeèech;
+moná toti,
+e ty mluvíš správnì a já nesprávnì rozumím.
+Pravíš,
+e jsi schopen udìlat toho, kdokoli by se chtìl u tebe uèiti, odborníkem v rétorice?
+
+[Gorgias]
+Ano.
+
+[Sokrates]
+Zdali pak ne tak,
+e by ve všech vìcech s úspìchem pùsobil na mínìní lidu, a to ne pouèováním,
+nıbr pøemlouváním?
+
+[Gorgias]
+Ovšem e ano.
+
+[Sokrates]
+Právì jsi øíkal,
+e také ve vìcech tıkajících se zdraví bude rétor pøesvìdèivìjší ne lékaø.
+
+[Gorgias]
+Ano, øíkal jsem to,
+e aspoò u lidu.
+
+[Sokrates]
+U lidu, to znamená u neznalcù,
+e ano?
+Vdy pøece jistì mezi znalci nebude pøesvìdèivìjší ne lékaø.
+
+[Gorgias]
+Máš pravdu.
+
+[Sokrates]
+Tedy jestlie bude pøesvìdèivìjší ne lékaø, je podle toho pøesvìdèivìjší ne znalec?
+
+[Gorgias]
+Ovšem.
+
+[Sokrates]
+A to ani je lékaøem,
+e ano?
+
+[Gorgias]
+Ano.
+
+[Sokrates]
+Kdo není lékaøem, patrnì je neznalı tìch vìcí, kterıch je lékaø znalı.
+
+[Gorgias]
+To je jasné.
+
+[Sokrates]
+Tedy nevìdomı bude mezi nevìdomımi pøesvìdèivìjší neli vìdomı, kdy bude rétor pøesvìdèivìjší ne lékaø.
+Tohle z toho vyplıvá èi nìco jiného?
+
+[Gorgias]
+Ano, zde vyplıvá tohle.
+
+[Sokrates]
+Jistì tedy je rétor a rétorika v právì takovém pomìru i ke všem ostatním umìním;
+o vìcech samıch nepotøebuje vìdìti nic,
+nıbr staèí jí míti vynalezen nìjakı prostøedek pøemlouvání,
+aby se neznalcùm jevilo,
+e zná více neli znalci.
+
+[Gorgias]
+Není-li pak to, Sokrate, velké pohodlí, nenauèit se jinım umìním,
+nıbr jen tomuhle jedinému, a pøece nezùstávat za odborníky?
+
+[Sokrates]
+Zdali pro tyto své vlastnosti rétor zùstává èi nezùstává za ostatními, na to se podíváme hned, bude-li nám to prospìšné pro naši rozpravu;
+nyní však se podívejme døíve na to, zdali je odborník v øeènictví v takovém pomìru i ke spravedlivu a nespravedlivu, k ošklivu i ke krásnu i k dobru a ke zlu jako ke zdraví a k ostatnímu, co je pøedmìtem jinıch umìní:
+e toti vìcí samıch nezná, co je dobré nebo co je zlé nebo co krásné nebo co ošklivé nebo spravedlivé nebo nespravedlivé,
+e však je opatøen schopností pùsobit na mínìní o tìch vìcech, take aèkoli jich nezná, mezi ne-znalci se zdá,
+e je zná lépe neli znalec.
+Je tomu tak èi je nutno mít znalosti, a kdo se chce vyuèit rétorice, musí k tobì pøijít pøipraven vìdìním o tìchto vìcech?
+Pakli ne, tu asi ty, uèitel rétoriky, nenauèíš svého áka nièemu z tìchto vìcí — nebo to není tvé dílo — nıbr zpùsobíš,
+e se pøed lidmi bude zdát,
+e zná takové vìci, aè jich ve skuteènosti nebude znát, a e se bude zdát dobrı, ani takovı bude, pravda?
+Èi snad vùbec nebudeš s to, abys ho nauèil rétorice, jestlie nebude napøed znát pravdu o tìchto vìcech?
+Èi jak tomu je Gorgio?
+A pøi Diovi, odhal moc rétoriky, jak jsi právì øekl, a øekni, co to asi jest.
+
+[Gorgias]
+Já si myslím, Sokrate,
+e se i tomuto ode mne nauèí, jestlie to snad nebude napøed znát.
+
+[Sokrates]
+Vida, to je dobré, co øíkáš.
+Jestlie ty nìkoho udìláš odborníkem v øeènìní, je pro nìj nutné znáti spravedlivé a nespravedlivé vìci, buï od døívìjška nebo e se tomu pozdìji nauèil od tebe.
+
+[Gorgias]
+Ovšem.
+
+[Sokrates]
+A co, kdo se vyuèil stavitelskım vìcem, je odborník stavitelskı èi ne?
+
+[Gorgias]
+Ano.
+
+[Sokrates]
+Zajisté také kdo hudebnickım vìcem, je hudebnickı?
+
+[Gorgias]
+Ano.
+
+[Sokrates]
+A kdo lékaøskım, lékaøskı?
+A tak dále podle tého pomìru, kdo se vyuèil jednotlivım oborùm, je takovı, jakım koho dìlá ona nauka?
+
+[Gorgias]
+Ovšem.
+
+[Sokrates]
+Jistì tedy podle toho také, kdo se nauèil spravedlivım vìcem, je spravedlivı?
+
+[Gorgias]
+Docela jistì.
+
+[Sokrates]
+A spravedlivı patrnì koná spravedlivé vìci?
+
+[Gorgias]
+Ano.
+
+[Sokrates]
+Jistì je tedy nutné,
+e odborník v rétorice je spravedlivı, spravedlivı pak e chce konati spravedlivé vìci?
+
+[Gorgias]
+To je patrné.
+
+[Sokrates]
+Spravedlivı tedy nikdy nebude chtít jednati nespravedlivì?
+
+[Gorgias]
+Nepochybnì.
+
+[Sokrates]
+Odborník v rétorice je, jak vyplıvá z øeèi, nutnì spravedlivı.
+
+[Gorgias]
+Ano.
+
+[Sokrates]
+Nikdy tedy nebude chtít odborník v rétorice jednati nespravedlivì.
+
+[Gorgias]
+Je vidìt,
+e ne.
+
+[Sokrates]
+Jistì se pamatuješ,
+e jsi pøed malou chvílí øekl,
+e se nesmí vytıkati uèitelùm tìlocviku, ani e se nesmìjí vyhánìt z obcí, jestlie rohovník uívá rohov-nického umìní a uívá ho nespravedlivì a nespravedlivì jedná, a zrovna tak i jestlie rétor nespravedlivì uívá umìní øeènického,
+e se to nesmí vytıkat jeho uèiteli, ani e se za to nemá vypuzovat z obce,
+nıbr e se to má vytıkat tomu, kdo nespravedlivì jedná a nesprávnì uívá øeènického umìní;
+bylo to øeèeno èi ne?
+
+[Gorgias]
+Bylo to øeèeno.
+
+[Sokrates]
+Nyní však o tém mui, o odborníku v øeènìní, vychází najevo,
+e by nikdy nejednal nespravedlivì.
+Èi ne?
+
+[Gorgias]
+Ano.
+
+[Sokrates]
+A na zaèátku, Gorgio, bylo øeèeno,
+e pøedmìtem rétoriky jsou øeèi ne o sudém a lichém,
+nıbr o spravedlivém a nespravedlivém;
+ano?
+
+[Gorgias]
+Ano.
+
+[Sokrates]
+A tu jsem si já pomyslil, kdy jsi to tehdy øíkal,
+e by rétorika nikdy nemohla bıt zlá vìc, kdy se stále zabıvá øeèmi o spravedlnosti;
+kdy jsi však
+
+o nìco pozdìji pravil,
+e by rétor mohl uívat rétoriky
+
+i nespravedlivì, tu jsem se podivil a usoudiv,
+e ty vıroky vespolek nesouhlasí, øekl jsem ta slova,
+e kdybys jako já pokládal za zisk bıt usvìdèován, stálo by za to rozmlouvati, pakli ne, abychom toho nechali.
+A pøi dalším našem zkoumání vidíš pøece i sám,
+e se zase uznává,
+e odborník v øeènictví je neschopen nespravedlivì uívat rétoriky a chtít nespravedlivì jednat.
+U psa, Gorgio, bylo by k tomu potøebí dlouhého rozhovoru, abychom dostateènì prozkoumali, jak se vlastnì tyto vìci mají.
+
+[Polos]
+Jake, Sokrate, ty o rétorice takto i smıšlíš, jako nyní mluvíš?
+Èi si myslíš — protoe byl Gorgias ostychem donucen s tebou souhlasit,
+e mu znalı øeènictví zná také spravedlivé a krásné a dobré vìci, a jestlie nìkdo k nìmu pøijde, kdo to nezná,
+e sám ho tomu nauèí, ale potom z tohoto souhlasu vzniklo snad v øeèech nìco opaèného — co ty máš rád, kdy jsi sám zavedl øeè do takovıch otázek — co pak si myslíš,
+e nìkdo zapøe,
+e sám zná spravedlivé vìci a e jiné jim nauèí?
+— ale do takovıchto koncù zavádìt øeèi je velkı nezpùsob.
+
+[Sokrates]
+Roztomilı Pole, však právì proto chceme mít pøátele a syny, abyste vy mladší, a my sami zestárneme a budeme klesat, stáli u nás a vzpøimovali náš ivot v skutcích i v øeèech.
+A tak i nyní, jestlie já a Gorgias v rozmluvì nìjak klesáme, ty stùj u nás a vzpøimuj nás — je to tvá povinnost — a já jsem ochoten odvolati, cokoli bys chtìl, ze svıch tvrzení, jestlie nìco podle tvého mínìní nebylo dobøe tvrzeno — jen jestlie mi splníš jedinou vìc.
+
+[Polos]
+Co to myslíš?
+
+[Sokrates]
+Jestlie, Pole, budeš dret v mezích tu mnohomluvnost, s kterou ses pokusil zaèíti.
+
+[Polos]
+Jak to?
+Nebude mi dovoleno mluviti, kolik bych chtìl?
+
+[Sokrates]
+To by bylo vìru pro tebe hrozné, mùj milı, kdy jsi pøišel do Athén, kde je z celé Hellady nejvìtší volnost slova, kdyby se tam tobì jedinému nedostalo tohoto práva.
+Ne podívej se s druhé strany:
+kdy ty budeš dlouze mluvit a nebudeš chtít odpovídat na otázky, zdali pak by zase pro mne nebylo hrozné, jestlie mi nebude dovoleno odejít a neposlouchat tì?
+Avšak jestlie máš nìjakı zájem o promluvenou øeè a chceš ji opravit, vezmi nazpìt, co ti je libo, a støídavì dávaje i dostávaje otázky, jako já a Gorgias, usvìdèuj z nepravdy a dej se usvìdèovati.
+Vdy pøece tvrdíš,
+e i ty umíš právì to, co Gorgias;
+èi ne?
+
+[Polos]
+Zajisté.
+
+[Sokrates]
+Tedy i ty vybízíš,
+aby ti po kadé dávali otázky, jakoukoli by kdo chtìl, jsa jist,
+e dovedeš odpovìdìti?
+
+[Polos]
+Ovšem e ano.
+
+[Sokrates]
+Tak tedy i nyní dìlej jedno nebo druhé, podle své libosti, buï se ta nebo odpovídej.
+
+[Polos]
+Však to udìlám.
+Nue odpovìz mi, Sokrate:
+kdy se ti zdá,
+e je Gorgias v nejistotì stran rétoriky, zaè pak ji pokládáš ty?
+
+[Sokrates]
+To se táeš, za jaké umìní ji pokládám?
+
+[Polos]
+Ano.
+
+[Sokrates]
+Abych ti øekl pravdu, Pole, zdá se mi,
+e to není ádné umìní.
+
+[Polos]
+Nue co je podle tvého zdání rétorika?
+
+[Sokrates]
+Vìc, o které ty tvrdíš,
+e jsi ji udìlal umìním, ve spise, kterı jsem nedávno pøeèetl.
+
+[Polos]
+Co to myslíš?
+
+[Sokrates]
+Jakousi zbìhlost.
+
+[Polos]
+Tedy tobì se zdá,
+e je rétorika zbìhlost?
+
+[Sokrates]
+Ano, jestlie ty nic nenamítáš.
+
+[Polos]
+Zbìhlost v èem?
+
+[Sokrates]
+V zpùsobování jakési libosti a pøíjemnosti.
+
+[Polos]
+Nezdá se ti tedy snad,
+e je rétorika krásná vìc, kdy je schopna zpùsobovat lidem libost?
+
+[Sokrates]
+Jak to, Pole?
+U ses ode mne dovìdìl, zaè ji pokládám,
+e se dále ptáš, nezdá-li se mi krásná?
+
+[Polos]
+Co jsem se nedovìdìl,
+e ji pokládáš za jakousi zbìhlost?
+
+[Sokrates]
+Chtìl bys tedy, kdy tak ceníš zpùsobování libosti, udìlat nìco malièkého mnì k libosti?
+
+[Polos]
+Zajisté.
+
+[Sokrates]
+Zeptej se mne nyní, jakım umìním se mi zdá kuchaøství.
+
+[Polos]
+Nue, tái se:
+jaké umìní je kuchaøství?
+
+[Sokrates]
+ádná, Pole.
+Teï øekni:
+tedy co?
+
+[Polos]
+Øíkám to.
+
+[Sokrates]
+Jakási zbìhlost.
+Teï øekni:
+v èem?
+
+[Polos]
+Øíkám to.
+
+[Sokrates]
+Zbìhlost v zpùsobování libosti a pøíjemnosti, Pole.
+
+[Polos]
+Tedy kuchaøství a rétorika je toté?
+
+[Sokrates]
+Nikoli,
+nıbr kadé je jeden druh tého zamìstnání.
+
+[Polos]
+Kterého to myslíš?
+
+[Sokrates]
+Jen aby nebylo pøíliš drsné, povìdìt pravdu;
+ostıchám se toti to øíci kvùli Gorgiovi,
+aby se nedomníval,
+e zesmìšòuji jeho zamìstnání.
+Co se mne tıèe, já nevím, zdali to platí o té rétorice, kterou se zabıvá Gorgias — nebo právì teï se nám z naší rozmluvy nic jasnì neukázalo, zaè asi ji on pokládá — ale co já nazıvám rétorikou, to je druh kterési vìci, je nijak nenáleí mezi krásné.
+
+[Gorgias]
+Které, Sokrate?
+Povìz to a nic se mne neostıchej.
+
+[Sokrates]
+Nue tedy zdá se mi, Gorgio,
+e to je jakési zamìstnání ne sice odbornì nauèné, ale zamìstnání, které vyaduje duše obratné, zmuilé a od pøirozenosti schopné zacházeti s lidmi;
+nazıvám pak jeho celkovou podstatu úlisnım lahodìním.
+Tato èinnost má podle mého mínìní i mnoho jinıch druhù a jeden z nich je také kuchaøství;
+to se sice zdá umìním, ale, jak já o tom soudím, není to umìní,
+nıbr zbìhlost a cvik.
+Druhem tohoto lahodìní nazıvám i rétoriku a kosmetiku i sofistiku, ètyøi to druhy ve ètyøech rùznıch oborech.
+Jestlie tedy Polos se chce vyptávat, a se vyptává;
+nebo ještì se nedovìdìl, za jakı druh lahodìní já pokládám rétoriku,
+nıbr nepozoruje,
+e jsem ještì neodpovìdìl, a ji se táe, zdali ji nepokládám za krásnou vìc.
+Avšak já mu døíve neodpovím, zdali pokládám rétoriku za krásnou èi za ošklivou vìc, a nejprve odpovím, co jest rétorika.
+Vdy by to nebylo v poøádku, Pole;
+ale jestlie se to chceš dovìdìt, ta se, za jakı druh lahodìní já pokládám rétoriku.
+
+[Polos]
+Tedy se tái a odpovìz, za jakı druh.
+
+[Sokrates]
+Zdali pak bys to vyrozumìl z mé odpovìdi?
+Jest toti rétorika podle mého soudu pøelud jedné èásti politiky.
+
+[Polos]
+Co tedy?
+Myslíš,
+e to je vìc krásná èi ošklivá?
+
+[Sokrates]
+Vìru ošklivá — nebo zlé vìci nazıvám ošklivımi — kdy ti musím odpovìdìt, jako bys u vìdìl, co já mám na mysli.
+
+[Gorgias]
+Pøi Diovi, Sokrate, však ani já sám nerozumím tvım slovùm.
+
+[Sokrates]
+Pøirozenì, Gorgio;
+nebo dosud ještì nic nemluvím jasnì, ale tuhle Polos je mladı a prudkı.
+
+[Gorgias]
+Ale jeho nech bıt a mnì povìz, jak to myslíš,
+e rétorika je pøelud jedné èásti politiky.
+
+[Sokrates]
+Nue já se pokusím vyjádøit, èím se mi jeví rétorika;
+a jestlie tím není, tuhle Polos dokáe,
+e nemám pravdu.
+Jest tuším nìco, èemu øíkáš tìlo a duše?
+
+[Gorgias]
+Jak by ne?
+
+[Sokrates]
+Nemyslíš-li také,
+e u jednoho i u druhého jest jistı dobrı stav?
+
+[Gorgias]
+Zajisté.
+
+[Sokrates]
+A co zdánlivı dobrı stav a ne skuteènı?
+Jako na pøíklad o mnohıch lidech se zdá,
+e jejich tìla jsou v dobrém stavu, a nesnadno by nìkdo o nich zpozoroval,
+e nejsou v dobrém stavu, leda lékaø a nìkterı uèitel gymnastiky.
+
+[Gorgias]
+Máš pravdu.
+
+[Sokrates]
+Nìco takového je podle mého soudu i v tìle i v duši, co zpùsobuje zdání,
+e tìlo i duše je v dobrém stavu, zatím co tomu tak není.
+
+[Gorgias]
+Tak jest.
+
+[Sokrates]
+Hned ti ukái, budu-li moci, ještì jasnìji, co si myslím.
+Jako jsou ty dvì vìci, tak rozeznávám i dvojí umìní:
+to, které se vztahuje k duši, nazıvám politikou, to pak, které se vztahuje k tìlu, nemohu ti pojmenovat takto jednotnì,
+nıbr rozeznávám u ošetøování tìla, je je jedním oborem, dva druhy, jednak gymnastiku, jednak lékaøství;
+a u politiky odpovídá gymnastice zákonodárství a proti lékaøství kladu soudnictví.
+Obì dvì umìní v kadé z, tìchto skupin mají vespolek mnoho spoleèného, protoe mají spolu tı pøedmìt, lékaøství s gymnastikou a soudnictví se zákonodárstvím;
+ale pøece se v nìèem vespolek liší.
+Takto jsou to ètyøi umìní a ta stále hledí zachovati v nejlepším stavu jedna tìlo, druhá pak duši;
+tu pak lahodivá dovednost zpozorujíc to — neøíkám,
+e by to poznala,
+nıbr e to obratnì zasáhne — rozdìlí se na ètyøi díly a vplííc se do kadého jednotlivého z tìch druhù vydává se za to, do èeho se vplíila;
+o nejvìtší dobro se nic nestará,
+nıbr tím, co je po kadé nejpøíjemnìjší, loví nerozumnost a oklamává, take se zdá nìèím velmi cennım.
+Tak do lékaøství se vplíilo kuchaøství a osobuje si,
+e zná nejlepší pokrmy pro tìlo, take kdyby se mìlo pøed dìtmi nebo pøed mui tak nerozumnımi jako jsou dìti rozhodovat mezi kuchaøem a lékaøem, kdo z obou rozumí, které pokrmy jsou zdravé a které nezdravé, zdali lékaø èi kuchaø, hlady by zemøel lékaø.
+To tedy já nazıvám úlisnım lahodìním a tvrdím,
+e taková vìc je ošklivá, Pole — tohle toti mluvím k tobì —, protoe smìøuje k tomu, co je pøíjemné, bez ohledu na to, co je nejlepší;
+i nepokládám pak to za umìní,
+nıbr za zbìhlost proto,
+e nedovede podat ádného rozumového vıkladu, jaké jsou svou pøirozeností ty prostøedky, které pøináší k uívání, take nedovede povìdìt pøíèinu jednoho kadého z nich.
+A já nenazıvám umìním to, co je bez rozumového vıkladu;
+jestlie máš o tomhle jiné mínìní, jsem ochoten dát se do rozpravy.
+
+Pod lékaøstvím tedy, jak jsem øekl, se ukrıvá jako druh lahodìní kuchaøství;
+pod gymnastikou pak právì tım zpùsobem kosmetika, vìc nièemná, ošemetná, nízká a sprostá, klamající tvary i barvami, hladkostí a odìvem, èím zpùsobuje,
+e lidé honíce se za krásou vypùjèenou zanedbávají svou vlastní, kterou dává gymnastika.
+Abych dlouze nemluvil, chci ti øíci jako geo-metrové — pak u bys mi snad porozumìl — e jako se má kosmetika ke gymnastice, tak se má sofistika k zákonodárství, a jako se má kuchaøství k lékaøství, tak se má rétorika k soudnictví.
+Avšak, jak pravím, tyto vìci jsou svou podstatou takto rozdílné, ale protoe si jsou blízké, míchají se v tém oboru a kolem tıch pøedmìtù sofisté a rétoøi a ani si nevìdí rady sami se sebou, ani ostatní lidé s nimi.
+Jistì kdyby duše neøídila tìlo,
+nıbr ono se øídilo samo, a kdyby kuchaøství a lékaøství nebylo zkoumáno a rozeznáváno od ní,
+nıbr kdyby samo tìlo posuzovalo, mìøíc všechno libostmi jemu poskytovanımi, bylo by tu plno té myšlenky Ana-xagorovy, milı Pole — ty jsi jistì tìch nauk znalı —:
+všechny vìci by se spolu mísily v jedné hromadì a nebylo by lze rozeznat, co náleí k lékaøství a zdraví a co náleí ke kuchaøství.
+Zaè tedy já pokládám rétoriku, ji jsi slyšel:
+za protìjšek kuchaøství, jako jest ono pro tìlo, tak tato pro duši.
+Tu jsem snad udìlal nìco podivného,
+e jsem sám rozpøedl obšírnou øeè,
+kdeto jsem tobì nedovoloval mluvit dlouhé øeèi.
+Tu zasluhuji odpuštìní;
+nebo kdy jsem mluvil krátce, ty jsi nerozumìl, ani jsi nevìdìl, co dìlat s odpovìdí, kterou jsem ti dal,
+nıbr ádal jsi vıkladu.
+Jestlie tedy i já nebudu vìdìt, co dìlat s tvou odpovìdí, prodluuj i ty svou øeè, pakli však budu vìdìt, nech mì dìlat;
+tak je to jistì spravedlivé.
+A tak i nyní, mùeš-li co dìlat s touto odpovìdí, dìlej.
+
+[Polos]
+Co tedy tvrdíš?
+Rétorika se ti zdá lahodìním?
+
+[Sokrates]
+Já jsem øekl druh lahodìní.
+Co se nepamatuješ, aèkoli jsi tak mlád?
+Co to s tebou bude?
+
+[Polos]
+Co se ti tedy zdá,
+e dobøí øeèníci mají jakoto lichotníci v obcích malou váhu?
+
+[Sokrates]
+Dáváš to otázku èi pronášíš zaèátek nìjaké øeèi?
+
+[Polos]
+Dávám otázku.
+
+[Sokrates]
+Mnì se zdá,
+e vùbec nemají váhy.
+
+[Polos]
+Jak to,
+e nemají váhy?
+Co nemají v obcích nejvìtší moc?
+
+[Sokrates]
+Nikoli, jestlie pod slovem „moc” myslíš nìco dobrého pro toho, kdo má moc.
+
+[Polos]
+Ale ovšem e to myslím.
+
+[Sokrates]
+Pak tedy se mi zdá,
+e øeèníci mají ze všech lidí v obci nejmenší moc.
+
+[Polos]
+Jake, co není pravda,
+e právì tak jako samovládcové, tak i øeèníci zbavují ivota, kohokoli chtí, a odnímají jmìní i vyhánìjí z obcí, kohokoli jim je libo?
+
+[Sokrates]
+U psa, pøi kadém tvém vıroku, Pole, jsem vìru v pochybnostech, zdali to sám tvrdíš a projevuješ své vlastní mínìní, èi se mne táeš.
+
+[Polos]
+Já se tebe tái.
+
+[Sokrates]
+Dobrá, pøíteli;
+pak se mne táeš na dvì vìci najednou?
+
+[Polos]
+Jak na dvì?
+
+[Sokrates]
+Právì jsi øekl asi takto:
+„Co není pravda,
+e øeèníci zbavují ivota, kohokoli chtí, právì tak jako samovládcové, a odnímají jmìní i vyhánìjí z obcí, kohokoli jim je libo?” e ano?
+
+[Polos]
+Arcie.
+
+[Sokrates]
+Nue pravím ti,
+e to jsou dvì otázky, a odpovím ti na obì.
+Já tvrdím, Pole,
+e i øeèníci i samovládcové mají v obcích velmi malou moc, jak jsem právì øekl;
+nebo nedìlají takøka nic z toho, co chtìjí, ale ovšem dìlají, cokoli se jim zdá nejlepším.
+
+[Polos]
+A není-li pak tohle mít velikou moc?
+
+[Sokrates]
+Není, jak tvrdí Polos.
+
+[Polos]
+Já tvrdím,
+e není?
+Já pøece tvrdím,
+e jest.
+
+[Sokrates]
+U — neøíkám koho — ty tvrdíš,
+e není, kdy jsi øekl,
+e mít velikou moc je dobré pro toho, kdo má moc.
+
+[Polos]
+Ano, to øíkám.
+
+[Sokrates]
+Domníváš se tedy,
+e je dobré, jestlie nìkdo dìlá to, cokoli se mu zdá nejlepším, a pøitom nemá rozum?
+A tomuhle ty øíkáš mít velikou moc?
+
+[Polos]
+To ne.
+
+[Sokrates]
+Tedy mì usvìdè z omylu a doka,
+e øeèníci mají rozum a e rétorika je umìní, a ne lahodìní.
+Pakli však mì necháš bez vyvrácení, øeèníci i samovládci, dìlající v obcích, co se jim zdá, nebudou z toho mít nic dobrého;
+moc jest, jak ty tvrdíš, dobro, ale dìlat bez rozumu, cokoli se zdá, o tom i ty souhlasíš,
+e to je zlé;
+èi ne?
+
+[Polos]
+Arcie.
+
+[Sokrates]
+Jak pak by tedy øeèníci nebo samovládci mìli v obcích velikou moc, jestlie Sokrates nebude od Póla pøinucen uznat,
+e dìlají, co chtí?
+
+[Polos]
+Tento mu —
+
+[Sokrates]
+Tvrdím,
+e nedìlají, co chtí;
+nue doka mi,
+e nemám pravdu.
+
+[Polos]
+Co jsi právì nesouhlasil,
+e dìlají, co se jim zdá nejlepším, právì pøed chvílí?
+
+[Sokrates]
+Ano, také nyní souhlasím.
+
+[Polos]
+Co tedy nedìlají, co chtí?
+
+[Sokrates]
+Tvrdím,
+e ne.
+
+[Polos]
+Kdy však dìlají, co se jim zdá?
+
+[Sokrates]
+Ano.
+
+[Polos]
+Hrozné vìci mluvíš a pøepjaté, Sokrate.
+
+[Sokrates]
+Nic mi nevytıkej, hodnı Pole, abych tì oslovil podle tvého zpùsobu;
+ale jestlie mùeš mi dávat otázky, doka,
+e mluvím nepravdu, pakli ne, odpovídej sám.
+
+[Polos]
+Ale ano, jsem ochoten odpovídat, jen abych vìdìl, co chceš øíci.
+
+[Sokrates]
+Zdali pak tedy podle tvého mínìní lidé chtìjí to, co po kadé dìlají, èi ono, co je úèelem jejich èinnosti?
+Tak na pøíklad ti, kteøí pijí léky podané od lékaøù, zdali pak podle tvého mínìní chtìjí to, co právì dìlají, toti píti lék a mít nepøíjemné pocity, èi ono, proè ten lék pijí, toti aby byli zdrávi?
+
+[Polos]
+To je jasné,
+e aby byli zdrávi.
+
+[Sokrates]
+Tedy jistì i ti, kdo podnikají plavby anebo jinım zpùsobem jdou za vıdìlkem, nechtìjí to, co po kadé dìlají — nebo kdo by chtìl plout a podstupovat nebezpeèenství a snášet námahy?
+—,
+nıbr myslím to, proè podnikají plavby, toti aby byli bohatí;
+nebo pro bohatství se podnikají plavby.
+
+[Polos]
+Ovšeme.
+
+[Sokrates]
+Není-li tomu tak i se všemi èinnostmi?
+Jestlie nìkdo nìco dìlá za nìjakım úèelem, nechce to, co dìlá,
+nıbr ono, proè to dìlá,
+e ano?
+
+[Polos]
+Ano.
+
+[Sokrates]
+Je snad nìco na svìtì, co není buï dobré nebo zlé nebo nìco støedního mezi tímto obojím, ani dobré, ani zlé?
+
+[Polos]
+Zcela nutnì, Sokrate, musí bıt buï to nebo ono.
+
+[Sokrates]
+Nenazıváš snad moudrost i zdraví a bohatství a jiné takové vìci dobrem a jejich opaky zlem?
+
+[Polos]
+Arcie.
+
+[Sokrates]
+A vìcmi ani dobrımi ani zlımi nazıváš asi takové vìci, které jsou nìkdy úèastny dobra, jindy zla, jindy pak ani toho ani onoho, jako je sedìti, kráèeti, bìeti, plouti a jako je na druhé stranì kamení, døíví a jiné takové vìci.
+Nemyslíš toto?
+Èi jsou to nìkteré jiné vìci,
+kterım dáváš jméno „ani dobré ani zlé”?
+
+[Polos]
+Nikoli,
+nıbr tyto.
+
+[Sokrates]
+Zdali pak tedy lidé dìlají tyto støední vìci pro ty dobré èi dobré pro ty støední?
+
+[Polos]
+Jistì pøece støední pro dobré.
+
+[Sokrates]
+Tedy ze snahy po dobru jednáme, kdykoli chodíme, myslíce,
+e to je dobré;
+a jindy naopak za tım úèelem, pro dobro, stojíme;
+èi ne?
+
+[Polos]
+Ano.
+
+[Sokrates]
+Tedy jistì i zbavujeme ivota i vyháníme z obcí i odnímáme jmìní, protoe se domníváme,
+e je pro nás lépe to dìlat neli nedìlat?
+
+[Polos]
+Ovšeme.
+
+[Sokrates]
+Tedy pro dobro dìlají lidé všechny tyhle vìci.
+
+[Polos]
+Ano.
+
+[Sokrates]
+Zdali pak jsme souhlasnì neuznali,
+e kdy dìláme nìkteré vìci za jistım úèelem, nechceme je samy,
+nıbr to, proè je dìláme?
+
+[Polos]
+Dozajista.
+
+[Sokrates]
+Tedy nechceme prostì usmrcovat ani vyhánìt z obcí, ani odnímat jmìní,
+nıbr tyto vìci chceme dìlat jen tehdy, kdykoli jsou prospìšné, ale jsou-li škodlivé, nechceme.
+Dobré vìci toti chceme, jak ty tvrdíš, ale tìch, které nejsou ani dobré ani zlé, nechceme, ani tìch, které jsou zlé,
+e ano?
+Zdá se ti,
+e mám pravdu, Pole, èi ne?
+Proè neodpovídáš?
+
+[Polos]
+Máš pravdu.
+
+[Sokrates]
+Tedy podle toho, jestlie nìkdo nìkoho zbavuje ivota nebo vyhání z obce nebo mu odnímá jmìní — a u to je samovládce nebo øeèník — protoe to je podle jeho mínìní pro nìj dobré, ale ve skuteènosti to je zlé — ten pøece dìlá, co se mu zdá,
+e ano?
+
+[Polos]
+Ano.
+
+[Sokrates]
+Zdali pak také, co chce, kdy je to, co dìlá, zlé?
+Proè neodpovídáš?
+
+[Polos]
+Ne, mnì se zdá,
+e nedìlá, co chce.
+
+[Sokrates]
+Jest tedy moné,
+e by takovıto mu mìl velikou moc v této obci, jestlie mít velikou moc je podle tvého uznání nìco dobrého?
+
+[Polos]
+Není moné.
+
+[Sokrates]
+Mìl jsem tedy já pravdu,
+e je moné,
+e èlovìk, kterı v obci dìlá, co se mu zdá, nemá velkou moc, ani nedìlá, co chce.
+
+[Polos]
+To je tak pravda, Sokrate, jako e by sis ty nevybral, abys smìl dìlat v obci, cokoli se ti zdá, radìji neli abys to nesmìl, nebo jako e nìkomu nezávidíš, kdykoli uvidíš,
+e buï zabil, koho se mu uzdálo, nebo mu odòal jmìní nebo ho vsadil do vìzení.
+
+[Sokrates]
+To myslíš,
+e to udìlal spravedlivì èi nespravedlivì?
+
+[Polos]
+A to dìlá tak nebo onak, co to není v obou pøípadech hodno závisti?
+
+[Sokrates]
+Nehøeš, Pole.
+
+[Polos]
+A proè?
+
+[Sokrates]
+Protoe nesmíme závidìt tìm, kteøí nemají, co by se jim závidìlo, ani ubohım,
+nıbr musíme jich litovat.
+
+[Polos]
+Jak to?
+Zdá se ti,
+e tak tomu je s lidmi, o kterıch já mluvím?
+
+[Sokrates]
+Jak by ne?
+
+[Polos]
+Kdokoli tedy zabíjí, koho se mu uzdá, a to spravedlivì, ten je podle tvého mínìní ubohı a hoden politování?
+
+[Sokrates]
+To ne, ale jistì také není hoden závisti.
+
+[Polos]
+Co jsi právì neøekl,
+e je ubohı?
+
+[Sokrates]
+Ano, pøíteli, ten, kterı zabil nespravedlivì, a k tomu hoden politování;
+kterı však spravedlivì, ten e není hoden závisti.
+
+[Polos]
+Ubohı a hoden politování je asi jistì ten, kdo je nespravedlivì zbavován ivota.
+
+[Sokrates]
+Ménì neli ten, kdo ho zbavuje ivota, Pole, a ménì neli ten, kdo je zbavován ivota spravedlivì.
+
+[Polos]
+Jak to, Sokrate?
+
+[Sokrates]
+Tak,
+e nejvìtší zlo je nespravedlivì jednat.
+
+[Polos]
+Je opravdu tohle nejvìtší zlo?
+Není vìtší zlo bezpráví trpìt?
+
+[Sokrates]
+Nikoli.
+
+[Polos]
+Ty bys tedy radìji chtìl trpìt bezpráví ne je èinit?
+
+[Sokrates]
+Já bych nechtìl ani jedno ani druhé;
+ale kdyby bylo nutné buï èinit bezpráví nebo je trpìt, radìji bych si zvolil trpìt bezpráví neli je èinit.
+
+[Polos]
+Ty bys tedy nechtìl bıt tyranem?
+
+[Sokrates]
+Ne, jestlie slovy bıt tyranem myslíš toté, co já.
+
+[Polos]
+Já myslím toté, co právì pøed chvílí, toti kdy èlovìk smí v obci dìlat to, cokoli se mu zdá, i zabíjet i vyhánìt a dìlat všechno podle svého zdání.
+
+[Sokrates]
+Mùj drahı, nech mne mluvit a pak mì popadni svou øeèí.
+Pøedstav si,
+e bych já na agoøe plné lidí, s meèem skrytım podpadí, tobì øekl:
+„Pole, mnì se právì dostalo jakési podivuhodné síly a samovládné moci;
+jestlie tedy se mi uzdá,
+e nìkdo z tìchhle lidí, které vidíš, by mìl bıt na místì usmrcen, hned bude ten, o kom se mi to uzdá, mrtev;
+a jestlie se mi o nìkom z nich uzdá,
+e by mu mìla bıt rozbita hlava, na místì ji bude mít rozbitu, a jestlie se mi uzdá,
+e by mu mìl bıt roztren šat, bude roztren — tak velikou já mám moc v této obci”;
+kdybys pak ty nevìøil a já ti ukázal svùj meè, snad bys pøi pohledu na nìj øekl:
+„Sokrate, takto by všichni mohli mít velkou moc, nebo tímto zpùsobem by mohl bıt i zapálen dùm, kterı by se ti zdálo, i athénské lodìnice i triery a všechny lodi, jak státní, tak soukromé.” Ale pak tedy není tohle mít velikou moc, dìlat, co se ti zdá;
+èi ty si myslíš?
+
+[Polos]
+Takhle jistì ne.
+
+[Sokrates]
+Mùeš tedy øíci, proè se ti takováto moc nelíbí?
+
+[Polos]
+Zajisté.
+
+[Sokrates]
+Co tedy?
+Mluv!
+
+[Polos]
+Protoe je nutné,
+e ten, kdo si takto poèíná, je trestán.
+
+[Sokrates]
+A bıti trestán je bezpochyby zlé?
+
+[Polos]
+Ovšeme.
+
+[Sokrates]
+Tak tedy, mùj milı, teï zase se ti objevuje,
+e „mít velikou moc” je dobré, kdykoli èlovìka dìlajícího, co chce, provází prospìch, a to pravdìpodobnì e znamená mít velikou moc;
+pakli ne,
+e to je zlé a znamená mít malou moc.
+Podívejme se však i na tohle:
+neuznáváme snad,
+e nìkdy je lépe dìlati tyhle vìci,
+
+o kterıch jsme právì mluvili, usmrcovat a vyhánìt lidi a odnímat jim majetek, jindy však ne?
+
+[Polos]
+Ovšeme.
+
+[Sokrates]
+Tedy v uznávání toho, jak se podobá, já a ty spolu souhlasíme.
+
+[Polos]
+Ano.
+
+[Sokrates]
+Nue tedy, kdy je podle tvého mínìní lépe dìlati tyhle vìci?
+Povìz, kterou tu vedeš mez.
+
+[Polos]
+Odpovìz ty, Sokrate, na tuto otázku.
+
+[Sokrates]
+Já tedy tvrdím, Pole, jestlie ti je milejší slyšeti to ode mne,
+e kdykoli nìkdo dìlá tyto vìci spravedlivì, to e je dobré, a kdy nespravedlivì, zlé.
+
+[Polos]
+To je nìjak tìká vìc, Sokrate, usvìdèit tì z omylu! Zdali pak by tì i dítì neusvìdèilo,
+e nemáš pravdu?
+
+[Sokrates]
+Budu tedy velmi vdìèen tomu dítìti a stejnì
+
+i tobì, jestlie mì usvìdèíš z omylu a zbavíš prázdného mluvení.
+Nue, neobtìuj si èiniti dobøe svému pøíteli a usvìdèuj mì.
+
+[Polos]
+Avšak, Sokrate, jistì není potøebí tì usvìdèovat starımi pøíklady;
+nebo vìci, které se staly vèera a pøedevèírem, staèí,
+aby tì usvìdèily z omylu a dokázaly,
+e mnozí lidé èinící bezpráví jsou šastni.
+
+[Sokrates]
+Jaké to vìci?
+
+[Polos]
+Vidíš pøece toho Archelaa, syna Perdikkova, jak vládne Makedonii?
+
+[Sokrates]
+Jestlie nevidím, aspoò o nìm slyším.
+
+[Polos]
+Nue zdá se ti šastnı èi ubohı?
+
+[Sokrates]
+Nevím, Pole, nebo ještì nikdy jsem se s tím muem nesetkal.
+
+[Polos]
+Coe?
+Kdyby ses s ním setkal, to bys to poznal, ale, jinak, odsud, nemùeš poznat,
+e je šasten?
+
+[Sokrates]
+Pøi Diovi, jistì ne.
+
+[Polos]
+Tu je zøejmé, Sokrate,
+e i o velkém králi øekneš,
+e nemùeš poznat, zdali je šasten.
+
+[Sokrates]
+A to øeknu pravdu;
+nebo nevím, jak je v tom se vzdìláním a spravedlností.
+
+[Polos]
+Coe?
+V tomhle záleí veškeré štìstí?
+
+[Sokrates]
+Ano, Pole, aspoò jak já myslím;
+nebo krásnı a dobrı mu i ena jest podle mého soudu šasten,
+kdeto nespravedlivı a špatnı nešasten.
+
+[Polos]
+Tedy tenhle Archelaos je podle tvého soudu nešasten?
+
+[Sokrates]
+Ano, pøíteli, jestlie je nespravedlivı.
+
+[Polos]
+Ale jak pak by nebyl nespravedlivı?
+Vdy mu nenáleelo nic z té vlády, kterou má nyní, nebo je syn eny, která byla otrokyní Alketa, bratra Perdikkova, a podle práva byl otrokem Alketovım, a kdyby chtìl dìlat po právu, slouil by Alketovi a byl by podle tvého soudu šasten.
+Takto však se stal neobyèejnì nešastnım, kdy se dopustil nejvìtšího bezpráví;
+nejprve pozval k sobì tohoto samého svého pána a strıce pod záminkou,
+e mu vrátí vládu, kterou mu byl Perdikkas odòal, pak pohostil a opil jeho samého i jeho syna Alexandra, svého bratrance a skoro vrstevníka, naloil oba na vùz, v noci vyvezl, usmrtil a všechny stopy po nich zahladil.
+A kdy spáchal tato bezpráví, neuvìdomil si,
+e se stal velkım uboákem a nepojala ho lítost,
+nıbr o nìco málo pozdìji se dopustil nového:
+podle práva mìla se vláda dostat jeho bratru, manelskému synu Perdikkovu, chlapci asi sedmiletému, ale Archelaos nezatouil po tom,
+aby se stal šasten tím,
+e by ho, jak spravedlivo, vychoval a pak mu odevzdal vládu,
+nıbr hodil ho do studnì a utopil a potom øekl jeho matce Kleopatøe,
+e chlapec honil husu a pøi tom tam spadl a zahynul.
+Protoe se dopustil nejvìtších bezpráví z celé Makedonie, jistì je tedy nyní ze všech Makedonù nejnešastnìjší, a ne nejšastnìjší, a asi leckdo z Athéòanù, poèínajíc tebou, by si radìji vybral stát se kımkoli jinım z Makedonù neli Archelaem.
+
+[Sokrates]
+Ji na zaèátku rozmluvy, Pole, jsem tì pochválil,
+e jsi podle mého zdání dobøe pøipraven k rétorice, ale v dialogu e jsi zanedbanı;
+a nyní tohle e je ten dùvod,
+kterım by mì i dítì usvìdèilo, a já jsem nyní od tebe, jak se domníváš, tímto dùvodem usvìdèen,
+e nemám pravdu, kdy tvrdím,
+e èlovìk èinící bezpráví není šasten?
+Jak to, pøíteli?
+Vdy v nièem z tìchto tvıch øeèí s tebou nesouhlasím.
+
+[Polos]
+Toti nechceš souhlasit, nebo ve skuteènosti máš takové mínìní jako já.
+
+[Sokrates]
+Ó, mùj drahı, pokoušíš se rétoricky mì usvìdèit z nepravdy, jako ti, kteøí na soudech domnìle usvìdèují.
+Nebo tam jedni druhé zdánlivì usvìdèují, jestlie pro svá tvrzení pøivedou mnoho slovutnıch svìdkù,
+kdeto jejich odpùrce pøivede jen jednoho nebo ádného.
+Ale tento dùkaz nemá ádné váhy, pokud jde o pravdu;
+nebo nìkdy se mùe státi,
+e je èlovìk pøemoen i køivım svìdectvím od èetnıch a jen zdánlivì vıznamnıch svìdkù.
+Tak i nyní ve vìci, o které mluvíš, bezmála všichni Athéòané i cizinci budou stejnì mluvit s tebou, budeš-li chtít proti mnì uvést svìdky,
+e nemám pravdu;
+svìdèit ti budou, budeš-li chtít, Nikias Nikeratùv i jeho bratøí s ním, jejich trojnoe jsou postaveny øadou v Dionysiu, a budeš-li chtít, Aristokrates Skelliùv, od nìho zase jest ten krásnı vìnovací dar v chrámì Apollona Pythijského, a budeš-li chtít, celá rodina Perikleova nebo jiné pøíbuzenstvo, kterékoli by sis chtìl vybrat ze zdejších obèanù.
+Ale já, já jedinı, s tebou nesouhlasím;
+nebo ty mì k tomu uvnitø nedonucuješ,
+nıbr pøivedl jsi proti mnì mnoho køivıch svìdkù a pokoušíš se mì vyhnat ze statku jistoty a pravdy.
+Avšak jestlie nepøivedu tebe samého, jediného, za svìdka pro svou øeè, domnívám se,
+e jsem ve vìci, o které rozprávíme, nevykonal nic, co by stálo za øeè;
+domnívám se pak,
+e stejnì i ty, jestlie já, jeden jedinı, ti nebudu svìdèit a jestlie tyhle všechny ostatní nenecháš bıt.
+Jest tedy tohle jeden zpùsob dùkazu, jak se domníváš ty a mnozí jiní;
+jest pak i jinı, kterı zase já myslím.
+Postavme je tedy vedle sebe a podívejme se, zdali se budou od sebe vespolek nìèím lišit.
+Vdy pøedmìt našich spornıch úvah není zrovna malı,
+nıbr je to snad to, o èem vìdìti pravdu je vìc nejkrásnìjší, a nevìdìti nejošklivìjší;
+nebo jejich jádro je buï znáti nebo neznáti, kdo jest šasten a kdo ne.
+Tak abychom se vrátili k pøedmìtu své øeèi, ty se za prvé domníváš,
+e je mono,
+aby byl blaen mu, kterı èiní bezpráví a je nespravedlivı, jestlie Archelaa pokládáš za nespravedlivého, ale šastného.
+Je pravda,
+e si máme myslit,
+e takové je tvé mínìní?
+
+[Polos]
+Ovšeme.
+
+[Sokrates]
+Já však tvrdím,
+e to je nemoné.
+Tohle je jedna vìc, o které je mezi námi spor.
+Dobrá;
+a kdy èiní bezpráví, zdali pak bude šasten, jestlie dojde spravedlivé odplaty a trestu?
+
+[Polos]
+Nikoli, nebo takto by byl velmi nešasten.
+
+[Sokrates]
+Ale jestlie tedy èlovìk èinící bezpráví nedojde spravedlivé odplaty, bude podle tvého soudu šasten?
+
+[Polos]
+Tvrdím,
+e ano.
+
+[Sokrates]
+Avšak podle mého mínìní, Pole, je èlovìk èinící bezpráví a nespravedlivı za všech okolností nešasten, avšak vìru nešastnìjší, kdy za své bezprávné jednám nedává spravedlivou pokutu a nedochází trestu, a ménì nešastnı, jestlie dává pokutu a dochází spravedlivého trestu od bohù i od lidí.
+
+[Polos]
+Podivné vìci se to, Sokrate, pokoušíš mluvit.
+
+[Sokrates]
+A pokusím se zpùsobit, abys i ty, pøíteli, mluvil toté, co já, nebo tì pokládám za svého milého pøítele.
+Nyní tedy je toto, v èem se neshodujeme;
+pozoruj pak i ty sám.
+Øekl jsem já kdesi v døívìjší èásti své øeèi,
+e horší je èinit bezpráví neli je snášet.
+
+[Polos]
+Ovšeme.
+
+[Sokrates]
+Ty pak,
+e snášet bezpráví.
+
+[Polos]
+Ano.
+
+[Sokrates]
+A tvrdil jsem,
+e lidé èinící bezpráví jsou nešastni, a byl jsem od tebe usvìdèen z omylu.
+
+[Polos]
+Ano, pøi Diovi.
+
+[Sokrates]
+Aspoò jak se ty domníváš, Pole.
+
+[Polos]
+A mé domnìní je pravdivé.
+
+[Sokrates]
+Snad.
+A ty zase jsi tvrdil,
+e lidé èinící bezpráví jsou šastni, jestlie nejsou trestáni.
+
+[Polos]
+Ovšem e ano.
+
+[Sokrates]
+Já však tvrdím,
+e ti jsou nejnešastnìjší,
+kdeto kteøí jsou trestáni, jsou ménì nešastni.
+Chceš i toto vyvracet?
+
+[Polos]
+Však tohle je asi ještì tìší ne ono, Sokrate, vyvrátit to!
+
+[Sokrates]
+To ne, Pole,
+nıbr zcela nemoné;
+nebo pravdu nelze nikdy vyvrátit.
+
+[Polos]
+Jak to myslíš?
+Jestlie je èlovìk dopaden pøi bezpráví, jak èiní úklady samovládì, a jsa dopaden je natahován na skøipci, vykleštìn a oèi mu jsou vypáleny a mnoha jinımi velkımi a rozmanitımi mukami sám je zohaven i uvidí tak muèit své dìti i svou enu a na konec je ukøiován nebo upálen v smole:
+bude takto šastnìjší, ne jestlie unikne a stane se sám vládcem a po celı ivot bude v obci panovat a dìlat, cokoli by chtìl, take mu budou závidìt a za blaeného jej pokládat i jeho spoluobèané i cizinci?
+Tohle je podle tvého mínìní nemono vyvrátit?
+
+[Sokrates]
+To zase pouštíš strašáky, ušlechtilı Pole, a nic nevyvracíš dùkazy;
+a právì pøed chvílí jsi vedl svìdky.
+Pøesto však mi opakuj jednu malièkost:
+øekl jsi „jak èiní bezprávnì úklady samovládì”?
+
+[Polos]
+Zajisté.
+
+[Sokrates]
+To tedy nikdy nebude ani jeden ani druhı z nich šastnìjší, ani ten, kdo si bezprávnì získal tyranidu, ani kdo je trestán — nebo u dvou lidí nešastnıch by se nemohlo mluvit o šastnìjším — ale ovšem nešastnìjší je ten, kterı unikne a stane se samovládcem.
+Co to, Pole?
+Ty se smìješ.
+Je to snad zase jinı druh vıvratného dùkazu, vysmívat se, kdy nìkdo nìco øekne, beze všeho vyvracování?
+
+[Polos]
+Nemyslíš, Sokrate,
+e je tvé stanovisko úplnì vyvráceno, kdy mluvíš takové vìci, jaké by nikdo na svìtì neøekl?
+Jen se zeptej nìkoho z tìchto pøítomnıch!
+
+[Sokrates]
+Ó Pole, nejsem z muù zbìhlıch ve veøejném jednání a loòského roku, kdy jsem byl vylosován do rady, kdy naše fyla úøadovala a já jsem mìl øídit hlasování, utril jsem smích a nedovedl jsem øídit hlasování.
+Nevybízej mne tedy ani teï, abych dal hlasovat mezi pøítomnımi,
+nıbr nemáš-li lepšího dùkazu ne tyto, tu, jak jsem já právì navrhoval, postup to dokazování mnì a poznej ze zkušenosti, jakı má bıt dùkaz podle mého mínìní.
+Já toti dovedu pøedvésti jen jednoho svìdka svıch slov, právì toho, s kım rozmlouvám,
+kdeto o mnoství jich nestojím, a jednoho se dovedu tázat na jeho hlas,
+kdeto s mnostvím ani nemluvím.
+Viz tedy, zdali budeš ochoten zase ty umonit provedení dùkazu, odpovídaje na mé otázky.
+Tedy já se domnívám,
+e i já i ty i ostatní lidé pokládáme za horší èinit bezpráví neli je snášet a nebıti trestán neli bıti.
+
+[Polos]
+A já se domnívám,
+e tak nesoudím ani já ani ádnı jinı na svìtì.
+Nebo øekni:
+ty by sis radìji vybral bezpráví snášet neli je èinit?
+
+[Sokrates]
+Ano, a také i ty i všichni ostatní.
+
+[Polos]
+To se velice mılíš;
+ani já, ani ty, ani kdo jinı.
+
+[Sokrates]
+Zdali pak mi odpovíš?
+
+[Polos]
+Ovšem e ano;
+vdy touím vìdìt, co asi øekneš.
+
+[Sokrates]
+Tedy abys to vìdìl, odpovídej mi, jako kdybych se tì tázal ze zaèátku:
+co z obého se ti zdá, Pole, horší, èinit bezpráví èi bezpráví snášet?
+
+[Polos]
+Co se mne tıèe, snášet bezpráví.
+
+[Sokrates]
+A co, co z obého ošklivìjší, èinit bezpráví èi bezpráví snášet?
+Odpovìz!
+
+[Polos]
+Èinit bezpráví.
+
+[Sokrates]
+Není-li to tedy také horší, kdy to je ošklivìjší?
+
+[Polos]
+Nikoli.
+
+[Sokrates]
+Rozumím;
+ty, jak se podobá, neuznáváš totonost krásného a dobrého, ani zlého a ošklivého.
+
+[Polos]
+To jistì ne.
+
+[Sokrates]
+Všechny krásné vìci, jako na pøíklad tìla, barvy, tvary, zvuky, èinnosti — to nepøihlííš k nièemu, kdy je nazıváš krásnımi?
+Tak na pøíklad pokud jde o krásná tìla, nenazıváš je krásnımi buï podle uiteènosti, hledì k tomu, k èemu je které uiteèné, nebo podle jakési libosti, jestlie pøi dívání zpùsobuje radost tìm, kteøí se na nì dívají?
+Mùeš øíci ještì nìco kromì tohoto o kráse tìla?
+
+[Polos]
+Nemohu.
+
+[Sokrates]
+Jistì tedy nazıváš takto krásnımi i všechny ostatní vìci, i tvary i barvy, toti buï pro nìjakou libost nebo pro uiteènost nebo pro oboje.
+
+[Polos]
+Zajisté.
+
+[Sokrates]
+A právì tak i zvuky a všechno, co náleí k musickım umìním?
+
+[Polos]
+Ano.
+
+[Sokrates]
+Dále pak ani ty krásné vìci, které náleí do oboru zákonù a èinností, jistì nejsou mimo tento rozsah a jsou buï uiteèné nebo libé nebo obojí.
+
+[Polos]
+Mnì se zdá,
+e nejsou mimo.
+
+[Sokrates]
+Není-li tomu právì tak i s krásou nauk?
+
+[Polos]
+Ovšeme;
+a dobøe nyní vymezuješ, Sokrate, kdy vymezuješ krásno libostí a dobrem.
+
+[Sokrates]
+Jistì tedy i ošklivo opakem, nelibostí a zlem.
+
+[Polos]
+To je nutné.
+
+[Sokrates]
+Kdykoli tedy je ze dvou krásnıch vìcí jedna krásnìjší, je krásnìjší tím,
+e vyniká buï jednou nebo druhou z tìchto vlastností nebo obìma, buï libostí nebo prospìšností nebo obojím.
+
+[Polos]
+Ovšeme.
+
+[Sokrates]
+A kdykoli tedy ze dvou ošklivıch vìcí je jedna ošklivìjší, bude ošklivìjší tím,
+e vyniká buï nelibostí nebo zlem;
+èi není to nutné?
+
+[Polos]
+Ano.
+
+[Sokrates]
+Nue tedy, jak to bylo právì teï øeèeno o èinìní a snášení bezpráví?
+Neøíkal jsi,
+e snášeti bezpráví je horší a èiniti bezpráví ošklivìjší?
+
+[Polos]
+Øekl jsem.
+
+[Sokrates]
+Jestlie tedy èiniti bezpráví je ošklivìjší neli je snášeti, jistì jest buï nelibìjší a bylo by ošklivìjší tím,
+e vyniká nelibostí nebo zlem nebo obojím.
+Není i toto nutné?
+
+[Polos]
+Jak pak by ne?
+
+[Sokrates]
+Tu se nejprve podívejme, zdali èinit bezpráví vyniká nad snášení bezpráví nelibostí a zdali ti, kteøí bezpráví èiní, cítí vìtší bolest neli ti, kteøí je snášejí.
+
+[Polos]
+To naprosto ne, Sokrate.
+
+[Sokrates]
+Tedy nevyniká nelibostí.
+
+[Polos]
+Jistì ne.
+
+[Sokrates]
+Jestlie tedy ne nelibostí, nemohlo by u vynikat obojím.
+
+[Polos]
+Patrnì ne.
+
+[Sokrates]
+Tak tedy nezbıvá, ne e vyniká tím druhım.
+
+[Polos]
+Ano.
+
+[Sokrates]
+Zlem.
+
+[Polos]
+Podobá se.
+
+[Sokrates]
+Kdy tedy èiniti bezpráví vyniká zlem, je patrnì horší ne snášeti bezpráví.
+
+[Polos]
+Zøejmo,
+e ano.
+
+[Sokrates]
+Zdali pak se nám pøed chvílí neukázalo,
+e vìtšina lidí i ty se pøidáváte k mínìní,
+e je ošklivìjší bezpráví èinit neli snášet?
+
+[Polos]
+Ano.
+
+[Sokrates]
+Nyní pak se ukázalo,
+e to je horší.
+
+[Polos]
+Podobá se.
+
+[Sokrates]
+Vybral by sis ty tedy radìji horší vìc a ošklivìjší místo ménì zlé a ménì ošklivé?
+Neváhej odpovìdìt, Pole, vdy se ti nic nestane;
+jen se hezky svìø rozumu jako lékaøi a odpovídej na mé otázky buï ano nebo ne.
+
+[Polos]
+To bych si nevybral, Sokrate.
+
+[Sokrates]
+Však nìkdo jinı z lidí?
+
+[Polos]
+Zdá se mi,
+e ne, aspoò podle této úvahy.
+
+[Sokrates]
+Mìl jsem tedy já pravdu,
+e ani já ani ty ani ádnı jinı z lidí by si nevybral radìji bezpráví èinit neli snášet.
+
+[Polos]
+Patrnì.
+
+[Sokrates]
+Tak tedy vidíš, Pole,
+e dùkaz jsa postaven vedle dùkazu nejeví ádné podobnosti,
+nıbr s tebou souhlasí všichni ostatní kromì mne,
+kdeto mnì staèíš ty sám jedinı i svım souhlasem i svım svìdectvím a já se tái na úsudek tebe jediného a ostatní nechávám bıt.
+A o tom dosti;
+dále však se podívejme na to, o èem jsme mìli na druhém místì sporné mínìní, zdali je pro toho, kdo èiní bezpráví, trest nejvìtším zlem, jak ses ty domníval, èi vìtším zlem je nebıt trestán, jak jsem se domníval zase já.
+
+Uvaujme pak takto:
+dávati pokutu a bıt spravedlivì trestán, kdy èlovìk èiní bezpráví — je to podle tebe jedno a toté?
+
+[Polos]
+Zajisté.
+
+[Sokrates]
+Mùeš-li pak øíci,
+e není pravda,
+e všechny spravedlivé vìci jsou krásné, jakoto spravedlivé?
+Rozva si to a mluv!
+
+[Polos]
+Zdá se mi, Sokrate,
+e jsou.
+
+[Sokrates]
+Zkoumej pak i tohle:
+jestlie nìkdo nìco dìlá, zdali pak není nutnì i nìco trpnì zasahovaného touto èinností?
+
+[Polos]
+Mnì se zdá.
+
+[Sokrates]
+Zdali pak je zasahováno tím, co dìlající èinitel dìlá, a takovım jaké to dìlající èinitel dìlá?
+Myslím nìco takového:
+jestlie nìkdo bije, nutnì je nìco bito?
+
+[Polos]
+Nutnì.
+
+[Sokrates]
+A jestlie ten, kdo bije, bije silnì nebo rychle, nutnì je bitı pøedmìt bit takovım zpùsobem?
+
+[Polos]
+Ano.
+
+[Sokrates]
+Pøedmìtu bití tedy vzniká takovı trpnı stav, jakı zpùsobuje to, co jej bije?
+
+[Polos]
+Ovšeme.
+
+[Sokrates]
+Jistì také jestlie nìkdo pálí, nutnì je nìco páleno.
+
+[Polos]
+Jak pak by ne?
+
+[Sokrates]
+A jestlie silnì pálí nebo bolestnì, je pálenı pøedmìt tak pálen, jak pálí pálící èinitel?
+
+[Polos]
+Ovšeme.
+
+[Sokrates]
+Jistì také jestlie nìco øee, je to obdobné;
+nìco je toti øezáno.
+
+[Polos]
+Ano.
+
+[Sokrates]
+A jestlie je øez velikı nebo hlubokı nebo bolestnı, je øezanı pøedmìt øezán takovım øezem, jakı zpùsobuje øezající èinitel?
+
+[Polos]
+Patrnì.
+
+[Sokrates]
+Zkrátka tedy viz, zdali uznáváš, co jsem právì øekl, o všech vìcech,
+e jakı jest dìj, kterı zpùsobuje dìlající èinitel, takovı e trpí jeho pøedmìt.
+
+[Polos]
+Uznávám.
+
+[Sokrates]
+Kdy toto souhlasnì uznáváme, øekni mi, zdali dávati pokutu je dìj trpnı èi èinnı?
+
+[Polos]
+Nutnì trpnı, Sokrate.
+
+[Sokrates]
+Není-li zpùsobován od kohosi èinného?
+
+[Polos]
+Jak pak by ne?
+Od trestajícího.
+
+[Sokrates]
+A kdo náleitì trestá, trestá spravedlivì?
+
+[Polos]
+Ano.
+
+[Sokrates]
+Dìlá vìci spravedlivé èi ne?
+
+[Polos]
+Spravedlivé.
+
+[Sokrates]
+Tedy kdo je za pokutu trestán, trpí vìci spravedlivé?
+
+[Polos]
+Patrnì.
+
+[Sokrates]
+Ale o spravedlivıch vìcech bylo tuším uznáno,
+e jsou krásné?
+
+[Polos]
+Ovšeme.
+
+[Sokrates]
+Z tìchto tedy jeden krásnou vìc èiní, druhı, trestanı, trpí.
+
+[Polos]
+Ano.
+
+[Sokrates]
+A jestlie je krásná, je tedy jistì dobrá,
+e ano?
+Buïto je toti libá nebo uiteèná.
+
+[Polos]
+Nutnì.
+
+[Sokrates]
+Dobrou vìc tedy trpí, kdo dává pokutu?
+
+[Polos]
+Podobá se.
+
+[Sokrates]
+Dostává se mu tedy uitku?
+
+[Polos]
+Ano.
+
+[Sokrates]
+Zdali pak toho uitku, kterı si já pøedstavuji?
+Stává se lepším na duši, jestlie jest spravedlivì trestán?
+
+[Polos]
+Podobá se pravdì.
+
+[Sokrates]
+Tedy kdo dává pokutu, je zbavován špatnosti své duše?
+
+[Polos]
+Ano.
+
+[Sokrates]
+Není snad tedy zbavován nejvìtšího zla?
+Uvauj takto:
+jde-li o péèi o peníze, vidíš snad u èlovìka nìjaké jiné zlo neli chudobu?
+
+[Polos]
+Nikoli,
+nıbr právì chudobu.
+
+[Sokrates]
+A co v péèi o tìlo?
+Nazval bys tu zlem slabost, nemoc, ošklivost a takové vìci?
+
+[Polos]
+Zajisté.
+
+[Sokrates]
+A nemyslíš,
+e mùe bıt i v duši nìjaká vadnost?
+
+[Polos]
+Jak by ne?
+
+[Sokrates]
+A nenazıváš takovou vadností nespravedlivost, nevìdomost, zbabìlost a takové vìci?
+
+[Polos]
+Ovšem e ano.
+
+[Sokrates]
+Tedy k trojí vìci, k penìzùm, k tìlu a k duši, náleí podle tvıch slov trojí druh vadnosti, chudoba, nemoc, nespravedlnost?
+
+[Polos]
+Ano.
+
+[Sokrates]
+Která z tìchto vadností je nejošklivìjší?
+Není to nespravedlnost a vùbec vadnost duše?
+
+[Polos]
+Ano, ve velké míøe.
+
+[Sokrates]
+Jestlie pak nejošklivìjší, také nejhorší?
+
+[Polos]
+Jak to myslíš, Sokrate?
+
+[Sokrates]
+Takto:
+podle toho, co jsme svrchu souhlasnì uznali, je nejošklivìjší vìc vdycky nejošklivìjší tím,
+e pøináší buï nejvìtší strázeò nebo škodu nebo obojí.
+
+[Polos]
+Dozajista.
+
+[Sokrates]
+Nyní pak jsme uznali,
+e nejošklivìjší vìc je nespravedlnost a veškerá vadnost duše?
+
+[Polos]
+Ano, uznali jsme.
+
+[Sokrates]
+Tedy jistì je to vìc buï nejtrapnìjší a je nejošklivìjší z tìchto tím,
+e vyniká trapností, nebo vyniká škodlivostí nebo obojím.
+
+[Polos]
+Nutnì.
+
+[Sokrates]
+Zdali pak tedy bıti nespravedliv a nezøízenı a zbabìlı a nevìdomı není bolestnìjší ne strádání a nemoc?
+
+[Polos]
+Mnì se nezdá, Sokrate, aspoò to neplyne z toho, co bylo øeèeno.
+
+[Sokrates]
+Tedy vadnost duše pøevyšuje ostatní vadnosti jakousi nad pomyšlení velikou škodlivostí a neobyèejnım zlem a tím je ze všeho nejošklivìjší, kdy ne — podle tvé øeèi — bolestností.
+
+[Polos]
+Patrnì.
+
+[Sokrates]
+Avšak co vyniká nejvìtší škodlivostí, je jistì asi nejvìtší zlo na svìtì.
+
+[Polos]
+Ano.
+
+[Sokrates]
+Tedy nespravedlnost a nezøízenost a ostatní vadnost duše je nejvìtší zlo na svìtì?
+
+[Polos]
+Patrnì.
+
+[Sokrates]
+Které pak umìní zbavuje chudoby?
+Ne umìní penìnické?
+
+[Polos]
+Ano.
+
+[Sokrates]
+A které zbavuje nemoci?
+Ne lékaøské?
+
+[Polos]
+Nutnì.
+
+[Sokrates]
+A které vadnosti duše a nespravedlivosti?
+Jestlie ti to není takto nasnadì, uvauj takhle:
+kam a ke komu vodíme ty, kteøí jsou tìlesnì nemocni?
+
+[Polos]
+K lékaøùm, Sokrate.
+
+[Sokrates]
+A kam vodíme lidi, jestlie èiní bezpráví a trpí nezøízeností?
+
+[Polos]
+Chceš øíci k soudcùm?
+
+[Sokrates]
+Ne snad proto,
+aby dali pokutu?
+
+[Polos]
+Ano.
+
+[Sokrates]
+A zdali pak ti, kteøí náleitì trestají, neuívají pøi trestání jisté spravedlnosti?
+
+[Polos]
+To je zøejmé.
+
+[Sokrates]
+Penìnictví tedy zbavuje chudoby, lékaøství nemoci a vykonávání práva nezøízenosti a nespravedlnosti.
+
+[Polos]
+Patrnì.
+
+[Sokrates]
+Nue, co je z tìchto vìcí nejkrásnìjší?
+
+[Polos]
+Z kterıch to myslíš?
+
+[Sokrates]
+Z penìnictví, lékaøství, práva.
+
+[Polos]
+Daleko vyniká, Sokrate, právo.
+
+[Sokrates]
+Jistì tedy zpùsobuje buï nejvìtší libost nebo uitek nebo obojí, jestlie je nejkrásnìjší?
+
+[Polos]
+Ano.
+
+[Sokrates]
+Je snad bıti léèen pøíjemné a léèení pociují radost?
+
+[Polos]
+Mnì se zdá,
+e ne.
+
+[Sokrates]
+Ale je to uiteèné.
+Ano?
+
+[Polos]
+Ano.
+
+[Sokrates]
+Nebo léèenı je zbavován velikého zla, take je prospìšno podstoupiti bolest a bıti zdráv.
+
+[Polos]
+Jak by ne?
+
+[Sokrates]
+Zdali pak je asi èlovìk hledíc k tìlu nejšastnìjší takto, kdy je léèen, èi kdyby vùbec ani nebyl nemocen?
+
+[Polos]
+Patrno,
+e kdyby ani nebyl nemocen.
+
+[Sokrates]
+Ano, nebo štìstím není, jak se podobá, to zbavení zla,
+nıbr vùbec ani zla nepocítit.
+
+[Polos]
+Tak jest.
+
+[Sokrates]
+A co, kterı ze dvou lidí majících nìco zlého buïto na tìle nebo v duši je nešastnìjší:
+ten, kterı se léèí a je zbavován toho zla, èi ten, kdo se nedává léèit a má je?
+
+[Polos]
+Zdá se mi,
+e ten, kterı se neléèí.
+
+[Sokrates]
+Nue zdali pak se neukázalo,
+e dávati pokutu je zbavování nejvìtšího zla, vadnosti duše?
+
+[Polos]
+Ano, ukázalo se.
+
+[Sokrates]
+Nebo spravedlivá pokuta patrnì pøivádí k rozumu a èiní lidi spravedlivìjšími a stává se léèením vadnosti.
+
+[Polos]
+Ano.
+
+[Sokrates]
+Nejšastnìjší tedy je ten, kdo nemá zla v duši, kdy se toto ukázalo nejvìtší ze zlıch vìcí.
+
+[Polos]
+To je zøejmé.
+
+[Sokrates]
+Na druhém místì je asi ten, kdo je takového zla zbavován.
+
+[Polos]
+Podobá se.
+
+[Sokrates]
+A to jest, jak se ukázalo, kdo je napomínán, kárán a dává pokutu.
+
+[Polos]
+Ano.
+
+[Sokrates]
+Nejhùøe tedy ije, kdo má v sobì nespravedlnost a nezbavuje se jí.
+
+[Polos]
+Patrnì.
+
+[Sokrates]
+To je jistì právì ten, kdo páchá nejvìtší bezpráví, poèíná si s nejvìtší nespravedlností a pøi tom dosáhne,
+e není ani napomínán ani trestán ani nedává pokutu;
+tak má, jak pravíš, zaøízen svùj ivot Archelaos i ostatní tyranové a rétoøi a dritelé moci.
+
+[Polos]
+Podobá se.
+
+[Sokrates]
+Tito, pøíteli, dosáhli asi právì tého, jako kdyby nìkdo suovanı nejtìšími chorobami dosáhl toho,
+e by lékaøùm nedával pokutu za své tìlesné chyby a neléèil se, boje se jako dítì pálení a øezání,
+e to je bolestné.
+Èi nezdá se tak i tobì?
+
+[Polos]
+Zajisté.
+
+[Sokrates]
+To nezná, jak se podobá, jaká vìc je zdraví a dobrı stav tìla.
+Podle toho, co jsme nyní souhlasnì uznali, skoro se zdá,
+e toté dìlají i ti, kdo se vyhıbají spravedlivému trestu, Pole, toti e se dívají jenom na jeho bolestnou stránku, ale k jeho prospìšnosti jsou slepi a neznají, oè vìtší neštìstí je bıt spojen s nezdravou duší neli s nezdravım tìlem, s duší vadnou, nespravedlivou a bezbonou;
+proto také dìlají všechno,
+aby nemusili dávat pokutu a zbavovat se onoho nejvìtšího zla, opatøují si peníze i pøátele i to, jak by byli v øeèi co nejpøemluvnìjší.
+Jestlie je pravda, co jsme spolu uznali, Pole, zdali pak pozoruješ, co z té úvahy vychází?
+Èi chceš, abychom to spolu shrnuli?
+
+[Polos]
+Ano, jestlie ti je libo.
+
+[Sokrates]
+Vychází snad tedy,
+e nejvìtší zlo je nespravedlnost a èiniti bezpráví?
+
+[Polos]
+Patrnì.
+
+[Sokrates]
+Dále pak se ukázalo,
+e zbavením tohoto zla je dáti spravedlivou pokutu?
+
+[Polos]
+Zdá se.
+
+[Sokrates]
+A nedáti pokutu e je udrením toho zla?
+
+[Polos]
+Ano.
+
+[Sokrates]
+Tedy èinit bezpráví je co do velikosti druhá ze všech zlıch vìcí,
+kdeto èinit bezpráví a pøi tom nedávat náleitou pokutu je ze všech zel nejvìtší a první.
+
+[Polos]
+Podobá se.
+
+[Sokrates]
+A právì o tom jsme se, pøíteli, rozcházeli ve svıch mínìních:
+ty jsi za šastného prohlašoval Archelaa, èlovìka, kterı èiní nejvìtší bezpráví a nedává ádnou pokutu,
+kdeto já jsem se naopak domníval,
+e jestlie buï Archelaos nebo kdokoli jinı z lidí nedává za svá bezpráví pokutu, ten e je nezbytnì ze všech ostatních lidí daleko nejnešastnìjší;
+a vdycky e je ten, kdo èiní bezpráví, nešastnìjší, ne kdo bezpráví snáší, a ten, kdo nedává pokutu, nešastnìjší ne ten, kdo ji dává.
+Nebyla tohle má slova?
+
+[Polos]
+Ano.
+
+[Sokrates]
+Není-li tedy dokázáno,
+e jsem mìl pravdu?
+
+[Polos]
+Patrnì.
+
+[Sokrates]
+Dobrá;
+jestlie tedy je toto pravda, Pole, kde je ta veliká uiteènost rétoriky?
+Vdy podle toho, co jsme nyní uznali, èlovìk musí sám sebe co nejvíce hlídat,
+aby se nedopustil bezpráví, sice e si získá poøádné zlo.
+Èi ne?
+
+[Polos]
+Ovšeme.
+
+[Sokrates]
+Kdykoli však se dopustí bezpráví buï sám nebo nìkdo jinı z tìch, na kterıch mu záleí, musí sám dobrovolnì jíti tam, kde by co nejdøíve dostal trest, k soudci, jako k lékaøi, spìchaje,
+aby choroba nespravedlnosti nezastarala a neuèinila duši rozhlodanou a nezhojitelnou.
+Èi jak mùeme soudit, Pole, jestlie zùstávají v platnosti myšlenky, o kterıch jsme se døíve shodli?
+Není nutno,
+aby tyto závìry s nimi takto souhlasily a ne jinak?
+
+[Polos]
+Co bychom také øekli, Sokrate?
+
+[Sokrates]
+Tedy k obranì nespravedlivého jednání buï vlastního nebo rodièù nebo pøátel nebo dìtí nebo k obranì nespravedlivého skutku vlasti není nám rétorika nijak uiteèná, Pole, leda e by si nìkdo pomyslil,
+e k nìèemu opaènému — e je tøeba alovat za prvé sebe sama, potom i své blízké a ostatní pøátele, kdokoli by kdy èinil bezpráví, a neskrıvat nespravedlivé jednání,
+nıbr pøivádìti je na svìtlo,
+aby takovı èlovìk dostal trest a se uzdravil;
+e je tøeba nutiti sebe sama i ostatní nebıt bojácnı,
+nıbr se zamhouøenıma oèima dobøe a zmuile se dát jakoby lékaøi øezat a pálit, za úèelem dobra a krásna, bez pomyšlení na bolest;
+jestlie spáchané bezpráví zasluhuje ran, dáti se bít, jestlie vìzení, dáti se uvìznit, jestlie pokuty, zaplatit ji, jestlie vyhnanství, odejít z vlasti, jestlie smrti, zemøít:
+pøi tom musí bıt kadı prvním alobcem i sebe samého i ostatních blízkıch a k tomu uívat rétoriky,
+aby nespravedlivé èiny vycházely najevo a vinníci byli zbavováni nejvìtšího zla, nespravedlnosti.
+Je to tak, Pole, èi není?
+
+[Polos]
+Mnì se to zdá, Sokrate, divné, ale s tím, co bylo øeèeno døíve, se ti to snad shoduje.
+
+[Sokrates]
+Tedy jistì buï je tam to zrušit nebo je nutno uznat tyhle závìry?
+
+[Polos]
+Ano, je tomu tak.
+
+[Sokrates]
+A naopak zase s druhé strany obrácenì, jestlie je tedy tøeba nìkomu èinit zle, buï nepøíteli nebo komukoli, jen kdy ten sám nezakouší bezpráví od svého nepøítele — toho toti jest se varovati — nıbr kdy se ten nepøítel dopouští bezpráví na nìkom jiném, je tøeba vším zpùsobem, i skutky i slovy, to zaøíditi tak,
+aby nebyl trestán a nepøišel pøed soudce;
+pakli však pøijde, jest to nastrojiti tak,
+aby byl nepøítel osvobozen a nebyl trestán, naopak kdyby na pøíklad nespravedlivì získal mnoho penìz,
+aby jich nevracel,
+nıbr aby je podrel a nespravedlivì a bezbonì jich uíval i pro sebe i pro své blízké, a kdyby jeho spáchané bezpráví zasluhovalo smrti,
+aby nezemøel — nejradìji aby nezemøel vùbec nikdy,
+nıbr byl se svou špatností nesmrtelnı, a kdy ne to,
+aby il v tomto stavu co nejdelší èas.
+K takovımto vìcem se mi zdá, Pole, rétorika uiteèná, nebo pro toho, kdo nehodlá èinit bezpráví, nezdá se mi bıt její uiteènost nìjak veliká, aè je-li tu vùbec nìjaká uiteènost, kdy se v pøedcházejících úvahách nikde neukázala.
+
+[Kallikles]
+Øekni mi, Chairefonte, mluví tohle Sokrates vánì èi ertuje?
+
+[Chairefon]
+Mnì se zdá, Kallikle,
+e mluví a pøíliš vánì;
+ale nejlépe bude se zeptat jeho samého.
+
+[Kallikles]
+Pøi bozích, však po tom dychtím.
+Øekni mi, Sokrate, máme si myslit,
+e nyní mluvíš vánì èi e ertuješ?
+Jestlie toti mluvíš vánì a je tohle pravda, co øíkáš, nebyl by snad náš lidskı ivot pøevrácenı a nedìláme, jak se podobá, všechno naopak, ne jak bychom mìli?
+
+[Sokrates]
+Kallikle, kdyby lidé nemìli ádného stejného dojmu — jedni ten, druzí onen — nıbr kadı z nás cítil nìjakı zvláštní dojem, jinı ne ostatní, nebylo by snadné projeviti druhému své cítìní.
+Øíkám to, kdy jsem si uvìdomil,
+e já a ty cítíme právì nyní cosi stejného, nebo my dva máme kadı dvì lásky, já Alkibiada Kleiniova a filosofii, a tvé lásky jsou také dvì, demos athénskı a Demos Pyrilampùv.
+Tu pak po kadé pozoruji,
+e a tvùj miláèek øekne cokoli a jakkoli se na vìc dívá,
+e ty, aèkoli jsi tak zdatnı, nemáš síly mu odporovat,
+nıbr sem a tam se obracíš;
+i ve shromádìní národa, kdykoli ti pøi tvé øeèi øekne athénskı lid,
+e tomu tak není, obrátíš a øíkáš, co on chce, a podobnì se chováš k tomu krasavci, hochu Pyrilampovu.
+Nebo choutkám a øeèem svıch lásek nejsi schopen odporovati, take kdyby nìkdo slyšel tvé øeèi, které mluvíváš kvùli nim, a divil se, jak jsou podivné, snad bys mu øekl — kdybys chtìl mluvit pravdu — e jestlie nìkdo nepøimìje tvé lásky,
+aby ustaly od tìchto øeèí, ani ty nikdy nepøestaneš takto mluvit.
+Mìj tedy za to,
+e musíš i ode mne slyšet jiná taková slova, a nediv se,
+e já tak mluvím,
+nıbr pøimìj filosofii, mou lásku,
+aby ona pøestala tak mluvit.
+Mluví toti, milı pøíteli, co nyní ode mne slyšíš, a je mi mnohem ménì vrtkavá neli jiné lásky;
+tuhle ten syn Kleiniùv má toti po kadé jiné øeèi, ale filosofie stále tyté:
+mluví, èemu se ty nyní divíš, a byl jsi i sám pøi té øeèi.
+Buïto ji tedy usvìdè z omylu, jak jsem právì øíkal, a doka,
+e není nejvyšším ze všech zel èinit bezpráví a pøi èinìní bezpráví nedávat pokutu;
+anebo, jestlie toto necháš nevyvráceno, pøi psu, bohu Egypanù, nebude s tebou, Kallikle, Kallikles souhlasiti,
+nıbr bude v nesouhlasu po celı ivot.
+A pøece já se domnívám, mùj milı,
+e by bylo lépe,
+aby má lyra byla rozladìna a falešnì hrála a aby falešnì zpíval sbor, kterı bych øídil, a aby celı svìt se mnou nesouhlasil a mluvil opaèné vìci, neli abych já sám jedinı byl se sebou v nesouladu a sobì odporoval.
+
+[Kallikles]
+Sokrate, zdá se mi,
+e si vedeš ve svıch øeèech bujaøe, jako pravı politickı øeèník;
+a nyní takto øeèníš, kdy se Polovi stalo toté, co vytıkal Gorgiovi,
+e se mu stalo pøed tebou.
+Øekl toti asi,
+e Gorgias jsa od tebe tázán, zdali kdy k nìmu nìkdo pøijde, kdo se chce nauèit rétorice a nezná práva, zdali ho Gorgias tomu nauèí,
+e se zastydìl a øekl — podle zvyku lidí, protoe by se horšili, kdyby nìkdo øekl ne — e ho nauèí,
+e pro toto pøiznání byl donucen sám sobì odporovat a to právì e ty máš rád — a vysmíval se ti, jak se mi zdá, a to tehdy právem;
+nyní se však zase stalo toté jemu samému.
+A já právì v tom neschvaluji poèínání Polovo,
+e ti pøipustil,
+e èinit bezpráví je ošklivìjší ne je snášet;
+nebo po tomto pøiznání zase sám byl od tebe v øeèech zapleten a jakoby zkrocen uzdou i zastydìl se øíci, co mìl na mysli.
+Ty toti vskutku, Sokrate, zavádíš do takovıchto nechutnıch a k davu mluvenıch zásad, které od pøírody nejsou krásné, avšak zákonem ano, a pøi tom tvrdíš,
+e jdeš za pravdou.
+A namnoze jsou si tyto vìci navzájem protivné, pøíroda a zákon;
+jestlie tedy se nìkdo stydí a neodvauje se mluvit, co má na mysli, je nucen pronášet protimluvy.
+Tu pak jsi i ty vypozoroval tuhle moudrost a nepoctivì si vedeš ve svıch øeèech:
+jestlie nìkdo mluví hledì k zákonu, ty podkládáš otázky podle pøírody, pakli mluví o vìcech pøírody, ty o vìcech zákona.
+Jako na pøíklad hned v této vìci, v otázce o èinìní a snášení bezpráví;
+kdeto Polos mluvil o ošklivìjším podle zákona, ty jsi chytal jeho øeè ve smyslu pøírody.
+Od pøírody je toti ošklivìjší všechno, cokoli je také horší, tedy bezpráví snášet, podle zákona však bezpráví èinit.
+Vdy tento stav, snášet bezpráví, ani nesluší mui,
+nıbr nìjakému otroku, jemu je lépe bıti mrtvu neli ít, kdy snášeje bezpráví a ústrky není s to,
+aby pomáhal sám sobì nebo jinému, o koho by dbal.
+Avšak podle mého mínìní zákony dávají lidé slabí a mnoství.
+K sobì samım tedy hledí a k svému prospìchu, kdy dávají zákony i kdy udìlují pochvaly a vyslovují hany;
+zastrašujíce silnìjší lidi a schopné míti více, øíkají — právì aby nemìli více ne oni sami — e míti více je ošklivé a nespravedlivé a právì v tom e záleí bezpráví, ve snaze míti více ne ostatní;
+sami toti jsou, tuším, rádi, jestlie mají stejnì, aèkoli jsou slabší.
+Proto tedy toto je zákonem nazıváno nespravedlivım a ošklivım, snaha míti více ne mnoství, a jmenují to èinìním bezpráví;
+ale podle mého mínìní sama pøíroda ukazuje,
+e je spra-vedlivo,
+aby lepší mìl více ne horší a mocnìjší ne ménì mocnı.
+A e tomu tak jest, je zhusta vidìt jak u jinıch tvorù, tak i mezi lidmi v celıch obcích a rodech,
+e toti to je podstatná známka spravedlnosti,
+aby silnìjší vládl slabšímu a mìl více neli on.
+Nebo podle jakého práva vytáhl Xerxes proti Helladì nebo jeho otec proti Skythùm?
+A bylo by mono uvésti nesèíslnì jinıch takovıch pøíkladù.
+Ale ti, myslím, dìlají tyto vìci podle pøirozeného pojmu spravedlnosti a, bùh je svìdek, podle pøirozeného zákona, a ne snad podle toho, kterı si my dáváme;
+my utváøíme nejlepší a nejsilnìjší z nás samıch, berouce je ji z mládí jako lvíèata, a zaøíkáváním i kouzelnımi prostøedky si je zotroèujeme øíkajíce,
+e je tøeba zachovávati rovnost a v tom e záleí krásno i spravedlivo.
+Avšak, myslím, jestlie se vyskytne mu náleitì od pøírody nadanı, ten všechno toto se sebe setøese, prorazí a unikne ven, pošlape všechny ty naše zápisy, kejkle, zaøíkadla a nepøirozené zákony, povstane a náhle se objeví ten otrok naším pánem a tu jako plamen vyšlehne právo pøírody.
+Zdá se mi,
+e i Pindaros ukazuje právì to, co já øíkám, v básni, v které praví:
+
+<font color="#FF0000">zákon, všech král smrtelnıch i nesmrtelnıch</font> 
+a ten, jak dí,
+<font color="#FF0000">øídí, právem èinì nejvìtší násilí, svrchovanou rukou;
+svìdèí mi o tom èiny Herakleovy, kdy nekoupené</font>—
+
+øíká to nìjak takto — nebo neumím tu píseò nazpamì — ale smysl je,
+e Herakles si odehnal krávy, kterıch si ani nekoupil ani nedostal od Geryona darem, jsa pøesvìdèen,
+e to je od pøírody spravedlivé a e i krávy i všechny ostatní statky lidí horších a slabších náleí èlovìku lepšímu a silnìjšímu.
+
+Pravda se má tedy takto a ty to poznáš, jestlie u necháš filosofie a oddáš se vìtším vìcem.
+Filosofie je toti, Sokrate, pìkná vìc, jestlie se jí èlovìk mírnì chopí v pøíslušném vìku;
+pakli však u ní setrvá pøes náleitou míru, je to zkáza lidí.
+Nebo i kdyby byl velmi nadanı, jestlie se zabıvá filosofií ještì v pokroèilém vìku, nutnì se stane neznalım všech vìcí, kterıch musí bıt znalı ten, kdo chce bıt muem dokonalım a váenım.
+Vdy takoví lidé se stávají neznalımi zákonù vztahujících se k obci, i øeèí, kterıch je tøeba uívat ve styku s lidmi pøi soukromıch i veøejnıch smlouvách, i lidskıch zálib a ádostí a vùbec se stávají docela neznalımi èlovìka a jeho povahy.
+A tu kdykoli pøijdou k nìkterému soukromému nebo obecnímu jednání, bıvají smìšní, právì tak jako zase politikové, myslím, jsou smìšní, kdykoli pøijdou do vašich schùzek a k vašim hovorùm.
+Stává se toti, jak praví Euripides:
+<font color="#FF0000">kadı je skvìlı</font> v tom <font color="#FF0000">a k tomu spìje,</font>
+
+<font color="#FF0000">a tomu dává ze dne èást vdy nejvìtší, v èem ze všeho, co umí, nejvíc vyniká;</font>
+
+ale v èem je slabı, tomu se vyhıbá a to haní,
+kdeto to druhé chválí, z pøíznì k sobì samému, nebo má za to,
+e takto chválí sám sebe.
+Ale podle mého mínìní je nejsprávnìjší poznati obojí.
+Filosofii poznávat je krásné potud, pokud toho je potøebí pro obecné vzdìlání, a dokud je èlovìk mlád, není pro nìj ošklivé zabıvat se filosofií;
+ale kdy je èlovìk u starší a ještì se zabıvá filosofií, tu se stává, Sokrate, ta vìc smìšnou a na mne pùsobí lidé zabıvající se filosofií zcela podobnım dojmem jako ti, kteøí po dìtsku vatlají a si hrají.
+Kdykoli toti uvidím malé dítì, kterému ještì sluší takto hovoøiti, jak vatlá a si hraje, baví mì to a zdá se mi to milé a zpùsobné a vhodné k vìku toho dítìte,
+kdeto kdykoli uslyším malé dítì hovoøit èistì a správnì, zdá se mi to jaksi odporné a tırá mi to uši a zdá se mi to nìèím otrockım;
+kdykoli však uslyšíme dospìlého mue vatlat nebo ho vidíme si hrát, je to zøejmì smìšné a nemuné a zdá se,
+e to zasluhuje bití.
+
+A právì tı dojem tedy cítím i z lidí filosofujících.
+Vidím-li toti filosofii u mladého jinocha, radostnì to schvaluji a zdá se mi,
+e mu to sluší, a pokládám toho èlovìka za zvláštì hodna svobodného rodu,
+kdeto toho, kterı se nezabıvá filosofií, za nesvobodného, jen se nikdy nevzchopí k ádné krásné nebo ušlechtilé vìci;
+kdykoli však uvidím staršího èlovìka,
+e se ještì zabıvá filosofií a neodchází od ní, tento mu podle mého zdání, Sokrate, zasluhuje u bití.
+Nebo jak jsem právì øekl, na takového èlovìka èeká, i kdyby byl velmi nadanı,
+e se stane nemunım,
+e se bude vyhıbat støedním èástem mìsta a shromadištím obèanù, na kterıch se, jak øekl básník, mui vyznamenávají, ale zaleze a proije ostatek ivota nìkde v zákoutí ve spoleènosti tøí nebo ètyø mladíèkù a tam bude vatlat, nikdy však nepronese slova svobodného, velkého a muného.
+
+Já jsem k tobì, Sokrate, v pomìru hezky pøátelském;
+tu pak se skoro zdá,
+e nyní cítím právì to, co cítí u Euripida, o nìm jsem se prve zmínil, Zethos k Amfionovi.
+I mnì toti pøichází na mysl øíci tobì nìco takového, jako onen mluví ke svému bratru, toti:
+„zanedbáváš, Sokrate, to, oè by ses mìl starat, a porušuješ pøirozenı stav své duše, tak ušlechtilı, jakımsi dìtinskım pitvoøením a ani pøi poradách o právu bys nepøidal správnì své slovo, ani bys nevystihl, co je podobno pravdì a pøesvìdèivé, ani bys ve prospìch jiného nedal smìlou radu.
+Avšak, milı Sokrate — a nic se na mne nezlob, nebo budu tak mluvit proto,
+e to s tebou dobøe myslím — nezdá se ti ošklivé bıt v takovém stavu, v jakém, myslím, jsi i ty i ostatní, kteøí kdy zabíhají ve filosofii pøíliš daleko?
+Jak to nyní jest, kdyby nìkdo popadl tebe nebo nìkoho jiného z takovıchto lidí a odvádìl do vìzení, tvrdì o èlovìku nevinném,
+e se provinil, víš sám,
+e by sis nevìdìl rady,
+nıbr toèila by se ti hlava a otvíral bys ústa nevìda, co øíci, a kdybys pøedstoupil pøed soud a náhodou mìl alobce sebe slabšího a horšího, pøece bys byl odsouzen k smrti, jestlie by se mu chtìlo navrhnout ti trest smrti.
+Avšak jaká pak je v tom moudrost, Sokrate, kdy <font color="#FF0000">umìní vezme mue s dobrımi vlohami a uèiní jej horším,</font> e nedovede ani sám sobì pomáhat ani vysvobodit z nejvìtších nebezpeèenství ani sebe ani nikoho jiného,
+nıbr je od svıch nepøátel olupován o všechno své jmìní a vùbec ije beze cti ve své obci?
+Takovému èlovìku mùeš — i kdy to je snad pøíliš hrubé slovo — dávat pohlavky a nic se ti za to nestane.
+Nue, pøíteli, poslouchej mne a <font color="#FF0000">pøestaò se zkoušením a provozuj krásnou hudbu èinù</font> a provozuj to, èím si získáš povìst rozumného mue, <font color="#FF0000">jinım ponechaje tyto chytrosti,</font> a u jim tøeba øíkat tlachy nebo vanìní, <font color="#FF0000">z nich získáš to,
+e v prázdném budeš bydlit domì;</font>neber si za vzor mue, kteøí rozumují o tìchto malichernostech,
+nıbr ty, kteøí mají i postavení i vánost a mnoho jinıch dobrıch vìcí.
+
+[Sokrates]
+Kdybych mìl zlatou duši, Kallikle, nemyslíš,
+e bych rád nalezl nìkterı z tìch kamenù,
+kterım zkoušejí zlato, ten dokonalı?
+Pøivedl bych ji k nìmu, a kdyby mi ten kámen uznal,
+e mám duši dobøe vypìstovanou, mohl bych bıti jist,
+e jsem v náleitém stavu a e mi nic není potøebí jiné zkoušky.
+
+[Kallikles]
+K èemu pak se na to ptáš, Sokrate?
+
+[Sokrates]
+Já ti to øeknu:
+já se domnívám,
+e nyní, kdy jsem pøišel na tebe, pøišel jsem na takovı poklad.
+
+[Kallikles]
+Jak to?
+
+[Sokrates]
+Dobøe vím,
+e jestlie ty budeš se mnou souhlasit ve vìcech, o kterıch má moje duše jisté mínìní,
+e to ji je èistá pravda.
+Myslím toti,
+e kdo má náleitì vyzkoušet duši, zdali ije správnì èi ne, musí mít k tomu tøi vlastnosti, je ty všechny máš, vìdìní, pøízeò a otevøenost.
+Já se toti setkávám s mnohımi, kteøí nejsou schopni mì zkoušet, protoe nejsou tak moudøí jako ty;
+jiní jsou sice moudøí, ale nechtìjí mi øíci pravdu, protoe o mne tak nedbají jako ty;
+i tihle dva hosté, Gorgias a Polos, jsou sice moudøí a jsou to moji pøátelé, ale trochu se jim nedostává otevøenosti a jsou ostıchavìjší více, ne je tøeba.
+e ne?
+Vdy ve své ostıchavosti došli tak daleko,
+e se pro samı ostych jeden i druhı z nich odvauje pøed èetnımi lidmi sám sobì odporovat, a to v nejdùleitìjších vìcech.
+
+Avšak ty máš všechny ty vlastnosti, kterıch ostatní nemají;
+jsi toti náleitì vzdìlán, jak by potvrdili mnozí Athéòané, a se mnou to dobøe myslíš.
+Jaké mám pro to svìdectví?
+Já ti to povím.
+Vím, Kallikle,
+e vy ètyøi jste byli spoleèníky v pìstování moudrosti, ty, Teisandros z Afiden, Andron Androtionùv a Nausikydes z Cholargu;
+a jednou jsem vás slyšel, jak jste se radili, a jak daleko je pìstovat filosofii, a vím,
+e zvítìzilo mezi vámi asi takovéto mínìní, nesnait se jíti ve filosofování a do jemností,
+nıbr napomínali jste se vespolek k ostraitosti, abyste se nestali moudøejšími více, ne je tøeba, a tak se mimo nadání nezkazili.
+Kdy tedy tì slyším, jak mi radíš toté, co svım nejlepším druhùm, je mi to dostateènım svìdectvím,
+e to se mnou opravdu dobøe myslíš.
+A dále,
+e jsi schopen svobodnì mluvit a neostıchat se, to i sám tvrdíš a také øeè, kterou jsi pøed chvílí promluvil, v tom s tebou souhlasí.
+Tu pak se to má s touto vìcí nyní patrnì takto:
+jestlie v našem rozhovoru ty budeš v nìèem se mnou souhlasit, bude to ji dostateènì vyzkoušeno ode mne i od tebe a ji nebude tøeba to podrobovati jiné zkoušce.
+Nebo jinak bys to byl nikdy nepøipustil
+
+— buï z nedostatku moudrosti nebo z nadbytku ostıchavosti — a také bys to nepøipustil,
+e bys mne chtìl oklamat;
+vdy jsi mùj pøítel, jak i sám tvrdíš.
+Tedy mùj a tvùj souhlas vskutku bude znamenati u dosaení pravdy.
+Ze všeho nejkrásnìjší je, Kallikle, zkoumání o tom, co jsi mi ty vytkl, jakı asi má bıt mu a èím se zamìstnávat a a pokud, a to i ve stáøí i v mládí.
+Co se toti mne tıèe, jestlie ve zpùsobu svého ivota nejednám v nìèem správnì, dobøe vìz,
+e to nechybuji úmyslnì,
+nıbr pro svou nevìdomost;
+ty tedy, jako jsi zaèal mì napomínat, nepøestávej,
+nıbr náleitì mi uka, co je to, èím se mám zabıvat, a jakım zpùsobem bych se k tomu dostal, a jestlie mì zastihneš,
+e jsem nyní sice projevil s tebou souhlas, ale pozdìji e nedìlám toté, v èem jsem s tebou souhlasil, pokládej mì docela za slabocha a nikdy u potom mne nenapomínej, èlovìka, kterı za nic nestojí.
+Nue opakuj mi od zaèátku, co myslíš ty i Pindaros, jak je to s tím právem podle pøírody?
+Aby mocnìjší násilím uchvacoval vìci slabších a aby vládl lepší nad horšími a aby zdatnìjší mìl více ne ménì zdatnı?
+Pokládáš snad nìco jiného za právo èi jsem si to pamatoval správnì?
+
+[Kallikles]
+Ano, toto jsem tehdy tvrdil a také nyní tvrdím.
+[Sokrates]
+Dáváš snad slovùm „lepší” a „mocnìjší” tı vıznam?
+Nebo ani tehdy jsem nebyl s to pochopit smysl tvé øeèi.
+Nazıváš mocnìjšími silnìjší a mají slabší poslouchat silnìjšího — tak jsi podle mého zdání i tehdy ukazoval,
+e veliké obce napadají malé podle pøirozeného práva, protoe jsou mocnìjší a silnìjší, nebo e mocnìjší a silnìjší a lepší je toté — èi je mono bıt lepší, ale pøi tom slabší a s menšími silami, a bıt mocnìjší, ale špatnìjší?
+Èi je vımìr lepšího a mocnìjšího tentı?
+Právì toto mi jasnì urèi, zdali je mezi pojmy „mocnìjší” a „lepší” a „silnìjší” totonost èi rùznost.
+
+[Kallikles]
+Však já ti øíkám jasnì,
+e to je toté.
+
+[Sokrates]
+Mnoství je pøirozenì mocnìjší ne jednotlivec,
+e ano?
+Mnoství vskutku také dává zákony jednotlivci, jak jsi i ty právì øíkal.
+
+[Kallikles]
+Jak by ne?
+
+[Sokrates]
+Tedy zákonná ustanovení mnoství jsou ustanovení mocnìjších.
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+A zajisté ustanovení lepších?
+Nebo mocnìjší jsou podle tvıch slov mnohem lepší.
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Jistì tedy jsou jejich zákonná ustanovení pøirozenì krásná, kdy pocházejí od mocnìjších?
+
+[Kallikles]
+Tvrdím,
+e ano.
+
+[Sokrates]
+Nue zdali pak mnoství nesoudí, jak jsi také ty prve øíkal,
+e spravedlivé je mít stejnì a e je ošklivìjší bezpráví èinit neli snášet?
+Je tomu tak èi ne?
+A jen abys tu nebyl pøistien zase ty,
+e se stydíš.
+Soudí mnoství èi ne,
+e spravedlivé je mít stejnì, a ne mít více, a e je ošklivìjší bezpráví èinit neli snášet?
+Neodepøi mi, Kallikle, odpovìï na tuto otázku, abych byl, budeš-li se mnou souhlasiti, od tebe ji utvrzen ve svém mínìní souhlasem mue schopného úsudku.
+
+[Kallikles]
+Ano, mnoství takto soudí.
+
+[Sokrates]
+Tedy èiniti bezpráví není ošklivìjší neli je snášeti jenom podle zákona, ani není rovnost spravedlivou vìcí jen podle zákona,
+nıbr i pøirozenì;
+take se skoro zdá,
+e jsi nemìl pravdu v tom, co jsi døíve øíkal, a e jsi mì nesprávnì vinil z nepravdy øka,
+e zákon a pøíroda je nìco opaèného a e i já to znám, ale nepoctivì si vedu ve svıch øeèech, nebo jestlie nìkdo mluví hledì k pøírodì,
+e já pøevádím øeè k zákonu, pakli však nìkdo mluví hledì k zákonu, já k pøírodì.
+
+[Kallikles]
+Tenhle mu nepøestane vanit.
+Øekni mi, Sokrate, nestydíš se, ty, ve svém vìku, chytat za slovo a pokládat za šastnı nález, jestlie nìkdo v slovì pochybí?
+Co pak se domníváš,
+e já dìlám nìjakı rozdíl mezi pojmy „mocnìjší” a „lepší”?
+Co ti u dávno neøíkám,
+e pro mne je „lepší” a „mocnìjší” toté?
+Èi se domníváš,
+e podle mého mínìní, kdykoli se shromádí sbìø otrokù a všelijakıch lidí, úplnì nicotnıch, snad a na to,
+e se mohou prokázat tìlesnou silou, a ti nìco prohlásí,
+e tohle je ustanovení zákona?
+
+[Sokrates]
+Dobøe, pøemoudrı Kallikle;
+tak si to myslíš?
+
+[Kallikles]
+Ovšem e ano.
+
+[Sokrates]
+Však já sám, mùj drahı, se u dávno dohaduji,
+e dáváš pojmu „mocnìjší” asi takovıto vıznam, a ptám se, protoe dychtím jasnì vìdìti, co si myslíš.
+Vdy pøece ty se nedomníváš,
+e dva lidé jsou lepší neli jeden ani e tvoji otroci jsou tebe lepší, protoe jsou silnìjší neli ty.
+Ale øekni ještì jednou ze zaèátku, co asi myslíš slovem „lepší”, kdy ne lidi silnìjší?
+A pouèuj mì, podivnı mui, trochu vlídnìji, abych ti z uèení neutekl.
+
+[Kallikles]
+Ironisuješ, Sokrate.
+
+[Sokrates]
+Zethos ví,
+e ne, Kallikle, jeho ses ty dovolával, kdy jsi právì mluvil mnoho ironicky ke mnì;
+ale tak øekni, kdo jsou podle tebe ti lepší?
+
+[Kallikles]
+Zajisté ti zdatnìjší.
+
+[Sokrates]
+Vidíš tedy,
+e ty sám mluvíš jen slova a nic neobjasòuješ?
+Neøekneš, zdali tìmi lepšími a mocnìjšími míníš rozumnìjší
+èi nìkteré jiné?
+
+[Kallikles]
+Ano, pøi Diovi, tyto míním, rozhodnì.
+
+[Sokrates]
+Èasto tedy je podle tvé øeèi jeden èlovìk mající rozum mocnìjší neli tisíce nerozumnıch a ten má vládnouti, oni pak mají bıt ovládáni, a více má mít vládnoucí pøed ovládanımi;
+tohle toti podle mého zdání chceš øíci
+— a nechytám za slovo —
+jestlie je ten jeden mocnìjší ne tisíce.
+
+[Kallikles]
+Ano, toto je, co myslím.
+Tohle toti je, jak se já domnívám, pøirozenì spravedlivé,
+aby lepší a rozumnìjší vládl nad horšími a mìl více ne oni.
+
+[Sokrates]
+Poèkej! Co pak asi zase teï myslíš?
+Dejme tomu,
+e je nás mnoho pohromadì na jednom místì, právì tak jako nyní, a máme spoleènì mnoho jídel i nápojù, a jsme všelijací, jedni silní, druzí slabí, a jeden z nás, kterı je lékaø, je v tìchto vìcech rozumnìjší, aè, jak je pøirazeno, je proti jednìm silnìjší a proti druhım slabší:
+zdali pak jistì nebude tento mu, protoe je rozumnìjší ne my, lepší a mocnìjší, co se tıèe tìch vìcí?
+
+[Kallikles]
+Ovšem.
+
+[Sokrates]
+Zdali pak tedy má mít z tìchto jídel více neli my, protoe je lepší?
+Èi má sice, protoe je první, všechno rozdìlovat, ale v pouívání a spotøebování pro své vlastní tìlo nemá mít více, nechce-li,
+aby ho to vytrestalo,
+nıbr má dostat proti jednìm více, proti druhım pak ménì?
+A jestlie je náhodou ze všech nejslabší, má se mu dostat, Kallikle, jemu, ze všech nejlepšímu, ze všech nejménì?
+Není tomu tak, mùj milı?
+
+[Kallikles]
+Mluvíš o jídlech, o nápojích, o lékaøích a o hloupostech;
+ale já nemyslím tyhle vìci.
+
+[Sokrates]
+Nenazıváš snad lepším rozumnìjšího?
+Øekni ano nebo ne!
+
+[Kallikles]
+Arcie.
+
+[Sokrates]
+A netvrdíš,
+e lepší má mít více?
+
+[Kallikles]
+Ale ne jídel ani nápojù.
+
+[Sokrates]
+Rozumím, ale snad šatù, a kdo se nejlépe vyzná v tkalcovství, má mít nejvìtší šat a má toho mít na sobì navleèeno nejvíce a nejkrásnìjšího a tak chodit?
+
+[Kallikles]
+Jakıch šatù?
+
+[Sokrates]
+Ale co se tıèe obuvi, je patrno,
+e musí mít pøednost nejrozumnìjší v této vìci a nejlepší.
+Snad musí mít švec na nohou nejvíce obuvi a nejvìtší a tak chodit.
+
+[Kallikles]
+Jaké obuvi?
+Mluvíš samé hlouposti.
+
+[Sokrates]
+Ale jestlie nemyslíš takovéto vìci, snad takovéhle:
+na pøíklad rolník, rozumnı a dokonalı, co se tıèe zemìdìlství, ten snad má mít vìtší hojnost zrní a má uívat co nejvìtšího mnoství zrní pro svou zemi.
+
+[Kallikles]
+Jak stále mluvíš toté, Sokrate!
+
+[Sokrates]
+Nejen to, Kallikle,
+nıbr i o tıch vìcech.
+
+[Kallikles]
+Pøi bozích, bez pøestání mluvíš poøád o ševcích a valcháøích a kuchaøích a lékaøích, jako by ti byli pøedmìtem naší rozmluvy.
+
+[Sokrates]
+Nue neøekneš, èeho se musí tıkat ta vìtší míra èlovìka mocnìjšího a rozumnìjšího, aby jí vynikal spravedlivì?
+Èi ani nesneseš mıch nápovìdí ani to sám neøekneš?
+
+[Kallikles]
+Však já to u dlouho øíkám.
+Za prvé tìmi mocnìjšími nemyslím ševce ani kuchaøe,
+nıbr ty, kdo jsou rozumní ve vìcech obce, jakım zpùsobem by byla dobøe spravována, a netoliko rozumní,
+nıbr i zmuilí, schopní provádìti, cokoli by si usmyslili, a kteøí neochabují pro malátnost své duše.
+
+[Sokrates]
+Vidíš, nejmilejší Kallikle, jakı je rozdíl mezi tím, co ty mnì vytıkáš, a tím, co já tobì?
+Ty toti o mnì tvrdíš,
+e mluvím stále toté, a to mi máš za zlé;
+já však tobì naopak vytıkám,
+e nikdy nemluvíš toté o tıch vìcech,
+nıbr jednou jsi ve svém vımìru za lepší a mocnìjší pokládal silnìjší, potom zase rozumnìjší, a nyní zase pøicházíš s nìèím jinım:
+mocnìjší a lepší jsou od tebe nazıváni jakımisi zmuilejšími.
+Nue, pøíteli, kdo asi jsou podle tvého soudu lepší a mocnìjší a v èem?
+Jen ven s tím!
+
+[Kallikles]
+Vdy jsem øekl,
+e to jsou lidé rozumní ve vìcech obce a stateèní.
+Tìm toti náleí vládnout obcím a spravedlnost záleí v tom,
+aby ti mìli více proti ostatním, vládnoucí proti ovládanım.
+
+[Sokrates]
+A co, pøíteli, jakı je u nich pomìr k sobì samım?
+Jsou vládnoucí èi ovládaní?
+
+[Kallikles]
+Jak to myslíš?
+
+[Sokrates]
+Myslím si jednoho kadého, jak vládne nad sebou samım;
+èi toho není nic potøebí, vládnout sám nad sebou,
+nıbr jen nad ostatními?
+
+[Kallikles]
+Jak to myslíš, vládnout sám nad sebou?
+
+[Sokrates]
+Nemyslím tím nic zvláštního,
+nıbr jako se obecnì myslí, bıt umìøenı a mocen sám sebe, ovládat v sobì své libosti a ádosti.
+
+[Kallikles]
+Ty jsi dobrı:
+pošetilce nazıváš umìøenımi.
+
+[Sokrates]
+Jak to?
+Nikdo by nemohl nepoznat,
+e tohle není mé mínìní.
+
+[Kallikles]
+Ba zcela jistì, Sokrate.
+Nebo jak by mohl bıt èlovìk šasten, kdyby komukoli otroèil?
+Ale tohle je po pøirozenosti krásné a spravedlivé, co já ti nyní otevøenì pravím,
+e toti kdo chce správnì ít, musí ponechat svım ádostem co nejvìtší vzrùst a nesmí je krotit;
+a kdy jsou co nejvìtší, musí bıt schopen jim slouit svou stateèností a moudrostí a splòovat, èehokoli by se mu kdy zachtìlo.
+Ale toto, myslím, není obecnému mnoství moné;
+proto ze studu takové jednotlivce haní, zakrıvajíce tak svou vlastní nemohoucnost, a nazıvají onu nezkrocenost nìèím ošklivım, jak jsem øekl svrchu, snaíce se lidi od pøirozenosti lepší uèinit raby, a kdy sami nemohou zjednat svım choutkám ukojení, tu pro svùj vlastní nedostatek munosti vychvalují umìøenost a spravedlnost.
+Nebo kdy je nìkterı èlovìk buï od pùvodu z rodu královského nebo je sám svou pøirozeností schopen získat si nìjaké vùdèí místo nebo samovládu nebo svrchovanou moc, co by bylo pro takovéto lidi vpravdì ošklivìjší a horší neli umìøenost a spravedlnost, pro lidi,
+kterım bylo volno uívat dobrıch vìcí a nikdo jim v tom nepøekáel, kteøí si však sami ustanovili nad sebou pánem zákon, úsudek a hanu obecného mnoství?
+Nebo jak by mohli nebıt nešastni od té mravní krásy spravedlnosti a umìøenosti, kdy by nedávali svım pøátelùm nic více neli nepøátelùm, a to majíce vládu ve své obci?
+Ale podle pravdy, Sokrate
+— kterou ty, jak pravíš, hledáš —
+má se to takto:
+blahobyt, nezkrocenost a svoboda, jestlie má podporu, je dobrost a štìstí,
+kdeto to ostatní, tyhle pøíkrasy, ty dohody lidí proti pøírodì, to je vást a za nic to nestojí.
+
+[Sokrates]
+Chrabøe, Kallikle, a otevøenì doráíš svou øeèí;
+nebo ty nyní zøejmì vyslovuješ, co si jiní sice myslí, ale nechtí to øíci.
+Prosím tì tedy, abys ádnım zpùsobem nepovoloval, tak aby se vskutku jasnì ukázalo, jak jest íti.
+A øekni mi:
+je pravda,
+e ty tvrdíš,
+e se ádosti nemají omezovat, má-li èlovìk bıt takovı, jak je tøeba,
+nıbr e je má nechávat co nejvìtší a odkudkoli jim zjednávat naplnìní, a to e je dobrost?
+
+[Kallikles]
+Ano, já to tvrdím.
+
+[Sokrates]
+Tedy se nesprávnì øíká o lidech, kteøí nièeho nepotøebují,
+e jsou šastni.
+
+[Kallikles]
+Ano, nebo takto by byly nejšastnìjší kameny a mrtvoly.
+
+[Sokrates]
+Ale jistì i jak ty líèíš, je to hroznı ivot.
+Nic bych se toti nedivil,
+e snad má pravdu Euripides v tìchto slovech:
+
+<font color="#FF0000">kdo ví, zda toto ití není mrtev bıt a smrt zda není ití?</font>
+
+a my jsme snad opravdu mrtvi;
+já jsem toti také u slyšel od kteréhosi z moudrıch muù,
+e my nyní jsme mrtvi a naše tìlo e nám je hrobem, ta pak Èást duše, v které jsou ádosti,
+e má vlastnost dát se pøemlouvat a obraceti se sem a tam;
+a tuto èást duše, pro její schopnost dáti se pøemluvit a uvìøit,
+kterısi vtipnı spisovatel, snad ze Sicílie nebo z Itálie, obraznì nazval, uívaje slovní høíèky, sudem, nerozumné lidi nezasvìcenımi, a u nerozumnıch lidí pøirovnal tu èást duše, v které jsou ádosti, nezøízenou její slokou a bez pevnıch stìn, k dìravému sudu, naráeje na její nenasytnost.
+A právì proti tobì, Kallikle, ukazuje tento mu,
+e z tìch, kdo jsou v øíši Hádovì — on mluví o „neviditelném” svìtì — tito jsou nejnešastnìjší, ti nezasvìcení, a nosí vodu do dìravého sudu jinou takovou dìravou nádobou, sítem.
+Tím sítem tedy myslí, jak øekl mùj vyprávìè, duši;
+a k sítu pøirovnal duši nerozumnıch, jako by byla dìravá, protoe nemùe v sobì nic dret pro svou nespolehlivost a zapomnìtlivost.
+Tohle je sice ovšem ponìkud podivné, ale pøece to objasòuje, co ti chci ukázat, abych tì, budu-li jen trochu s to, pøemluvil ke zmìnì zásad,
+aby sis toti místo ivota nenasytného a nezøízeného zvolil ivot uspoøádanı, spokojenı i vystaèující s tím, co má.
+Nue, zdali pak se mi podaøilo ponìkud tì pøemluvit i ke zmìnì mínìní v tom smyslu,
+e lidé spoøádaní jsou šastnìjší ne nezøízení, èi nezmìníš ani dost málo své mínìní, ani kdybych ti vykládal mnoho takovıch mythù?
+
+[Kallikles]
+V tom druhém máš spíše pravdu, Sokrate.
+
+[Sokrates]
+Nue tedy ti povím jiné podobenství z tée školy jako tohle.
+Pozoruj, zdali soudíš o obojím ivotì, o ivotì umìøeném a ivotì nezøízeném, takto.
+Pøedstav si,
+e jsou dva mui a jeden i druhı má mnoho sudù, a to jeden sudy zdravé a plné a v jednom má víno, v druhém med, v tøetím mléko a v mnoha jinıch mnoho rozmanitıch vìcí, zdroje pak kadé z tìchto tekutin e jsou vzácné a nesnadno pøístupné, jaké je mono si opatøovat jen s velikou a tìkou námahou.
+Ten jeden tedy, kdy by je naplnil, u by tam nenalé-val a o nic by se nestaral,
+nıbr mìl by po této stránce pokoj;
+tomu druhému by sice bylo jako onomu mono, ale nesnadno opatøovat si tekutiny, avšak nádoby by mìl dìravé a chatrné a byl by nucen ve dne v noci je naplòovat, sice by mìl nejhorší trápení.
+Kdy je takovı ivot jednoho i druhého, øekneš snad,
+e ivot nezøízeného èlovìka je šastnìjší neli spoøádaného?
+Podaøilo se mi ponìkud tímto vıkladem tì pøemluvit, abys uznal,
+e spoøádanı ivot je lepší ne nezøízenı, èi nepodaøilo?
+
+[Kallikles]
+Nepodaøilo se ti to, Sokrate.
+Nebo ten, kterı si naplnil sudy, u nemá ádné radosti,
+nıbr to je to, co jsem právì øíkal, ít jako kámen, po tom naplnìní, a necítit u ani radosti ani stráznì.
+Avšak v tom <font color="#FF0000">záleí</font> pøíjemné ití, v tom, kdy co nejvíce pøitéká.
+
+[Sokrates]
+Není-li pak nutné, jestlie mnoho pøitéká,
+aby také mnoho odcházelo a aby byly jakési veliké díry pro ty odtoky?
+
+[Kallikles]
+Ovšem e ano.
+
+[Sokrates]
+To, co ty mluvíš, je zase jakısi ivot ravého kulíka, a ne mrtvoly ani kamene.
+A øekni mi:
+myslíš tím nìco takovéhoto jako mít hlad a hladov jíst?
+
+[Kallikles]
+Arcie.
+
+[Sokrates]
+A mít ízeò a ízniv pít?
+
+[Kallikles]
+Ano, a kdy má èlovìk všechny jiné ádosti a mùe je ukojovat, cítí z toho radost a tak šastnì ije.
+
+[Sokrates]
+Vıbornì, mùj milı;
+jen pokraèuj, jak jsi zaèal, a a se od toho nedáš odvrátit studem! Avšak ani já nesmím, jak se podobá, dát se odvrátit studem.
+A nejprve rci, zdali mùe i prašivı èlovìk a cítící svrbìní, má-li v zásobì hojnost drbání, drbat se po celı ivot a tak šastnì ít?
+
+[Kallikles]
+Jakı jsi podivín, Sokrate, a docela jako bys mluvil k davu.
+
+[Sokrates]
+Tak tedy, Kallikle, Pola a Gorgia jsem ohromil a zpùsobil jsem,
+e se stydìli, ale ty se nedáš ohromit ani se nezastydíš,
+vdy jsi zmuilı.
+Ale jen odpovídej.
+
+[Kallikles]
+Tvrdím tedy,
+e i ten drbající se èlovìk by proil ivot pøíjemnì.
+
+[Sokrates]
+Jestlie pøíjemnì, zdali pak ne i šastnì?
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+Zdali pak kdy si drbe jen hlavu — èi ještì se tì mám dále ptát?
+Viz, Kallikle, co odpovíš, bude-li se tì nìkdo ptát na všechno, co s tímto pøímo souvisí.
+A souhrn takovıchto vìcí, ivot pederastù, ten není hroznı, ošklivı a nešastnı?
+Èi o tìch se odváíš øíci,
+e jsou šastni, jestlie mají hojnost toho, èeho si ádají?
+
+[Kallikles]
+Nestydíš se, Sokrate, zavádìt øeèi na takové vìci?
+
+[Sokrates]
+Zavádím je tam já, ušlechtilı pøíteli, èi ten, kdo takto bez obalu tvrdí,
+e lidé ijící v radostech jsou šastni, a je ta jejich radost jakákoli, a nedìlá rozdíl, které ze slastí jsou dobré a které zlé?
+Ale øekni ještì i nyní, zdali tvrdíš,
+e pøíjemné a dobré je toté, èi e je nìco mezi pøíjemnımi vìcmi, co není dobré?
+
+[Kallikles]
+Nue aby si má øeè neodporovala, kdybych øekl,
+e to je nìco rùzného, tvrdím,
+e to je toté.
+
+[Sokrates]
+Kazíš, Kallikle, pøedešlé úvahy a ji bys se mnou nemohl náleitì zkoumat skuteènou pravdu, jestlie budeš mluvit proti svému mínìní.
+
+[Kallikles]
+Vdy to dìláš i ty, Sokrate.
+
+[Sokrates]
+Tedy ani já nejednám správnì, jestlie tohle dìlám, ani ty.
+Avšak, mùj drahı, hleï,
+e snad dobro není v této vìci, vším zpùsobem ít v radostech;
+nebo jestlie tomu tak jest, vyplıvají z toho zjevnì ty mnohé ošklivé vìci, které jsem právì naznaèil, i mnoho jinıch.
+
+[Kallikles]
+Jak se ty domníváš, Sokrate.
+
+[Sokrates]
+Ty doopravdy na tom stojíš, Kallikle?
+
+[Kallikles]
+Arcie.
+
+[Sokrates]
+Máme se tedy dát do rozpravy za pøedpokladu,
+e to je tvé váné mínìní?
+
+[Kallikles]
+Ano, velmi váné.
+
+[Sokrates]
+Nue tedy, kdy se ti takto zdá, urèi mi pøesnì toto:
+je snad nìco, èemu øíkáš vìdìní?
+
+[Kallikles]
+Zajisté.
+
+[Sokrates]
+Neøíkal jsi prve,
+e vedle vìdìní jest i jakási stateènost?
+
+[Kallikles]
+Ano, øíkal jsem.
+
+[Sokrates]
+O tìchto dvou vìcech jsi tedy mluvil jako o dvou proto,
+e stateènost pokládáš za nìco rùzného od vìdìní, není-li pravda?
+
+[Kallikles]
+Ano, za nìco docela rùzného.
+
+[Sokrates]
+A co slast a vìdìní, pokládáš to za toté èi za rùzné?
+
+[Kallikles]
+Jistì pøece za rùzné, ty mudrci!
+
+[Sokrates]
+Zdali pak také stateènost za rozdílnou od slasti?
+
+[Kallikles]
+Jak by ne?
+
+[Sokrates]
+Nue tedy si pamatujme,
+e Kallikles z demu Acharnai tvrdil,
+e pøíjemné a dobré je toté, ale vìdìní a stateènost e se rùzní i od sebe vespolek i od dobra.
+
+[Kallikles]
+A Sokrates z demu Alopeke s námi v tom nesouhlasí.
+Èi souhlasí?
+
+[Sokrates]
+Nesouhlasí;
+a myslím,
+e ani Kallikles nebude souhlasit, a se sám na sebe správnì podívá.
+Øekni mi:
+nemyslíš,
+e ti, kteøí se mají dobøe, jsou v opaèném stavu neli ti, kteøí se mají zle?
+
+[Kallikles]
+Zajisté.
+
+[Sokrates]
+Jestlie tedy jsou tyto stavy mezi sebou opaèné, zdali pak se to s nimi nemá zrovna tak jako se zdravím a nemocí?
+Jistì toti není èlovìk zároveò zdráv i nemocen, ani se zároveò nezbavuje zdraví i nemoci.
+
+[Kallikles]
+Jak to myslíš?
+
+[Sokrates]
+Pozoruj na pøíklad kteroukoli èást tìla zvláš.
+Stává se snad,
+e èlovìk má nemocné oèi, co se jmenuje krhavost?
+
+[Kallikles]
+Jak pak by ne?
+
+[Sokrates]
+Tu tedy jistì tyté oèi u nìho nejsou zároveò zdravé?
+
+[Kallikles]
+Ani dost málo.
+
+[Sokrates]
+A co kdy se zbaví té oèní nemoci?
+Pozbıvá snad tehdy také zdraví oèí a nakonec je zbaven zároveò obojího?
+
+[Kallikles]
+Nikoli.
+
+[Sokrates]
+To by bylo jistì podivné a nesmyslné,
+e ano?
+
+[Kallikles]
+Velice.
+
+[Sokrates]
+Tedy, myslím, nabıvá i pozbıvá jednoho i druhého støídavì?
+
+[Kallikles]
+Tak jest.
+
+[Sokrates]
+Zdali pak tomu není tak i se silou a slabostí?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+A s rychlostí a pomalostí?
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+A co se tıèe dobrıch vìcí a štìstí i jejich opaku,
+vìcí zlıch a ivota nešastného,
+zdali pak i tu støídavì nenabıvá a støídavì nepozbıvá
+jednoho i druhého?
+
+[Kallikles]
+Jistì e ano.
+
+[Sokrates]
+Jestlie tedy nalezneme jisté vìci,
+jich èlovìk zároveò pozbıvá nebo zároveò je má,
+je jasno,
+e by ty vìci nebyly dobro a zlo.
+Shodujeme se v tom?
+Rozva si to velmi dobøe, ne odpovíš!
+
+[Kallikles]
+Ó, nad míru s tím souhlasím.
+
+[Sokrates]
+Nue, vrame se k tomu, co jsme døíve souhlasnì uznali.
+O hladu jsi øekl,
+e to je vìc pøíjemná èi nepøíjemná?
+Myslím hlad sám o sobì.
+
+[Kallikles]
+Jistì e nepøíjemná;
+avšak jísti, kdy má èlovìk hlad, to pokládám za pøíjemné.
+
+[Sokrates]
+Rozumím;
+ale tedy sám hlad je vìc nepøíjemná.
+Èi ne?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Zdali pak ne i ízeò?
+
+[Kallikles]
+Tuze nepøíjemná.
+
+[Sokrates]
+Zdali pak se mám ještì dále tázat èi souhlasíš,
+e kadá potøeba a ádost je nepøíjemná?
+
+[Kallikles]
+Souhlasím a neta se dále.
+
+[Sokrates]
+Dobrá;
+a pít, kdy má èlovìk ízeò, nepokládáš to snad za pøíjemné?
+
+[Kallikles]
+Arcie.
+
+[Sokrates]
+Jistì tedy v tomto pøípadì, o kterém mluvíš, jedna vìc, ta ízeò, je patrnì nelibá?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Avšak druhá vìc, píti, je ukojování potøeby a libı pocit?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Tedy pøi pití podle tvého soudu èlovìk cítí radost?
+
+[Kallikles]
+Zajisté.
+
+[Sokrates]
+A to, kdy má ízeò?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Pocit nelibı?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Nue pozoruješ, co z toho vychází?
+Kdy pravíš,
+e íznící pije,
+e tím øíkáš,
+e èlovìk mající nelibı pocit cítí zároveò radost?
+Èi se to nedìje zároveò na tém místì a v tém èase, a u myslíš,
+e v duši nebo v tìle?
+Na tom rozdílu toti podle mého mínìní nezáleí.
+Jest tomu tak èi ne?
+
+[Kallikles]
+Jest.
+
+[Sokrates]
+Ale vdy pokládáš za nemoné,
+aby èlovìku, kterému je dobøe, bylo zároveò zle?
+
+[Kallikles]
+Ano, pokládám.
+
+[Sokrates]
+Avšak uznáváš za moné,
+aby èlovìk cítící nepøíjemnost cítil radost.
+
+[Kallikles]
+Patrnì.
+
+[Sokrates]
+Není tedy pravda,
+e cítit radost jest dobøe se mít, ani e cítit nepøíjemnost je mít se zle, take vychází,
+e pøíjemné je rùzné od dobrého.
+
+[Kallikles]
+Nevím, co to mudruješ, Sokrate.
+
+[Sokrates]
+Víš, ale dìláš, jako bys nevìdìl, Kallikle;
+a postup ještì dále, abys vìdìl, jak jsi moudrı ty, kterı mì napomínáš.
+Není-li pravda,
+e u kadého z nás, kdy pøestává ízeò, pøestává zároveò i libost zpùsobovaná pitím?
+
+[Kallikles]
+Nevím, co tím myslíš.
+
+[Gorgias]
+Nemluv tak, Kallikle,
+nıbr odpovídej i kvùli nám,
+aby byl ten rozhovor pøiveden ke konci.
+
+[Kallikles]
+Ale Sokrates je stále stejnı, Gorgio;
+dotazuje se na malicherné a nicotné vìci a ty si bere za pøedmìt svého dokazování.
+
+[Gorgias]
+Ale co ti na tom <font color="#FF0000">záleí?</font>Jistì není tvá vìc to oceòovat, Kallikle;
+ale popøej Sokratovi,
+aby provedl svùj dùkaz, jak mu je libo.
+
+[Kallikles]
+Tak se tedy ta na tyhle malièké a drobné vìci, kdy se Gorgiovi tak zdá.
+
+[Sokrates]
+Blaen jsi, Kallikle,
+e jsi zasvìcen døíve do velkıch mystérií neli do malıch;
+já jsem si nemyslil,
+e to je dovoleno.
+Nue tedy odpovídej, kde ses zastavil, zdali nepøestává u kadého z nás zároveò s ízní i libost.
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Nepøestávájí-li také zároveò s hladem a ostatními ádostmi libé pocity?
+
+[Kallikles]
+Tak jest.
+
+[Sokrates]
+Tedy nepøíjemné a libé pocity pøestávají èlovìku zároveò?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Avšak dobré a zlé nepøestává u èlovìka zároveò, jak jsi uznával;
+a nyní to neuznáváš?
+
+[Kallikles]
+Zajisté;
+a co z toho?
+
+[Sokrates]
+e z toho vychází, pøíteli,
+e není toté dobré s pøíjemnım ani zlé s nepøíjemnım.
+U jedné z tìch dvojic nastává toti konec zároveò, u druhé ne, z, èeho je vidìt,
+e jsou rùzné;
+jak by tedy bylo pøíjemné toté s dobrım nebo nepøíjemné se zlım?
+Budeš-li však chtít, podívej se na to i takhle (já myslím,
+e ani takto není s tebou shody;
+ale hleï):
+nenazıváš snad dobré dobrımi proto,
+e v nich je pøítomno dobro, právì tak jako krásnımi ty, v kterıch je pøítomna krása?
+
+[Kallikles]
+Zajisté.
+
+[Sokrates]
+A co, nazıváš dobrımi mui mue nerozumné a zbabìlé?
+Pøed chvílí ne,
+nıbr takto jsi nazıval stateèné a rozumné;
+èi nenazıváš dobrımi tyto?
+
+[Kallikles]
+Ovšem e ano.
+
+[Sokrates]
+A co, vidìl jsi u nìkdy nerozumné dítì, jak se raduje?
+
+[Kallikles]
+Zajisté.
+
+[Sokrates]
+A nerozumného mue jsi ještì nevidìl se radovat?
+
+[Kallikles]
+Myslím,
+e ano;
+ale co s tím?
+
+[Sokrates]
+Nic, jen odpovídej!
+
+[Kallikles]
+Vidìl.
+
+[Sokrates]
+A co, rozumného jsi vidìl, jak se trápí i jak se raduje?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+A kteøí se více radují a více trápí, rozumní èi nerozumní?
+
+[Kallikles]
+Já myslím,
+e v tom není velkého rozdílu.
+
+[Sokrates]
+I to staèí.
+A ve válce jsi u vidìl mue zbabìlého?
+
+[Kallikles]
+Jak by ne?
+
+[Sokrates]
+Co kdy nepøátelé ustupovali, kdo mìli podle tvého zdání vìtší radost, zbabìlí èi stateèní?
+
+[Kallikles]
+Myslím,
+e obojí stejnou;
+pakli ne, aspoò podobnou.
+
+[Sokrates]
+Na tom nezáleí.
+Tedy i zbabìlí se radují?
+
+[Kallikles]
+Tuze.
+
+[Sokrates]
+I nerozumní, jak se podobá.
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+A kdy se nepøátelé pøibliují, mají nepøíjemnı pocit jen zbabìlí èi také stateèní?
+
+[Kallikles]
+Obojí.
+
+[Sokrates]
+Zdali pak stejnì?
+
+[Kallikles]
+Snad více zbabìlí.
+
+[Sokrates]
+A kdy ustupují, nemají vìtší radost?
+
+[Kallikles]
+Snad.
+
+[Sokrates]
+Tedy nerozumní i rozumní a zbabìlí i stateèní mají podobnım zpùsobem nepøíjemné pocity i pocity radosti, jak ty pravíš, ale více zbabìlí ne stateèní?
+
+[Kallikles]
+Tak jest.
+
+[Sokrates]
+Avšak rozumní a stateèní jsou zajisté dobøí,
+kdeto zbabìlí a nerozumní špatní?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Podobnım zpùsobem tedy cítí radost i strázeò dobøí i špatní?
+
+[Kallikles]
+Tak jest.
+
+[Sokrates]
+Zdali pak tedy jsou dobøí a špatní podobnım
+
+zpùsobem dobøí a špatní?
+Èi snad jsou špatní ještì více dobøí?
+
+[Kallikles]
+Pøi Diovi, nevím, co si to myslíš.
+
+[Sokrates]
+Co nevíš,
+e dobøí jsou podle tvého tvrzení dobøí pro pøítomnost dobra, a špatní špatní pro pøítomnost zla?
+A dobrımi vìcmi e jsou pøíjemné pocity a zlımi vìcmi stavy nepøíjemné?
+
+[Kallikles]
+Zajisté.
+
+[Sokrates]
+Jestlie se tedy radující radují, není snad v nich pøítomno dobro, toti pøíjemné pocity?
+
+[Kallikles]
+Jak by ne?
+
+[Sokrates]
+Tedy radující se jsou patrnì dobøí pro pøítomnost dobra?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+A co ti, kteøí se trápí, zdali pak v nich není pøítomno zlo, toti stráznì?
+
+[Kallikles]
+Ano, jest.
+
+[Sokrates]
+A ty tvrdíš,
+e špatní jsou špatní pro pøítomnost zla;
+èi u to netvrdíš?
+
+[Kallikles]
+Arcie.
+
+[Sokrates]
+Tedy dobøí jsou, kdokoli se radují, a špatní kdokoli se trápí?
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+A kteøí se více radují nebo trápí, jsou více dobøí nebo špatní, kteøí pak ménì, jsou ménì takoví, a kteøí podobnım zpùsobem, podobnì?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Nue, netvrdíš,
+e podobnım zpùsobem cítí radost i strázeò rozumní jako nerozumní a zbabìlí jako stateèní, nebo snad ještì více zbabìlí?
+
+[Kallikles]
+Zajisté.
+
+[Sokrates]
+Usuï tedy spoleènì se mnou, co nám vychází z toho, co jsme souhlasnì uznali;
+vdy se øíká,
+e je krásné dvakrát i tøikrát opakovat krásné vìci a pozorovat je.
+Podle naší øeèi je dobrım èlovìkem rozumnı a stateènı, pravda?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+A špatnım nerozumnı a zbabìlı?
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+A na druhé stranì dobrı je ten, kdo cítí radost?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+A špatnı, kdo se trápí?
+
+[Kallikles]
+Nutnì.
+
+[Sokrates]
+A dobrı a špatnı se podle našich slov trápí i radují podobnì, snad ještì více špatnı?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Není-li tedy pravda,
+e èlovìk špatnı bıvá stejnì špatnı i dobrı jako èlovìk dobrı nebo snad ještì více dobrı?
+Nevychází-li tento závìr i ten døívìjší, jestlie nìkdo tvrdí,
+e pøíjemné a dobré je toté?
+Není-li pak tohle nutnı závìr, Kallikle?
+
+[Kallikles]
+Jak tì tak poslouchám, Sokrate, a pøisvìdèuji na tvé otázky, ji dávno si uvìdomuji,
+e kdykoli by ti kdo i ertem v nìèem dal za pravdu, ty se toho s radostí chápeš jako dìti.
+Jak si jen mùeš myslit,
+e já nebo kdokoli jinı na svìtì nepokládám jedny slasti za lepší, druhé za horší!
+
+[Sokrates]
+Ach, Kallikle, jakı jsi ty šibal! Zacházíš se mnou jako s dítìtem, mluvì o tıch vìcech hned tak, hned onak, a chceš mì klamat.
+A pøece jsem si na zaèátku nemyslil,
+e snad budu od tebe úmyslnì oklamán, nebo jsem vìøil,
+e jsi mùj pøítel;
+ale nyní vidím,
+e jsem se zmılil, a patrnì musím podle starého rèení zamhouøit jedno oko a brát to, co mi dáváš.
+Nue tedy smysl toho, co nyní øíkáš, jest, jak se podobá, ten,
+e slasti jsou jedny dobré, druhé pak zlé;
+pravda?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Nejsou snad tedy dobré ty, které jsou prospìšné, a zlé ty, které jsou škodlivé?
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+A prospìšné jsou ty, které dìlají nìco dobrého, zlé pak, které nìco zlého?
+
+[Kallikles]
+Tak jest.
+
+[Sokrates]
+Myslíš snad tedy takové, jako jsou tìlesné libosti, o kterıch jsme právì mluvili, záleící v jídle a pití?
+Zdali pak tedy ty z nich, které zpùsobují v tìle zdraví nebo sílu nebo nìjakou jinou dobrou vlastnost tìla, ty jsou dobré,
+kdeto ty, které zpùsobují opak toho, zlé?
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+Nejsou-li pak i stráznì právì tak jedny dobré a druhé špatné?
+
+[Kallikles]
+Jak pak by ne?
+
+[Sokrates]
+Nemáme-li tedy dobré slasti i stráznì volit a zpùsobovat?
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+Špatné však ne?
+
+[Kallikles]
+To je jasné.
+
+[Sokrates]
+Ano, nebo všechno máme dìlat pro dobro, jak se ukázalo, jestlie se pamatuješ, mnì a Polovi.
+Zdali pak se i tobì v souhlase s námi zdá,
+e cílem veškerého jednání je dobro a e pro nì se musí všechny ostatní vìci dìlat, a ne ono pro ty ostatní?
+Pøidáváš nám i ty svùj hlas, abychom byli tøi?
+
+[Kallikles]
+Zajisté.
+
+[Sokrates]
+Tedy pro dobré vìci je tøeba dìlat jak všechny ostatní vìci, tak i pøíjemné, ale ne dobré pro pøíjemné.
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+Dovede snad kadı èlovìk rozeznat, které z pøíjemnıch vìcí jsou dobré a které zlé, èi je potøebí pro kadı pøípad odborného znalce?
+
+[Kallikles]
+Odborného znalce.
+
+[Sokrates]
+Nue vzpomeòme si zase na to, co jsem já mluvil k Polovi a Gorgiovi.
+Pravil jsem toti, jestlie se pamatuješ,
+e jsou zaøízení, která mají cílem slast, pøipravující právì jen to jediné a neznající, co je lepší a co horší,
+kdeto druhá znají, co je dobré a co zlé;
+a mezi zaøízení smìøující ke slastem jsem kladl kuchaø-ství — zbìhlost a ne odborné umìní — kdeto mezi obory mající vztah k dobru lékaøské umìní.
+A pøi bohu pøátelství, Kallikle, ani sám se nedomnívej,
+e bys mìl se mnou ertovat, ani neodpovídej, cokoli tì napadne, proti svému pravému mínìní, ani zase mıch slov nepøijímej tak, jako bych já ertoval! Nebo, jak vidíš, pøedmìt našich øeèí je takovı,
+e by o ádném nemohl vánìji mluviti èlovìk jen trochu rozumnı, toti to, jakım zpùsobem je tøeba ít, zdali tím, ke kterému ty mne vyzıváš, konati tyhle vìci prı mui slušející, øeènit pøed lidem a pìstovat rétoriku a zabıvat se politikou tímto zpùsobem, jak se jí nyní vy zabıváte — èi je-li íti tímto ivotem vìnovanım filosofii a èím asi tento nad onen vyniká.
+Snad by tedy bylo nejlépe udìlat tak, jak jsem se já právì pokusil, rozlišit je vespolek a pak, kdy bychom je rozlišili a spolu souhlasnì uznali,
+e to jsou dva zpùsoby ivota, uváit, èím se navzájem liší a kterım z nich je tøeba ít.
+Tu snad ještì nevíš, co myslím.
+
+[Kallikles]
+To také ne.
+
+[Sokrates]
+Nue povím ti to jasnìji.
+Kdy jsme souhlasnì uznali já a ty,
+e nìco je dobré,
+e nìco je pøíjemné,
+e pøíjemné je rùzné od dobrého,
+e ke kadému z obojího smìøuje jistá snaha a pøíprava,
+aby se to získalo, na jedné stranì honba za pøíjemnım, na druhé za dobrım — ale nejprve projev mi jen v této vìci buï souhlas nebo nesouhlas.
+Souhlasíš?
+
+[Kallikles]
+Tak jest.
+
+[Sokrates]
+Nue tedy i pokud jde o má slova promluvená ke Gorgiovi a Polovi, projev mi svùj souhlas, zdali jsem podle tvého mínìní tehdy mluvil pravdu.
+Øekl jsem asi,
+e se mi kuchaøství nezdá umìním,
+nıbr zbìhlostí,
+kdeto lékaøství ano;
+uvádìl jsem,
+e toto, lékaøství, má prozkoumánu i pøirozenost pøedmìtu své péèe i pøíèinu toho, co dìlá, a mùe vìdecky odùvodnit kadou z tìchto vìcí;
+proti tomu to druhé, náleící ke slasti, jí jest vìnována veškerá jeho péèe, docela bez umìní jde za tímto svım cílem, nic neprozkoumavši ani pøirozenost slasti ani pøíèinu, vede si takøka veskrze bez rozumné úvahy a nic nerozpoèítá, zachovávajíc cvikem a zbìhlostí jediné pamì zvyklého dìní, a tím také opatøuje pøíjemné poitky.
+Pozoruj tedy nejprve tohle, zdali to je podle tvého zdání náleitá øeè a jsou-li i v pomìru k duši jiná taková zamìstnání, jedna odborná v plném smyslu toho slova, mající jakousi péèi o nejvìtší dobro pro duši, a druhá k tomuto lhostejná, je však zase mají vypozorováno, jako tomu je tam, jediné to, jakım zpùsobem by duši vznikala slast,
+kdeto o tom, která ze slastí je lepší èi horší, ani nezkoumají, ani se o nic jiného nestarají ne jediné o to,
+aby zpùsobovala libost, a u lépe nebo hùøe.
+Mnì se toti, Kallikle, zdá,
+e jsou, a já tvrdím,
+e nìco takového je lahodìní, a u jde o tìlo nebo o duši nebo o nìco jiného, èemu by se pøipravovala libost bez zøení na to, co je lepší a co je horší.
+Nue co ty?
+Pøidáváš se ke mnì s tım mínìním o tìchto vìcech èi mi odporuješ?
+
+[Kallikles]
+Neodporuji, naopak pøipouštím to,
+aby ti tvá rozprava došla konce a abych se zavdìèil tuhle Gorgiovi.
+
+[Sokrates]
+Zdali pak se tahle vìc mùe vztahovat jen k jedné duši, a ke dvìma nebo mnohım nemùe?
+
+[Kallikles]
+Nikoli,
+nıbr mùe se vztahovat i ke dvìma i k mnohım.
+
+[Sokrates]
+Tedy je zajisté mono pùsobit libost zároveò celému shromádìní, beze všeho zøení na to, co je nejlepší?
+
+[Kallikles]
+Já myslím,
+e ano.
+
+[Sokrates]
+Mùeš tedy øíci, která to jsou zamìstnání, která tohle dìlají?
+Nebo radìji, chceš-li, já budu dávat otázky, a o kterém zamìstnání se ti bude zdát,
+e mezi nì náleí, øekni ano a v opaèném pøípadì ne.
+Nejprve se podívejme na hru na píšalu.
+Není-li to podle tvého mínìní, Kallikle, taková vìc,
+e sleduje jen naši libost a o nic jiného se nestará?
+
+[Kallikles]
+Mnì se zdá,
+e ano.
+
+[Sokrates]
+A stejnì zajisté i všechny takové vıkony,
+jako na pøíklad hra na kitharu, ta o závodech?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+A co cvièení sborù a skládání dithyrambù?
+Nezdá se ti,
+e je také takové?
+Domníváš se,
+e se Kinesias, syn Meletùv, nìjak o to stará,
+aby povìdìl nìco takového, èím by se posluchaèi stávali lepšími?
+Èi naopak pøedvádí, co by bylo líbivé pro zástup divákù?
+
+[Kallikles]
+Toto druhé je jasné, Sokrate, aspoò pokud jde o Kinesia.
+
+[Sokrates]
+A co jeho otec Meles?
+Myslíš,
+e hledìl na nejvìtší dobro, kdy zpíval ke kithaøe?
+Nebo snad nehledìl ani na nejvìtší libost — vdy svım zpìvem nudil diváky.
+Nue tedy pozoruj:
+nezdá se ti,
+e všechno hraní na kitharu i skládání dithyrambù je vynalezeno pro libost?
+
+[Kallikles]
+Zajisté.
+
+[Sokrates]
+A co tenhle velebnı a podivuhodnı druh básnictví, tragedie, oè ta usiluje?
+Je snad podle tvého mínìní její snahou a úsilím jediné to,
+aby zpùsobovala libost divákùm, èi také vším zpùsobem se pøièiòovat,
+aby neøekla nic takového, cokoli by jim sice bylo pøíjemné a po chuti, ale co by bylo mravnì špatné,
+kdeto je-li nìco nepøíjemné a pøi tom prospìšné,
+aby to i mluvila i zpívala, a z toho mají radost nebo ne?
+Kterım z obou zpùsobù je podle tebe zaøízeno tragické básnictví?
+
+[Kallikles]
+Je jasné, Sokrate,
+e smìøuje spíše k libosti a aby se zavdìèilo divákùm.
+
+[Sokrates]
+A neøekli jsme prve, Kallikle,
+e takováto vìc je lahodìní?
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+Nue, kdyby nìkdo sòal s poesie hudbu i rytmus i metrum, zdali pak nezbıvají pouhé øeèi?
+
+[Kallikles]
+Nutnì.
+
+[Sokrates]
+A tyto øeèi jsou mluveny k velkému zástupu a k lidu?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Tedy básnictví je jakási demegorie.
+
+[Kallikles]
+Patrnì.
+
+[Sokrates]
+Je to patrnì rétorská demegorie;
+èi se ti nezdá,
+e básníci v divadlech øeèní?
+
+[Kallikles]
+Zajisté.
+
+[Sokrates]
+Nyní tedy jsme nalezli jistı druh rétoriky, jeho se uívá pøed takovım shromádìním, v kterém jsou spoleènì i dìti i eny i mui a otroci i svobodní, rétoriky, která se nám pøíliš nelíbí;
+nebo o ní tvrdíme,
+e slouí k lahodìní.
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+Dobrá;
+a co rétorika pøed shromádìním lidu v Athénách a pøed shromádìními svobodnıch muù v jinıch obcích, èím je nám asi tato?
+Zdali pak podle tvého mínìní øeèníci, kdy mluví, hledí vdy k nejvìtšímu dobru a mají ten cíl,
+aby obèané pùsobením jejich øeèí byli co nejlepší, èi i tito mají snahu zavdìèovati se svım spoluobèanùm a nedbajíce pro svùj vlastní zájem zájmu spoleèného zacházejí s lidem jako s dìtmi,
+toliko se pokoušejí se mu zavdìèovati, ale nic se nestarají o to, bude-li pùsobením toho lepší èi horší?
+
+[Kallikles]
+Tohle u není jednoduchá otázka;
+jsou toti øeèníci, kteøí se pøi svıch øeèech starají o obèany, ale jsou i takoví, o jakıch ty mluvíš.
+
+[Sokrates]
+To staèí.
+Nebo i kdy je tahle vìc dvojí, jeden její druh je patrnì lahodìní a ošklivá demegorie,
+kdeto druhı je krásnı, toti èinit,
+aby duše obèanù byly co nejlepší, a vším zpùsobem se snait mluviti, co je nejlepší, a to bude posluchaèùm pøíjemné nebo nepøíjemné.
+Ale ty jsi ještì nikdy nevidìl takovéto rétoriky;
+nebo jestlie mùeš jmenovati z øeèníkù nìkoho takového, proè o nìm nepovíš i mnì, kdo to je?
+
+[Kallikles]
+Ne, bùh ví, nemohu ti jmenovat ádného, aspoò z nynìjších øeèníkù.
+
+[Sokrates]
+A co ze starıch, mùeš nìkterého jmenovat, jeho pùsobením se Athéòané stali lepšími od té doby, co on zaèal mluvit k lidu,
+kdeto v døívìjší dobì byli horší?
+Já toti nevím, kdo to je.
+
+[Kallikles]
+Co o Themistokleovi jsi neslyšel,
+e to byl dobrı mu, i Kimon i Miltiades i tenhle nedávno zemøelı Perikles, jeho jsi i ty slıchal mluvit?
+
+[Sokrates]
+Ano, aè jestlie to je pravá dobrost, Kallikle, o èem jsi døíve mluvil, naplòovat ádosti i své vlastní i ostatních;
+pakli však ne tohle,
+nıbr to, co jsme byli nuceni uznati pozdìji v prùbìhu rozpravy — toti splòovat jen ty ádosti, jejich naplòování dìlá èlovìka lepším,
+kdeto ty, jejich naplòování jej dìlá horším, nesplòovat, a to e je jisté umìní — e by se byl nìkterı z tìch muù osvìdèil takovımto, to nevím, jak bych mohl øíci.
+
+[Kallikles]
+Však nalezneš, budeš-li dobøe hledat.
+
+[Sokrates]
+Nue hezky klidnì pozorujme a vizme, zdali se nìkterı z nich osvìdèil takovım.
+Tady hleï, je-li pravda,
+e mu dobrı a mluvící ve prospìch nejvìtšího dobra nebude mluvit své øeèi jen tak manì,
+nıbr se zøením na jistı cíl?
+Je tomu právì tak jako u všech jinıch odbornıch pracovníkù, z nich kadı postupuje ve svém díle ne se slepım vıbìrem prostøedkù,
+nıbr tak,
+aby mu to, o èem pracuje, nabylo jistého tvaru.
+Tak na pøíklad se podívej, chceš-li, na malíøe, stavitele domù, stavitele lodí, na všechny ostatní odborníky, na kterékoli z nich chceš, jak kadı z nich klade kadou kladenou sloku v jistém øádu a pøinucuje,
+aby se jedno k druhému hodilo a bylo s tím v souladu, a by bylo celé dílo sestaveno, uspoøádáno a upraveno.
+A mezi jinımi odborníky také ti, o kterıch jsme pøed chvílí mluvili, odborníci zabıvající se tìly, uèitelé tìlocviku a lékaøi, takto upravují tìlo a poøádají.
+Uznáváme,
+e tomu tak je, èi ne?
+
+[Kallikles]
+Budi tomu tak.
+
+[Sokrates]
+Tedy jestlie se dostane domu poøádku a úpravy, je dobrı, pakli je neuspoøádán, špatnı?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Není-li to také tak s lodí?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+A jistì, øekneme, i s našimi tìly?
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+A co s duší?
+Bude dobrá, jestlie se dostane do nepoøádku, èi nabude-li jistého poøádku a jisté úpravy?
+
+[Kallikles]
+Podle toho, co pøedchází, je nutno uznati i toto.
+
+[Sokrates]
+A jaké jméno má u tìla ten stav, kterı vzniká z poøádku a úpravy?
+
+[Kallikles]
+Myslíš asi zdraví a sílu.
+
+[Sokrates]
+Ano.
+A jaké zase ten stav, kterı vzniká z poøádku a úpravy v duši?
+Pokus se nalézti a øíci to jméno právì tak jako onde.
+
+[Kallikles]
+Proè pak je neøíkáš sám, Sokrate?
+
+[Sokrates]
+Je-li ti to milejší, já je øeknu;
+a ty, bude-li se ti zdát,
+e mám pravdu, pøisvìdè, pakli ne, doka,
+e to není správné, a nepøipouštìj to.
+Podle mého mínìní tedy spoøádanost tìla má jméno „zdravı stav” a z nìho v nìm vzniká zdraví i jiné dobré vlastnosti tìla.
+Je tomu tak èi není?
+
+[Kallikles]
+Jest.
+
+[Sokrates]
+A spoøádanost a úpravnost duše má jméno „zákonitı stav” a „zákon” a jím se lidé stávají zákonitımi a øádnımi;
+a to je spravedlnost a umìøenost.
+Ano èi ne?
+
+[Kallikles]
+Budi.
+
+[Sokrates]
+Nue tedy jistì k tomuto bude hledìti onen øeèník, øeèník vzdìlanı a dobrı, a podle toho bude pøedkládati duším všechny své øeèi i všechno své jednání, a bude-li dávat nìjakı dar, podle toho jej dá, a jestlie bude nìco brát, podle toho to odejme, maje svou mysl stále obrácenu k tomu,
+aby jeho spoluobèanùm vznikala v duších spravedlnost a opouštìla je nespravedlnost, a aby v nich vznikala umìøenost a opouštìla je nezøízenost, a aby v nich vznikala jiná dobrost a odcházela z nich špatnost.
+Pøipouštíš to èi ne?
+
+[Kallikles]
+Pøipouštím.
+
+[Sokrates]
+Ano, nebo jakı by byl v tom prospìch, Kallikle, dávati nemocnému tìlu, které by bylo v špatném stavu, mnoství nejchutnìjších jídel nebo nápojù nebo cokoli jiného, co mu nijak více neprospìje nebo naopak, podle spravedlivého úsudku, udìlá ještì hùøe?
+Je tomu tak?
+
+[Kallikles]
+Budi.
+
+[Sokrates]
+Ano, nebo není, myslím, pro èlovìka prospìšno ít se špatnım stavem tìla;
+vdy tak je nezbytnì i jeho ití špatné.
+Èi není tomu tak?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Jistì také zdravému èlovìku lékaøi ve vìtšinì pøípadù dovolují ukájeti své ádosti, jako na pøíklad aby se, má-li hlad, po chuti najedl nebo, má-li ízeò, napil,
+kdeto nemocnému takøka nikdy nedovolují,
+aby si dopøával, èeho se mu chce.
+Uznáváš tohle i ty?
+
+[Kallikles]
+Arcie.
+
+[Sokrates]
+A co se tıèe duše, mùj milı, není tu tatá zásada?
+Pokud je v špatném stavu tím,
+e je nerozumná, nezøízená, nespravedlivá a bezboná, jest ji tøeba uzavírati pøed ádostmi a nenechávat ji dìlat nìco jiného, ne z èeho by byla lepší;
+ano èi ne?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Takto je toti asi lépe pro duši samu?
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+Uzavírat ji pøed tím, èeho si ádá, zdali pak to není dret ji v kázni?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Bıti drenu v kázni je tedy pro duši lepší neli neukáznìnost, jak ses ty prve domníval.
+
+[Kallikles]
+Nevím, co tím myslíš, Sokrate;
+ale ptej se nìkoho jiného.
+
+[Sokrates]
+Tento mu nesnáší,
+aby také sám nabıval prospìchu, kdy by se poddával tomu, o èem je øeè, kázni!
+
+[Kallikles]
+Také mi nic na tom nezáleí, co ty hovoøíš, a a dosud jsem ti odpovídal jen kvùli Gorgiovi.
+
+[Sokrates]
+Dobrá;
+co tedy udìláme?
+Pøerušíme svou rozpravu uprostøed?
+
+[Kallikles]
+To je tvá vìc.
+
+[Sokrates]
+Ale øíká se,
+e ani pohádka se nesmí nechávat uprostøed vypravování,
+nıbr a se jí nasadí hlava,
+aby nechodila bez hlavy.
+Nue tedy odpovìz i na zbylé otázky,
+aby nám naše rozprava dostala hlavu.
+
+[Kallikles]
+Jakı jsi násilník, Sokrate! Ale buï tak laskav a nech tuhle rozpravu bıt anebo rozmlouvej s nìkım jinım!
+
+[Sokrates]
+Nue tedy, kdo jinı je k tomu ochoten?
+Toti jen abychom nenechali rozpravu nedokonèenu!
+
+[Kallikles]
+A sám bys nemohl tu vìc probrat, buï e bys sám souvisle vykládal nebo e by sis sám odpovídal?
+
+[Sokrates]
+Ano,
+aby se mi stalo podle Epicharma,
+e bych sám jedinı staèil na to, co <font color="#FF0000">pøed tím mluvili dva mui.</font>Avšak bojím se,
+e tak je to nezbytnì nutné.
+Ovšem jestlie to uèiníme, musíme, jak myslím, my všichni mít horlivou snahu dovìdìti se, co je pravda a co nepravda ve vìcech, o kterıch mluvíme;
+nebo je spoleèné dobré pro všechny,
+aby se to jasnì ukázalo.
+Já tedy vyloím, jak se to podle mého mínìní má;
+jestlie pak se nìkomu z vás bude zdát,
+e sám sobì projevuji souhlas proti skuteèné pravdì, musíte mì zadrovat a vyvracet má tvrzení.
+Vdy ani já nemám vìdìní o tom, o èem kdy mluvím,
+nıbr hledám spoleènì s vámi, take jestlie se ukáe,
+e mùj odpùrce má v nìèem pravdu, já první mu to pøipustím.
+Toto ovšem pravím, jestlie se vám zdá,
+e je tøeba pøivésti naši rozpravu ke konci;
+pakli nechcete, nechme ji u bıt a odejdìme.
+
+[Gorgias]
+Mnì se nezdá, Sokrate,
+e bychom mìli ji odejít,
+nıbr myslím,
+e bys ty mìl tu vìc probrat do konce;
+a patrnì se tak zdá i ostatním.
+Pøeji si toti i já sám tì slyšet, jak sám probíráš, co ještì zbıvá.
+
+[Sokrates]
+Však i já sám, Gorgio, bych rád ještì rozmlouval tuhle s Kalliklem, dokud bych mu nesplatil øeèí Amfionovou za øeè Zethovu.
+Kdy však ty, Kallikle, nechceš spolu se mnou dokonèit rozpravu, aspoò tedy mì poslouchej a zadruj mì, bude-li se ti zdát,
+e v nìèem nemám pravdu.
+A jestlie mi budeš dokazovat nepravdu, nebudu se na tebe mrzet jako ty na mne,
+nıbr budeš u mne zapsán jako nejvìtší dobrodinec.
+
+[Kallikles]
+Mluv, pøíteli, sám a dokonèi to.
+
+[Sokrates]
+Poslouchej tedy a já zopakuji od zaèátku naši rozmluvu.
+Je snad pøíjemné a dobré toté?
+— Není to toté, jak jsme souhlasnì uznali já a Kallikles.
+— A má se pøíjemné dìlat pro dobré èi dobré pro pøíjemné?
+— Pøíjemné pro dobré.
+— Pøíjemné pak jest to, co svım pøíchodem pùsobí,
+e cítíme libost, dobré pak, èeho pøítomností jsme dobøí?
+— Ovšeme.
+— Avšak dobøí jsme i my i všechno ostatní, cokoli je dobré, pøíchodem nìjaké dobrosti?
+— Mnì se zdá,
+e to je nutné, Kallikle.
+— Avšak dobrost kadé jednotlivé vìci, i náøadí i tìla a také duše i kadého ivoèicha, nedostavuje se náhodou,
+nıbr poøádkem, správností a umìním, které jest kadé z tìch vìcí vìnováno;
+je tomu tak?
+— Ano, já tak soudím.
+— Tedy dobrost kadé vìci jest v tom,
+aby byla poøádnì urovnána a uspoøádána?
+— Øekl bych,
+e ano.
+— Tedy kdy vznikne ve vìci jistı øád, jí samé vlastní, èiní kadou jednotlivou vìc dobrou?
+— Mnì se zdá.
+— A tak tedy i duše mající svùj øád je lepší ne duše neuspoøádaná?
+— Nutnì.
+— Avšak duše mající øád je jistì spoøádaná?
+— Ano, jak by nebyla?
+— A spoøádaná duše je umìøená?
+— Zcela nutnì.
+— Tedy umìøená duše je dobrá.
+Já nemám, co bych k tomu øekl jinak, milı Kallikle;
+jestlie ty máš, pouè nás.
+
+[Kallikles]
+Mluv, pøíteli.
+
+[Sokrates]
+Tvrdím tedy,
+e je-li umìøená duše dobrá, je duše, která je v opaèném stavu proti umìøené, špatná;
+to pak je, jak jsme vidìli, duše nerozumná a nezøízená.
+— Ovšeme.
+— A èlovìk umìøenı patrnì koná, co se patøí, stran bohù i stran lidí;
+nebo by nebyl umìøenı, kdyby nekonal, co náleí, pravda?
+— Nutnì je tomu tak.
+— A kdy koná, co se patøí, stran lidí, jedná patrnì spravedlivì, a kdy stran bohù, zbonì;
+kdo pak jedná spravedlivì a zbonì, je nutnì spravedlivı a zbonı.
+— Tak jest.
+— A dále nutnì i stateènı;
+vdy není vlastností umìøeného mue ani pronásledovat ani utíkat, kde nenáleí,
+nıbr jen tam, kde je tøeba utíkat nebo se za nìèím hnát, a to jsou èiny nebo lidé a slasti nebo stráznì, a kde je tøeba, pevnì vytrvávat;
+take je zcela nutno, Kallikle,
+e umìøenı mu, jak jsme vyloili, kdy je spravedlivı a stateènı a zbonı, je dokonale dobrı, a e cokoli dobrı dìlá, dìlá dobøe a krásnì, a kdo dobøe jedná,
+e se má dobøe a je blaen a šasten,
+kdeto èlovìk špatnı a zle jednající nešasten;
+to je patrnì ten, kdo je v opaèném stavu neli umìøenı, èlovìk nevázanı, jeho ty jsi vychvaloval.
+
+Já tedy soudím o tìchto vìcech takto a tvrdím,
+e to je pravda;
+a jestlie to je pravda, musí, jak se podobá, ten, kdo chce bıt šasten, jíti za umìøeností a cvièiti se v ní,
+kdeto pøed nezøízeností má kadı z nás ubíhat, co mu nohy staèí, a zaøizovat svùj ivot nejradìji tak,
+aby nic nepotøeboval trestání, ale kdykoli se ukáe taková potøeba buï u nìho samého nebo u nìkoho jiného z blízkıch, u jednotlivce nebo u obce, je tøeba uloit pokutu a trestat, jestlie má bıt šasten.
+To je podle mého zdání cíl, na kterı jest v ivotì hledìti, a k tomu má èlovìk napínat všechny síly i své vlastní i obce,
+aby byla spravedlnost a umìøenost tam, kde má bıt blaenost;
+tak má jednati, a ne aby nechával své ádosti nezøízeny a usiloval je naplòovati, zlo neúkojné, veda ivot lupièe.
+Vdy by takovı èlovìk nebyl milı ani jinému èlovìku ani bohu;
+nebo není schopen ít ve spoleènosti, a s kım není spoleèenství, s tím patrnì není pøátelství.
+Øíkají moudøí muové, Kallikle,
+e i nebe a zemì i bozi a lidé mají mezi sebou spoleèenství, pøátelství, uspoøádanost, umìøenost a spravedlnost, a proto nazıvají, milı druhu, tento svìt kosmem, øádem, a ne nespoøádaností ani nevázaností.
+Ale ty, jak se mi zdá, pøes všechnu svou moudrost si tìchto vìcí nevšímáš a nepozoruješ,
+e rovnost, ta geometrická, má velkı vıznam i mezi bohy i mezi lidmi,
+kdeto podle tvého mínìní je tøeba pìstovat zásadu „míti víc”;
+nedbáš toti geometrie.
+Dobrá;
+buïto tedy musíme vyvrátit tuhle myšlenku a dokázat,
+e šastní nejsou šastni získáním spravedlnosti a umìøenosti, nešastní pak získáním špatnosti, nebo je-li tato myšlenka správná, je tøeba zkoumat, které dùsledky z ní vycházejí.
+Vycházejí z ní, Kallikle, všechny ony døíve øeèené vìci, pøi kterıch ty ses mne tázal, zdali je myslím vánì, kdy jsem tvrdil,
+e je tøeba alovat i sebe sama i svého syna i pøítele, jestlie dìlá nìco nespravedlivého, a k tomu e jest uívati rétoriky.
+A o èem ses domníval,
+e to Polos pøipouští jen ze studu, to tedy bylo pravda,
+e èinit bezpráví je právì o tolik horší neli bezpráví snášet, o kolik je to ošklivìjší;
+a kdo chce bıt v správném smyslu odborníkem v rétorice, musí tedy bıt spravedlivı a znalı vìcí spravedlivıch, co zase podle slov Polovıch uznal Gorgias, dohnán byv k tomu studem.
+
+Kdy tomu tak jest, podívejme se, co asi je to, co ty mi vytıkáš, zdali to je správné èi ne.
+Tvrdíš tedy,
+e já nedovedu pomoci ani sám sobì ani ádnému z pøátel nebo blízkıch, ani zachránit z nejvìtších nebezpeèí,
+nıbr e jsem vydán na milost a nemilost kadému, kdo chce, právì tak jako lidé stiení bezectím jsou v èíkoli moci, a u je chce — abych uil tvého silného vırazu — pohlavkovat nebo jím odnímat jmìní nebo je vypuzovat z obce nebo dokonce zabít;
+a bıti v takovémto stavu je prı ze všeho nejošklivìjší, jak praví tvá øeè.
+Která je proti tomu má øeè, bylo ji opìtovnì povìdìno, ale nic nebrání øíci to ještì jednou:
+Já tvrdím, Kallikle,
+e dostávat neprávem políèky není nejošklivìjší vìc, ani snášet, kdy mi nìkdo øee mé tìlo nebo uøezává mi mìšec s penìzi,
+nıbr bíti mne a mé a øezat neprávem, to e je i ošklivìjší i horší, a okrádati i v otroctví uvádìti i vloupávati se do domu a vùbec dopouštìti se jakéhokoli bezpráví i na mnì i na mıch vìcech e je pro toho, kdo bezpráví èiní, i horší i ošklivìjší neli pro mne, jen to bezpráví snáším.
+Tyto myšlenky, které se nám tam nahoøe v døívìjší èásti rozpravy ukázaly, jsou, jak já tvrdím, dreny a svázány — i kdy je to ponìkud silnı vıraz — eleznımi a ocelovımi dùvody, jak by se aspoò takhle zdálo;
+jestlie ty jich nerozváeš nebo nìkdo silnìjší ne ty, není mono,
+aby mìl pravdu, kdo by mluvil jinak, ne mluvím nyní já;
+nebo má øeè je stále tá,
+e toti já nevím, jak se tyto vìci mají,
+e však nikdo z tìch, s kterımi jsem se setkal jako právì nyní, nemùe ujít posmìchu, jestlie mluví jinak.
+Já tedy zase soudím,
+e se ty vìci mají takto;
+a jestlie tomu tak jest a jestlie je bezpráví nejvìtším zlem pro toho, kdo je èiní, a ještì vìtším nad toto nejvìtší — je-li to mono — èiniti bezpráví a nebıt trestán, jaká je to pomoc, o které lze øíci,
+e by byl èlovìk doopravdy smìšnı, kdyby jí sám pro sebe nedovedl uíti?
+Ne snad ta, která by od nás odvrátila nejvìtší škodu?
+Zcela nutnì nejošklivìjší je, kdy èlovìk nemùe poskytnout ani sám sobì ani svım pøátelùm a blízkım pomoc v tomto pøípadì, na druhém místì pak, jde-li o pomoc pøi druhém zlu, na tøetím, jde-li o tøetí a tak dále;
+podle toho, jaká je velikost kadého zla, taková je i krása schopnosti, pomáhat proti kadému z nich, a taková je i hanba to nedovést.
+Je tomu snad jinak èi takto, Kallikle?
+
+[Kallikles]
+Jinak ne.
+
+[Sokrates]
+Pokud tedy jde o ty dvì vìci, èinit bezpráví a snášeti je, tvrdíme,
+e vìtší zlo je bezpráví èinit a menší bezpráví snášeti.
+Co by si tedy èlovìk mìl opatøit,
+aby si pomohl tak,
+e by mìl tento obojí prospìch, i z toho,
+e by neèinil bezpráví, i z toho,
+e by jemu nebylo èinìno?
+Moc èi chtìní?
+Myslím to takto:
+zdali pak mu tehdy nebude èinìno bezpráví, jestlie nebude chtít,
+aby mu bylo èinìno, èi mu nebude èinìno tehdy, jestlie si opatøí moc,
+aby mu nebylo èinìno?
+
+[Kallikles]
+Zøejmì je pravda toto druhé, opatøí-li si moc.
+
+[Sokrates]
+A jak je to s èinìním bezpráví?
+Staèí snad ji to, kdy nechce èinit bezpráví — tu toti nebude èinit bezpráví — èi je tøeba ještì k tomu si opatøit jakousi moc a jakési umìní, protoe jinak bude èinit bezpráví, kdy se tomu nenauèí a v tom se nevycvièí?
+Odpovìz mi, Kallikle, pøímo na tuto vìc:
+zdá se ti,
+e jsme byli já a Polos správnì pøinuceni v døívìjší èásti rozpravy uznat,
+e nikdo dobrovolnì neèiní bezpráví,
+nıbr e ti, kteøí èiní bezpráví, dìlají to všichni bez své vùle?
+Èi ne?
+
+[Kallikles]
+Mysli si, Sokrate,
+e tomu tak jest, abys pøivedl ke konci svou rozpravu.
+
+[Sokrates]
+A k tomu tedy, abychom neèinili bezpráví, jest si opatøiti, jak se podobá, jakousi moc a jakési umìní.
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+Které pak je to tedy umìní pøipravující k tomu,
+aby se èlovìku nedìlo ádné bezpráví nebo aspoò co nejménì?
+Pohleï, máš-li na mysli toté jako já.
+Mnì se zdá,
+e to je tohle:
+buï musí bıt èlovìk sám èlenem vlády ve své obci nebo snad i samovládcem, anebo aspoò pøítelem vládnoucí ústavy.
+
+[Kallikles]
+Vidíš, Sokrate, jak jsem já hotov pochválit, kdykoli co øekneš dobøe?
+Tohle jsi podle mého mínìní povìdìl velmi dobøe.
+
+[Sokrates]
+Nue dívej se i na toto, bude-li se ti zdát,
+e mám pravdu.
+Pøátelství mezi jednotlivımi lidmi je podle mého mínìní co moná nejvìtší tam, kde je pøítelem, jak øíkají staøí a moudøí, podobnı podobnému.
+Nemyslíš tak i ty?
+
+[Kallikles]
+Zajisté.
+
+[Sokrates]
+Kde tedy je vládcem surovı a nevzdìlanı tyran, tu jestlie by byl v jeho obci nìkdo mnohem lepší, jistì by se ho tyran bál a nikdy by se upøímnì nemohl stát jeho pøítelem.
+
+[Kallikles]
+Tak jest.
+
+[Sokrates]
+Ani kdyby byl nìkdo mnohem horší, ani toho;
+nebo tyran by jím opovrhoval a nikdy by o nìho vánì nestál jako o pøítele.
+
+[Kallikles]
+I to je pravda.
+
+[Sokrates]
+Zbıvá tedy jako vánı pøítel pro takovéhoto tyrana jedinì ten, kdo je s ním stejné povahy, toté jako on haní i chválí a pøi tom je ochoten dát nad sebou vládnout a bıt poddán vladaøi.
+Ten bude mít v téhle obci velikou moc, tomu nikdo bez trestu neuèiní bezpráví.
+Není tomu tak?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Kdyby si tedy v této obci nìkterı mladı mu pomyslil:
+„Jakım zpùsobem bych já mìl velkou moc a nikdo mi neèinil bezpráví?” pro toho je, jak se podobá, tato cesta,
+aby si hned z mládí zvykal mít z tého radost a toté nelibì nést jako jeho pán, a pøipravoval se,
+aby byl onomu co nejvíce podoben.
+Není tomu tak?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Tímto tedy jistì dosáhne,
+e mu nebude èinìno bezpráví a e bude mít, jak vy øíkáte, velkou moc ve své obci.
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+Dosáhne snad i toho,
+aby neèinil bezpráví?
+Èi ani zdaleka ne, aè bude-li podoben vladaøi, èlovìku nespravedlivému, a u toho bude mít velkou moc?
+Já myslím,
+e právì naopak bude ta pøíprava u nìho smìøovat k tomu,
+aby byl schopen èinit co nejvíce bezpráví a pøi tom nebyl trestán, co?
+
+[Kallikles]
+Je patrno,
+e ano.
+
+[Sokrates]
+Tedy jeho údìlem bude nejvìtší zlo, kdy bude mít duši bídnou a zohavenou pro napodobování pána i pro svou moc.
+
+[Kallikles]
+Nevím, jak to po kadé obracíš své øeèi sem a tam, Sokrate;
+èi nevíš,
+e tenhle napodobitel pøipraví onoho nenapodobujícího o ivot, bude-li chtít, a odejme mu jeho jmìní?
+
+[Sokrates]
+Vím, dobrı Kallikle, nebo nejsem hluchı a mnohokrát jsem to slyšel prve od tebe a od Pola i skoro ode všech ostatních v naší obci;
+ale poslouchej i ty mne,
+e ho sice pøipraví o ivot, bude-li chtít, ale e to udìlá èlovìk špatnı èlovìku dobrému.
+
+[Kallikles]
+A není právì tohle urálivé?
+
+[Sokrates]
+Ne, aspoò pro toho ne, kdo má rozum, jak ukazuje úvaha.
+Èi se domníváš,
+e si má èlovìk pøipravovat to,
+aby co nejdelší dobu il, a e je tøeba pìstovat ta umìní, která nás po kadé zachraòují z nebezpeèí, jako je ta rétorika, kterou ty mne vybízíš pìstovat, je zachraòuje na soudech?
+
+[Kallikles]
+Ano, pøi Diovi, a dobøe ti radím!
+
+[Sokrates]
+Tak, mùj milı?
+Zdá se ti snad i umìní plovat nìjakım vznešenım umìním?
+
+[Kallikles]
+Ví bùh,
+e ne.
+
+[Sokrates]
+A pøece i to zachraòuje lidi ze smrti, kdykoli se octnou v nìèem takovém, kde je tøeba tohoto umìní.
+Jestlie však se ti zdá toto malichernım, já ti povím dùleitìjší, ne je toto, toti umìní kormidelnické, které zachraòuje ze svrchovanıch nebezpeèí netoliko duše,
+nıbr i tìla i statky, právì tak jako rétorika.
+A toto umìní je nenároèné a skromné a netváøí se honosnì, jako by vykonávalo nìco znamenitého,
+nıbr kdy vykoná toté, co øeènické umìní na soudì,
+e toti šastnì sem nìkoho dopraví pøes nebezpeèné moøe z Aiginy,
+vezme za to, tuším, dva oboly,
+a jestlie z Egypta nebo z Pontu,
+tu za tohle veliké dobrodiní — e zachránilo,
+jak jsem právì øekl, i cestujícího i jeho dìti a jmìní a eny —
+po vylodìní v pøístavu vezme nanejvıš dvì drachmy
+a sám mistr toho umìní, kterı to vykonal,
+vystoupí z lodi a chodí podél moøe a podél lodi se skromnım vzhledem.
+Umí si toti, myslím, rozváiti,
+e není zjevné,
+kterım z cestujících prospìl, kdy je nenechal utonout, a kterım uškodil, nebo ví,
+e je nevylodil o nic lepšími, ne jací byli, kdy vstoupili na loï, ani na tìle ani na duši.
+Tu tedy rozvauje,
+e není správné soudit takto:
+jestlie nìkdo, kdo je stien na tìle velikımi a nezhojitelnımi nemocemi, neutonul, ten prı je nešasten,
+e nezahynul, a ádnı prospìch mu od nìho nebyl prokázán,
+kdeto jestlie nìkdo má mnoho nezhojitelnıch nemocí v tom, co je cennìjší ne tìlo, ve své duši, ten prı má ít a tomu prospìje, jestlie bude zachránìn buï z moøe nebo ze soudu nebo odnìkud odjinud — ne,
+nıbr ví,
+e pro èlovìka zkaeného není lépe ít, nebo jeho ivot je nutnì špatnı.
+Z tìchto dùvodù není zvykem,
+aby se kormidelník velebil, aèkoli nás zachraòuje, ani, mùj milı, stavitel váleènıch strojù, jen druhdy dovede zachránit ne ménì ne vojevùdce, neøku-li ne kormidelník;
+vdy nìkdy zachraòuje celá mìsta.
+Zdá se ti snad,
+e je na úrovni soudního øeèníka?
+A pøece, Kallikle, kdyby chtìl mluvit jako vy a velebit své dílo, mohl by vás zasypat dùvody, kdy by mluvil a vybízel,
+e se musíte stát staviteli strojù,
+e ostatní zamìstnání nejsou nic;
+látky by mìl jistì dostatek.
+Ale ty nicménì jím pohrdáš i jeho umìním a jména „strojník” bys o nìm uil jako nadávky a nechtìl bys dát jeho synovi svou dceru, ani by sis sám nechtìl vzít jeho dceru.
+A pøece hledíme-li k tomu, jak vychvaluješ svou vìc, jakım právem pohrdáš stavitelem strojù a tìmi ostatními, o kterıch jsem právì mluvil?
+Vím,
+e bys øekl,
+e jsi lepší a z lepší krve.
+Avšak jestlie pojem lepší neobsahuje to, co si já myslím,
+nıbr pouze v tom záleí dobrost, zachraòovat sebe i své vìci a pøitom bıt jakıkoli, tu se stává smìšnım to tvé hanìní i stavitele strojù i lékaøe i všech ostatních umìní, která jsou vytvoøena pro záchranu.
+Ale, mùj drahı, viz, zdali ušlechtilé a dobré není nìco jiného neli zachraòovati a bıti zachraòován.
+Moná toti,
+e tuto vìc, ít kratší nebo delší èas, má opravdovı mu nechat bıt a nemá lpìti na ivotì,
+nıbr má tyto vìci odevzdati bohu a uvìøit enám,
+e nikdo nemùe uniknouti svému osudu, a má hledìt na druhou vìc, jakım zpùsobem by tento ivot, kterı má proíti, proil co nejlépe, zdali tak,
+e by se pøipodobòoval tomu zøízení obce, v kterém ije — a podle toho tedy ty se máš nyní stát co nejpodobnìjším athénskému lidu, jestlie chceš bıt u nìho oblíben a mít velikou moc ve své obci.
+Viz, zdali tohle prospívá tobì i mnì,
+aby se nám nestalo, mùj drahı, co se vypravuje o tìch, které strhují mìsíc s nebe, o Thessalkách:
+dobytí této moci v naší obci bude nám spojeno s nasazením toho, co máme nejmilejšího.
+Jestlie však se domníváš,
+e tì nìkterı èlovìk nauèí nìjakému takovému umìní, které tì udìlá velmi mocnım v této obci, ani bys byl podoben jejímu zøízení, a v lepším nebo v horším smìru, nesprávnì uvauješ, jak se mi zdá, Kallikle;
+nestaèí toti bıt pouhım napodobitelem,
+nıbr musíš jim bıt od pøirozenosti podoben, jestlie chceš mít opravdovı úspìch v pøátelství s demem athénskım a, ví bùh, i s Demem Pyrilampovım.
+Kdo tì tedy udìlá jemu nejpodobnìjším, ten tì uèiní, kdy touíš bıt politikem, odborníkem v politice i v rétorice;
+nebo kadı má rád, kdy se mluví øeèi podle jeho vlastního zpùsobu,
+kdeto na cizí zpùsob se mrzí — aè nemáš-li ty nìjaké jiné mínìní, ty má milá duše.
+Máme proti tomu nìjakou námitku, Kallikle?
+
+[Kallikles]
+Tak nìjak — nevím, jak — se mi zdá,
+e máš pravdu, Sokrate, ale dìje se se mnou toté, co s vìtšinou lidí:
+nejsem od tebe zcela pøesvìdèen.
+
+[Sokrates]
+To proto, Kallikle,
+e láska, kterou tì poutá demos a která je v tvé duši, se staví proti mnì;
+ale jestlie budeme opìt a opìt prohlíet tyto samé vìci, budeš pøesvìdèen.
+Nue vzpomeò si,
+e jsme øekli,
+e jsou dva druhy èinností smìøujících k pìstování jednak tìla, jednak duše,
+jeden hledící na libost,
+druhı, pøi kterém se èlovìk nechce zavdìèiti,
+nıbr usilovnì bojuje,
+hledící na nejvìtší dobro.
+Nebylo to tohle, co jsme tehdy zjistili?
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+A není-li pravda,
+e jeden druh,
+ten,
+kterı smìøuje k libosti,
+je nedùstojnı a není to nic jiného ne lahodìní,
+ano?
+
+[Kallikles]
+Budi ti to tak, jestlie chceš.
+
+[Sokrates]
+A druhı zpùsob,
+aby to, co pìstujeme, bylo co nejlepší,
+a to je tìlo nebo duše?
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+Nemáme se tedy snad pøièiòovat,
+abychom takto pìstovali svou obec i své spoluobèany,
+e bychom samy obèany dìlali co nejlepšími?
+Nebo bez této vìci, jak jsme nalézali pøedtím,
+není nic platno poskytovati nìjaké dobrodiní,
+jestlie toti u tìch, kteøí hodlají získat buï mnoho penìz nebo vládu nad nìkım nebo kteroukoli jinou moc,
+nebude ušlechtilé a dobré smıšlení.
+Øekneme, e tomu tak je?
+
+[Kallikles]
+Ovšem, je-li ti libo.
+
+[Sokrates]
+Nue, Kallikle, kdybychom se s úmyslem bıt veøejnì èinni navzájem pobízeli k stavìní, k provádìní nejvìtších staveb, buï hradeb nebo lodìnic nebo chrámù, zdali pak bychom nemusili prozkoumat sebe samy a nejprve vyšetøit, zdali rozumíme tomu umìní, stavitelství, èi nerozumíme, a u koho jsme se mu nauèili?
+Ano èi ne?
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+Za druhé jistì to, zdali jsme kdy soukromì vystavìli nìjakou stavbu, buï pro nìkterého z pøátel nebo pro sebe samy, a zdali je tato stavba krásná èi ošklivá.
+A kdybychom pøi tom zkoumání nalézali,
+e naši uèitelé byli dobøí a proslulí a e jsme vystavìli mnoho krásnıch staveb, jednak spoleènì se svımi uèiteli, jednak i po odlouèení od nich sami o sobì, tehdy, kdy by tomu s námi tak bylo, bylo by rozumné dáti se do dìl veøejnıch;
+pakli bychom nemohli poukázat ani na svého uèitele ani se vykázat stavbami, buï e bychom nemìli ádnou nebo sice mnoho, ale takovıch, které by za nic nestály, tu by vìru bylo nerozumné pokoušeti se o veøejné stavby a vespolek se k nim pobízet.
+Øekneme, e to je správná øeè èi ne?
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+Tak je tomu jistì se vším, na pøíklad kdybychom se pøi pokuse o veøejnou èinnost navzájem pobízeli, vydávajíce se za schopné lékaøe, podívali bychom se jistì já na tebe a ty na mne:
+„Nue, pro bohy, jak se má sám Sokrates se zdravím svého tìla? Nebo byl ji nìkdo jinı pøièinìním Sokratovım zbaven nemoci, buï otrok nebo svobodnı?”
+A já, myslím, bych se díval na podobné vìci u tebe;
+a kdybychom nalézali,
+e se naším pøièinìním nezlepšil zdravotní stav nikoho ani z cizincù ani z mìsta, ani mue ani eny, tu by, Kallikle, ví bùh, bylo vìru smìšno,
+aby lidé dostoupili takového stupnì nerozumnosti,
+e døíve ne bychom v soukromí mnoho vykonali jak tak a také mnoho s úspìchem a ne bychom se dostateènì vycvièili ve svém umìní,
+e bychom se pokoušeli, jak se øíká, uèit se hrnèíøství na dbánu a i sami se pokoušeli bıt veøejnì èinni i jiné takové k tomu vybízeti.
+Nezdá se ti nerozumnım takto jednati?
+
+[Kallikles]
+Arcie.
+
+[Sokrates]
+A nyní, pøíteli, kdy se ty sám právì zaèínáš zabıvat veøejnou èinností a také mne k ní vybízíš a káráš mì,
+e se jí nezabıvám, mìli bychom se navzájem prozkoumat:
+„Podívejme se, Kallikles u udìlal lepším nìkoho z obèanù? Jest nìkdo, kdo byl døív špatnı, nespravedlivı, nezøízenı a nerozumnı, a pøièinìním Kallikleovım se stal ušlechtilım a dobrım, buï cizinec nebo z mìsta, buï otrok nebo svobodnı?”
+Povìz mi, Kallikle, co øekneš, bude-li se tì nìkdo takto dotazovat?
+Kterého èlovìka budeš jmenovat,
+e jsi ho udìlal svım stykem lepším?
+Proè váháš odpovìdìt, je-li pravda,
+e je tu nìjaké tvé dílo vykonané ještì v soukromí, døíve ne ses pokoušel o èinnost veøejnou?
+
+[Kallikles]
+Chceš mít vdycky vrch, Sokrate.
+
+[Sokrates]
+Ale vdy se netái proto,
+e bych chtìl mít vrch,
+nıbr e doopravdy chci vìdìt, jakım zpùsobem by se mìla podle tvého mínìní u nás vésti správa veøejného ivota.
+Budeš se nám snad starat, a pøijdeš k obecním vìcem, o nìco jiného, ne abychom my obèané byli co nejlepší?
+Co jsme u nìkolikrát souhlasnì neuznali,
+e tohle má dìlat politik?
+Uznali jsme èi ne?
+Odpovídej! Uznali jsme;
+já odpovídám za tebe.
+Jestlie tedy má dobrı mu opatøovat své obci toto,
+nyní si vzpomeò na ony mue,
+o kterıch jsi mluvil pøed malou chvílí,
+a øekni mi o nich, zdali se ti ještì zdá,
+e byli dobrımi politiky,
+Perikles,
+Kimon,
+Miltiades a Themistokles.
+
+[Kallikles]
+Zajisté.
+
+[Sokrates]
+Tedy jestlie byli dobøí, je patrno,
+e kadı z nich dìlal své spoluobèany z horších lepšími.
+Dìlal èi ne?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Tedy kdy Perikles zaèínal øeènit pøed lidem,
+byli tenkrát Athéòané horší,
+neli kdy øeènil naposled?
+
+[Kallikles]
+Snad.
+
+[Sokrates]
+Ne snad, mùj milı,
+nıbr nutnì to vyplıvá z uznané myšlenky,
+je-li pravda, e on byl dobrı politik.
+
+[Kallikles]
+Nu a co?
+
+[Sokrates]
+Nic;
+ale øekni mi ještì tohle, zdali se øíká o Athéòanech,
+e se èinností Perikleovou stali lepšími, èi zcela naopak,
+e byli od nìho zkaeni.
+Já toti slıchám,
+e Perikles udìlal Athéòany línımi, zbabìlımi, vanivımi a chtivımi penìz, kdy jim první stanovil platy za obèanské úkony.
+
+[Kallikles]
+To jsi slyšel od tìch s rozbitıma ušima, Sokrate.
+
+[Sokrates]
+Ale tohle u nemám z doslechu,
+nıbr vím to jistì, já jako ty,
+e z poèátku byl Perikles ve vánosti a e ho Athéòané neodsoudili ádnım potupnım rozsudkem, dokud byli horší;
+avšak kdy se jeho pùsobením stali dokonalımi,
+odsoudili Periklea na konci jeho ivota pro kráde a málem by ho byli potrestali i smrtí, patrnì jako èlovìka nedobrého.
+
+[Kallikles]
+A co?
+Proto snad byl Perikles špatnı?
+
+[Sokrates]
+Aspoò kdyby byl takovı opatrovatel oslù, koní a volù, jistì by se zdál špatnım, kdy by se ukázalo,
+e v dobì, kdy je pøijal do své péèe, ani ho nekopali ani netrkali ani nekousali, a on zpùsobil,
+e z divokosti tohle všechno dìlají.
+Èi se ti nezdá špatnım kterıkoli opatrovatel kteréhokoli zvíøete, kterı pøijme zvíøata krotší a udìlá je divoèejšími, ne je pøijal?
+Zdá se ti èi ne?
+
+[Kallikles]
+Ovšeme, abych ti udìlal po vùli.
+
+[Sokrates]
+Udìlej mi tedy i tohle k vùli a odpovìz:
+je i èlovìk jeden z ivoèichù èi ne?
+
+[Kallikles]
+Ano, jak by ne?
+
+[Sokrates]
+Nepeèoval Perikles o lidi?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Nue tedy zdali pak by se nebyli mìli,
+jak jsme právì uznávali,
+státi jeho pùsobením z nespravedlivìjších spravedlivìjšími,
+jestlie je pravda, e o nì peèoval on,
+dobrı politik?
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+A spravedliví jsou jistì mírní, jak øekl Homér;
+co øíkáš ty?
+Není tomu tak?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Avšak on je vìru udìlal divoèejšími,
+ne jak je pøijal,
+a to proti sobì samému,
+èeho by si byl nejménì pøál.
+
+[Kallikles]
+Chceš, abych s tebou souhlasil?
+
+[Sokrates]
+Ano, jestlie se ti zdá,
+e mám pravdu.
+
+[Kallikles]
+Tedy budi tomu tak.
+
+[Sokrates]
+Jestlie je uèinil divoèejšími,
+jistì také i nespravedlivìjšími a horšími?
+
+[Kallikles]
+Budi.
+
+[Sokrates]
+Podle toho tedy Perikles nebyl dobrım politikem.
+
+[Kallikles]
+Ty øíkáš,
+e ne.
+
+[Sokrates]
+Ví bùh,
+e také ty, podle toho, co jsi uznával.
+Teï mi zase povìz o Kimonovi:
+nevypovìdìli ho ti, které pìstoval, ostrakismem z obce,
+aby po deset let nezaslechli jeho hlasu?
+A neudìlali Themistokleovi zrovna toté
+a nepotrestali ho k tomu vyhnanstvím?
+A neodsoudili Miltiada marathonského k tomu,
+aby byl vhozen do propasti,
+a nebyl by tam bıval vskutku uvren,
+kdyby nebyl zakroèil úøadující èlen rady?
+A pøece, kdyby to byli bıvali dobøí mui,
+jak ty tvrdíš,
+nikdy by se jim tyhle vìci nebyly staly.
+Jistì nevidíme,
+e by dobøí øidièi vozù z poèátku pevnì sedìli na vozech, ale kdy si své konì vypìstují a sami se stanou lepšími vozataji, tehdy e by vypadávali;
+není tomu tak ani pøi vozatajském umìní,
+ani v ádné jiné èinnosti;
+èi tobì se zdá,
+e ano?
+
+[Kallikles]
+To ne.
+
+[Sokrates]
+Pravdivá tedy byla,
+jak se podobá,
+vıše øeèená slova,
+e se,
+pokud víme,
+nevyskytl v této naší obci ádnı dobrı politik.
+Ty jsi uznával,
+e za naší doby ádnı, ale za døívìjší e jistì takoví byli, a vybral jsi za pøíklad tyto mue;
+avšak o nich se ukázalo,
+e byli rovni nynìjším, take jestlie byli øeèníky, neuívali ani pravé rétoriky — nebo to by byli nepadli — ani rétoriky lahodící.
+
+[Kallikles]
+Avšak ádnı z nynìjších politikù, Sokrate,
+nikdy nevykoná ani zdaleka takové èiny,
+jaké vykonal kterıkoli z tìchto.
+
+[Sokrates]
+Mùj drahı,
+ani já nekárám ty mue jakoto sluebníky obce,
+ale zdá se mi,
+e byli sluebnìjší ne nynìjší a dovednìjší pro to,
+aby opatøovali obci, èeho si ádala.
+Ale aby dávali tìm ádostem jinı smìr a nepovolovali jim,
+pøemlouvajíce a donucujíce k tomu,
+èím by se obèané byli mìli státi lepšími,
+v tom se oni politikové takøka nic nelišili od nynìjších;
+a to jest jedinı úkol dobrého politika.
+Co se tıèe zøizování lodí a hradeb a lodìnic a mnoha jinıch takovıch vìcí, i já s tebou souhlasím, e v tom byli oni schopnìjší neli nynìjší.
+Smìšnou tedy vìc dìláme já a ty ve své rozmluvì;
+nebo po všechen ten èas, co spolu rozmlouváme, bez pøestání se stále toèíme kolem jedné a tée vìci a navzájem si nerozumíme.
+Já aspoò myslím,
+e jsi mnohokrát uznal a pochopil,
+e tahle pìsticí èinnost je i v oboru tìla i v oboru duše dvojí;
+jedna je sluebná, kterou je mono opatøovati pokrm, kdykoli naše tìla mají hlad, a nápoj, kdykoli íznìjí, a kdykoli mrznou, odìv, pokrıvky, obuv a jiné vìci, kterıch si obyèejnì tìla ádají — a schválnì ti uvádím tyté pøíklady, abys to snáze pochopil.
+Opatøovatelem tìchto vìcí jest buï kramáø nebo obchodník nebo vırobce nìkteré z tìchto vìcí, pekaø nebo kuchaø nebo tkadlec nebo švec nebo koeluh;
+a tu není divu,
+e kdy je takovım opatøovatelem,
+e se zdá sám sobì i ostatním lidem pìstitelem tìla, kadému, kdo neví,
+e vedle všech tìchto umìní jest zvláštní umìní gymnastické a lékaøské, je jest vskutku pìstování tìla, a kterému také pøísluší vládnouti nade všemi tìmito umìními a uívati jejich vıkonù, protoe ví, kterı druh jídel nebo nápojù je prospìšnı pro zdraví tìla,
+kdeto všechna tahle ostatní umìní to nevìdí.
+Proto tedy jsou mezi èinnostmi zabıvajícími se tìlem ta ostatní umìní otrocká, sluebná a sprostá,
+kdeto umìní gymnastické a lékaøské jsou po právu jejich pány.
+
+e je tomu právì tak i v oboru duše, nìkdy se mi zdá,
+e to chápeš, kdy to pravím, a souhlasíš, jako bys vìdìl, co øíkám;
+ale za malou chvíli pøicházíš s tvrzením,
+e v naší obci byli dokonalí politikové, a kdy se tì ptám, kteøí, ukazuješ mi, jak se mi zdá, lidi v politice velmi podobné tìm, jako kdybys mi v oboru gymnastiky na mou otázku po dobrıch pìstitelích tìla buï z minulé nebo z pøítomné doby zcela vánì tvrdil,
+e to je pekaø Thearion a Mithaikos, spisovatel díla o sicilském kuchaøství, a vinárník Sarambos, to e byli neobyèejní pìstitelé tìl, jeden e mìl podivuhodné koláèe, druhı masa, tøetí vína.
+Tu by ses snad zlobil, kdybych ti já øekl:
+„Èlovìèe, nic nerozumíš gymnastice;
+ty mi jmenuješ pøisluhovatele a dodavatele ádostí, kteøí však nièemu øádnému o nich nerozumìjí, kteøí pøi pøíleitosti naplní a vykrmí lidem jejich tìla, budou od nich chváleni, ale pøi tom jim zkazí i staré maso;
+ale oni ve své nezkušenosti nebudou dávat vinu svıch nemocí a ztráty starého masa svım hostitelùm,
+nıbr a jim o mnoho pozdìji nìkdejší pøesycování pøinese nemoc, protoe se dìlo nezdravì, budou vinit a kárat ty a tìm, budou-li moci, udìlají nìco zlého, kteøí jim tehdy budou právì na blízku a budou jim nìco radit,
+kdeto ony døívìjší, pravé vinníky svého neštìstí, budou velebit.
+
+I ty, Kallikle, dìláš nyní nìco tomuto velmi podobného:
+velebíš lidi, kteøí hostili Athéòany, èastujíce je tím, èeho si ádali.
+A øíká se,
+e oni uèinili obec velikou;
+e však je pùsobením onìch starıch politikù zduøelá a nabìhlá, to nepozorují.
+Nebo bez umìøenosti a spravedlnosti naplnili obec pøístavy a lodìnicemi a hradbami a poplatky a takovımi hloupostmi;
+a kdy pak pøijde tento záchvat té nemoci, souèasné rádce budou obviòovat, ale Themistoklea a Kimona a Periklea budou velebit, pravé vinníky toho neštìstí;
+snad se vrhnou na tebe, nedáš-li si pozor, a na mého pøítele Alkibiada, a budou pozbıvat kromì toho,  èeho  novì  nabyli,
+
+i svıch starıch statkù, aèkoli nejste vinníky toho neštìstí,
+nıbr snad jen spoluvinníky.
+
+Avšak jest jistá nerozumná vìc, která se, jak vidím, i nyní dìje a kterou slyším i o tìch muích staré doby.
+Pozoruji toti,
+e kdykoli obec jedná s nìkterım z politikù jako s provinilcem,
+e to tìce nesou a naøíkají, jako by se jim dìly hrozné vìci:
+kdy prokázali obci — tak mluví — mnoho dobrodiní, tu prı jsou od ní nespravedlivì nièeni.
+Ta celá vìc je nepravda, nebo ádnı náèelník obce by nikdy nemohl bıt nespravedlivì zahuben od té obce samé, které stojí v èele.
+Skoro se toti zdá,
+e se toté stává tìm, kteøí se vydávají za politiky, jako tìm, kdo se èiní odborníky v moudrosti.
+Nebo i ti sofisté, mui v jinıch vìcech tak moudøí, dìlají tuhle pošetilost:
+tvrdí,
+e jsou uèiteli dobrosti, a pøitom mnohokráte alují své áky,
+e jim èiní bezpráví tím,
+e jim nechtìjí platit mzdu a prokazovat jim i jinou povinnou vdìènost, aèkoli jim bylo od nich prokázáno dobrodiní.
+Která vìc by mohla bıt více proti rozumu ne tato øeè?
+Jak by mohli lidé, kteøí se stali dobrımi a spravedlivımi,
+kdy jim byla od uèitele odòata nespravedlivost a dána spravedlnost, køivdit tím, co ji nemají?
+Nezdá se ti tohle podivné, pøíteli?
+— Pøinutil jsi mì, Kallikle, pronést doopravdy celou øeè,
+e jsi mi nechtìl odpovídat.
+
+[Kallikles]
+Ty bys nedovedl mluvit, kdyby ti nikdo neodpovídal?
+
+[Sokrates]
+Podobá se,
+e ano;
+aspoò nyní rozpøádám dlouhé øeèi, kdy mi nechceš odpovídat.
+Avšak, pøíteli, øekni, pro boha, kterı chrání pøátelství, nezdá se ti nìèím proti rozumu, kdy nìkdo, kdo tvrdí,
+e nìkoho udìlal dobrım, vytıká tomu èlovìku,
+e kdy jeho pùsobením se stal dobrım a jest dobrı,
+e je pak špatnı?
+
+[Kallikles]
+Ano, mnì se zdá.
+
+[Sokrates]
+Neslıcháš takové øeèi od tìch, kteøí tvrdí,
+e vychovávají lidi k dobrosti?
+
+[Kallikles]
+Zajisté;
+ale proè bys mluvil o bezvıznamnıch lidech?
+
+[Sokrates]
+Co však bys øekl o tìch, kteøí tvrdí,
+e stojí v èele obce a o ni peèují,
+aby byla co nejlepší, a pøitom si zase na ni stìují, kdy se jim naskytne pøíleitost, jako na nejhorší?
+Domníváš se,
+e se tihle nìèím liší od onìch?
+Toté, vzácnı pøíteli, je sofista a rétor, nebo nìco blízkého a podobného, jak jsem já pravil Polovi;
+ale ty pro neznalost myslíš o jedné vìci, o rétorice,
+e to je nìco velmi krásného,
+kdeto druhou pohrdáš.
+Vpravdì však je sofistika o tolik krásnìjší vìc ne rétorika, oè je krásnìjší zákonodárství ne soudnictví a gymnastika ne lékaøství.
+Já také jsem se domníval,
+e jediné politickım øeèníkùm a sofistùm nenáleí,
+aby èinili vıèitky tomu, co sami vychovávají,
+e je k nim zlé, sice e touto samou øeèí zároveò alují i sami na sebe,
+e nic neprospìli tìm, kterım, jak tvrdí, prospívají.
+Není tomu tak?
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+A jediné tìmto by jistì náleelo,
+jak se podobá,
+dát své dobrodiní na úvìr bez mzdy,
+aè je-li pravda, co øíkají.
+Nebo kdy se nìkomu dostane nìjakého jiného dobrodiní, na pøíklad e se pùsobením uèitele tìlocviku stane rychlım bìcem, ten by snad mohl ne-dat povinnou odplatu, kdyby mu uèitel tìlocviku dal svou práci na úvìr a ne tak,
+e by si s ním smluvil mzdu a nejradìji zároveò s vyuèováním rychlosti si bral ty peníze;
+vdy lidé, myslím, neèiní bezpráví pomalostí,
+nıbr nespravedlností;
+pravda?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Nue tedy jestlie nìkdo odnímá právì tuto vìc, nespravedlnost, nemusí se bát,
+e mu bude nìkdy uèinìno bezpráví,
+nıbr on jedinı mùe bezpeènì dát na úvìr toto dobrodiní, aè jestlie vskutku nìkdo dovede lidi èiniti dobrımi.
+Není tomu tak?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Z tìchto dùvodù tedy, jak se podobá, dávat za peníze rady jiného druhu, jako na pøíklad ve stavitelství nebo v ostatních umìních, není nic ošklivého.
+
+[Kallikles]
+Podobá se.
+
+[Sokrates]
+Ale kdy jde o tu vìc, jakım zpùsobem by byl nìkdo co nejlepší a jak by co nejlépe spravoval svùj dùm nebo svou obec, tu se pokládá za ošklivé odepøíti radu, jestlie se za to nezaplatí;
+pravda?
+
+[Kallikles]
+Ano.
+
+[Sokrates]
+Patrnì toti je pøíèina toho ta,
+e jediné toto dobrodiní zpùsobuje v tom, komu se ho dostalo, snahu odmìniti se dobrodiním, take se to zdá krásnı zjev, jestlie se dobrodinci tohoto zpùsobu navzájem dostane dobrodiní, pakli však ne, ošklivı.
+Mají se ty vìci takto?
+
+[Kallikles]
+Mají.
+
+[Sokrates]
+Urèi mi tedy, ke kterému druhu péèe o obec mì vybízíš, k tomu, abych vší silou pracoval,
+aby byli Athéòané co nejlepší, podobnì jako lékaø, èi abych jim slouil a hledìl se jim svım jednáním zavdìèit?
+Øekni mi pravdu, Kallikle, nebo jako jsi zaèal ke mnì upøímnì mluvit, je spravedlivo, abys a do konce mluvil, co si myslíš.
+I nyní odpovìz hezky pøímo!
+
+[Kallikles]
+Pravím tedy,
+e abys jim slouil.
+
+[Sokrates]
+To mì tedy vybízíš, ušlechtilı mui, k lahodìní.
+
+[Kallikles]
+Libo-li ti, nazıvej mì tøeba Mysem, Sokrate;
+nebo jestlie to nebudeš dìlat —
+
+[Sokrates]
+Neopakuj, co jsi u mnohokrát øekl,
+e mì pøipraví o ivot, kdokoli bude chtít, abych ti zase já neopakoval,
+e zbaví ivota èlovìk špatnı èlovìka dobrého;
+ani mi neøíkej,
+e mi odejme, jestlie nìco budu mít, abych zase já neøekl,
+e kdy mi to odejme, nebude toho moci dobøe uít,
+nıbr jako mi to nespravedlivì odòal, tak toho bude potom nespravedlivì uívat, a jestlie nespravedlivì, ošklivì, a jestlie ošklivì, zle.
+
+[Kallikles]
+Zdá se mi, Sokrate,
+e pøíliš dùvìøuješ,
+e by se ti nic z toho nemohlo stát, jako bys il docela stranou a nemohl bıt pohnán pøed soud od èlovìka snad zcela špatného a nièemného!
+
+[Sokrates]
+Jsem tedy opravdu nerozumnı, Kallikle, jestlie nemyslím,
+e by se v této naší obci mohlo kadému cokoli stát.
+Avšak tohle vím dobøe,
+e budu-li snad postaven pøed soud a bude mi hrozit nìco z toho, o èem ty mluvíš, bude mùj alobce nìjakı špatnı èlovìk — nebo ádnı øádnı èlovìk by nepohnal pøed soud èlovìka nevinného — a nebylo by nic divného, kdybych byl odsouzen k smrti.
+Chceš, abych ti øekl, proè to oèekávám?
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+Myslím,
+e já jsem jeden z mála Athéòanù, abych neøekl jedinı, kterı pìstuje politické umìní v pravém smyslu toho slova, a e jedinı z lidí naší doby provozuji pravou politiku.
+Protoe tedy ty øeèi, které mluvívám, nemluvím s úmyslem se zavdìèit,
+nıbr se zøením na nejvìtší dobro, a ne na nejvìtší pøíjemnost, a nechci dìlat to, co mi ty doporuèuješ, „tyto chytrosti”, nebudu mít pøed soudem co mluvit.
+Tu mì napadá tá øeè, kterou jsem mluvil k Polovi;
+budu toti souzen, jako by byl pøed dìtmi souzen lékaø na alobu kuchaøovu.
+Podívej se, jak by se hájil takovı èlovìk postavenı pøed tyto soudce, kdyby proti nìmu nìkdo pronášel tuto alobu:
+„Dìti, mnoho zlého uèinil tento mu vám samım a nejmladší z vás kazí øezáním a pálením, trápí a do nesnází uvádí zpùsobováním hubenosti a dušením, dává nejtrpèí nápoje a nutí hladovìt a íznit — ne jako já jsem vás èastoval mnoha chutnımi a rozmanitımi lahùdkami.” Co by asi mohl øíci lékaø uvrenı do tohoto zlého postavení?
+Kdyby øekl pravdu:
+„toto všechno jsem já dìlal, dìti, pro vaše zdraví”, jakı by asi strhli køik takovíto soudcové?
+Ne snad velikı?
+
+[Kallikles]
+Snad;
+musíme si to mysliti.
+
+[Sokrates]
+Nemyslíš,
+e by byl ve velkıch nesnázích, co øíci?
+
+[Kallikles]
+Ovšeme.
+
+[Sokrates]
+Vím,
+e by se jistì i mnì nìco takového stalo, kdybych byl postaven pøed soud.
+Nebo nebudu moci jim jmenovat pøíjemnosti, které jsem jim opatøil;
+ty oni pokládají za dobrodiní a za prospìch,
+kdeto já nezávidím ani tìm, kteøí je opatøují, ani tìm, pro které jsou takové vìci opatøovány.
+A jestlie nìkdo o mnì øekne, buï e kazím mladší lidi, uvádìje je do nesnází, nebo e tupím starší svımi trpkımi slovy, pronášenımi buï soukromì nebo veøejnì, nebudu moci øíci pravdu:
+„spravedlivì já toto všechno mluvím a k vašemu prospìchu jednám, soudcové”,
+ani nic jiného;
+a tak snad budu musit snést, cokoli mì potká.
+
+[Kallikles]
+A zdá se ti, Sokrate,
+e se má dobøe èlovìk, kdy je v obci v takovémto postavení a není schopen sám sobì pomáhat?
+
+[Sokrates]
+Ano, Kallikle, jestlie má tu jednu vìc, kterou jsi ty mnohokrát uznal:
+jestlie zjednal pomoc sám sobì tím,
+e se ani k lidem ani k bohùm nedopustil nièeho nespravedlivého ani slovem ani èinem.
+O tomto zpùsobu pomáhání samému sobì jsme toti mnohokrát uznali,
+e je nejlepší.
+Kdyby mi tedy nìkdo dokazoval,
+e nejsem schopen poskytnouti tuto pomoc ani sám sobì, ani nikomu jinému, stydìl bych se, a bych byl usvìdèován pøed mnoha lidmi nebo pøed málo nebo sám jedinı od sebe jediného, a kdybych mìl pro tuto neschopnost umøíti, mrzelo by mì to;
+ale kdybych konèil ivot pro nedostatek lahodící rétoriky, vím dobøe,
+e bys mì uvidìl snášeti smrt lehce.
+Nebo samého umírání se nikdo nebojí, kdo není docela nerozumnı a nemunı, ale strach je pøed pácháním bezpráví;
+vdy pøijíti do øíše Hádovy s duší plnou mnohıch vin je nejhorší ze všech neštìstí.
+Jestlie chceš, jsem ochoten ti dokázat vypravováním,
+e tomu tak jest.
+
+[Kallikles]
+Kdy jsi dovyloil i ostatní vìci, vylo i toto.
+
+[Sokrates]
+Nue poslouchej — tak zaèínají — velmi krásné vypravování, je ty snad budeš pokládat za báji, jak se domnívám, já však za vypravování skuteènosti;
+vìci, které hodlám vypravovat, budu ti vypravovat s pøedpokladem,
+e jsou pravdivé.
+Jak praví Homér, rozdìlili si vládu Zeus, Poseidon a Pluton, kdy ji dostali od otce.
+Byl pak za Krona ten zákon o lidech — a ještì i nyní stále jest mezi bohy — aby ten èlovìk, kterı proil svùj ivot spravedlivì a zbonì, odešel po smrti na ostrovy blaenıch a tam bydlil ve vší blaenosti daleko od všeho zlého, ale kdo il nespravedlivì a bezbonì,
+aby šel do aláøe pokuty a trestu, jej nazıvají Tartaros.
+Soudci byli za Krona a ještì v novìjší dobì, za vlády Diovy, iví nad ivımi, a ti konali soud v onen den, kdy mìl èlovìk skonati;
+tu se rozsuzovalo špatnì.
+Tedy Pluton i správcové z blaenıch ostrovù šli a øekli Diovi,
+e jim chodí na obojí místa lidé, kteøí toho nezasluhují.
+I øekl Zeus:
+„Však já tomu uèiním konec.
+Nyní se špatnì rozsuzuje.
+Nebo souzení podstupují soud obleèeni;
+jsou toti souzeni za iva.
+A tu mnozí,” pravil, „kteøí mají duše špatné, jsou odìni v krásná tìla i v urozenost a bohatství, a kdy se koná soud, pøicházejí jim mnozí svìdkové dosvìdèit,
+e ili spravedlivì;
+a tu soudcové jednak jsou od tìchto uvádìni ve zmatek a zároveò i sami soudí obleèeni, majíce pøed svou duší jako závoje oèi, uši i celé tìlo.
+Toto všechno se jim staví do cesty, i jejich vlastní obleky i obleky souzenıch.
+Nejprve tedy,” øekl, „jest uèiniti konec tomu,
+aby napøed vìdìli o své smrti;
+nyní toti o ní vìdí napøed.
+Toto jest tedy ji pøikázáno Prométheovi,
+aby tomu u nich uèinil konec.
+Dále jest je souditi svleèené ze všech tìchto vìcí;
+proto jest tøeba je souditi po smrti.
+I soudce musí bıt nahı, po smrti,
+aby svou duší samou prohlíel samu duši kadého èlovìka pøímo po jeho smrti, beze všech pøíbuznıch a zanechá je na zemi všechnu onu vıpravu,
+aby bylo rozsuzování spravedlivé.
+Já tedy, maje známost tìchto vìcí døíve neli vy, uèinil jsem soudci své syny, dva z Asie, Minoa a Rhadamanthya, a jednoho z Evropy, Aiaka;
+tito tedy, a zemrou, budou souditi na louce, na rozcestí, z kterého vedou dvì cesty, jedna na ostrovy blaenıch, druhá do Tartaru.
+A lidi z Asie bude souditi Rhadamanthys, lidi z Evropy Aiakos;
+Minoovi pak dám právo rozhodovati, jestlie by ti druzí dva byli na pochybách,
+aby se lidem dostávalo co nejspravedlivìjšího rozsudku o jejich cestì.”
+
+To je, Kallikle, co jsem já slyšel a o èem vìøím,
+e to je pravda;
+a z tohoto vypravování vychází podle mého úsudku asi toto.
+Smrt není, jak se mi zdá, nic jiného ne rozlouèení dvou vìcí, duše a tìla, od sebe navzájem;
+kdy pak se tedy od sebe rozlouèí, jedno i druhé z nich skoro stejnì podruje svùj stav, kterı mìlo, i kdy èlovìk il.
+Tìlo má svou pøirozenost i všechny zjevné známky pìstìní a pøestálıch dìjù.
+Tak na pøíklad jestlie nìèí tìlo bylo za iva velké buï od pøirozenosti nebo vıivou nebo obojím, i po smrti je jeho mrtvola veliká, a jestlie byl tlustı, je tlustı i po smrti a tak dále;
+anebo jestlie nosil dlouhé vlasy, je i jeho mrtvola vlasatá.
+Anebo jestlie byl nìkdo trestanec a mìl za iva na tìle jako stopy po ranách, jizvy buï od bièù nebo od jinıch zpùsobù zranìní, jest to vidìti i na tìle mrtvého;
+nebo jestlie nìèí údy byly za iva zlomené nebo vymknuté, jsou tyté vìci patrné i na mrtvém.
+Jedním slovem, jak mìl kdo uzpùsobeno tìlo za iva, takové vlastnosti jsou patrny i po smrti, buï všechny nebo vìtšina jich, na nìjakı èas.
+A právì toté je podle mého zdání i s duší, Kallikle;
+všechno je patrné na duši, kdy se svleèe z tìla, i pøirozené znaky i dojmy, které èlovìk pøijal do duše od kadé jednotlivé vìci, kterou se zabıval.
+Kdy tedy pøijdou pøed soudce, ti z Asie pøed Rhadamanthya, Rhadamanthys je zastaví a prohlíí duši jednoho kadého, nevìda, èí jest, ale èasto chopì se velikého krále nebo nìkterého jiného krále nebo vladaøe uvidí,
+e na jeho duši není nic zdravého,
+nıbr e je zešlehána a plna jizev od køivıch pøísah a nespravedlnosti, které známky mu vtiskl do duše kadı jeho skutek, a e je všechno pokøiveno od li a ješitnosti a nic e na ní není pøímého, protoe vyrostla bez pravdy;
+a uvidí,
+e duše je od zvùle, rozmaøilosti, zpupnosti a nemírnosti v jednání naplnìna nesouladem a ošklivostí;
+kdy pak to uvidí, beze cti pošle tuto duši hned do vìzení, kde má pak snášeti náleitá muka.
+
+Uloeno pak je kadému, komu se dostává trestu, je-li od jiného správnì trestán, buïto aby se stával lepším a mìl z toho prospìch nebo aby se stával pøíkladem pro ostatní,
+aby jiní vidouce utrpení, která snáší, ze strachu se polepšovali.
+Prospìchu nabıvají s trestem od bohù i od lidí ti, kteøí se proviní vinami zhojitelnımi;
+pøece však jim vzniká ten prospìch i zde i v øíši Hádovì z utrpení a bolestí;
+nebo jinak není mono se zbavovati nespravedlnosti.
+Kteøí se však proviní nejhoršími zpùsoby a pro tyto viny se stanou nezhojitelnımi, z tìch se stávají pøíklady;
+ti sami ji nenabıvají ádného prospìchu, protoe jsou nezhojitelní, ale jiní nabıvají prospìchu, kdo je vidí, jak navdy trpí nejvìtší a nejbolestnìjší a nejhroznìjší muka, jsouce tam v Hádu v tom aláøi vystaveni pøímo jako pøíklady, na podívanou a na vıstrahu nespravedlivım, kteøí tam kdy pøicházejí.
+Z tìch bude jedním podle mého soudu i Archelaos, je-li pravda, co øíká Polos, i kadı jinı, kdokoli je takovım tyranem;
+domnívám se pak,
+e se mezi tyto vıstrané pøíklady dostali vìtšinou lidé z tøídy tyranù, králù, vladaøù a politikù, nebo ti se pro svou volnost jednání dopouštìjí nejvìtších a nejbezbonìjších provinìní.
+Svìdèí o tom i Homér;
+ti toti, kteøí jsou podle jeho líèení v Hádu na vìèné èasy trestáni, Tantalos, Sisyfos a Tityos, jsou králové a vladaøi;
+ale o Thersitovi a o kterémkoli jiném špatném èlovìku soukromém nikdo v ádné básni nevypravuje,
+e je trápen velikımi tresty jakoto nezhojitelnı — proto, tuším,
+e nemìl moci;
+proto také byl šastnìjší neli ti, kteøí mìli moc.
+Jistì, Kallikle, z mocnıch bıvají ti lidé, kteøí se stávají i velmi špatnımi;
+ale nic nepøekáí,
+aby se i mezi tìmito vyskytovali muové dobøí, a ti velmi zasluhují našeho obdivu.
+Je toti tìké, Kallikle, a hodno veliké chvály, jestlie ten, komu se dostane veliké zvùle k nespravedlivému jednání, proije svùj ivot spravedlivì.
+Takovıch bıvá málo;
+ale i zde i jinde byli a, myslím, budou lidé dokonalí v této ctnosti spravedlivì spravovat, cokoli se jim svìøí.
+Jeden z nich, a to velmi slavnı i u ostatních Hellenù, byl Aristeides, syn Lysimachùv;
+ale vìtšina mocnıch, vzácnı pøíteli, jsou špatní lidé.
+
+Jak jsem tedy øekl, kdy ten Rhadamanthys nìkterého takového dostane, jiného o nìm neví nic, ani kdo je ani z jakého rodu, jenom e je to nìjakı špatnı èlovìk;
+a kdy to uvidí, pošle ho do Tartaru a opatøí ho zvláštním znamením, zdali se mu zdá zhojitelnım èi nezhojitelnım;
+ten pak, kdy tam pøijde, trpí to, co mu náleí.
+Nìkdy zase uvidí jinou duši, která ila zbonì a ve styku s pravdou, duši mue, kterı il pro sebe v soukromí, nebo nìkterého jiného, nejèastìji, jak já myslím, Kallikle, filosofa, kterı si ve svém ivotì hledìl svého a neoddával se mnohodìlnosti;
+tu je potìšen a pošle ji na ostrovy blaenıch.
+Právì toté dìlá i Aiakos — jeden i druhı z nich soudí dre v rukou soudcovskou hùl — ale Minos sedí a dozírá, jedinı dre zlaté ezlo, jak praví u Homera Odysseus,
+e ho vidìl,
+
+<font color="#FF0000">se zlatım ezlem v rukou jak mrtvıch duše tam soudí.</font>
+
+Já tedy, Kallikle, jsem tímto vypravováním pøesvìdèen a hledím, abych ukázal tomu soudci duši co nejzdravìjší;
+nechám tedy bıt pocty lidí a pìstuje pravdu doopravdy se vynasnaím, abych il a také, a budu umírat, umíral co moná nejlepší.
+Vybízím pak i všechny ostatní lidi, pokud mohu, a také i tebe — odpovídaje tak tvému vybízení — k tomuto ivotu a k tomuto zápasu, kterı já stavím nad všechny u nás obvyklé zápasy, a mám ti za zlé,
+e nebudeš s to si pomoci, a ti nastane soud, o kterém jsem právì mluvil,
+nıbr a pøijdeš pøed toho soudce, syna Aiginina, a on se tì chopí a povede tì k sobì, ty tam budeš stát s otevøenımi ústy a budeš mít závra ne ménì ne já tady a snad tì nìkdo i po líci potupnì udeøí a všelijak tì pohaní.
+
+Snad se ti tedy tyto názory zdají jako babskou pohádkou a pohrdáš jimi;
+a nebylo by nic divného jimi pohrdati, kdybychom hledajíce mohli nalézti názory lepší a pravdivìjší ne jsou ony.
+Takto však vidíš,
+e vy tøi, kteøí jste nejmoudøejší z nynìjších Hellenù, ty a Polos a Gorgias, nemùete dokázat,
+e je tøeba íti nìjakım jinım zpùsobem ne právì tímto, kterı se ukazuje prospìšnım i na onom svìtì.
+Naopak, v tak velikém mnoství myšlenek proti ostatním vyvrácenım pevnì stojí jediné tato myšlenka:
+máme se více støíci, abychom neèinili bezpráví, ne abychom je nesnášeli, a mu se má nade všechno více pøièiòovat ne o to,
+aby se zdál dobrı,
+nıbr aby byl dobrı, a to i v soukromém i ve veøejném ivotì;
+jestlie pak se stane,
+e je nìkdo v nìèem zlı, má bıti trestán, a to je druhé dobro — první je bıti spravedliv — toti trestem platit pokutu a tak se stávati spravedlivım;
+máme se vyhıbati všemu lahodìní, a jde o nás samy nebo o ostatní, o málo lidí i o mnoství;
+a rétoriky i veškerého jiného jednání jest takto uívat vdy k spravedlivému úèelu.
+
+Poslechni mne tedy a pojï spolu se mnou tam, kde budeš šasten i za iva i po smrti, jak ukazuje naše rozprava.
+A nebraò se, jestlie tebou nìkdo bude chtít opovrhovat jako nerozumnım a jestlie tì pohaní, ano, pøi Diovi, klidnì snes i ten potupnı políèek;
+nebo se ti nestane nic hrozného, jestlie se budeš cvièit v dobrosti a budeš vskutku øádnı èlovìk.
+A teprve potom, a se takto spoleènì vycvièíme, tehdy u se dáme — bude-li se zdát potøebí — do politiky, nebo tehdy budeme rozvaovat, o èemkoli by se nám zdálo, kdy budeme k uvaování schopnìjší, ne jsme nyní.
+Je toti ošklivé, kdy se takoví lidé, jakımi se nyní ukazujeme, vypínají, jako by byli kdo ví co, lidé, kteøí nikdy nemají o tıch vìcech tého mínìní, a to o vìcech nejdùleitìjších — takového stupnì nevzdìlanosti jsme došli.
+Vezmìme si tedy jako za vùdce tu myšlenku, která se tu nyní objevila a která nám ukazuje,
+e tohle je nejlepší zpùsob ivota:
+cvièit se v spravedlnosti i v ostatní dobrosti a tak ít i umírat.
+Této myšlenky tedy následujme a vybízejme k následování i ostatní lidi, a ne té, které ty dùvìøuješ a ke které mne vybízíš;
+nebo ta je bezcenná, Kallikle.
+
+

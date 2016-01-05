@@ -1,0 +1,106 @@
+rebol [title: "Filmomol"]
+filmomol: context [
+	kina: make hash! load %/d/local/tables/kina.rb
+	kina-filmy: make hash! load %/d/local/tables/kina-filmy.rb
+	kina-program: load %/d/kina-program.rb
+	kdesepromita: func[kdy /local data kino][
+		data: make string! 1000
+		foreach film kina-program [
+			if all [
+				film/3 <= kdy
+				film/4 >= kdy
+			][
+				kino: select kina film/1
+				if all [
+					none? find kino/1 "PALACE"
+					none? find data kino/1
+				][
+					append data join ", " kino/1
+				]
+			]
+		]
+		if not empty? data [
+			remove/part data 2
+			d: find/last data ", "
+			remove d
+			insert d " a"
+		]
+		head data
+	]
+	cohraji: func[kdy kde /local out data kino][
+		out: make string! 1000
+		data: make block! []
+		foreach film kina-program [
+			if all [
+				film/3 <= kdy
+				film/4 >= kdy
+			][
+				kino: select kina film/1
+				if none? find kino/1 "PALACE" [
+					film-info: select kina-filmy film/2
+					;probe kino
+					if any [none? kde find kino/1 kde][
+						either none? k: select data kino/1 [
+							repend data kino/1
+							repend/only data [film-info/2]
+						][
+							if none? find k film-info/2 [
+								append k film-info/2
+							]
+						]
+						
+						append out rejoin [kino/1 ": " film-info/2 newline]
+					]
+				]
+			]
+		]
+		out: copy ""
+		foreach [kino filmy] data [
+			append out rejoin [kino ": " mold filmy newline]
+		]
+		out
+	]
+	
+	najdifilm: func[nazev][
+		foreach [id film] kina-filmy [
+			if find film/2 nazev [return film]
+		]
+		none
+	]
+	den: now
+	chat-rules: [
+		[den tmp][thru "kde se" any space any ["dnes"  (den: now) | "zitra" (den: now + 1)] any space "promita?"][
+			probe den
+			either empty? tmp: filmomol/kdesepromita den [
+				say "Nevim, nemam informace:("
+			][
+				say reform [den/date "se promita v techto kinech:"]
+				say tmp
+			]
+		]
+		[kino den][
+			thru "co" any space any ["dnes"  (den: now) | "zitra" (den: now + 1)]
+			any space some [
+				"hraji v kine?" (kino: none)
+			  | "hraji v" any space opt ["kine" any space] copy kino to "?" (probe kino) to end
+			]
+		][
+			say filmomol/cohraji den kino
+		]
+		;[kino]["!kina" any space copy kino any non-space to end][reply filmomol/codneshraji kino]
+		[nazev film][any [
+			"!film" any space copy nazev to end
+			| thru "o cem je film " copy nazev to "?" to end
+		]][
+			film: najdifilm nazev
+			say either none? film [
+				join "Neznam film " nazev
+			][	rejoin ["Film " nazev ": " film/4] ]
+		]
+	]
+	init: func[][
+		;append active-irc/user-data/chat-rules chat-rules
+		active-irc/user-data/chat-rules: chat-rules
+	]
+]
+
