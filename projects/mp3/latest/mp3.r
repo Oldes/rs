@@ -133,9 +133,9 @@ MP3: context [
 	readMP3FrameHeader: has[hdrb hdr ][
 		hdrb: next copy/part inBuffer 4
 		unless MP3FrameHeader: select headers hdrb [
-			hdr: to integer! hdrb
+			probe hdr: to integer! hdrb
 			if 14680064 = (14680064 and hdr) [
-				MP3FrameHeader: context [
+				probe MP3FrameHeader: context [
 					MpegVersion: shift (1572864 and hdr) 19
 					Layer:       shift (393216  and hdr) 17
 					;Protected?: shift (65536   and hdr) 16

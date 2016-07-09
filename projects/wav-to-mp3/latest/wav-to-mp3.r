@@ -55,20 +55,34 @@ wav-to-mp3: func[source [file! string!] /local dir name wavs cmd loop?][
 			either loop? [
 				mp3: join dir replace name ".wav" ".mp3"
 				
-				print join "==> " cmd: rejoin [{x:\utils\mp3loop --encoder=x:\utils\lame\lame.exe -V0 -h --silent "} to-local-file wav-file {"}]
+				;print join "==> " cmd: rejoin [{x:\utils\mp3loop --encdelay=1159 --encoder=x:\utils\lame\lame.exe -b320 --nores -h --silent "} to-local-file wav-file {"}]
+				;print join "==> " cmd: rejoin [{x:\utils\mp3loop --encoder=x:\utils\lame\lame.exe -V0 --nores -h --silent "} to-local-file wav-file {"}]
+				{
+					taky možnost... vzít ten prostřední...
+					x:\utils\lame\lame.exe --nogapout r:\ --nogap r:\w\w1.wav r:\w\w2.wav r:\w\w3.wav -b320  -h --silent
+				}
+				print join "==> " cmd: rejoin [{cp "} to-local-file wav-file {" "} to-local-file wav-file {_"}]
+				call/console cmd
+				print join "==> " cmd: rejoin [
+					{x:\utils\lame\lame.exe --nogapout "} to-local-file dir {" --nogap "} to-local-file wav-file {" "} to-local-file wav-file {" "} to-local-file wav-file {_" -b320 -h --silent}
+				]
+				call/console cmd
+				print join "==> " cmd: rejoin [{rm -f "} to-local-file wav-file {_.mp3"}]
+				call/console cmd
+				print join "==> " cmd: rejoin [{rm -f "} to-local-file wav-file {_"}]
+				call/console cmd
+				print join "==> " cmd: rejoin [{mv -f "} to-local-file mp3 {" "} to-local-file dir "\" camelize-wav-name copy skip name 6 {"}]
+				call/console cmd
+				;rename mp3 camelize-wav-name copy skip name 6
 			][
 				mp3: join dir camelize-wav-name replace name ".wav" ".mp3"
 				print join "==> " cmd: rejoin [
 					{x:\utils\lame\lame }
-					either 50000 > size? wav-file ["-b 320"]["-V 0"]
+					either 85000 > size? wav-file ["-b 320"]["-V 0"]
 					{ -h --silent -t "} to-local-file wav-file {" "} to-local-file mp3 {"}
 				]
 				;print join "==> " cmd: rejoin [{x:\utils\lame\lame -V 0 -h --silent -t "} to-local-file wav-file {" "} to-local-file mp3 {"}]
-			
-			]
-			call/console cmd
-			if loop? [
-				rename mp3 camelize-wav-name copy skip name 6
+				call/console cmd
 			]
 		]
 	]

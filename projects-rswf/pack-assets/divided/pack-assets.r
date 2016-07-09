@@ -9,7 +9,7 @@ REBOL [
 		rs-project %stream-io
 		rs-project %form-timeline
 		rs-project %texture-packer
-		rs-project %triangulator ;'shrink
+		rs-project %triangulator 'shrink
 		rs-project %zlib
 		rs-project %mp3
 	]
@@ -45,6 +45,8 @@ REBOL [
 		pvr2atf -p atlas.pvr -o atlas.atf
 		* - this is interesting, since it seems that Adobe's tool (png2atf) uses PVRTexTool libraries under the hood (same stdout while encoding). PVRTexTool also has more options for quality and encoding - play around with them in the GUI, but the above setting represents the best quality (albeit fairly slow to encode) for iOS compatibility.
 	}
+
+	preprocess: true
 ]
 
 with: func [obj body][do bind body obj]
@@ -55,6 +57,9 @@ ctx-pack-assets: context [
 	dirPacks:      join dirAssetsRoot %Packs/
 
 	pngQuantExe:   dirBinUtils/pngquant
+
+	usePngQuant?:  true
+
 	if system/version/4 = 3 [append pngQuantExe %.exe]
 	
 	;charsets:
@@ -81,6 +86,8 @@ ctx-pack-assets: context [
 		
 		cmdTimelineData2:            40
 		cmdShapeBuffers:             41
+		cmdShapeVertexBuffer:        42
+		cmdShapeIndexBuffer:         43
 		
 		cmdDefineSound:              15
 		cmdDefineSoundOgg:           16
@@ -128,7 +135,8 @@ ctx-pack-assets: context [
 	outTextures: make stream-io [] ;Holds textures stream - textures are separated because they may be reloaded when a context is lost
 	strings: copy []
 	sound-groups: copy []
-	noATFfiles: [] ;Add names of packs where just PNG must be used (no ATF)
+	noATFfiles: []   ;Add names of packs where just PNG must be used (no ATF)
+	needsMipmaps: [] ;Add names of packs where mipmaping is required
 	;Charsets:
 	chDigit: charset "0123456789"
 	
@@ -249,6 +257,7 @@ ctx-pack-assets: context [
 					)
 					|
 					copy partId to ".png" to end (
+						if find partId %MesicekNoraPozadi/Pozadi [size: size - 0x2]
 						repend regions [partId xy size]
 					)
 				]
@@ -290,6 +299,7 @@ ctx-pack-assets: context [
 	not-excluded-atf?: func[file][
 		none? find noATFfiles last parse file "/"
 	]
+	needs-mipmaps?: func[file][none? find noATFfiles last parse file "/"]
 	
 	get-atf-file: func[
 		atf-type "Required ATF file extension (%dxt or %etc)"
@@ -315,7 +325,7 @@ ctx-pack-assets: context [
 		][
 		print ["=== has-atf-version ===" mold file atf-type]
 		if not any [
-			exists? origFile: join file %-fs8.png
+			all [usePngQuant? exists? origFile: join file %-fs8.png]
 			exists? origFile: join file %.png
 		][
 			ask reform ["Cannot found source file for ATF:" mold file]
@@ -350,7 +360,7 @@ ctx-pack-assets: context [
 										{ -o } to-local-file file {.dds}
 								]
 								call/console probe rejoin [
-									to-local-file dirBinUtils {\dds2atf.exe -4 -q 0 -f 0}
+									to-local-file dirBinUtils {\dds2atf.exe -4 -q 0 -f 0} either needs-mipmaps? file [" -n 0,0"][""]
 										{ -i } to-local-file file {.dds}
 										{ -o } to-local-file imageFile
 								]
@@ -358,11 +368,64 @@ ctx-pack-assets: context [
 							true
 						]
 						%etc [
+							either find file "Kniha" [
+								call/console probe rejoin [
+									localDirBinUtils {PVRTexToolCLI.exe -f r8g8b8a8,UBN,lRGB -q pvrtcbest -dither -l}
+										{ -i } to-local-file origFile
+										{ -o } to-local-file file {.pvr}
+								]	
+								call/console probe rejoin [
+									to-local-file dirBinUtils {\pvr2atf.exe -c e -4 -q 0 -f 0}
+										{ -r } to-local-file file {.pvr}
+										{ -o } to-local-file imageFile
+								] ;;[LOG][7409] ALL PRELOADED (preloadFile) 6461ms, v2
+							][
+								call/console probe rejoin [
+									localDirBinUtils {png2atf.exe -c e -4 -q 0} either needs-mipmaps? file [" -n 0,0"][""] { -f 0}
+										{ -i } to-local-file origFile
+										{ -o } to-local-file imageFile
+								] ;;prasivka: [LOG][7229] ALL PRELOADED (preloadFile) 6134ms, v1
+							]
+							
+							
+							{
 							call/console probe rejoin [
-								localDirBinUtils {png2atf.exe -c e -4 -q 0}
+								localDirBinUtils {png2atf.exe -c e -4 -q 0 -f 0}
 									{ -i } to-local-file origFile
 									{ -o } to-local-file imageFile
+							] ;;prasivka:
+							}
+							{
+							call/console probe rejoin [
+								localDirBinUtils {PVRTexToolCLI.exe -f r8g8b8a8,UBN,lRGB -potcanvas + -m 1 -q pvrtcbest -dither -l}
+									{ -i } to-local-file origFile
+									{ -o } to-local-file file {.pvr}
 							]
+							call/console probe rejoin [
+								to-local-file dirBinUtils {\pvr2atf.exe -c e -n 0,0}
+									{ -r } to-local-file file {.pvr}
+									{ -o } to-local-file imageFile
+							] ;;[LOG][7409] ALL PRELOADED (preloadFile) 6461ms, v2
+						}
+							{
+							call/console probe rejoin [
+								localDirBinUtils {PVRTexToolCLI.exe -f ETC1,UBN,lRGB -potcanvas + -m 2 -q etcslowperceptual -dither -l}
+									{ -i } to-local-file origFile
+									{ -o } to-local-file file {.pvr}
+							]
+							call/console probe rejoin [
+								to-local-file dirBinUtils {\pvr2atf.exe -c e -n 0,0}
+									{ -e } to-local-file file {.pvr}
+									{ -o } to-local-file imageFile
+							] ;;[LOG][7409] ALL PRELOADED (preloadFile) 6461ms, v2
+							}
+							{
+							call/console probe rejoin [
+								localDirBinUtils {png2atf.exe -c e2 -4 -q 0 -n 0,0 -f 0}
+									{ -i } to-local-file origFile
+									{ -o } to-local-file imageFile
+							] ;;prasivka: [LOG][7228] ALL PRELOADED (preloadFile) 6222ms v etc2
+							}
 							true
 						]
 						%pvr [
@@ -403,10 +466,11 @@ ctx-pack-assets: context [
 	;--                 [objects images shapes sounds strings]
 	idOffsetData: [
 		%Univerzal         [0       0      0      0     10]
-		%UniverzalPrasivka [100     200    100    210   27]
-		%PlanetaDomovska   [600     1300   100    250   50]
-		%PlanetaZluta      [600     1300   100    250   50]
-		%PlanetaTermiti    [600     1300   100    290   50]
+		%UniverzalPrasivka [100     260    100    331   27]
+		%PlanetaDomovska   [600     1300   100    390   50]
+		%PlanetaZluta      [600     1300   100    390   50]
+		%PlanetaTermiti    [600     1300   100    390   50]
+		%PlanetaMnisi      [600     1300   100    390   50]
 		
 		;%Konstrukter   [11      34     0      0     ]
 		;%Prasivka      [195     1805   2      3     ]
@@ -424,7 +488,7 @@ ctx-pack-assets: context [
 		;if level <> %Univerzal [level: none]
 		set [offsetObjectId offsetImageId offsetShapeId offsetSoundId offsetStringId] any[
 			select idOffsetData to-file level
-			[600 1300 100 300 50]
+			[600 1300 100 400 50]
 		]
 	]
 
@@ -509,6 +573,7 @@ ctx-pack-assets: context [
 				any [
 					has-atf-version atf-type packName
 					all [
+						usePngQuant?
 						exists? imageFile: rejoin [packName %-fs8.png]
 						any [
 							(modified? imageFile) > (modified? origImageFile)
@@ -661,8 +726,7 @@ ctx-pack-assets: context [
 			new-line/all level-sounds true
 			save soundsDir/sounds.txt level-sounds
 		]
-		
-		
+
 		;;STARLING Sheets:
 		sourceDir: dirize rejoin [dirAssetsRoot %Starling\ level]
 		if exists? sourceDir [
@@ -671,7 +735,7 @@ ctx-pack-assets: context [
 					parse file [copy name to ".xml" 4 skip end]
 					any [
 						has-atf-version atf-type join sourceDir name
-						exists? imageFile: rejoin [sourceDir name %-fs8.png]
+						all [usePngQuant? exists? imageFile: rejoin [sourceDir name %-fs8.png]]
 						exists? imageFile: rejoin [sourceDir name %.png]
 					]
 				][
@@ -1024,7 +1088,18 @@ ctx-pack-assets: context [
 			names ;used to store names-to-id data
 	][
 		print ["====== parse-timeline " file]
+
 		ctx-triangulator/init
+		parse file [
+			any [
+				thru "Mesicek1.txt" end (
+					ctx-triangulator/_minLineWidth: 20
+					ask "???"
+				)
+			]
+		]
+
+
 		names: copy []
 		out/writeUI8  cmdTimelineData2
 		startIndx: index? out/outBuffer
@@ -1458,4 +1533,6 @@ ctx-pack-assets: context [
 			]
 		]
 	]
+
+	#include %test-assets.r
 ]

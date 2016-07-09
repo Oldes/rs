@@ -59,6 +59,7 @@ REBOL [
 			{[u]underlined[/u]}                {<p><u>underlined</u></p>}
 			{[h3=underline]Portréty [b]X}      {<h3 class="underline">Portréty <b>X</b></h3>}
 			{[img=680x300]pozvanka.jpg}        {<p><img width=680 height=300 src="pozvanka.jpg" alt=""></p>}
+			{[img width="680"]pozvanka.jpg}        {<p><img width=680 src="pozvanka.jpg" alt=""></p>}
 			{[img=680x317 alt=images]pozvanka.jpg} {<p><img width=680 height=317 src="pozvanka.jpg" alt="images"></p>}
 			{[img size="680x300" alt='pozvanka na "vystavu"']pozvanka.jpg}
                                                {<p><img width=680 height=300 src="pozvanka.jpg" alt="pozvanka na &quot;vystavu&quot;"></p>}
@@ -101,7 +102,7 @@ name;number;position
 }
 		]
 		errors: copy []
-		foreach [src result] xtest-cases [
+		foreach [src result] test-cases [
 			print ["<==" src]
 			print ["==>" tmp: bbcode src]
 			print either tmp = result ["OK"][repend/only errors [src tmp] join "ERR " result]
@@ -242,24 +243,32 @@ ctx-bbcode: context [
 					size <> 0x0
 				]
 			][
-				return rejoin [" width=" size/x " height=" size/y]
+				return rejoin [
+					either size/x > 0 [ join " width="  size/x][""]
+					either size/y > 0 [ join " height=" size/y][""]
+				]
 			]
 			
 			all [
 				size: get-attribute "resize"
 				not error? try [size: to pair! size]
 			][
-				return rejoin [" width=" size/x " height=" size/y]
+				return rejoin [
+					either size/x > 0 [ join " width="  size/x][""]
+					either size/y > 0 [ join " height=" size/y][""]
+				]
 			]
 			
-			not error? try [
-				size: to integer! get-attribute "width"
+			all [
+				not error? try [size: to integer! get-attribute "width"]
+				size > 0
 			][
 				append out rejoin [" width=" size]
 			]
 			
-			not error? try [
-				size: to integer! get-attribute "height"
+			all [
+				not error? try [size: to integer! get-attribute "height"]
+				size > 0
 			][
 				append out rejoin [" height=" size]
 			]
